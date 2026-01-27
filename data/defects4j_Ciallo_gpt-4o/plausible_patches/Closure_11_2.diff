@@ -1,0 +1,23 @@
+diff --git a/src/com/google/javascript/jscomp/TypeCheck.java b/src/com/google/javascript/jscomp/TypeCheck.java
+index ae8a32001..272190d68 100644
+--- a/src/com/google/javascript/jscomp/TypeCheck.java
++++ b/src/com/google/javascript/jscomp/TypeCheck.java
+@@ -1310,16 +1310,14 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+     JSType childType = getJSType(objNode);
+ 
+     if (childType.isDict()) {
+-      report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, "'.'", "dict");
+-    } else if (n.getJSType() != null && parent.isAssign()) {
+-      return;
++      report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, "'.'", "dict");    } else if (parent.isAssign() && objNode.getJSType() == null) {
++      report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, "'.'", "null");
+     } else if (validator.expectNotNullOrUndefined(t, n, childType,
+         "No properties on this expression", getNativeType(OBJECT_TYPE))) {
+       checkPropertyAccess(childType, property.getString(), t, n);
+     }
+     ensureTyped(t, n);
+   }
+-
+   /**
+    * Emit a warning if we can prove that a property cannot possibly be
+    * defined on an object. Note the difference between JS and a strictly

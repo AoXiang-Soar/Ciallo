@@ -1,0 +1,16 @@
+{
+    "bug_id": 13,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonCore",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<{[foo]:1}> but was:<{[\"foo\"]:1}>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testFieldNameQuotingEnabled() throws IOException\n    {\n        // // First, test with default factory, with quoting enabled by default\n        \n        // First, default, with quotes\n        _testFieldNameQuotingEnabled(JSON_F, true, true, \"{\\\"foo\\\":1}\");\n        _testFieldNameQuotingEnabled(JSON_F, false, true, \"{\\\"foo\\\":1}\");\n\n        // then without quotes\n        _testFieldNameQuotingEnabled(JSON_F, true, false, \"{foo:1}\");\n        _testFieldNameQuotingEnabled(JSON_F, false, false, \"{foo:1}\");\n\n        // // Then with alternatively configured factory\n\n        JsonFactory JF2 = new JsonFactory();\n        JF2.disable(JsonGenerator.Feature.QUOTE_FIELD_NAMES);\n\n        _testFieldNameQuotingEnabled(JF2, true, true, \"{\\\"foo\\\":1}\");\n        _testFieldNameQuotingEnabled(JF2, false, true, \"{\\\"foo\\\":1}\");\n\n        // then without quotes\n        _testFieldNameQuotingEnabled(JF2, true, false, \"{foo:1}\");\n        _testFieldNameQuotingEnabled(JF2, false, false, \"{foo:1}\");\n    }",
+    "test_line": "        assertEquals(exp, json);",
+    "test_name": "testFieldNameQuotingEnabled",
+    "test_suite": "com.fasterxml.jackson.core.json.TestJsonGeneratorFeatures"
+}

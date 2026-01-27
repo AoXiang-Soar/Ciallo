@@ -1,0 +1,79 @@
+diff --git a/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java b/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
+index 65ed1ed..17bb212 100644
+--- a/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
++++ b/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
+@@ -78,6 +78,9 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         if (right instanceof InitialContext) {
+             ((InitialContext) right).reset();
+         }
++        if (left == null || right == null) {
++            return false;
++        }
+         if (left instanceof Iterator && right instanceof Iterator) {
+             return findMatch((Iterator) left, (Iterator) right);
+         }
+@@ -107,8 +110,16 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         if (o instanceof SelfContext) {
+             o = ((EvalContext) o).getSingleNodePointer();
+         }
++        if (o instanceof EvalContext) {
++            Iterator it = ((EvalContext) o);
++            return it.hasNext() ? it.next() : null;
++        }
+         if (o instanceof Collection) {
+-            o = ((Collection) o).iterator();
++            return ((Collection) o).iterator();
++        }
++        if (o != null && o.getClass().isArray()) {
++            Iterator it = new ArrayIterator(o);
++            return it.hasNext() ? it.next() : null;
+         }
+         return o;
+     }
+@@ -129,13 +140,6 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         return false;
+     }
+ 
+-    /**
+-     * Learn whether any element returned from an Iterator matches a given value.
+-     * @param it Iterator
+-     * @param value to look for
+-     * @return whether a match was found
+-     */
+-
+     /**
+      * Learn whether there is an intersection between two Iterators.
+      * @param lit left Iterator
+@@ -155,4 +159,30 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         return false;
+     }
+ 
+-}
++    /**
++     * Iterator for array objects.
++     */
++    private static class ArrayIterator implements Iterator {
++        private final Object array;
++        private int index;
++        private final int length;
++
++        ArrayIterator(Object array) {
++            this.array = array;
++            this.index = 0;
++            this.length = java.lang.reflect.Array.getLength(array);
++        }
++
++        public boolean hasNext() {
++            return index < length;
++        }
++
++        public Object next() {
++            return java.lang.reflect.Array.get(array, index++);
++        }
++
++        public void remove() {
++            throw new UnsupportedOperationException();
++        }
++    }
++}
+\ No newline at end of file

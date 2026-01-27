@@ -1,0 +1,16 @@
+{
+    "bug_id": 29,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: entry #0, left = 0.0, right = 0.0 expected:<NaN> but was:<0.0>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEbeDivideMixedTypes() {\n        doTestEbeBinaryOperation(BinaryOperation.DIV, true);\n    }",
+    "test_line": "        doTestEbeBinaryOperation(BinaryOperation.DIV, true);",
+    "test_name": "testEbeDivideMixedTypes",
+    "test_suite": "org.apache.commons.math3.linear.RealVectorAbstractTest"
+}

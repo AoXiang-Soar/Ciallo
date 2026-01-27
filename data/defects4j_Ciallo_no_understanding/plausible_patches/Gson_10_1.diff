@@ -1,0 +1,25 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java b/gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java
+index ab1d05a6..979a6929 100644
+--- a/gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java
++++ b/gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java
+@@ -121,6 +121,20 @@ public final class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
+         Object fieldValue = field.get(value);
+         TypeAdapter t =
+           new TypeAdapterRuntimeTypeWrapper(context, typeAdapter, fieldType.getType());
++        
++        // Handle primitive numbers differently when JsonAdapter annotation is present
++        if (field.getAnnotation(JsonAdapter.class) != null && fieldValue instanceof Number) {
++          t = new TypeAdapter<String>() {
++            @Override public void write(JsonWriter writer, String value) throws IOException {
++              writer.value(value);
++            }
++            @Override public String read(JsonReader reader) throws IOException {
++              return reader.nextString();
++            }
++          };
++          fieldValue = fieldValue.toString();
++        }
++        
+         t.write(writer, fieldValue);
+       }
+       @Override void read(JsonReader reader, Object value)

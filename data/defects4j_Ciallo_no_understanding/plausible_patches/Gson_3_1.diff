@@ -1,0 +1,52 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java b/gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java
+index a0384fa7..06a670d7 100644
+--- a/gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java
++++ b/gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java
+@@ -9,7 +9,7 @@
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  */
+@@ -33,6 +33,10 @@ import java.util.SortedMap;
+ import java.util.SortedSet;
+ import java.util.TreeMap;
+ import java.util.TreeSet;
++import java.util.concurrent.ConcurrentMap;
++import java.util.concurrent.ConcurrentHashMap;
++import java.util.concurrent.ConcurrentNavigableMap;
++import java.util.concurrent.ConcurrentSkipListMap;
+ 
+ import com.google.gson.InstanceCreator;
+ import com.google.gson.JsonIOException;
+@@ -172,7 +176,19 @@ public final class ConstructorConstructor {
+     }
+ 
+     if (Map.class.isAssignableFrom(rawType)) {
+-      if (SortedMap.class.isAssignableFrom(rawType)) {
++      if (ConcurrentNavigableMap.class.isAssignableFrom(rawType)) {
++        return new ObjectConstructor<T>() {
++          @Override public T construct() {
++            return (T) new ConcurrentSkipListMap<Object, Object>();
++          }
++        };
++      } else if (ConcurrentMap.class.isAssignableFrom(rawType)) {
++        return new ObjectConstructor<T>() {
++          @Override public T construct() {
++            return (T) new ConcurrentHashMap<Object, Object>();
++          }
++        };
++      } else if (SortedMap.class.isAssignableFrom(rawType)) {
+         return new ObjectConstructor<T>() {
+           @Override public T construct() {
+             return (T) new TreeMap<Object, Object>();
+@@ -217,4 +233,4 @@ public final class ConstructorConstructor {
+   @Override public String toString() {
+     return instanceCreators.toString();
+   }
+-}
++}
+\ No newline at end of file

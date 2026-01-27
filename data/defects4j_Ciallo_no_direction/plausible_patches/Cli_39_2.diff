@@ -1,0 +1,191 @@
+diff --git a/src/main/java/org/apache/commons/cli/TypeHandler.java b/src/main/java/org/apache/commons/cli/TypeHandler.java
+index 93c0b73..f11fac4 100644
+--- a/src/main/java/org/apache/commons/cli/TypeHandler.java
++++ b/src/main/java/org/apache/commons/cli/TypeHandler.java
+@@ -26,41 +26,13 @@ import java.net.URL;
+ 
+ import java.util.Date;
+ 
+-/**
+- * This is a temporary implementation. TypeHandler will handle the
+- * pluggableness of OptionTypes and it will direct all of these types
+- * of conversion functionalities to ConvertUtils component in Commons
+- * already. BeanUtils I think.
+- *
+- * @version $Id$
+- */
+ public class TypeHandler
+ {
+-    /**
+-     * Returns the <code>Object</code> of type <code>obj</code>
+-     * with the value of <code>str</code>.
+-     *
+-     * @param str the command line value
+-     * @param obj the type of argument
+-     * @return The instance of <code>obj</code> initialised with
+-     * the value of <code>str</code>.
+-     * @throws ParseException if the value creation for the given object type failed
+-     */
+     public static Object createValue(final String str, final Object obj) throws ParseException
+     {
+         return createValue(str, (Class<?>) obj);
+     }
+ 
+-    /**
+-     * Returns the <code>Object</code> of type <code>clazz</code>
+-     * with the value of <code>str</code>.
+-     *
+-     * @param str the command line value
+-     * @param clazz the type of argument
+-     * @return The instance of <code>clazz</code> initialised with
+-     * the value of <code>str</code>.
+-     * @throws ParseException if the value creation for the given class failed
+-     */
+     public static Object createValue(final String str, final Class<?> clazz) throws ParseException
+     {
+         if (PatternOptionBuilder.STRING_VALUE == clazz)
+@@ -89,7 +61,7 @@ public class TypeHandler
+         }
+         else if (PatternOptionBuilder.EXISTING_FILE_VALUE == clazz)
+         {
+-            return createFile(str);
++            return createExistingFile(str);
+         }
+         else if (PatternOptionBuilder.FILES_VALUE == clazz)
+         {
+@@ -106,12 +78,28 @@ public class TypeHandler
+     }
+ 
+     /**
+-      * Create an Object from the classname and empty constructor.
+-      *
+-      * @param classname the argument value
+-      * @return the initialised object
+-      * @throws ParseException if the class could not be found or the object could not be created
+-      */
++     * Creates a FileInputStream for an existing file.
++     *
++     * @param str the path to the existing file
++     * @return FileInputStream for the existing file
++     * @throws ParseException if the file doesn't exist or can't be opened
++     */
++    private static FileInputStream createExistingFile(String str) throws ParseException
++    {
++        File file = new File(str);
++        if (!file.exists()) {
++            throw new ParseException("File " + str + " does not exist");
++        }
++        try
++        {
++            return new FileInputStream(file);
++        }
++        catch (final FileNotFoundException e)
++        {
++            throw new ParseException("Unable to open file: " + str);
++        }
++    }
++
+     public static Object createObject(final String classname) throws ParseException
+     {
+         Class<?> cl;
+@@ -135,14 +123,6 @@ public class TypeHandler
+         }
+     }
+ 
+-    /**
+-     * Create a number from a String. If a . is present, it creates a
+-     * Double, otherwise a Long.
+-     *
+-     * @param str the value
+-     * @return the number represented by <code>str</code>
+-     * @throws ParseException if <code>str</code> is not a number
+-     */
+     public static Number createNumber(final String str) throws ParseException
+     {
+         try
+@@ -159,13 +139,6 @@ public class TypeHandler
+         }
+     }
+ 
+-    /**
+-     * Returns the class whose name is <code>classname</code>.
+-     *
+-     * @param classname the class name
+-     * @return The class if it is found
+-     * @throws ParseException if the class could not be found
+-     */
+     public static Class<?> createClass(final String classname) throws ParseException
+     {
+         try
+@@ -178,29 +151,11 @@ public class TypeHandler
+         }
+     }
+ 
+-    /**
+-     * Returns the date represented by <code>str</code>.
+-     * <p>
+-     * This method is not yet implemented and always throws an
+-     * {@link UnsupportedOperationException}.
+-     *
+-     * @param str the date string
+-     * @return The date if <code>str</code> is a valid date string,
+-     * otherwise return null.
+-     * @throws UnsupportedOperationException always
+-     */
+     public static Date createDate(final String str)
+     {
+         throw new UnsupportedOperationException("Not yet implemented");
+     }
+ 
+-    /**
+-     * Returns the URL represented by <code>str</code>.
+-     *
+-     * @param str the URL string
+-     * @return The URL in <code>str</code> is well-formed
+-     * @throws ParseException if the URL in <code>str</code> is not well-formed
+-     */
+     public static URL createURL(final String str) throws ParseException
+     {
+         try
+@@ -213,39 +168,13 @@ public class TypeHandler
+         }
+     }
+ 
+-    /**
+-     * Returns the File represented by <code>str</code>.
+-     *
+-     * @param str the File location
+-     * @return The file represented by <code>str</code>.
+-     */
+     public static File createFile(final String str)
+     {
+         return new File(str);
+     }
+ 
+-    /**
+-     * Returns the opened FileInputStream represented by <code>str</code>.
+-     *
+-     * @param str the file location
+-     * @return The file input stream represented by <code>str</code>.
+-     * @throws ParseException if the file is not exist or not readable
+-     */
+-
+-    /**
+-     * Returns the File[] represented by <code>str</code>.
+-     * <p>
+-     * This method is not yet implemented and always throws an
+-     * {@link UnsupportedOperationException}.
+-     *
+-     * @param str the paths to the files
+-     * @return The File[] represented by <code>str</code>.
+-     * @throws UnsupportedOperationException always
+-     */
+     public static File[] createFiles(final String str)
+     {
+-        // to implement/port:
+-        //        return FileW.findFiles(str);
+         throw new UnsupportedOperationException("Not yet implemented");
+     }
+-}
++}
+\ No newline at end of file

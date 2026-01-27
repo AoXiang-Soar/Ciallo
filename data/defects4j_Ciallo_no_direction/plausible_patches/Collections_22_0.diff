@@ -1,0 +1,49 @@
+diff --git a/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java b/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java
+index 5892910e..c064e670 100644
+--- a/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java
++++ b/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java
+@@ -241,20 +241,38 @@ public class ListOrderedMap<K, V>
+      * @param index the index in the Map to start at.
+      * @param map the Map containing the entries to be added.
+      */
+-    public void putAll(int index, final Map<? extends K, ? extends V> map) {
+-        for (final Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
++public void putAll(int index, final Map<? extends K, ? extends V> map) {
++    // Adjust index if it's beyond current size
++    if (index < 0) {
++        throw new IndexOutOfBoundsException("Index cannot be negative: " + index);
++    }
++    if (index > size()) {
++        index = size();
++    }
++
++    // If map is empty, nothing to do
++    if (map.isEmpty()) {
++        return;
++    }
++
++    // Handle insertion differently based on whether we're appending or inserting in middle
++    boolean isAppend = index == size();
++    
++    Iterator<? extends Map.Entry<? extends K, ? extends V>> iterator = map.entrySet().iterator();
++    while (iterator.hasNext()) {
++        Map.Entry<? extends K, ? extends V> entry = iterator.next();
++        if (isAppend) {
++            put(entry.getKey(), entry.getValue());
++        } else {
+             final V old = put(index, entry.getKey(), entry.getValue());
+             if (old == null) {
+-            // The return value of put is null if the key did not exist OR the value was null
+-            // so it cannot be used to determine whether the key was added
+-                // if no key was replaced, increment the index
+                 index++;
+             } else {
+-                // otherwise put the next item after the currently inserted key
+                 index = indexOf(entry.getKey()) + 1;
+             }
+         }
+     }
++}
+ 
+     @Override
+     public V remove(final Object key) {

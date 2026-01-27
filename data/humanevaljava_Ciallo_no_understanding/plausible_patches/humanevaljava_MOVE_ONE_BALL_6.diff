@@ -1,0 +1,54 @@
+diff --git a/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java b/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
+old mode 100644
+new mode 100755
+index ce2ea8a..163eff2
+--- a/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
++++ b/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
+@@ -6,25 +6,33 @@ import java.util.Collections;
+ public class MOVE_ONE_BALL {
+     public static boolean move_one_ball(ArrayList<Integer> arr) {
+         if(arr.size() == 0) return true;
++        
+         ArrayList<Integer> sorted_arr = new ArrayList<>(arr);
+         Collections.sort(sorted_arr);
+-        int min_value = sorted_arr.get(sorted_arr.size() - 1);
+-        int min_index = 0;
+-        for(int i = 0; i < arr.size(); i++) {
+-            if(arr.get(i) == min_value) min_index = i;
+-        }
+-        ArrayList<Integer> arr_after_move = new ArrayList<>();
+-        for(int i = min_index; i < arr.size(); i++) {
+-            arr_after_move.add(arr.get(i));
+-        }
+-        for(int i = 0; i < min_index; i++) {
+-            arr_after_move.add(arr.get(i));
++        
++        // Check if it's already sorted
++        if(arr.equals(sorted_arr)) return true;
++        
++        // Find the rotation point where order becomes sorted
++        int rotation_point = -1;
++        for(int i = 1; i < arr.size(); i++) {
++            if(arr.get(i) < arr.get(i-1)) {
++                rotation_point = i;
++                break;
++            }
+         }
++        
++        // If no rotation point found (already sorted), or multiple rotation points
++        if(rotation_point == -1) return true;
++        
++        // Check if rotating at this point gives sorted array
+         for(int i = 0; i < arr.size(); i++) {
+-            if(arr_after_move.get(i) != sorted_arr.get(i)) {
++            int current = arr.get((rotation_point + i) % arr.size());
++            if(current != sorted_arr.get(i)) {
+                 return false;
+             }
+         }
++        
+         return true;
+     }
+-}
++}
+\ No newline at end of file

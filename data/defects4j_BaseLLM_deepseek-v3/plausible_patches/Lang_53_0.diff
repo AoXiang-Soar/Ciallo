@@ -1,0 +1,65 @@
+diff --git a/src/java/org/apache/commons/lang/time/DateUtils.java b/src/java/org/apache/commons/lang/time/DateUtils.java
+index 0dd0dedc8..b5b874068 100644
+--- a/src/java/org/apache/commons/lang/time/DateUtils.java
++++ b/src/java/org/apache/commons/lang/time/DateUtils.java
+@@ -640,24 +640,34 @@ public class DateUtils {
+         int millisecs = val.get(Calendar.MILLISECOND);
+         if (!round || millisecs < 500) {
+             time = time - millisecs;
++        } else {
++            time = time + (1000 - millisecs);
++        }
+         if (field == Calendar.SECOND) {
+             done = true;
+-            }
+         }
+ 
+         // truncate seconds
+-        int seconds = val.get(Calendar.SECOND);
+-        if (!done && (!round || seconds < 30)) {
+-            time = time - (seconds * 1000L);
+-        if (field == Calendar.MINUTE) {
+-            done = true;
++        if (!done) {
++            int seconds = val.get(Calendar.SECOND);
++            if (!round || seconds < 30) {
++                time = time - (seconds * 1000L);
++            } else {
++                time = time + ((60 - seconds) * 1000L);
++            }
++            if (field == Calendar.MINUTE) {
++                done = true;
+             }
+         }
+ 
+         // truncate minutes
+-        int minutes = val.get(Calendar.MINUTE);
+-        if (!done && (!round || minutes < 30)) {
+-            time = time - (minutes * 60000L);
++        if (!done) {
++            int minutes = val.get(Calendar.MINUTE);
++            if (!round || minutes < 30) {
++                time = time - (minutes * 60000L);
++            } else {
++                time = time + ((60 - minutes) * 60000L);
++            }
+         }
+ 
+         // reset time
+@@ -715,7 +725,7 @@ public class DateUtils {
+                     break;
+                 case Calendar.AM_PM:
+                     if (fields[i][0] == Calendar.HOUR_OF_DAY) {
+-                        //If we're going to drop the HOUR field's value,
++                        //If we're going to drop the HOUR field'svalue,
+                         //  we want to do this our own way.
+                         offset = val.get(Calendar.HOUR_OF_DAY);
+                         if (offset >= 12) {
+@@ -740,7 +750,6 @@ public class DateUtils {
+             }
+         }
+         throw new IllegalArgumentException("The field " + field + " is not supported");
+-
+     }
+ 
+     //-----------------------------------------------------------------------

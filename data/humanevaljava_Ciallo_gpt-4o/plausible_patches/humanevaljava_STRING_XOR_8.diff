@@ -1,0 +1,38 @@
+diff --git a/src/main/java/humaneval/buggy/STRING_XOR.java b/src/main/java/humaneval/buggy/STRING_XOR.java
+index a57100f..4638570 100644
+--- a/src/main/java/humaneval/buggy/STRING_XOR.java
++++ b/src/main/java/humaneval/buggy/STRING_XOR.java
+@@ -1,13 +1,24 @@
+ package humaneval.buggy;
+ 
+ public class STRING_XOR {
+-    public static String string_xor(String a, String b){
+-        String result = "";
+-        for (int i = 0; i < a.length(); i += 1){
+-            if (a.charAt(i) == b.charAt(i)){
+-                result += "0";
+-            }
++    public static String string_xor(String a, String b) {
++        StringBuilder result = new StringBuilder();
++        int minLength = Math.min(a.length(), b.length());
++
++        // Calculate XOR for characters where both strings have a corresponding character
++        for (int i = 0; i < minLength; i++) {
++            result.append(a.charAt(i) == b.charAt(i) ? "0" : "1");
++        }
++
++        // Append remaining characters of the longer string (if any), considering them XOR with '0'
++        for (int i = minLength; i < a.length(); i++) {
++            result.append(a.charAt(i) == '0' ? "0" : "1");
++        }
++        
++        for (int i = minLength; i < b.length(); i++) {
++            result.append(b.charAt(i) == '0' ? "0" : "1");
+         }
+-        return result;
++        
++        return result.toString();
+     }
+-}
++}
+\ No newline at end of file

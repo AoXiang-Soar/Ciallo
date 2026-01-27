@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/DECIMAL_TO_BINARY.java b/src/main/java/humaneval/buggy/DECIMAL_TO_BINARY.java
+index d4ad9ad..440e32d 100644
+--- a/src/main/java/humaneval/buggy/DECIMAL_TO_BINARY.java
++++ b/src/main/java/humaneval/buggy/DECIMAL_TO_BINARY.java
+@@ -1,19 +1,24 @@
+ package humaneval.buggy;
+ 
+-// You will be given a number in decimal form and your task is to convert it to
+-// binary format. The function should return a string, with each character representing a binary
+-// number. Each character in the string will be '0' or '1'.
+-
+-// There will be an extra couple of characters 'db' at the beginning and at the end of the string.
+-// The extra characters are there to help with the format.
+-
+-// Examples:
+-// decimal_to_binary(15)   # returns "db1111db"
+-// decimal_to_binary(32)   # returns "db100000db"
+-
+ public class DECIMAL_TO_BINARY {
+     public static String decimal_to_binary(int decimal) {
+-        String result = Integer.toHexString(decimal);
+-        return "db" + result + "db";
++        // Create a StringBuilder to build the binary representation
++        StringBuilder binaryStringBuilder = new StringBuilder();
++        
++        // Calculate binary representation manually
++        while (decimal > 0) {
++            // Append '0' or '1' based on the remainder of decimal divided by 2
++            binaryStringBuilder.insert(0, decimal % 2);
++            // Update decimal by dividing by 2
++            decimal /= 2;
++        }
++
++        // Handle edge case if decimal is zero, binary representation should be "0"
++        if (binaryStringBuilder.length() == 0) {
++            binaryStringBuilder.append("0");
++        }
++
++        // Format the result with "db" at both ends
++        return "db" + binaryStringBuilder.toString() + "db";
+     }
+-}
++}
+\ No newline at end of file

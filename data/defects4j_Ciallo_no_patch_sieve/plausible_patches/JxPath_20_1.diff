@@ -1,0 +1,63 @@
+diff --git a/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java b/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
+index 65ed1ed..5f6182c 100644
+--- a/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
++++ b/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
+@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.axes.InitialContext;
+ import org.apache.commons.jxpath.ri.axes.SelfContext;
+ 
+ /**
+- * Base implementation of Expression for the operations "&gt;", "&gt;=", "&lt;", "&lt;=".
++ * Base implementation of Expression for the operations ">", ">=", "<", "<=".
+  * @since JXPath 1.3
+  *
+  * @author Matt Benson
+@@ -87,6 +87,9 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         if (right instanceof Iterator) {
+             return containsMatch((Iterator) right, left);
+         }
++        if (left == null || right == null) {
++            return false;
++        }
+         double ld = InfoSetUtil.doubleValue(left);
+         if (Double.isNaN(ld)) {
+             return false;
+@@ -110,6 +113,17 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         if (o instanceof Collection) {
+             o = ((Collection) o).iterator();
+         }
++        if (o instanceof EvalContext) {
++            EvalContext ctx = (EvalContext) o;
++            if (ctx.hasNext()) {
++                o = ctx.next();
++                if (o instanceof EvalContext) {
++                    o = reduce(o);
++                }
++            } else {
++                o = null;
++            }
++        }
+         return o;
+     }
+ 
+@@ -129,13 +143,6 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         return false;
+     }
+ 
+-    /**
+-     * Learn whether any element returned from an Iterator matches a given value.
+-     * @param it Iterator
+-     * @param value to look for
+-     * @return whether a match was found
+-     */
+-
+     /**
+      * Learn whether there is an intersection between two Iterators.
+      * @param lit left Iterator
+@@ -154,5 +161,4 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         }
+         return false;
+     }
+-
+-}
++}
+\ No newline at end of file

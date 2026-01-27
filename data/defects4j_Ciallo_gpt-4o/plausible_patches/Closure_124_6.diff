@@ -1,0 +1,63 @@
+diff --git a/src/com/google/javascript/jscomp/ExploitAssigns.java b/src/com/google/javascript/jscomp/ExploitAssigns.java
+index 0f03e3558..4a0e89a20 100644
+--- a/src/com/google/javascript/jscomp/ExploitAssigns.java
++++ b/src/com/google/javascript/jscomp/ExploitAssigns.java
+@@ -203,21 +203,44 @@ class ExploitAssigns extends AbstractPeepholeOptimization {
+    * changed.
+    * @return Whether the replacement can be made.
+    */
+-  private boolean isSafeReplacement(Node node, Node replacement) {
++private boolean isSafeReplacement(Node node, Node replacement) {
+     // No checks are needed for simple names.
+     if (node.isName()) {
+-      return true;
++        return true;
+     }
+     Preconditions.checkArgument(node.isGetProp());
+ 
+-      node = node.getFirstChild();
+-    if (node.isName()
+-        && isNameAssignedTo(node.getString(), replacement)) {
+-      return false;
++    // Start from the original node
++    Node current = node;
++    
++    // Traverse through the GetProp chain
++    while (current.isGetProp()) {
++        Node firstChild = current.getFirstChild();
++        if (firstChild.isName() && isNameAssignedTo(firstChild.getString(), replacement)) {
++            return false;
++        }
++        // Continue traversal through the property chain
++        current = firstChild;
++    }
++    
++    // Check if the replacement modifies the root object of the node chain
++    if (replacement.isGetProp()) {
++        Node replacementCurrent = replacement;
++        // Traverse through the replacement's GetProp chain
++        while (replacementCurrent.isGetProp()) {
++            Node replacementFirstChild = replacementCurrent.getFirstChild();
++            
++            // If the name matches any parent node's name, it's unsafe to replace
++            if (replacementFirstChild.isName() && isNameAssignedTo(replacementFirstChild.getString(), node)) {
++                return false;
++            }
++            
++            replacementCurrent = replacementFirstChild;
++        }
+     }
+ 
+     return true;
+-  }
++}
+ 
+   /**
+    * @return Whether name is assigned in the expression rooted at node.
+@@ -241,4 +264,4 @@ class ExploitAssigns extends AbstractPeepholeOptimization {
+ 
+     return false;
+   }
+-}
+\ No newline at end of file
++}

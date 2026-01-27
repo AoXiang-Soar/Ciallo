@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/BELOW_THRESHOLD.java b/src/main/java/humaneval/buggy/BELOW_THRESHOLD.java
+index c7d15af..7d80bf5 100644
+--- a/src/main/java/humaneval/buggy/BELOW_THRESHOLD.java
++++ b/src/main/java/humaneval/buggy/BELOW_THRESHOLD.java
+@@ -9,9 +9,9 @@ False */
+ public class BELOW_THRESHOLD {
+     public static boolean below_threshold(int[] l, int t) {
+         for (int i = 0; i < l.length; i += 1) {
+-            if (l[i] <= t)
+-                return true;
++            if (l[i] >= t) // Changed the condition from <= to >=
++                return false; // Return false if any number is above or equal to threshold
+         }
+-        return false;
++        return true; // Return true if all numbers are below the threshold
+     }
+-}
++}
+\ No newline at end of file

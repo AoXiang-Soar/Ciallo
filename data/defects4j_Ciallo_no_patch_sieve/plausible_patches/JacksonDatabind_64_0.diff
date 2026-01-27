@@ -1,0 +1,37 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java b/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
+index 2bd24051f..7d7c09055 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
+@@ -144,29 +144,17 @@ public class PropertyBuilder
+         
+         switch (inclusion) {
+         case NON_DEFAULT:
+-            // 11-Nov-2015, tatu: This is tricky because semantics differ between cases,
+-            //    so that if enclosing class has this, we may need to access values of property,
+-            //    whereas for global defaults OR per-property overrides, we have more
+-            //    static definition. Sigh.
+-            // First: case of class/type specifying it; try to find POJO property defaults
+-
+-            // 16-Oct-2016, tatu: Note: if we can not for some reason create "default instance",
+-            //    revert logic to the case of general/per-property handling, so both
+-            //    type-default AND null are to be excluded.
+-            //    (as per [databind#1417]
++            // Modified to always suppress nulls regardless of default values
++            suppressNulls = true;
+             if (_useRealPropertyDefaults) {
+-                // 07-Sep-2016, tatu: may also need to front-load access forcing now
+                 if (prov.isEnabled(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)) {
+                     am.fixAccess(_config.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
+                 }
+                 valueToSuppress = getPropertyDefaultValue(propDef.getName(), am, actualType);
+             } else {
+                 valueToSuppress = getDefaultValue(actualType);
+-                suppressNulls = true;
+             }
+-            if (valueToSuppress == null) {
+-                suppressNulls = true;
+-            } else {
++            if (valueToSuppress != null) {
+                 if (valueToSuppress.getClass().isArray()) {
+                     valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);
+                 }

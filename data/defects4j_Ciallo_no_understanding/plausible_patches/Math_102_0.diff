@@ -1,0 +1,22 @@
+diff --git a/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java b/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
+index c87b0101f..5027ceb3b 100644
+--- a/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
++++ b/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
+@@ -71,9 +71,17 @@ public class ChiSquareTestImpl implements UnknownDistributionChiSquareTest {
+             throw new IllegalArgumentException(
+                 "observed counts must be non-negative and expected counts must be postive");
+         }
++        // Normalize expected counts to sum to observed counts
++        double totalExpected = 0.0;
++        long totalObserved = 0;
++        for (int i = 0; i < observed.length; i++) {
++            totalExpected += expected[i];
++            totalObserved += observed[i];
++        }
+         double sumSq = 0.0d;
+         double dev = 0.0d;
+         for (int i = 0; i < observed.length; i++) {
++                expected[i] = expected[i] * totalObserved / totalExpected;
+                 dev = ((double) observed[i] - expected[i]);
+                 sumSq += dev * dev / expected[i];
+         }

@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java b/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java
+old mode 100644
+new mode 100755
+index 36e383f..e05805c
+--- a/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java
++++ b/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java
+@@ -12,22 +12,28 @@ import java.util.ArrayList;
+ 
+ public class MIN_SUBARRAY_SUM {
+     public static long min_subarray_sum(ArrayList<Long> nums) {
+-        long max_sum = 0;
++        long max_sum = Long.MIN_VALUE;
+         long s = 0;
+         for(long num : nums) {
+             s += num;
++            if(s > max_sum) {
++                max_sum = s;
++            }
+             if(s < 0) {
+                 s = 0;
+             }
+-            max_sum = Math.max(s, max_sum);
+         }
+-        if(max_sum == 0) {
+-            max_sum = -nums.get(0);
+-            for(int i = 1; i < nums.size(); i++) {
+-                max_sum = Math.max(max_sum, -nums.get(i));
++        long min_sum = Long.MAX_VALUE;
++        s = 0;
++        for(long num : nums) {
++            s += num;
++            if(s < min_sum) {
++                min_sum = s;
++            }
++            if(s > 0) {
++                s = 0;
+             }
+         }
+-        long min_sum = -max_sum;
+         return min_sum;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,43 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/NullifyingDeserializer.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/NullifyingDeserializer.java
+index 5bc789fc0..c6232348e 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/NullifyingDeserializer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/NullifyingDeserializer.java
+@@ -28,13 +28,32 @@ public class NullifyingDeserializer
+      */
+     
+     @Override
+-    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+-    {
+-        // 29-Jan-2016, tatu: Simple skipping for all other tokens, but FIELD_NAME bit
+-        //    special unfortunately
+-            p.skipChildren();
+-        return null;
++public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
++{
++    // Initialize a JsonNode to parse and retain key-value data before skipping
++    JsonNode node = p.getCodec().readTree(p);
++
++    // Check if the node contains known properties and extract them if necessary
++    if (node.has("version")) {
++        // process version if needed
++    }
++    if (node.has("application")) {
++        String application = node.get("application").asText(); // example of extracting
++    }
++    if (node.has("item")) {
++        JsonNode itemNode = node.get("item");
++        // Logic to process or check `item` as needed
+     }
++    if (node.has("item2")) {
++        JsonNode item2Node = node.get("item2");
++        // Logic to process or check `item2` as needed
++    }
++
++    // Now explicitly skip any children elements from the main parser
++    p.skipChildren();
++
++    return null; // Return an appropriate object after processing if needed
++}
+ 
+     @Override
+     public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,

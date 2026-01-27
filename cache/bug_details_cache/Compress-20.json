@@ -1,0 +1,16 @@
+{
+    "bug_id": 20,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Compress",
+    "test_error_message": "java.lang.IllegalArgumentException: Unknown mode. Full: 1a4 Masked: 0",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCpioUnarchiveCreatedByRedlineRpm() throws Exception {\n        CpioArchiveInputStream in =\n            new CpioArchiveInputStream(new FileInputStream(getFile(\"redline.cpio\")));\n        CpioArchiveEntry entry= null;\n\n        int count = 0;\n        while ((entry = (CpioArchiveEntry) in.getNextEntry()) != null) {\n            count++;\n        }\n        in.close();\n\n        assertEquals(count, 1);\n    }",
+    "test_line": "        while ((entry = (CpioArchiveEntry) in.getNextEntry()) != null) {",
+    "test_name": "testCpioUnarchiveCreatedByRedlineRpm",
+    "test_suite": "org.apache.commons.compress.archivers.cpio.CpioArchiveInputStreamTest"
+}

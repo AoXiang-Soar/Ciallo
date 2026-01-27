@@ -1,0 +1,96 @@
+diff --git a/src/main/java/org/apache/commons/math/geometry/Vector3D.java b/src/main/java/org/apache/commons/math/geometry/Vector3D.java
+index 3c741e9e2..de3189a79 100644
+--- a/src/main/java/org/apache/commons/math/geometry/Vector3D.java
++++ b/src/main/java/org/apache/commons/math/geometry/Vector3D.java
+@@ -454,25 +454,75 @@ public class Vector3D implements Serializable {
+    * @param v2 second vector
+    * @return the cross product v1 ^ v2 as a new Vector
+    */
+-  public static Vector3D crossProduct(final Vector3D v1, final Vector3D v2) {
+-
+-
+-      // rescale both vectors without losing precision,
+-      // to ensure their norm are the same order of magnitude
+-
+-      // we reduce cancellation errors by preconditioning,
+-      // we replace v1 by v3 = v1 - rho v2 with rho chosen in order to compute
+-      // v3 without loss of precision. See Kahan lecture
+-      // "Computing Cross-Products and Rotations in 2- and 3-Dimensional Euclidean Spaces"
+-      // available at http://www.cs.berkeley.edu/~wkahan/MathH110/Cross.pdf
+-
+-      // compute rho as an 8 bits approximation of v1.v2 / v2.v2
++public static Vector3D crossProduct(final Vector3D v1, final Vector3D v2) {
++    // Split numbers into high and low parts to reduce cancellation errors
++    // Using Dekker's algorithm for splitting numbers
++    
++    final double x1 = v1.x;
++    final double y1 = v1.y;
++    final double z1 = v1.z;
++    final double x2 = v2.x;
++    final double y2 = v2.y;
++    final double z2 = v2.z;
++
++    // Each component calculation is done with error compensation
++    double cx = twoProd(y1, z2, -z1, y2);
++    double cy = twoProd(z1, x2, -x1, z2);
++    double cz = twoProd(x1, y2, -y1, x2);
++
++    return new Vector3D(cx, cy, cz);
++}
+ 
++private static double twoProd(double a, double b, double c, double d) {
++    // Accurate computation of a*b + c*d using Dekker's algorithm
++    double p = a * b;
++    double q = c * d;
++    
++    // Split each number into high and low parts
++    double aHigh = splitHigh(a);
++    double aLow = a - aHigh;
++    double bHigh = splitHigh(b);
++    double bLow = b - bHigh;
++
++    double pHigh = splitHigh(p);
++    double pLow = p - pHigh;
++    
++    // Compute the exact product and error term
++    double err1 = p - (aHigh * bHigh);
++    double err2 = err1 - (aLow * bHigh);
++    double err3 = err2 - (aHigh * bLow);
++    double aCrossB = (aLow * bLow) - err3;
++    
++    // Repeat for second product
++    double cHigh = splitHigh(c);
++    double cLow = c - cHigh;
++    double dHigh = splitHigh(d);
++    double dLow = d - dHigh;
++
++    double qHigh = splitHigh(q);
++    double qLow = q - qHigh;
++    
++    err1 = q - (cHigh * dHigh);
++    err2 = err1 - (cLow * dHigh);
++    err3 = err2 - (cHigh * dLow);
++    double cCrossD = (cLow * dLow) - err3;
++    
++    // Sum the results with error compensation
++    return sumWithCompensation(p, q, aCrossB, cCrossD);
++}
+ 
+-      // compute cross product from v3 and v2 instead of v1 and v2
+-      return new Vector3D(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
++private static double splitHigh(double num) {
++    final double SPLIT_FACTOR = (1 << 27) + 1;
++    double c = SPLIT_FACTOR * num;
++    return c - (c - num);
++}
+ 
+-  }
++private static double sumWithCompensation(double p, double q, double err1, double err2) {
++    // Kahan summation algorithm
++    double sum = p + q;
++    double err = (p - sum) + q + err1 + err2;
++    return sum + err;
++}
+ 
+   /** Compute the distance between two vectors according to the L<sub>1</sub> norm.
+    * <p>Calling this method is equivalent to calling:

@@ -1,0 +1,25 @@
+diff --git a/src/main/java/humaneval/buggy/ADD.java b/src/main/java/humaneval/buggy/ADD.java
+index 186aae7..d2cf3f9 100644
+--- a/src/main/java/humaneval/buggy/ADD.java
++++ b/src/main/java/humaneval/buggy/ADD.java
+@@ -1,13 +1,11 @@
+ package humaneval.buggy;
+ 
+-/* Add two numbers x and y
+->>> add(2, 3)
+-5
+->>> add(5, 7)
+-12 */
+-
+ public class ADD {
+     public static int add(int x, int y) {
+-        return x | y;
++        long result = (long) x + (long) y;
++        if (result > Integer.MAX_VALUE || result < Integer.MIN_VALUE) {
++            throw new ArithmeticException("Integer overflow");
++        }
++        return (int) result;
+     }
+-}
++}
+\ No newline at end of file

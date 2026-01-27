@@ -1,0 +1,25 @@
+diff --git a/src/main/java/humaneval/buggy/IS_BORED.java b/src/main/java/humaneval/buggy/IS_BORED.java
+old mode 100644
+new mode 100755
+index 56b1db3..ee56fde
+--- a/src/main/java/humaneval/buggy/IS_BORED.java
++++ b/src/main/java/humaneval/buggy/IS_BORED.java
+@@ -15,9 +15,15 @@ public class IS_BORED {
+         String[] sentences = S.split("\\.|\\?|!");
+         int result = 0;
+         for (String sentence : sentences) {
+-            if (sentence.length() >= 2 && sentence.subSequence(0, 2).equals("I "))
++            // Find the first non-whitespace character index
++            int i = 0;
++            while (i < sentence.length() && Character.isWhitespace(sentence.charAt(i))) {
++                i++;
++            }
++            if (sentence.length() - i >= 2 && sentence.substring(i, i + 2).equals("I ")) {
+                 result += 1;
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

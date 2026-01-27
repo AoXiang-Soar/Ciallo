@@ -1,0 +1,47 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+index 10fddc4d6..b835cf14c 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+@@ -1432,15 +1432,35 @@ public class ObjectReader
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.
+      */
+-    public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
+-        throws IOException, JsonProcessingException
+-    {
+-        if (_dataFormatReaders != null) {
+-            return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
++public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
++    throws IOException, JsonProcessingException
++{
++    if (_dataFormatReaders != null) {
++        // Attempt to find an appropriate data format match
++        DataFormatReaders.Match match = _dataFormatReaders.findFormat(src, offset, length);
++        if (match.hasMatch()) {
++            return _detectBindAndReadValues(match, false);
+         }
+-        return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-                true));
++        // Handle case when there's no match found
++        throw new JsonProcessingException("No suitable data format detected for input") {
++            private static final long serialVersionUID = 1L;
++        };
++    }
++    
++    try {
++        // Attempt to create parser with given offset and length
++        JsonParser parser = _parserFactory.createParser(src, offset, length);
++        return _bindAndReadValues(_considerFilter(parser, true));
++    } catch (JsonParseException e) {
++        // Handle JSON parsing related exceptions
++        throw new JsonProcessingException("Failed to parse JSON content", e) {
++            private static final long serialVersionUID = 1L;
++        };
++    } catch (IOException e) {
++        // Handle IO exceptions that may occur
++        throw new IOException("Error occurred during input processing", e);
+     }
++}
+ 
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.

@@ -1,0 +1,16 @@
+{
+    "bug_id": "TRUNCATE_NUMBER",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_TRUNCATE_NUMBER.test_0:7",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        double result = humaneval.buggy.TRUNCATE_NUMBER.truncate_number(3.5);\n        org.junit.Assert.assertTrue(Math.abs(result - 0.5) < 1.e-6);\n    }",
+    "test_line": "        org.junit.Assert.assertTrue(Math.abs(result - 0.5) < 1.e-6);",
+    "test_name": "test_0",
+    "test_suite": "TEST_TRUNCATE_NUMBER"
+}

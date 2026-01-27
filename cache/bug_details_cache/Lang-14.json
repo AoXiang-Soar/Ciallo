@@ -1,0 +1,16 @@
+{
+    "bug_id": 14,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "    public static boolean equals(CharSequence cs1, CharSequence cs2) {\n        if (cs1 == cs2) {\n            return true;\n        }\n        if (cs1 == null || cs2 == null) {\n            return false;\n        }\n            return cs1.equals(cs2);\n    }",
+    "fixed_code": "    public static boolean equals(CharSequence cs1, CharSequence cs2) {\n        if (cs1 == cs2) {\n            return true;\n        }\n        if (cs1 == null || cs2 == null) {\n            return false;\n        }\n        if (cs1 instanceof String && cs2 instanceof String) {\n            return cs1.equals(cs2);\n        }\n        return CharSequenceUtils.regionMatches(cs1, false, 0, cs2, 0, Math.max(cs1.length(), cs2.length()));\n    }",
+    "fixed_lines": "        if (cs1 instanceof String && cs2 instanceof String) {\n        }\n        return CharSequenceUtils.regionMatches(cs1, false, 0, cs2, 0, Math.max(cs1.length(), cs2.length()));",
+    "masked_code": "    public static boolean equals(CharSequence cs1, CharSequence cs2) {\n        if (cs1 == cs2) {\n            return true;\n        }\n        if (cs1 == null || cs2 == null) {\n            return false;\n        }\n            return cs1.equals(cs2);\n>>> [ INFILL ] <<<\n    }",
+    "project": "Lang",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEquals() {\n        final CharSequence fooCs = FOO, barCs = BAR, foobarCs = FOOBAR;\n        assertTrue(StringUtils.equals(null, null));\n        assertTrue(StringUtils.equals(fooCs, fooCs));\n        assertTrue(StringUtils.equals(fooCs, (CharSequence) new StringBuilder(FOO)));\n        assertTrue(StringUtils.equals(fooCs, (CharSequence) new String(new char[] { 'f', 'o', 'o' })));\n        assertTrue(StringUtils.equals(fooCs, (CharSequence) new CustomCharSequence(FOO)));\n        assertTrue(StringUtils.equals((CharSequence) new CustomCharSequence(FOO), fooCs));\n        assertFalse(StringUtils.equals(fooCs, (CharSequence) new String(new char[] { 'f', 'O', 'O' })));\n        assertFalse(StringUtils.equals(fooCs, barCs));\n        assertFalse(StringUtils.equals(fooCs, null));\n        assertFalse(StringUtils.equals(null, fooCs));\n        assertFalse(StringUtils.equals(fooCs, foobarCs));\n        assertFalse(StringUtils.equals(foobarCs, fooCs));\n    }",
+    "test_line": "        assertTrue(StringUtils.equals(fooCs, (CharSequence) new StringBuilder(FOO)));",
+    "test_name": "testEquals",
+    "test_suite": "org.apache.commons.lang3.StringUtilsEqualsIndexOfTest"
+}

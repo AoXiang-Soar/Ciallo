@@ -1,0 +1,48 @@
+diff --git a/src/main/java/org/jsoup/safety/Whitelist.java b/src/main/java/org/jsoup/safety/Whitelist.java
+index 51349dab..fc6eb005 100644
+--- a/src/main/java/org/jsoup/safety/Whitelist.java
++++ b/src/main/java/org/jsoup/safety/Whitelist.java
+@@ -335,21 +335,25 @@ public class Whitelist {
+         return false;
+     }
+ 
+-    private boolean testValidProtocol(Element el, Attribute attr, Set<Protocol> protocols) {
+-        // try to resolve relative urls to abs, and optionally update the attribute so output html has abs.
+-        // rels without a baseuri get removed
+-        String value = el.absUrl(attr.getKey());
+-        if (!preserveRelativeLinks)
+-            attr.setValue(value);
+-        
+-        for (Protocol protocol : protocols) {
+-            String prot = protocol.toString() + ":";
+-            if (value.toLowerCase().startsWith(prot)) {
+-                return true;
+-            }
++private boolean testValidProtocol(Element el, Attribute attr, Set<Protocol> protocols) {
++    String value = el.absUrl(attr.getKey());
++    
++    // Don't modify attribute value for custom protocols (empty absUrl result)
++    if (value.length() > 0 && !preserveRelativeLinks) {
++        attr.setValue(value);
++    }
++    
++    String checkValue = value.length() > 0 ? value : attr.getValue();
++    checkValue = checkValue.toLowerCase();
++    
++    for (Protocol protocol : protocols) {
++        String prot = protocol.toString() + ":";
++        if (checkValue.startsWith(prot)) {
++            return true;
+         }
+-        return false;
+     }
++    return false;
++}
+ 
+     Attributes getEnforcedAttributes(String tagName) {
+         Attributes attrs = new Attributes();
+@@ -439,4 +443,3 @@ public class Whitelist {
+         }
+     }
+ }
+-

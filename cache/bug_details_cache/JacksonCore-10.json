@@ -1,0 +1,16 @@
+{
+    "bug_id": 10,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonCore",
+    "test_error_message": "java.lang.ArrayIndexOutOfBoundsException: Index 256 out of bounds for length 256",
+    "test_framework": "defects4j",
+    "test_function": "    public void testIssue207() throws Exception\n    {\n        ByteQuadsCanonicalizer nc = ByteQuadsCanonicalizer.createRoot(-523743345);\n        Field byteSymbolCanonicalizerField = JsonFactory.class.getDeclaredField(\"_byteSymbolCanonicalizer\");\n        byteSymbolCanonicalizerField.setAccessible(true);\n        JsonFactory jsonF = new JsonFactory();\n        byteSymbolCanonicalizerField.set(jsonF, nc);\n\n        StringBuilder stringBuilder = new StringBuilder();\n        stringBuilder.append(\"{\\n\");\n        stringBuilder.append(\"    \\\"expectedGCperPosition\\\": null\");\n        for (int i = 0; i < 60; ++i) {\n            stringBuilder.append(\",\\n    \\\"\").append(i + 1).append(\"\\\": null\");\n        }\n        stringBuilder.append(\"\\n}\");\n\n        JsonParser p = jsonF.createParser(stringBuilder.toString().getBytes(\"UTF-8\"));\n        while (p.nextToken() != null) { }\n        p.close();\n    }",
+    "test_line": "        while (p.nextToken() != null) { }",
+    "test_name": "testIssue207",
+    "test_suite": "com.fasterxml.jackson.core.sym.TestByteBasedSymbols"
+}

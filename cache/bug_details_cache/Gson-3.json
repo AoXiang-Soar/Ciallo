@@ -1,0 +1,16 @@
+{
+    "bug_id": 3,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Gson",
+    "test_error_message": "java.lang.ClassCastException: class java.util.LinkedHashMap cannot be cast to class java.util.concurrent.ConcurrentMap (java.util.LinkedHashMap and java.util.concurrent.ConcurrentMap are in module java.base of loader 'bootstrap')",
+    "test_framework": "defects4j",
+    "test_function": "  public void testConcurrentMap() throws Exception {\n    Type typeOfMap = new TypeToken<ConcurrentMap<Integer, String>>() {}.getType();\n    ConcurrentMap<Integer, String> map = gson.fromJson(\"{\\\"123\\\":\\\"456\\\"}\", typeOfMap);\n    assertEquals(1, map.size());\n    assertTrue(map.containsKey(123));\n    assertEquals(\"456\", map.get(123));\n    String json = gson.toJson(map);\n    assertEquals(\"{\\\"123\\\":\\\"456\\\"}\", json);\n  }",
+    "test_line": "    ConcurrentMap<Integer, String> map = gson.fromJson(\"{\\\"123\\\":\\\"456\\\"}\", typeOfMap);",
+    "test_name": "testConcurrentMap",
+    "test_suite": "com.google.gson.functional.MapTest"
+}

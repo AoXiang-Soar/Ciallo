@@ -1,0 +1,16 @@
+{
+    "bug_id": 9,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "            setProperty(key, props.get(key));",
+    "code": "    public void combine(ExtendedProperties props) {\n        for (Iterator it = props.getKeys(); it.hasNext();) {\n            String key = (String) it.next();\n            setProperty(key, props.get(key));\n        }\n    }",
+    "fixed_code": "    public void combine(ExtendedProperties props) {\n        for (Iterator it = props.getKeys(); it.hasNext();) {\n            String key = (String) it.next();\n            super.put(key, props.get(key));\n        }\n    }",
+    "fixed_lines": "            super.put(key, props.get(key));",
+    "masked_code": "    public void combine(ExtendedProperties props) {\n        for (Iterator it = props.getKeys(); it.hasNext();) {\n            String key = (String) it.next();\n>>> [ INFILL ] <<<\n        }\n    }",
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<\\\\192.168.1.91\\test> but was:<\\192.168.1.91\\test>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCollections271() {\n        ExtendedProperties props = new ExtendedProperties();\n        props.setProperty(\"test\", \"\\\\\\\\\\\\\\\\192.168.1.91\\\\\\\\test\");\n        props.getProperty(\"test\");\n        assertEquals( \"\\\\\\\\192.168.1.91\\\\test\", props.getProperty(\"test\") );\n\n        ExtendedProperties props2 = new ExtendedProperties();\n        props2.combine(props);\n        assertEquals( \"\\\\\\\\192.168.1.91\\\\test\", props2.getProperty(\"test\") );\n    }",
+    "test_line": "        assertEquals( \"\\\\\\\\192.168.1.91\\\\test\", props2.getProperty(\"test\") );",
+    "test_name": "testCollections271",
+    "test_suite": "org.apache.commons.collections.TestExtendedProperties"
+}

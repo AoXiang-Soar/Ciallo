@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/DO_ALGEBRA.java b/src/main/java/humaneval/buggy/DO_ALGEBRA.java
+index 08aedcb..c3da63b 100644
+--- a/src/main/java/humaneval/buggy/DO_ALGEBRA.java
++++ b/src/main/java/humaneval/buggy/DO_ALGEBRA.java
+@@ -30,10 +30,10 @@ public class DO_ALGEBRA {
+     public static double do_algebra(String[] operator, int[] operand) throws NumberFormatException, ScriptException {
+         ScriptEngineManager mgr = new ScriptEngineManager();
+         ScriptEngine engine = mgr.getEngineByName("JavaScript");
+-        String expression = "";
+-        for (int i = 0; i < operand.length; i += 1) {
+-            expression += operator[i] + operand[i];
++        String expression = String.valueOf(operand[0]);
++        for (int i = 0; i < operator.length; i += 1) {
++            expression += operator[i] + operand[i + 1];
+         }
+         return Double.parseDouble(engine.eval(expression).toString());
+     }
+-}
++}
+\ No newline at end of file

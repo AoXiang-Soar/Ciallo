@@ -1,0 +1,16 @@
+{
+    "bug_id": 88,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        return val;",
+    "code": "    public String getValue() {\n        return val;\n    }",
+    "fixed_code": "    public String getValue() {\n        return Attributes.checkNotNull(val);\n    }",
+    "fixed_lines": "        return Attributes.checkNotNull(val);",
+    "masked_code": "    public String getValue() {\n>>> [ INFILL ] <<<\n    }",
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<> but was:<null>",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void booleanAttributesAreEmptyStringValues() {\n        Document doc = Jsoup.parse(\"<div hidden>\");\n        Attributes attributes = doc.body().child(0).attributes();\n        assertEquals(\"\", attributes.get(\"hidden\"));\n\n        Attribute first = attributes.iterator().next();\n        assertEquals(\"hidden\", first.getKey());\n        assertEquals(\"\", first.getValue());\n    }",
+    "test_line": "        assertEquals(\"\", first.getValue());",
+    "test_name": "booleanAttributesAreEmptyStringValues",
+    "test_suite": "org.jsoup.nodes.AttributeTest"
+}

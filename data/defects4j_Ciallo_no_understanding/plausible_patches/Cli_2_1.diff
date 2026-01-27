@@ -1,0 +1,68 @@
+diff --git a/src/java/org/apache/commons/cli/PosixParser.java b/src/java/org/apache/commons/cli/PosixParser.java
+index 2590de7..1e6b131 100644
+--- a/src/java/org/apache/commons/cli/PosixParser.java
++++ b/src/java/org/apache/commons/cli/PosixParser.java
+@@ -275,35 +275,38 @@ public class PosixParser extends Parser {
+      * @param stopAtNonOption Specifies whether to stop processing
+      * at the first non-Option encountered.
+      */
+-    protected void burstToken(String token, boolean stopAtNonOption)
+-    {
+-        int tokenLength = token.length();
+-
+-        for (int i = 1; i < tokenLength; i++)
+-        {
+-            String ch = String.valueOf(token.charAt(i));
+-            boolean hasOption = options.hasOption(ch);
++protected void burstToken(String token, boolean stopAtNonOption) {
++    int tokenLength = token.length();
++    
++    // Don't burst if it's not an option or is a long option
++    if (!token.startsWith("-") || tokenLength == 1 || (tokenLength > 1 && token.charAt(1) == '-')) {
++        tokens.add(token);
++        return;
++    }
+ 
+-            if (hasOption)
+-            {
+-                tokens.add("-" + ch);
+-                currentOption = options.getOption(ch);
++    for (int i = 1; i < tokenLength; i++) {
++        String ch = String.valueOf(token.charAt(i));
++        boolean hasOption = options.hasOption(ch);
+ 
+-                if (currentOption.hasArg() && (token.length() != (i + 1)))
+-                {
+-                    tokens.add(token.substring(i + 1));
++        if (hasOption) {
++            tokens.add("-" + ch);
++            currentOption = options.getOption(ch);
+ 
+-                    break;
+-                }
+-            }
+-            else if (stopAtNonOption)
+-            {
+-                process(token.substring(i));
+-            }
+-            else
+-            {
+-                tokens.add("-" + ch);
++            if (currentOption.hasArg() && (token.length() != (i + 1))) {
++                tokens.add(token.substring(i + 1));
++                break;
+             }
+         }
++        else if (stopAtNonOption) {
++            process(token.substring(i));
++            break;
++        }
++        else {
++            // If any character is not recognized as an option,
++            // treat the entire token as a single option
++            tokens.add(token);
++            return;
++        }
+     }
+ }
++}

@@ -1,0 +1,45 @@
+diff --git a/src/main/java/org/apache/commons/cli/TypeHandler.java b/src/main/java/org/apache/commons/cli/TypeHandler.java
+index 93c0b73..eaf08a2 100644
+--- a/src/main/java/org/apache/commons/cli/TypeHandler.java
++++ b/src/main/java/org/apache/commons/cli/TypeHandler.java
+@@ -89,7 +89,7 @@ public class TypeHandler
+         }
+         else if (PatternOptionBuilder.EXISTING_FILE_VALUE == clazz)
+         {
+-            return createFile(str);
++            return createFileInputStream(str);
+         }
+         else if (PatternOptionBuilder.FILES_VALUE == clazz)
+         {
+@@ -229,8 +229,19 @@ public class TypeHandler
+      *
+      * @param str the file location
+      * @return The file input stream represented by <code>str</code>.
+-     * @throws ParseException if the file is not exist or not readable
++     * @throws ParseException if the file does not exist or is not readable
+      */
++    public static FileInputStream createFileInputStream(final String str) throws ParseException
++    {
++        try
++        {
++            return new FileInputStream(str);
++        }
++        catch (final FileNotFoundException e)
++        {
++            throw new ParseException("Unable to open file: " + str);
++        }
++    }
+ 
+     /**
+      * Returns the File[] represented by <code>str</code>.
+@@ -244,8 +255,6 @@ public class TypeHandler
+      */
+     public static File[] createFiles(final String str)
+     {
+-        // to implement/port:
+-        //        return FileW.findFiles(str);
+         throw new UnsupportedOperationException("Not yet implemented");
+     }
+-}
++}
+\ No newline at end of file

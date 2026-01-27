@@ -1,0 +1,44 @@
+diff --git a/src/com/google/javascript/jscomp/CodeGenerator.java b/src/com/google/javascript/jscomp/CodeGenerator.java
+index 42c9ab388..7055b5c90 100644
+--- a/src/com/google/javascript/jscomp/CodeGenerator.java
++++ b/src/com/google/javascript/jscomp/CodeGenerator.java
+@@ -705,14 +705,31 @@ class CodeGenerator {
+    * @return Whether the Node is a DO or FUNCTION (with or without
+    * labels).
+    */
+-  private boolean isOneExactlyFunctionOrDo(Node n) {
+-        // For labels with block children, we need to ensure that a
+-        // labeled FUNCTION or DO isn't generated when extraneous BLOCKs 
+-        // are skipped. 
+-          // Either a empty statement or an block with more than one child,
+-          // way it isn't a FUNCTION or DO.
+-      return (n.getType() == Token.FUNCTION || n.getType() == Token.DO);
+-  }
++private boolean isOneExactlyFunctionOrDo(Node n) {
++    // For labels with block children, we need to ensure that a
++    // labeled FUNCTION or DO isn't generated when extraneous BLOCKs 
++    // are skipped.
++    
++    // Directly check for FUNCTION or DO node
++    int type = n.getType();
++    if (type == Token.FUNCTION || type == Token.DO) {
++        return true;
++    }
++    
++    // Get the actual child node we want to check, unwrapping LABEL and BLOCK if needed
++    Node child = n;
++    if (type == Token.LABEL) {
++        child = n.getFirstChild().getNext(); // skip label name
++    }
++    if (child != null && child.getType() == Token.BLOCK) {
++        child = child.getFirstChild();
++    }
++    
++    // Check if the unwrapped node is FUNCTION or DO and is the only child
++    return child != null && 
++           (child.getType() == Token.FUNCTION || child.getType() == Token.DO) &&
++           (child.getNext() == null || type == Token.LABEL);
++}
+ 
+   /**
+    * Adds a node at the left-hand side of an expression. Unlike

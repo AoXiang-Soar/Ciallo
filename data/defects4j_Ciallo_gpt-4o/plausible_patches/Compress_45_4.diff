@@ -1,0 +1,54 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index 39ce5c1a..2158628b 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -471,26 +471,40 @@ public static int formatLongOctalBytes(final long value, final byte[] buf, final
+      * will not fit in the buffer.
+      * @since 1.4
+      */
+-    public static int formatLongOctalOrBinaryBytes(
+-        final long value, final byte[] buf, final int offset, final int length) {
++public static int formatLongOctalOrBinaryBytes(
++    final long value, final byte[] buf, final int offset, final int length) {
+ 
+-        // Check whether we are dealing with UID/GID or SIZE field
+-        final long maxAsOctalChar = length == TarConstants.UIDLEN ? TarConstants.MAXID : TarConstants.MAXSIZE;
++    // Check whether we are dealing with UID/GID or SIZE field
++    final long maxAsOctalChar = length == TarConstants.UIDLEN ? TarConstants.MAXID : TarConstants.MAXSIZE;
+ 
+-        final boolean negative = value < 0;
+-        if (!negative && value <= maxAsOctalChar) { // OK to store as octal chars
+-            return formatLongOctalBytes(value, buf, offset, length);
++    final boolean negative = value < 0;
++    
++    // Case 1: Handle octal representation if value is within bounds
++    if (!negative && value <= maxAsOctalChar) {
++        return formatLongOctalBytes(value, buf, offset, length);
++    }
++
++    // Case 2: Handle binary representation for negative values or values exceeding the octal limit
++    if (negative || value > maxAsOctalChar) {
++        // Ensure correct field length for binary representation
++        if (length < 8 && negative) {
++            throw new IllegalArgumentException("Value " + value + " is too large for " + length + " byte field.");
+         }
+ 
+-        if (length < 9) {
++        if (length >= 9) {
++            formatBigIntegerBinary(value, buf, offset, length, negative);
++        } else {
+             formatLongBinary(value, buf, offset, length, negative);
+         }
+-        formatBigIntegerBinary(value, buf, offset, length, negative);
+ 
+         buf[offset] = (byte) (negative ? 0xff : 0x80);
+         return offset + length;
+     }
+ 
++    // If none of the conditions matched, throw an exception (this indicates an edge case error)
++    throw new IllegalStateException("Unhandled case for value " + value + " and field length " + length);
++}
++
+     private static void formatLongBinary(final long value, final byte[] buf,
+                                          final int offset, final int length,
+                                          final boolean negative) {

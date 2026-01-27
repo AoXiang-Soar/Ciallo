@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java b/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
+old mode 100644
+new mode 100755
+index 7fe03f9..aad7552
+--- a/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
++++ b/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
+@@ -11,7 +11,7 @@ import java.util.Comparator;
+ 
+     It must be implemented like this:
+     >>> sort_array([1, 5, 2, 3, 4]) == [1, 2, 3, 4, 5]
+-    >>> sort_array([-2, -3, -4, -5, -6]) == [-6, -5, -4, -3, -2]
++    >>> sort_array([-2,负有3, -4, -5, -6]) == [-6, -5, -4, -3, -2]
+     >>> sort_array([1, 0, 2, 3, 4]) [0, 1, 2, 3, 4]
+  */
+ 
+@@ -33,14 +33,11 @@ public class SORT_ARRAY_BINARY {
+             int num_ones_o1 = number_ones(o1);
+             int num_ones_o2 = number_ones(o2);
+             if(num_ones_o1 == num_ones_o2) {
+-               if(o1 == o2) return 1;
+-               if(o1 < o2) return 0;
+-               if(o1 > o2) return -1;
++               return Integer.compare(o1, o2);
+             }
+-            if(num_ones_o1 < num_ones_o2) return -1;
+-            else return 1;
++            return Integer.compare(num_ones_o1, num_ones_o2);
+          }
+       });
+       return arr;
+    }
+-}
++}
+\ No newline at end of file

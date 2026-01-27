@@ -1,0 +1,14 @@
+diff --git a/src/com/google/javascript/jscomp/Compiler.java b/src/com/google/javascript/jscomp/Compiler.java
+index 118502116..6198156d6 100644
+--- a/src/com/google/javascript/jscomp/Compiler.java
++++ b/src/com/google/javascript/jscomp/Compiler.java
+@@ -273,7 +273,8 @@ public class Compiler extends AbstractCompiler {
+     // error off.
+     if (!options.checkSymbols &&
+         (warningsGuard == null || !warningsGuard.disables(
+-            DiagnosticGroups.CHECK_VARIABLES))) {
++            DiagnosticGroups.CHECK_VARIABLES)) &&
++        !options.enables(DiagnosticGroups.CHECK_VARIABLES)) {
+       guards.add(new DiagnosticGroupWarningsGuard(
+           DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF));
+     }

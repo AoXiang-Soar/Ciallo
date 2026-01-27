@@ -1,0 +1,16 @@
+diff --git a/src/com/google/javascript/jscomp/ReferenceCollectingCallback.java b/src/com/google/javascript/jscomp/ReferenceCollectingCallback.java
+index cdacc5f75..c1a2fc520 100644
+--- a/src/com/google/javascript/jscomp/ReferenceCollectingCallback.java
++++ b/src/com/google/javascript/jscomp/ReferenceCollectingCallback.java
+@@ -428,6 +428,11 @@ class ReferenceCollectingCallback implements ScopedCallback,
+       for (BasicBlock block = ref.getBasicBlock();
+            block != null; block = block.getParent()) {
+         if (block.isFunction) {
++          if (ref.getSymbol().getScope().isGlobal()) {
++            // If this is a global variable assignment, we can't guarantee it only
++            // happens once since it might be reassigned in other files
++            return false;
++          }
+           break;
+         } else if (block.isLoop) {
+           return false;

@@ -1,0 +1,16 @@
+{
+    "bug_id": 63,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        return (Double.isNaN(x) && Double.isNaN(y)) || x == y;",
+    "code": "    public static boolean equals(double x, double y) {\n        return (Double.isNaN(x) && Double.isNaN(y)) || x == y;\n    }",
+    "fixed_code": "    public static boolean equals(double x, double y) {\n        return equals(x, y, 1);\n    }",
+    "fixed_lines": "        return equals(x, y, 1);",
+    "masked_code": "    public static boolean equals(double x, double y) {\n>>> [ INFILL ] <<<\n    }",
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testArrayEquals() {\n        assertFalse(MathUtils.equals(new double[] { 1d }, null));\n        assertFalse(MathUtils.equals(null, new double[] { 1d }));\n        assertTrue(MathUtils.equals((double[]) null, (double[]) null));\n\n        assertFalse(MathUtils.equals(new double[] { 1d }, new double[0]));\n        assertTrue(MathUtils.equals(new double[] { 1d }, new double[] { 1d }));\n        assertTrue(MathUtils.equals(new double[] {\n                                      Double.POSITIVE_INFINITY,\n                                      Double.NEGATIVE_INFINITY, 1d, 0d\n                                    }, new double[] {\n                                      Double.POSITIVE_INFINITY,\n                                      Double.NEGATIVE_INFINITY, 1d, 0d\n                                    }));\n        assertFalse(MathUtils.equals(new double[] { Double.NaN },\n                                     new double[] { Double.NaN }));\n        assertFalse(MathUtils.equals(new double[] { Double.POSITIVE_INFINITY },\n                                     new double[] { Double.NEGATIVE_INFINITY }));\n        assertFalse(MathUtils.equals(new double[] { 1d },\n                                     new double[] { FastMath.nextAfter(FastMath.nextAfter(1d, 2d), 2d) }));\n\n    }",
+    "test_line": "        assertFalse(MathUtils.equals(new double[] { Double.NaN },",
+    "test_name": "testArrayEquals",
+    "test_suite": "org.apache.commons.math.util.MathUtilsTest"
+}

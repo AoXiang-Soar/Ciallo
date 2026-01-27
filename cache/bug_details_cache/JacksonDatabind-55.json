@@ -1,0 +1,16 @@
+{
+    "bug_id": 55,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<{\"[aleph]\":\"b\"}> but was:<{\"[A]\":\"b\"}>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEnumsWithJsonPropertyAsKey() throws Exception\n    {\n        EnumMap<EnumWithJsonProperty,String> input = new EnumMap<EnumWithJsonProperty,String>(EnumWithJsonProperty.class);\n        input.put(EnumWithJsonProperty.A, \"b\");\n        assertEquals(\"{\\\"aleph\\\":\\\"b\\\"}\", MAPPER.writeValueAsString(input));\n    }",
+    "test_line": "        assertEquals(\"{\\\"aleph\\\":\\\"b\\\"}\", MAPPER.writeValueAsString(input));",
+    "test_name": "testEnumsWithJsonPropertyAsKey",
+    "test_suite": "com.fasterxml.jackson.databind.ser.TestEnumSerialization"
+}

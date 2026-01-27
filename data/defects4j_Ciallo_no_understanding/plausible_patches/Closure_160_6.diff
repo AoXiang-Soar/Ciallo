@@ -1,0 +1,38 @@
+diff --git a/src/com/google/javascript/jscomp/Compiler.java b/src/com/google/javascript/jscomp/Compiler.java
+index 118502116..8fadc6fae 100644
+--- a/src/com/google/javascript/jscomp/Compiler.java
++++ b/src/com/google/javascript/jscomp/Compiler.java
+@@ -223,7 +223,7 @@ public class Compiler extends AbstractCompiler {
+    * Initialize the compiler options. Only necessary if you're not doing
+    * a normal compile() job.
+    */
+-  public void initOptions(CompilerOptions options) {
++public void initOptions(CompilerOptions options) {
+     this.options = options;
+     if (errorManager == null) {
+       if (outStream == null) {
+@@ -265,17 +265,18 @@ public class Compiler extends AbstractCompiler {
+             getDiagnosticGroups().getRegisteredGroups()));
+     guards.add(options.getWarningsGuard());
+ 
+-
+     // All passes must run the variable check. This synthesizes
+     // variables later so that the compiler doesn't crash. It also
+     // checks the externs file for validity. If you don't want to warn
+     // about missing variable declarations, we shut that specific
+     // error off.
+-    if (!options.checkSymbols &&
+-        (warningsGuard == null || !warningsGuard.disables(
+-            DiagnosticGroups.CHECK_VARIABLES))) {
+-      guards.add(new DiagnosticGroupWarningsGuard(
+-          DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF));
++    if (!options.checkSymbols) {
++      ComposeWarningsGuard composedGuard = new ComposeWarningsGuard(guards);
++      // Only suppress CHECK_VARIABLES if it's not already explicitly enabled
++      if (!composedGuard.enables(DiagnosticGroups.CHECK_VARIABLES)) {
++        guards.add(new DiagnosticGroupWarningsGuard(
++            DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF));
++      }
+     }
+ 
+     this.warningsGuard = new ComposeWarningsGuard(guards);

@@ -1,0 +1,16 @@
+{
+    "bug_id": "IS_MULTIPLY_PRIME",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_IS_MULTIPLY_PRIME.test_0:6 \u00bb TestTimedOut test timed out after 3000 milli...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        boolean result = humaneval.buggy.IS_MULTIPLY_PRIME.is_multiply_prime(5);\n        org.junit.Assert.assertEquals(\n            result, false\n        );\n    }",
+    "test_line": "        boolean result = humaneval.buggy.IS_MULTIPLY_PRIME.is_multiply_prime(5);",
+    "test_name": "test_0",
+    "test_suite": "TEST_IS_MULTIPLY_PRIME"
+}

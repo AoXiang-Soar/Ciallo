@@ -1,0 +1,22 @@
+diff --git a/src/com/google/javascript/jscomp/FunctionRewriter.java b/src/com/google/javascript/jscomp/FunctionRewriter.java
+index dbf000696..f3ba5ea4a 100644
+--- a/src/com/google/javascript/jscomp/FunctionRewriter.java
++++ b/src/com/google/javascript/jscomp/FunctionRewriter.java
+@@ -113,9 +113,14 @@ class FunctionRewriter implements CompilerPass {
+     return (root != null) ? root.removeFirstChild() : null;
+   }
+ 
+-  private static boolean isReduceableFunctionExpression(Node n) {
+-    return NodeUtil.isFunctionExpression(n);
+-  }
++private static boolean isReduceableFunctionExpression(Node n) {
++    if (!NodeUtil.isFunctionExpression(n)) {
++        return false;
++    }
++    // Additional checks to ensure it's a reducible function
++    Node parent = n.getParent();
++    return parent == null || !NodeUtil.isGetOrSetKey(parent);
++}
+ 
+   /**
+    * Information needed to apply a reduction.

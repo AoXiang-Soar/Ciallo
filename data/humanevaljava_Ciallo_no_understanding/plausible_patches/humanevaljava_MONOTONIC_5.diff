@@ -1,0 +1,42 @@
+diff --git a/src/main/java/humaneval/buggy/MONOTONIC.java b/src/main/java/humaneval/buggy/MONOTONIC.java
+old mode 100644
+new mode 100755
+index f56e3bd..9482e46
+--- a/src/main/java/humaneval/buggy/MONOTONIC.java
++++ b/src/main/java/humaneval/buggy/MONOTONIC.java
+@@ -1,6 +1,9 @@
+ package humaneval.buggy;
+ 
+ import java.util.Arrays;
++import java.util.Collections;
++import java.util.List;
++import java.util.stream.Collectors;
+ 
+ // Return True is list elements are monotonically increasing or decreasing.
+ // >>> monotonic([1, 2, 4, 20])
+@@ -12,18 +15,11 @@ import java.util.Arrays;
+ 
+ public class MONOTONIC {
+     public static boolean monotonic(int[] l) {
+-        int[] sorted = new int[l.length];
+-        int[] reverse_sorted = new int[l.length];
+-
+-        sorted = l;
+-        
+-        Arrays.sort(sorted);
+-        
+-        for (int i = 0; i < l.length; i += 1)
+-            reverse_sorted[i] = sorted[l.length - i - 1]; 
++        List<Integer> original = Arrays.stream(l).boxed().collect(Collectors.toList());
++        List<Integer> sorted = original.stream().sorted().collect(Collectors.toList());
++        List<Integer> reverseSorted = sorted.stream().collect(Collectors.toList());
++        Collections.reverse(reverseSorted);
+         
+-        if (Arrays.equals(l, sorted) || Arrays.equals(l, reverse_sorted))
+-            return true;
+-        return false;
++        return original.equals(sorted) || original.equals(reverseSorted);
+     }
+-}
++}
+\ No newline at end of file

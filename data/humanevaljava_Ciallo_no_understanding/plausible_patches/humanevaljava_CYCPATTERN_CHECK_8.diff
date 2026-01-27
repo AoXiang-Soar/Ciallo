@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java b/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java
+index 763802b..2c12a9e 100644
+--- a/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java
++++ b/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java
+@@ -11,12 +11,20 @@ package humaneval.buggy;
+ public class CYCPATTERN_CHECK {
+     public static boolean cycpattern_check(String a, String b) {
+         int l = b.length();
+-        String pat = b;
+-        for (int i = 0; i < a.length(); i += 1) {
+-            for (int j = 0; j < l; j += 1) {
+-                if (a.substring(i, i + l).equals(pat.substring(j, j + l))) return true;
++        int a_len = a.length();
++        if (l == 0) return true; // empty string is substring of any string
++        if (a_len < l) return false;
++        
++        // Check all possible rotations of b
++        for (int i = 0; i < l; i++) {
++            String rotation = b.substring(i) + b.substring(0, i);
++            // Check if rotation appears in a
++            for (int j = 0; j <= a_len - l; j++) {
++                if (a.substring(j, j + l).equals(rotation)) {
++                    return true;
++                }
+             }
+         }
+         return false;
+     }
+-}
++}
+\ No newline at end of file

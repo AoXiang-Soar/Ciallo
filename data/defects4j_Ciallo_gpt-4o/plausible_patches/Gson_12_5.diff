@@ -1,0 +1,39 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java b/gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java
+index 2e7644f0..aef7b871 100644
+--- a/gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java
++++ b/gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java
+@@ -253,16 +253,27 @@ public final class JsonTreeReader extends JsonReader {
+     stackSize = 1;
+   }
+ 
+-  @Override public void skipValue() throws IOException {
++@Override
++public void skipValue() throws IOException {
++    if (stackSize == 0) {
++        // Prevent any further processing if stack is empty.
++        throw new IllegalStateException("Cannot skip value, stack is empty.");
++    }
++
+     if (peek() == JsonToken.NAME) {
+-      nextName();
+-      pathNames[stackSize - 2] = "null";
++        nextName();
++        pathNames[Math.max(0, stackSize - 2)] = "null"; // Use Math.max to ensure index is non-negative.
+     } else {
+-      popStack();
+-        pathNames[stackSize - 1] = "null";
++        popStack();
++        if (stackSize > 0) {
++            pathNames[stackSize - 1] = "null"; // Ensure stackSize is valid.
++        }
+     }
+-      pathIndices[stackSize - 1]++;
+-  }
++    
++    if (stackSize > 0) {
++        pathIndices[stackSize - 1]++; // Ensure stackSize is valid before incrementing index.
++    }
++}
+ 
+   @Override public String toString() {
+     return getClass().getSimpleName();

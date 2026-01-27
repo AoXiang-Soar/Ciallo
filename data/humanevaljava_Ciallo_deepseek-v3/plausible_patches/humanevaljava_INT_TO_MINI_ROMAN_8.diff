@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java b/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
+index 0f3c881..1d9f216 100644
+--- a/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
++++ b/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
+@@ -1,14 +1,5 @@
+ package humaneval.buggy;
+ 
+-// Given a positive integer, obtain its roman numeral equivalent as a string,
+-// and return it in lowercase.
+-// Restrictions: 1 <= num <= 1000
+-
+-// Examples:
+-// >>> int_to_mini_roman(19) == 'xix'
+-// >>> int_to_mini_roman(152) == 'clii'
+-// >>> int_to_mini_roman(426) == 'cdxxvi'
+-
+ public class INT_TO_MINI_ROMAN {
+     public static String int_to_mini_roman(int number) {
+         int[] num = new int[] {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
+@@ -16,13 +7,16 @@ public class INT_TO_MINI_ROMAN {
+             "I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"
+         };
+ 
+-        int i = 12;
+-        String result = "";
++        int i = 12; // Start from the largest value
++        StringBuilder result = new StringBuilder(); // Using StringBuilder to construct the result efficiently
+         while (number > 0) {
+-            result += sym[i];
+-            number %= num[i];
+-            i -= 1;
++            // Check and subtract while we can use the same roman numeral
++            while (number >= num[i]) {
++                result.append(sym[i]);
++                number -= num[i];
++            }
++            i--; // Move to the next smaller value
+         }
+-        return result.toLowerCase();
++        return result.toString().toLowerCase(); // Convert the final result to lowercase
+     }
+-}
++}
+\ No newline at end of file

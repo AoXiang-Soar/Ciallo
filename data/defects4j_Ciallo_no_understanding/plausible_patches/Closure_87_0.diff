@@ -1,0 +1,63 @@
+diff --git a/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java b/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java
+index 9498fa6e8..1f0279d99 100644
+--- a/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java
++++ b/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java
+@@ -516,26 +516,41 @@ public class PeepholeSubstituteAlternateSyntax
+    * @return Whether the node is a block with a single statement that is
+    *     an expression.
+    */
+-  private boolean isFoldableExpressBlock(Node n) {
+-    if (n.getType() == Token.BLOCK) {
+-      if (n.hasOneChild()) {
++private boolean isFoldableExpressBlock(Node n) {
++    if (n.getType() == Token.BLOCK && n.hasOneChild()) {
+         Node maybeExpr = n.getFirstChild();
+-          // IE has a bug where event handlers behave differently when
+-          // their return value is used vs. when their return value is in
+-          // an EXPR_RESULT. It's pretty freaking weird. See:
+-          // http://code.google.com/p/closure-compiler/issues/detail?id=291
+-          // We try to detect this case, and not fold EXPR_RESULTs
+-          // into other expressions.
+-
+-            // We only have to worry about methods with an implicit 'this'
+-            // param, or this doesn't happen.
+-
+-          return NodeUtil.isExpressionNode(maybeExpr);
+-      }
++        if (!NodeUtil.isExpressionNode(maybeExpr)) {
++            return false;
++        }
++        
++        Node maybeCall = maybeExpr.getFirstChild();
++        if (maybeCall == null || maybeCall.getType() != Token.CALL) {
++            return true;
++        }
++        
++        Node callTarget = maybeCall.getFirstChild();
++        if (callTarget == null) {
++            return true;
++        }
++        
++        // Don't fold expressions that might be event handlers
++        if (callTarget.getType() == Token.GETELEM) {
++            return false;
++        }
++        
++        if (callTarget.getType() == Token.GETPROP) {
++            String propName = callTarget.getLastChild().getString();
++            return !isEventHandlerName(propName);
++        }
++        
++        return true;
+     }
+-
+     return false;
+-  }
++}
++
++private boolean isEventHandlerName(String propName) {
++    return propName.startsWith("on") && propName.length() > 2;
++}
+ 
+   /**
+    * @return The expression node.

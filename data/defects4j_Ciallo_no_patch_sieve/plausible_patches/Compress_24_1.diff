@@ -1,0 +1,14 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index c9d99aef..c9c21638 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -128,9 +128,6 @@ public class TarUtils {
+         byte trailer = buffer[end - 1];
+         if (trailer == 0 || trailer == ' '){
+             end--;
+-        } else {
+-            throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, end-1, trailer));
+         }
+         trailer = buffer[end - 1];
+         while (start < end - 1 && (trailer == 0 || trailer == ' ')) {

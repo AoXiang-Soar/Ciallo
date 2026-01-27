@@ -1,0 +1,67 @@
+diff --git a/src/com/google/javascript/jscomp/TypeInference.java b/src/com/google/javascript/jscomp/TypeInference.java
+index 7e218d888..cc86bef64 100644
+--- a/src/com/google/javascript/jscomp/TypeInference.java
++++ b/src/com/google/javascript/jscomp/TypeInference.java
+@@ -1032,35 +1032,41 @@ class TypeInference
+     }
+   }
+ 
+-  private FlowScope traverseNew(Node n, FlowScope scope) {
+-
++private FlowScope traverseNew(Node n, FlowScope scope) {
+     Node constructor = n.getFirstChild();
+     scope = traverse(constructor, scope);
+     JSType constructorType = constructor.getJSType();
+     JSType type = null;
+     if (constructorType != null) {
+-      constructorType = constructorType.restrictByNotNullOrUndefined();
+-      if (constructorType.isUnknownType()) {
+-        type = getNativeType(UNKNOWN_TYPE);
+-      } else {
+-        FunctionType ct = constructorType.toMaybeFunctionType();
+-        if (ct == null && constructorType instanceof FunctionType) {
+-          // If constructorType is a NoObjectType, then toMaybeFunctionType will
+-          // return null. But NoObjectType implements the FunctionType
+-          // interface, precisely because it can validly construct objects.
+-          ct = (FunctionType) constructorType;
+-        }
+-        if (ct != null && ct.isConstructor()) {
+-          type = ct.getInstanceType();
++        constructorType = constructorType.restrictByNotNullOrUndefined();
++        if (constructorType.isUnknownType()) {
++            type = getNativeType(UNKNOWN_TYPE);
++        } else {
++            FunctionType ct = constructorType.toMaybeFunctionType();
++            if (ct == null && constructorType instanceof FunctionType) {
++                ct = (FunctionType) constructorType;
++            }
++            if (ct != null && ct.isConstructor()) {
++                // Traverse arguments first
++                FlowScope argScope = scope;
++                Node arg = constructor.getNext();
++                while (arg != null) {
++                    argScope = traverse(arg, argScope);
++                    arg = arg.getNext();
++                }
++                
++                // Perform backwards inference
++                backwardsInferenceFromCallSite(n, ct);
++                
++                // Set instance type after inference
++                type = ct.getInstanceType();
++            }
+         }
+-      }
+-    }
+-    n.setJSType(type);
+-    for (Node arg = constructor.getNext(); arg != null; arg = arg.getNext()) {
+-      scope = traverse(arg, scope);
+     }
++    
++    n.setJSType(type != null ? type : getNativeType(UNKNOWN_TYPE));
+     return scope;
+-  }
++}
+ 
+   private BooleanOutcomePair traverseAnd(Node n, FlowScope scope) {
+     return traverseShortCircuitingBinOp(n, scope, true);

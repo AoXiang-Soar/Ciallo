@@ -1,0 +1,46 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_THIRD.java b/src/main/java/humaneval/buggy/SORT_THIRD.java
+index e57d2bb..5a2293a 100644
+--- a/src/main/java/humaneval/buggy/SORT_THIRD.java
++++ b/src/main/java/humaneval/buggy/SORT_THIRD.java
+@@ -6,21 +6,29 @@ import java.util.List;
+ 
+ public class SORT_THIRD {
+     public static List<Integer> sort_third(List<Integer> l) {
+-        List<Integer> result = new ArrayList<Integer>();
++        // Copy the input list to the result list to maintain elements not at third positions.
++        List<Integer> result = new ArrayList<>(l);
+ 
+-        List<Integer> thirds = new ArrayList<Integer>();
+-        for (int i = 0; i < l.size(); i += 3){
++        // List to hold the elements at positions which are multiples of three.
++        List<Integer> thirds = new ArrayList<>();
++        
++        // Collect elements at positions which are multiples of 3.
++        for (int i = 0; i < l.size(); i += 3) {
+             thirds.add(l.get(i));
+         }
++        
++        // Sort the collected third elements.
+         Collections.sort(thirds);
+-
+-        for (int i = 0; i < l.size(); i += 1){
+-            if (i % 3 == 0){
+-                result.add(thirds.get(i));
+-            } else{
+-                result.add(l.get(i));
+-            }
++        
++        // Index for sorted third elements.
++        int thirdIndex = 0;
++        
++        // Replace the original third positions with sorted third elements.
++        for (int i = 0; i < l.size(); i += 3) {
++            result.set(i, thirds.get(thirdIndex));
++            thirdIndex++;
+         }
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

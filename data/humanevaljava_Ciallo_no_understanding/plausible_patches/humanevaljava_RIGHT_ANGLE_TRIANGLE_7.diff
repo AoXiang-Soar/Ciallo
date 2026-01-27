@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+old mode 100644
+new mode 100755
+index da0fd0a..47abdeb
+--- a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
++++ b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+@@ -10,6 +10,14 @@ package humaneval.buggy;
+ 
+ public class RIGHT_ANGLE_TRIANGLE {
+     public static boolean right_angle_triangle(int a, int b, int c) {
+-        return a*a + b*b == c*c;
++        // Check all permutations of which side could be the hypotenuse
++        int maxSide = Math.max(Math.max(a, b), c);
++        if (maxSide == a) {
++            return b*b + c*c == a*a;
++        } else if (maxSide == b) {
++            return a*a + c*c == b*b;
++        } else {
++            return a*a + b*b == c*c;
++        }
+     }
+-}
++}
+\ No newline at end of file

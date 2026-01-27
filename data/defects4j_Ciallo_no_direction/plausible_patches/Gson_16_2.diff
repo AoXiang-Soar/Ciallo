@@ -1,0 +1,39 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+index 17ed0ff2..235369dd 100644
+--- a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
++++ b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+@@ -333,17 +333,31 @@ public final class $Gson$Types {
+     return resolve(context, contextRawType, toResolve, new HashSet<TypeVariable>());
+   }
+ 
+-  private static Type resolve(Type context, Class<?> contextRawType, Type toResolve,
+-                              Collection<TypeVariable> visitedTypeVariables) {
++private static Type resolve(Type context, Class<?> contextRawType, Type toResolve,
++                            Collection<TypeVariable> visitedTypeVariables) {
+     // this implementation is made a little more complicated in an attempt to avoid object-creation
+     while (true) {
+       if (toResolve instanceof TypeVariable) {
+         TypeVariable<?> typeVariable = (TypeVariable<?>) toResolve;
+-          // cannot reduce due to infinite recursion
++        // Check for recursive type variables
++        if (visitedTypeVariables != null && visitedTypeVariables.contains(typeVariable)) {
++          return toResolve;
++        }
++        // Track visited type variables
++        Collection<TypeVariable> newVisited = visitedTypeVariables == null 
++            ? new HashSet<TypeVariable>() 
++            : new HashSet<TypeVariable>(visitedTypeVariables);
++        newVisited.add(typeVariable);
++        
+         toResolve = resolveTypeVariable(context, contextRawType, typeVariable);
+         if (toResolve == typeVariable) {
+           return toResolve;
+         }
++        // Continue resolution with new visited set
++        context = newVisited.contains(toResolve) ? null : context;
++        contextRawType = newVisited.contains(toResolve) ? null : contextRawType;
++        visitedTypeVariables = newVisited;
++        continue;
+ 
+       } else if (toResolve instanceof Class && ((Class<?>) toResolve).isArray()) {
+         Class<?> original = (Class<?>) toResolve;

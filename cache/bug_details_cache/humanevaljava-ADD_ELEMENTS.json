@@ -1,0 +1,16 @@
+{
+    "bug_id": "ADD_ELEMENTS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_ADD_ELEMENTS.test_0:11 expected:<-4> but was:<5>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        ArrayList<Integer> input = new ArrayList<>(Arrays.asList(1, -2, -3, 41, 57, 76, 87, 88, 99));\n        int result = humaneval.buggy.ADD_ELEMENTS.add_elements(input, 3);\n        org.junit.Assert.assertEquals(-4, result);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(-4, result);",
+    "test_name": "test_0",
+    "test_suite": "TEST_ADD_ELEMENTS"
+}

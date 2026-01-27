@@ -1,0 +1,51 @@
+diff --git a/src/main/java/org/jsoup/safety/Whitelist.java b/src/main/java/org/jsoup/safety/Whitelist.java
+index 51349dab..ef3bbcd9 100644
+--- a/src/main/java/org/jsoup/safety/Whitelist.java
++++ b/src/main/java/org/jsoup/safety/Whitelist.java
+@@ -335,21 +335,28 @@ public class Whitelist {
+         return false;
+     }
+ 
+-    private boolean testValidProtocol(Element el, Attribute attr, Set<Protocol> protocols) {
+-        // try to resolve relative urls to abs, and optionally update the attribute so output html has abs.
+-        // rels without a baseuri get removed
+-        String value = el.absUrl(attr.getKey());
+-        if (!preserveRelativeLinks)
+-            attr.setValue(value);
+-        
+-        for (Protocol protocol : protocols) {
+-            String prot = protocol.toString() + ":";
+-            if (value.toLowerCase().startsWith(prot)) {
+-                return true;
+-            }
++private boolean testValidProtocol(Element el, Attribute attr, Set<Protocol> protocols) {
++    String absValue = el.absUrl(attr.getKey());
++    String originalValue = attr.getValue();
++    
++    // Only update attribute value if:
++    // 1. We're not preserving relative links
++    // 2. The absolute URL is not empty (meaning it's not a custom protocol)
++    // 3. The absolute URL is actually different from the original
++    if (!preserveRelativeLinks && !absValue.isEmpty() && !absValue.equals(originalValue)) {
++        attr.setValue(absValue);
++    }
++    
++    String valueToCheck = absValue.isEmpty() ? originalValue : absValue;
++    
++    for (Protocol protocol : protocols) {
++        String prot = protocol.toString().toLowerCase() + ":";
++        if (valueToCheck.toLowerCase().startsWith(prot)) {
++            return true;
+         }
+-        return false;
+     }
++    return false;
++}
+ 
+     Attributes getEnforcedAttributes(String tagName) {
+         Attributes attrs = new Attributes();
+@@ -439,4 +446,3 @@ public class Whitelist {
+         }
+     }
+ }
+-

@@ -1,0 +1,163 @@
+diff --git a/src/java/org/apache/commons/cli/CommandLine.java b/src/java/org/apache/commons/cli/CommandLine.java
+index af1118d..b85891e 100644
+--- a/src/java/org/apache/commons/cli/CommandLine.java
++++ b/src/java/org/apache/commons/cli/CommandLine.java
+@@ -1,18 +1,3 @@
+-/**
+- * Copyright 1999-2001,2004 The Apache Software Foundation.
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+ package org.apache.commons.cli;
+ 
+ import java.util.Collection;
+@@ -47,7 +32,6 @@ public class CommandLine {
+     private Map names = new HashMap();
+ 
+     /** Map of unique options for ease to get complete list of options */
+-//    private Set allOptions = new HashSet();
+     private Map hashcodeMap = new HashMap();
+ 
+     /**
+@@ -61,12 +45,18 @@ public class CommandLine {
+     /** 
+      * Query to see if an option has been set.
+      *
+-     * @param opt Short name of the option
++     * @param opt Short name or long name of the option
+      * @return true if set, false if not
+      */
+     public boolean hasOption(String opt)
+     {
+-        return options.containsKey(opt);
++        opt = Util.stripLeadingHyphens(opt);
++        String key = opt;
++        if (names.containsKey(opt))
++        {
++            key = (String) names.get(opt);
++        }
++        return options.containsKey(key) || names.containsKey(opt);
+     }
+ 
+     /** 
+@@ -90,6 +80,7 @@ public class CommandLine {
+     {
+         String res = getOptionValue(opt);
+ 
++        opt = Util.stripLeadingHyphens(opt);
+         if (!options.containsKey(opt))
+         {
+             return null;
+@@ -97,7 +88,7 @@ public class CommandLine {
+ 
+         Object type = ((Option) options.get(opt)).getType();
+ 
+-        return (res == null)        ? null : TypeHandler.createValue(res, type);
++        return (res == null) ? null : TypeHandler.createValue(res, type);
+     }
+ 
+     /**
+@@ -121,7 +112,6 @@ public class CommandLine {
+     public String getOptionValue(String opt)
+     {
+         String[] values = getOptionValues(opt);
+-
+         return (values == null) ? null : values[0];
+     }
+ 
+@@ -159,14 +149,7 @@ public class CommandLine {
+         }
+ 
+         return null;
+-        }
+-
+-    /**
+-     * <p>Retrieves the option object given the long or short option as a String</p>
+-     * @param opt short or long name of the option
+-     * @return Canonicalized option
+-     */
+-
++    }
+ 
+     /** 
+      * Retrieves the array of values, if any, of an option.
+@@ -192,7 +175,6 @@ public class CommandLine {
+     public String getOptionValue(String opt, String defaultValue)
+     {
+         String answer = getOptionValue(opt);
+-
+         return (answer != null) ? answer : defaultValue;
+     }
+ 
+@@ -218,9 +200,7 @@ public class CommandLine {
+     public String[] getArgs()
+     {
+         String[] answer = new String[args.size()];
+-
+         args.toArray(answer);
+-
+         return answer;
+     }
+ 
+@@ -234,28 +214,6 @@ public class CommandLine {
+         return args;
+     }
+ 
+-    /** 
+-     * jkeyes
+-     * - commented out until it is implemented properly
+-     * <p>Dump state, suitable for debugging.</p>
+-     *
+-     * @return Stringified form of this object
+-     */
+-
+-    /*
+-    public String toString() {
+-        StringBuffer buf = new StringBuffer();
+-            
+-        buf.append("[ CommandLine: [ options: ");
+-        buf.append(options.toString());
+-        buf.append(" ] [ args: ");
+-        buf.append(args.toString());
+-        buf.append(" ] ]");
+-            
+-        return buf.toString();
+-    }
+-    */
+-
+     /**
+      * Add left-over unrecognized option/argument.
+      *
+@@ -280,7 +238,7 @@ public class CommandLine {
+         {
+             key = opt.getLongOpt();
+         }
+-        else
++        else if (opt.getLongOpt() != null)
+         {
+             names.put(opt.getLongOpt(), key);
+         }
+@@ -306,11 +264,7 @@ public class CommandLine {
+     public Option[] getOptions()
+     {
+         Collection processed = options.values();
+-
+-        // reinitialise array
+         Option[] optionsArray = new Option[processed.size()];
+-
+-        // return the array
+         return (Option[]) processed.toArray(optionsArray);
+     }
+-}
++}
+\ No newline at end of file

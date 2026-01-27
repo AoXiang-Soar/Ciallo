@@ -1,0 +1,53 @@
+diff --git a/src/com/google/javascript/jscomp/CheckSideEffects.java b/src/com/google/javascript/jscomp/CheckSideEffects.java
+index b9aa412cc..33385810e 100644
+--- a/src/com/google/javascript/jscomp/CheckSideEffects.java
++++ b/src/com/google/javascript/jscomp/CheckSideEffects.java
+@@ -81,7 +81,7 @@ final class CheckSideEffects extends AbstractPostOrderCallback
+   }
+ 
+   @Override
+-  public void visit(NodeTraversal t, Node n, Node parent) {
++public void visit(NodeTraversal t, Node n, Node parent) {
+     // VOID nodes appear when there are extra semicolons at the BLOCK level.
+     // I've been unable to think of any cases where this indicates a bug,
+     // and apparently some people like keeping these semicolons around,
+@@ -102,28 +102,14 @@ final class CheckSideEffects extends AbstractPostOrderCallback
+       Node gramps = parent.getParent();
+       if (gramps.isCall() && parent == gramps.getFirstChild()) {
+         if (n == parent.getFirstChild() && parent.getChildCount() == 2 && n.getNext().isName() && "eval".equals(n.getNext().getString())) {
+-      return;
+-        }
+-    }
+-
+-    // This no-op statement was there so that JSDoc information could
+-    // be attached to the name. This check should not complain about it.
+-      if (n == parent.getLastChild()) {
+-        for (Node an : parent.getAncestors()) {
+-          int ancestorType = an.getType();
+-          if (ancestorType == Token.COMMA)
+-            continue;
+-          if (ancestorType != Token.EXPR_RESULT && ancestorType != Token.BLOCK)
+-            return;
+-          else
+-            break;
++          return;
+         }
+       }
+     } else if (parent.getType() != Token.EXPR_RESULT && parent.getType() != Token.BLOCK) {
+       if (parent.getType() == Token.FOR && parent.getChildCount() == 4 && (n == parent.getFirstChild() ||
+            n == parent.getFirstChild().getNext().getNext())) {
+       } else {
+-      return;
++        return;
+       }
+     }
+ 
+@@ -152,7 +138,7 @@ final class CheckSideEffects extends AbstractPostOrderCallback
+         problemNodes.add(n);
+       }
+     }
+-  }
++}
+ 
+   /**
+    * Protect side-effect free nodes by making them parameters

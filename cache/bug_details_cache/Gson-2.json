@@ -1,0 +1,16 @@
+{
+    "bug_id": 2,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Gson",
+    "test_error_message": "java.lang.ClassCastException: Cannot cast com.google.gson.JsonPrimitive to com.google.gson.JsonObject",
+    "test_framework": "defects4j",
+    "test_function": "  public void testJsonElementTypeMismatch() {\n    try {\n      gson.fromJson(\"\\\"abc\\\"\", JsonObject.class);\n      fail();\n    } catch (JsonSyntaxException expected) {\n      assertEquals(\"Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive\",\n          expected.getMessage());\n    }\n  }",
+    "test_line": "      gson.fromJson(\"\\\"abc\\\"\", JsonObject.class);",
+    "test_name": "testJsonElementTypeMismatch",
+    "test_suite": "com.google.gson.functional.DefaultTypeAdaptersTest"
+}

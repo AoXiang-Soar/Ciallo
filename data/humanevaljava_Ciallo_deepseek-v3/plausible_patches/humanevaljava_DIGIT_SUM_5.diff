@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/DIGIT_SUM.java b/src/main/java/humaneval/buggy/DIGIT_SUM.java
+index df6658a..f01a8fa 100644
+--- a/src/main/java/humaneval/buggy/DIGIT_SUM.java
++++ b/src/main/java/humaneval/buggy/DIGIT_SUM.java
+@@ -16,11 +16,11 @@ public class DIGIT_SUM {
+     public static int digit_sum(String s) {
+         int result = 0;
+         for (char c : s.toCharArray()) {
+-            if (c == ' ')
+-                break;
+-            if ('A' <= c && c <= 'Z')
++            // Remove the condition to break on spaces as it was causing issues in the test
++            if ('A' <= c && c <= 'Z') {
+                 result += (int) c;
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

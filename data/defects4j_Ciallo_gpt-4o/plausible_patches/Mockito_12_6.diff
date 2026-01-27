@@ -1,0 +1,42 @@
+diff --git a/src/org/mockito/internal/util/reflection/GenericMaster.java b/src/org/mockito/internal/util/reflection/GenericMaster.java
+index 64bf1540f..d36bc9ef9 100644
+--- a/src/org/mockito/internal/util/reflection/GenericMaster.java
++++ b/src/org/mockito/internal/util/reflection/GenericMaster.java
+@@ -13,14 +13,27 @@ public class GenericMaster {
+      * @param field
+      * @return
+      */
+-    public Class getGenericType(Field field) {        
+-        Type generic = field.getGenericType();
+-        if (generic != null && generic instanceof ParameterizedType) {
+-            Type actual = ((ParameterizedType) generic).getActualTypeArguments()[0];
+-                return (Class) actual;
+-                //in case of nested generics we don't go deep
+-        }
+-        
+-        return Object.class;
+-    }
++public Class<?> getGenericType(Field field) {
++    Type generic = field.getGenericType();
++    if (generic instanceof ParameterizedType) {
++        ParameterizedType parameterizedType = (ParameterizedType) generic;
++        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
++        
++        if (actualTypeArguments.length > 0) {
++            Type current = actualTypeArguments[0];
++
++            // Unwrap nested ParameterizedTypes to get the raw type
++            while (current instanceof ParameterizedType) {
++                current = ((ParameterizedType) current).getRawType();
++            }
++
++            // Check if the final type is a Class and return it
++            if (current instanceof Class) {
++                return (Class<?>) current;
++            }
++        }
++    }
++    
++    return Object.class;
++}
+ }

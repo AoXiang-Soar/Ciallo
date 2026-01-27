@@ -1,0 +1,16 @@
+{
+    "bug_id": "WORDS_STRINGS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_WORDS_STRINGS.test_4:35 expected: java.util.ArrayList<[]> but was: java.util.ArrayList<[]>",
+    "test_framework": "humanevaljava",
+    "test_function": "\tpublic void test_4() throws java.lang.Exception {\n\t\tArrayList<String> result = humaneval.buggy.WORDS_STRINGS.words_strings(\"\");\n\t\tArrayList<String> desired = new ArrayList<String>();\n\t\torg.junit.Assert.assertEquals(result, desired);\n\t}",
+    "test_line": "\t\torg.junit.Assert.assertEquals(result, desired);",
+    "test_name": "test_4",
+    "test_suite": "TEST_WORDS_STRINGS"
+}

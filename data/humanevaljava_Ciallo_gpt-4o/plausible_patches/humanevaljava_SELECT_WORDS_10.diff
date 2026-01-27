@@ -1,0 +1,30 @@
+diff --git a/src/main/java/humaneval/buggy/SELECT_WORDS.java b/src/main/java/humaneval/buggy/SELECT_WORDS.java
+index 4c2e032..710d7b3 100644
+--- a/src/main/java/humaneval/buggy/SELECT_WORDS.java
++++ b/src/main/java/humaneval/buggy/SELECT_WORDS.java
+@@ -23,18 +23,20 @@ public class SELECT_WORDS {
+         for(int i = 0; i < words.length; i++) {
+             int num_consonants = 0;
+             char[] vowels = {'a', 'e', 'i', 'o', 'u'};
+-            for(int j = 0; j < words[i].length(); j++) {
++            String word = words[i];
++            for(int j = 0; j < word.length(); j++) {
++                char ch = Character.toLowerCase(word.charAt(j));
+                 boolean consonant = true;
+                 for(int k = 0; k < vowels.length; k++) {
+-                    if(vowels[k] == words[i].charAt(j)) {
++                    if(vowels[k] == ch) {
+                         consonant = false;
+                         break;
+                     }
+                 }
+                 if(consonant) num_consonants++;
+             }
+-            if(num_consonants == n) result.add(words[i]);
++            if(num_consonants == n) result.add(word);
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

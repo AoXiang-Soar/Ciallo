@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/HAS_CLOSE_ELEMENTS.java b/src/main/java/humaneval/buggy/HAS_CLOSE_ELEMENTS.java
+old mode 100644
+new mode 100755
+index b51eb14..ed3a165
+--- a/src/main/java/humaneval/buggy/HAS_CLOSE_ELEMENTS.java
++++ b/src/main/java/humaneval/buggy/HAS_CLOSE_ELEMENTS.java
+@@ -1,16 +1,19 @@
+ package humaneval.buggy;
+ 
+ import java.util.List;
++import java.util.Collections;
+ 
+ public class HAS_CLOSE_ELEMENTS {
+-    public static boolean has_close_elements(List<Double> numbers, double threshold){
+-        for (int i = 0; i < numbers.size(); i += 1){
+-            for (int j = i + 1; j < numbers.size(); j += 1){
+-                double distance = numbers.get(i) - numbers.get(j);
+-                if (distance < threshold)
+-                    return true;
++    public static boolean has_close_elements(List<Double> numbers, double threshold) {
++        if (numbers.size() < 2) {
++            return false;
++        }
++        Collections.sort(numbers);
++        for (int i = 1; i < numbers.size(); i++) {
++            if (Math.abs(numbers.get(i) - numbers.get(i - 1)) < threshold) {
++                return true;
+             }
+         }
+         return false;
+     }
+-}
++}
+\ No newline at end of file

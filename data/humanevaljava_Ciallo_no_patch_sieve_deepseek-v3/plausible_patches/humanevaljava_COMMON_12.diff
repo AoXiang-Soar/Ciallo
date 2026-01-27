@@ -1,0 +1,47 @@
+diff --git a/src/main/java/humaneval/buggy/COMMON.java b/src/main/java/humaneval/buggy/COMMON.java
+index f818c29..486dbbb 100644
+--- a/src/main/java/humaneval/buggy/COMMON.java
++++ b/src/main/java/humaneval/buggy/COMMON.java
+@@ -12,19 +12,32 @@ public class COMMON {
+     public static int[] common(int[] l1, int[] l2) {
+         ArrayList<Integer> common = new ArrayList<Integer>();
+         
+-        for (int i = 0; i < l1.length; i += 1){
+-            for (int j = 0; j < l2.length; j += 1){
+-                if (l1[i] == l2[j])
++        // Sort both arrays
++        Arrays.sort(l1);
++        Arrays.sort(l2);
++        
++        int i = 0, j = 0;
++        while (i < l1.length && j < l2.length) {
++            if (l1[i] == l2[j]) {
++                // Add to common if not already present (to maintain uniqueness)
++                if (common.isEmpty() || common.get(common.size() - 1) != l1[i]) {
+                     common.add(l1[i]);
++                }
++                i++;
++                j++;
++            } 
++            else if (l1[i] < l2[j]) {
++                i++;
++            }
++            else {
++                j++;
+             }
+         }
++        
+         int[] result = new int[common.size()];
+-        int index = 0;
+-        for (Integer c : common) {
+-            result[index] = c;
+-            index += 1;
++        for (i = 0; i < common.size(); i++) {
++            result[i] = common.get(i);
+         }
+-        Arrays.sort(result);
+         return result;
+     }
+-}
++}
+\ No newline at end of file

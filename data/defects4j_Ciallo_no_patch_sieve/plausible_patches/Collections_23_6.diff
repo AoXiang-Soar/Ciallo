@@ -1,0 +1,51 @@
+diff --git a/src/main/java/org/apache/commons/collections4/trie/UnmodifiableTrie.java b/src/main/java/org/apache/commons/collections4/trie/UnmodifiableTrie.java
+index 3d78550c..1fd24e6f 100644
+--- a/src/main/java/org/apache/commons/collections4/trie/UnmodifiableTrie.java
++++ b/src/main/java/org/apache/commons/collections4/trie/UnmodifiableTrie.java
+@@ -52,6 +52,12 @@ public class UnmodifiableTrie<K, V> implements Trie<K, V>, Serializable, Unmodif
+      * @throws IllegalArgumentException if trie is null
+      */
+     public static <K, V> UnmodifiableTrie<K, V> unmodifiableTrie(final Trie<K, ? extends V> trie) {
++        if (trie == null) {
++            throw new IllegalArgumentException("Trie must not be null");
++        }
++        if (trie instanceof UnmodifiableTrie) {
++            return (UnmodifiableTrie<K, V>) trie;
++        }
+         return new UnmodifiableTrie<K, V>(trie);
+     }
+ 
+@@ -71,8 +77,7 @@ public class UnmodifiableTrie<K, V> implements Trie<K, V>, Serializable, Unmodif
+         this.delegate = tmpTrie;
+     }
+ 
+-    //-----------------------------------------------------------------------
+-
++    // Rest of the class remains unchanged...
+     public Set<Entry<K, V>> entrySet() {
+         return Collections.unmodifiableSet(delegate.entrySet());
+     }
+@@ -149,7 +154,6 @@ public class UnmodifiableTrie<K, V> implements Trie<K, V>, Serializable, Unmodif
+         return delegate.comparator();
+     }
+ 
+-    //-----------------------------------------------------------------------
+     public OrderedMapIterator<K, V> mapIterator() {
+         final OrderedMapIterator<K, V> it = delegate.mapIterator();
+         return UnmodifiableOrderedMapIterator.unmodifiableOrderedMapIterator(it);
+@@ -163,7 +167,6 @@ public class UnmodifiableTrie<K, V> implements Trie<K, V>, Serializable, Unmodif
+         return delegate.previousKey(key);
+     }
+ 
+-    //-----------------------------------------------------------------------
+     @Override
+     public int hashCode() {
+         return delegate.hashCode();
+@@ -178,5 +181,4 @@ public class UnmodifiableTrie<K, V> implements Trie<K, V>, Serializable, Unmodif
+     public String toString() {
+         return delegate.toString();
+     }
+-
+-}
++}
+\ No newline at end of file

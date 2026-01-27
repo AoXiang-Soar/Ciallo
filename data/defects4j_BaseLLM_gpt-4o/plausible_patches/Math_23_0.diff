@@ -1,0 +1,32 @@
+diff --git a/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java b/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java
+index 5136a1401..6a3041979 100644
+--- a/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java
++++ b/src/main/java/org/apache/commons/math3/optimization/univariate/BrentOptimizer.java
+@@ -150,6 +150,8 @@ public class BrentOptimizer extends BaseAbstractUnivariateOptimizer {
+         // Best point encountered so far (which is the initial guess).
+ 
+         int iter = 0;
++        double bestX = x;
++        double bestF = fx;
+         while (true) {
+             final double m = 0.5 * (a + b);
+             final double tol1 = relativeThreshold * FastMath.abs(x) + absoluteThreshold;
+@@ -270,11 +272,14 @@ public class BrentOptimizer extends BaseAbstractUnivariateOptimizer {
+                         fv = fu;
+                     }
+                 }
++                
++                // Track the best solution found
++                if (fu < bestF) {
++                    bestF = fu;
++                    bestX = u;
++                }
+             } else { // Default termination (Brent's criterion).
+-                return
+-                            best(current,
+-                                 previous,
+-                            isMinim);
++                return new UnivariatePointValuePair(bestX, isMinim ? bestF : -bestF);
+             }
+             ++iter;
+         }

@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java b/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
+index fba3afc..c7d84fd 100644
+--- a/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
++++ b/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
+@@ -21,15 +21,16 @@ public class SORTED_LIST_SUM {
+     public static ArrayList<String> sorted_list_sum(ArrayList<String> lst) {
+         ArrayList<String> result = new ArrayList<String>();
+         for (String str : lst) {
+-            if (str.length() % 2 == 1) continue;
++            if (str.length() % 2 == 1) continue; // Filter out strings with odd lengths.
+             result.add(str);
+         }
+ 
+-        Collections.sort(
+-            result,
+-            (s1, s2) -> s1.length() - s2.length()
+-        );
++        // Sort by length first, then alphabetically for strings of the same length.
++        result.sort((s1, s2) -> {
++            int lengthComparison = Integer.compare(s1.length(), s2.length());
++            return (lengthComparison != 0) ? lengthComparison : s1.compareTo(s2);
++        });
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

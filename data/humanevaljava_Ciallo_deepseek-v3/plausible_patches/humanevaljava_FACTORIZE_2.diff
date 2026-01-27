@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIZE.java b/src/main/java/humaneval/buggy/FACTORIZE.java
+index 57975b5..c942a12 100644
+--- a/src/main/java/humaneval/buggy/FACTORIZE.java
++++ b/src/main/java/humaneval/buggy/FACTORIZE.java
+@@ -16,7 +16,12 @@ public class FACTORIZE {
+                 i += 1;
+             }
+         }
++        
++        // Final check outside the loop to handle any remaining prime factor
++        if (n > 1) {
++            result.add(n);
++        }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

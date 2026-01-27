@@ -1,0 +1,16 @@
+{
+    "bug_id": 38,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "",
+    "code": "    public StringBuffer format(Calendar calendar, StringBuffer buf) {\n        if (mTimeZoneForced) {\n            calendar = (Calendar) calendar.clone();\n            calendar.setTimeZone(mTimeZone);\n        }\n        return applyRules(calendar, buf);\n    }",
+    "fixed_code": "    public StringBuffer format(Calendar calendar, StringBuffer buf) {\n        if (mTimeZoneForced) {\n            calendar.getTime(); /// LANG-538\n            calendar = (Calendar) calendar.clone();\n            calendar.setTimeZone(mTimeZone);\n        }\n        return applyRules(calendar, buf);\n    }",
+    "fixed_lines": "            calendar.getTime(); /// LANG-538",
+    "masked_code": "    public StringBuffer format(Calendar calendar, StringBuffer buf) {\n        if (mTimeZoneForced) {\n>>> [ INFILL ] <<<\n            calendar = (Calendar) calendar.clone();\n            calendar.setTimeZone(mTimeZone);\n        }\n        return applyRules(calendar, buf);\n    }",
+    "project": "Lang",
+    "test_error_message": "junit.framework.ComparisonFailure: dateTime expected:<2009-10-16T[16]:42:16.000Z> but was:<2009-10-16T[08]:42:16.000Z>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testLang538() {\n        final String dateTime = \"2009-10-16T16:42:16.000Z\";\n\n        // more commonly constructed with: cal = new GregorianCalendar(2009, 9, 16, 8, 42, 16)\n        // for the unit test to work in any time zone, constructing with GMT-8 rather than default locale time zone\n        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone(\"GMT-8\"));\n        cal.clear();\n        cal.set(2009, 9, 16, 8, 42, 16);\n\n        FastDateFormat format = FastDateFormat.getInstance(\"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\", TimeZone.getTimeZone(\"GMT\"));\n        assertEquals(\"dateTime\", dateTime, format.format(cal));\n    }",
+    "test_line": "        assertEquals(\"dateTime\", dateTime, format.format(cal));",
+    "test_name": "testLang538",
+    "test_suite": "org.apache.commons.lang3.time.FastDateFormatTest"
+}

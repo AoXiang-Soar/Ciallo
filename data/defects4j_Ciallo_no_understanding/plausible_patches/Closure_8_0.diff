@@ -1,0 +1,160 @@
+diff --git a/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java b/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
+index f2d36f54f..71a9e127a 100644
+--- a/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
++++ b/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
+@@ -28,57 +28,12 @@ import com.google.javascript.rhino.Token;
+ import java.util.List;
+ import java.util.Set;
+ 
+-/**
+- * Collapses multiple variable declarations into a single one. i.e the
+- * following:
+- *
+- * <pre>
+- * var a;
+- * var b = 1;
+- * var c = 2;
+- * </pre>
+- *
+- * becomes:
+- *
+- * <pre>var a, b = 1, c = 2;</pre>
+- *
+- * This reduces the generated code size. More optimizations are possible:
+- * <li>Group all variable declarations inside a function into one such variable.
+- * declaration block.</li>
+- * <li>Re-use variables instead of declaring a new one if they are used for
+- * only part of a function.</li>
+- *
+- * Similarly, also collapses assigns like:
+- *
+- * <pre>
+- * a = true;
+- * b = true;
+- * var c = true;
+- * </pre>
+- *
+- * becomes:
+- *
+- * <pre>var c = b = a = true;</pre>
+- *
+- */
+ class CollapseVariableDeclarations implements CompilerPass {
+-  /** Reference to JS Compiler */
+   private final AbstractCompiler compiler;
+ 
+-  /** Encapsulation of information about a variable declaration collapse */
+   private static class Collapse {
+-    /**
+-     * Variable declaration that any following var nodes should be
+-     * collapsed into
+-     */
+     final Node startNode;
+-
+-    /**
+-     * Last node (non-inclusive) of the chain of nodes to collapse.
+-     */
+     final Node endNode;
+-
+-    /** Parent of the nodes to the collapse */
+     final Node parent;
+ 
+     Collapse(Node startNode, Node endNode, Node parent) {
+@@ -88,16 +43,7 @@ class CollapseVariableDeclarations implements CompilerPass {
+     }
+   }
+ 
+-  /**
+-   * Collapses to do in this pass.
+-   */
+   private final List<Collapse> collapses = Lists.newArrayList();
+-
+-  /**
+-   * Nodes we've already looked at for collapsing, so that we don't look at them
+-   * again (we look ahead when examining what nodes can be collapsed, and the
+-   * node traversal may give them to us again)
+-   */
+   private final Set<Node> nodesToCollapse = Sets.newHashSet();
+ 
+   CollapseVariableDeclarations(AbstractCompiler compiler) {
+@@ -118,19 +64,7 @@ class CollapseVariableDeclarations implements CompilerPass {
+     }
+   }
+ 
+-  /**
+-   * Gathers all of the variable declarations / assignments that should be
+-   * collapsed into one.
+-   *
+-   * We do not do the collapsing as we go since node traversal would be affected
+-   * by the changes we are making to the parse tree.
+-   */
+   private class GatherCollapses extends AbstractPostOrderCallback {
+-
+-    // If a VAR is declared like
+-    // var x;
+-    // then we should not create new VAR nodes for it later in the tree.
+-    // This is a workaround for a bug in Firefox.
+     private final Set<Var> blacklistedVars = Sets.newHashSet();
+ 
+     @Override
+@@ -139,28 +73,19 @@ class CollapseVariableDeclarations implements CompilerPass {
+         blacklistStubVars(t, n);
+       }
+ 
+-      // Only care about var nodes
+       if (!n.isVar() && !canBeRedeclared(n, t.getScope())) return;
+ 
+-      // If we've already looked at this node, skip it
+       if (nodesToCollapse.contains(n)) return;
+ 
+-      // Adjacent VAR children of an IF node are the if and else parts and can't
+-      // be collapsed
+       if (parent.isIf()) return;
+ 
+       Node varNode = n;
+-
+       boolean hasVar = n.isVar();
+ 
+-      // Find variable declarations that follow this one (if any)
+       n = n.getNext();
+-
+       boolean hasNodesToCollapse = false;
+ 
+-      while (n != null &&
+-          (n.isVar() || canBeRedeclared(n, t.getScope()))) {
+-
++      while (n != null && (n.isVar() || canBeRedeclared(n, t.getScope()))) {
+         if (n.isVar()) {
+           blacklistStubVars(t, n);
+           hasVar = true;
+@@ -199,16 +124,18 @@ class CollapseVariableDeclarations implements CompilerPass {
+       }
+ 
+       Var var = s.getVar(lhs.getString());
+-      return var != null
+-          && var.getScope() == s
+-          && !blacklistedVars.contains(var);
++      if (var == null || var.getScope() != s || blacklistedVars.contains(var)) {
++        return false;
++      }
++
++      // Don't redeclare function parameters
++      Node nameNode = var.getNameNode();
++      return !(nameNode.getParent().isParamList());
+     }
+   }
+ 
+-
+   private void applyCollapses() {
+     for (Collapse collapse : collapses) {
+-
+       Node var = new Node(Token.VAR);
+       var.copyInformationFrom(collapse.startNode);
+       collapse.parent.addChildBefore(var, collapse.startNode);
+@@ -243,4 +170,4 @@ class CollapseVariableDeclarations implements CompilerPass {
+       }
+     }
+   }
+-}
++}
+\ No newline at end of file

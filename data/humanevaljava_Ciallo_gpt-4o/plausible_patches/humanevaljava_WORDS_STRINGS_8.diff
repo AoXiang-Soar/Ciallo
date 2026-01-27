@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_STRINGS.java b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+index e98a5f0..e1bf214 100644
+--- a/src/main/java/humaneval/buggy/WORDS_STRINGS.java
++++ b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+@@ -12,20 +12,21 @@ import java.util.ArrayList;
+  */
+ 
+ public class WORDS_STRINGS {
+-	public static ArrayList<String> words_strings(String s) {
+-		ArrayList<String> result = new ArrayList<String>();
+-		String s_list = "";
+-		for(char c : s.toCharArray()) {
+-			if(c == ',') {
+-				s_list += ' ';
+-			} else {
+-				s_list += c;
+-			}
+-		}
+-		String[] result_array = s_list.trim().split("\\s+");
+-		for(String r : result_array) {
+-			result.add(r);
+-		}
+-		return result;
+-	}
+-}
++    public static ArrayList<String> words_strings(String s) {
++        ArrayList<String> result = new ArrayList<String>();
++        
++        if (s == null || s.isEmpty()) {
++            return result;
++        }
++
++        // Split on either commas or whitespace characters
++        String[] result_array = s.split("[,\\s]+");
++
++        for (String r : result_array) {
++            if (!r.isEmpty()) { // Ensure no empty strings are added
++                result.add(r);
++            }
++        }
++        return result;
++    }
++}
+\ No newline at end of file

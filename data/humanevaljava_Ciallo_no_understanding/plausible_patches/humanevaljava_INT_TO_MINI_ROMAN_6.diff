@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java b/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
+old mode 100644
+new mode 100755
+index 0f3c881..f4a194a
+--- a/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
++++ b/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
+@@ -16,13 +16,16 @@ public class INT_TO_MINI_ROMAN {
+             "I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"
+         };
+ 
+-        int i = 12;
+-        String result = "";
++        StringBuilder result = new StringBuilder();
+         while (number > 0) {
+-            result += sym[i];
+-            number %= num[i];
+-            i -= 1;
++            for (int i = num.length - 1; i >= 0; i--) {
++                if (number >= num[i]) {
++                    result.append(sym[i]);
++                    number -= num[i];
++                    break;
++                }
++            }
+         }
+-        return result.toLowerCase();
++        return result.toString().toLowerCase();
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 27,
+    "bug_type": "SF",
+    "buggy_lines": "            return charset;",
+    "code": "    static String getCharsetFromContentType(String contentType) {\n        if (contentType == null) return null;\n        Matcher m = charsetPattern.matcher(contentType);\n        if (m.find()) {\n            String charset = m.group(1).trim();\n            charset = charset.toUpperCase(Locale.ENGLISH);\n            return charset;\n        }\n        return null;\n    }",
+    "fixed_code": "    static String getCharsetFromContentType(String contentType) {\n        if (contentType == null) return null;\n        Matcher m = charsetPattern.matcher(contentType);\n        if (m.find()) {\n            String charset = m.group(1).trim();\n            if (Charset.isSupported(charset)) return charset;\n            charset = charset.toUpperCase(Locale.ENGLISH);\n            if (Charset.isSupported(charset)) return charset;\n        }\n        return null;\n    }",
+    "fixed_lines": "            if (Charset.isSupported(charset)) return charset;\n            if (Charset.isSupported(charset)) return charset;",
+    "masked_code": "    static String getCharsetFromContentType(String contentType) {\n        if (contentType == null) return null;\n        Matcher m = charsetPattern.matcher(contentType);\n        if (m.find()) {\n            String charset = m.group(1).trim();\n            charset = charset.toUpperCase(Locale.ENGLISH);\n>>> [ INFILL ] <<<\n        }\n        return null;\n    }",
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<[utf]-8> but was:<[UTF]-8>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCharset() {\n        assertEquals(\"utf-8\", DataUtil.getCharsetFromContentType(\"text/html;charset=utf-8 \"));\n        assertEquals(\"UTF-8\", DataUtil.getCharsetFromContentType(\"text/html; charset=UTF-8\"));\n        assertEquals(\"ISO-8859-1\", DataUtil.getCharsetFromContentType(\"text/html; charset=ISO-8859-1\"));\n        assertEquals(null, DataUtil.getCharsetFromContentType(\"text/html\"));\n        assertEquals(null, DataUtil.getCharsetFromContentType(null));\n        assertEquals(null, DataUtil.getCharsetFromContentType(\"text/html;charset=Unknown\"));\n    }",
+    "test_line": "        assertEquals(\"utf-8\", DataUtil.getCharsetFromContentType(\"text/html;charset=utf-8 \"));",
+    "test_name": "testCharset",
+    "test_suite": "org.jsoup.helper.DataUtilTest"
+}

@@ -1,0 +1,16 @@
+{
+    "bug_id": 10,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Time",
+    "test_error_message": "org.joda.time.IllegalFieldValueException: Value 29 for dayOfMonth must be in the range [1,28]",
+    "test_framework": "defects4j",
+    "test_function": "    public void testFactory_daysBetween_RPartial_MonthDay() {\n        MonthDay start1 = new MonthDay(2, 1);\n        MonthDay start2 = new MonthDay(2, 28);\n        MonthDay end1 = new MonthDay(2, 28);\n        MonthDay end2 = new MonthDay(2, 29);\n        \n        assertEquals(27, Days.daysBetween(start1, end1).getDays());\n        assertEquals(28, Days.daysBetween(start1, end2).getDays());\n        assertEquals(0, Days.daysBetween(start2, end1).getDays());\n        assertEquals(1, Days.daysBetween(start2, end2).getDays());\n        \n        assertEquals(-27, Days.daysBetween(end1, start1).getDays());\n        assertEquals(-28, Days.daysBetween(end2, start1).getDays());\n        assertEquals(0, Days.daysBetween(end1, start2).getDays());\n        assertEquals(-1, Days.daysBetween(end2, start2).getDays());\n    }",
+    "test_line": "        assertEquals(28, Days.daysBetween(start1, end2).getDays());",
+    "test_name": "testFactory_daysBetween_RPartial_MonthDay",
+    "test_suite": "org.joda.time.TestDays"
+}

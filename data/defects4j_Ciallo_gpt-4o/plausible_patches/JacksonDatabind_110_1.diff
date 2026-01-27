@@ -1,0 +1,44 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/impl/JavaUtilCollectionsDeserializers.java b/src/main/java/com/fasterxml/jackson/databind/deser/impl/JavaUtilCollectionsDeserializers.java
+index 3228bacda..a8882a40d 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/impl/JavaUtilCollectionsDeserializers.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/impl/JavaUtilCollectionsDeserializers.java
+@@ -75,7 +75,7 @@ public abstract class JavaUtilCollectionsDeserializers
+         } else if (type.hasRawClass(CLASS_SINGLETON_SET)) {
+             conv = converter(TYPE_SINGLETON_SET, type, Set.class);
+         // [databind#2265]: we may have another impl type for unmodifiable Lists, check both
+-        } else if (type.hasRawClass(CLASS_UNMODIFIABLE_LIST)) {
++        } else if (type.hasRawClass(CLASS_UNMODIFIABLE_LIST) || type.getRawClass().getName().startsWith("java.util.Collections$UnmodifiableList")) {
+             conv = converter(TYPE_UNMODIFIABLE_LIST, type, List.class);
+         } else if (type.hasRawClass(CLASS_UNMODIFIABLE_SET)) {
+             conv = converter(TYPE_UNMODIFIABLE_SET, type, Set.class);
+@@ -126,7 +126,7 @@ public abstract class JavaUtilCollectionsDeserializers
+         
+         @Override
+         public Object convert(Object value) {
+-            if (value == null) { // is this legal to get?
++            if (value == null) { // this is fine to have as null
+                 return null;
+             }
+             
+@@ -152,11 +152,11 @@ public abstract class JavaUtilCollectionsDeserializers
+                 }
+ 
+             case TYPE_UNMODIFIABLE_SET:
+-                return Collections.unmodifiableSet((Set<?>) value);
++                return Collections.unmodifiableSet(new LinkedHashSet<>((Set<?>) value));
+             case TYPE_UNMODIFIABLE_LIST:
+-                return Collections.unmodifiableList((List<?>) value);
++                return Collections.unmodifiableList(new ArrayList<>((List<?>) value));
+             case TYPE_UNMODIFIABLE_MAP:
+-                return Collections.unmodifiableMap((Map<?,?>) value);
++                return Collections.unmodifiableMap(new LinkedHashMap<>((Map<?,?>) value));
+ 
+             case TYPE_AS_LIST:
+             default:
+@@ -184,4 +184,4 @@ public abstract class JavaUtilCollectionsDeserializers
+         }
+     }
+     
+-}
++}
+\ No newline at end of file

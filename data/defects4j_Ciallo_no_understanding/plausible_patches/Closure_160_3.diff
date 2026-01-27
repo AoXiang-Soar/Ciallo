@@ -1,0 +1,12 @@
+diff --git a/src/com/google/javascript/jscomp/Compiler.java b/src/com/google/javascript/jscomp/Compiler.java
+index 118502116..59bbfd2a4 100644
+--- a/src/com/google/javascript/jscomp/Compiler.java
++++ b/src/com/google/javascript/jscomp/Compiler.java
+@@ -272,6 +272,7 @@ public class Compiler extends AbstractCompiler {
+     // about missing variable declarations, we shut that specific
+     // error off.
+     if (!options.checkSymbols &&
++        !options.enables(DiagnosticGroups.CHECK_VARIABLES) &&
+         (warningsGuard == null || !warningsGuard.disables(
+             DiagnosticGroups.CHECK_VARIABLES))) {
+       guards.add(new DiagnosticGroupWarningsGuard(

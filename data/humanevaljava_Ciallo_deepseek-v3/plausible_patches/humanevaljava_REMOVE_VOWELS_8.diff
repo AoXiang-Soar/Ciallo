@@ -1,0 +1,49 @@
+diff --git a/src/main/java/humaneval/buggy/REMOVE_VOWELS.java b/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
+index a51c513..fe320e9 100644
+--- a/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
++++ b/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
+@@ -1,27 +1,26 @@
+ package humaneval.buggy;
+ 
+-/* remove_vowels is a function that takes string and returns string without vowels.
+->>> remove_vowels('')
+-''
+->>> remove_vowels("abcdef\nghijklm")
+-'bcdf\nghjklm'
+->>> remove_vowels('abcdef')
+-'bcdf'
+->>> remove_vowels('aaaaa')
+-''
+->>> remove_vowels('aaBAA')
+-'B'
+->>> remove_vowels('zbcd')
+-'zbcd' */
++import java.util.HashSet;
++import java.util.Set;
+ 
+ public class REMOVE_VOWELS {
++    private static final Set<Character> vowels = new HashSet<>();
++    
++    static {
++        char[] vowelChars = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
++        for (char v : vowelChars) {
++            vowels.add(v);
++        }
++    }
++    
+     public static String remove_vowels(String string) {
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+-                continue;
+-            sb.append(c);
++            // Use HashSet to check if the character is a vowel
++            if (!vowels.contains(c)) {
++                sb.append(c);
++            }
+         }
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

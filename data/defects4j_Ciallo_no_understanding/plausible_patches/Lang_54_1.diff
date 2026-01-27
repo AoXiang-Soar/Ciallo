@@ -1,0 +1,51 @@
+diff --git a/src/java/org/apache/commons/lang/LocaleUtils.java b/src/java/org/apache/commons/lang/LocaleUtils.java
+index 139d9a7f6..bf466a4ce 100644
+--- a/src/java/org/apache/commons/lang/LocaleUtils.java
++++ b/src/java/org/apache/commons/lang/LocaleUtils.java
+@@ -96,7 +96,7 @@ public class LocaleUtils {
+             return null;
+         }
+         int len = str.length();
+-        if (len != 2 && len != 5 && len < 7) {
++        if (len < 2) {
+             throw new IllegalArgumentException("Invalid locale format: " + str);
+         }
+         char ch0 = str.charAt(0);
+@@ -110,19 +110,28 @@ public class LocaleUtils {
+             if (str.charAt(2) != '_') {
+                 throw new IllegalArgumentException("Invalid locale format: " + str);
+             }
+-            char ch3 = str.charAt(3);
+-            char ch4 = str.charAt(4);
+-            if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+-                throw new IllegalArgumentException("Invalid locale format: " + str);
++            if (len == 3) {
++                return new Locale(str.substring(0, 2), "");
+             }
+-            if (len == 5) {
+-                return new Locale(str.substring(0, 2), str.substring(3, 5));
+-            } else {
+-                if (str.charAt(5) != '_') {
++            if (len >= 5) {
++                char ch3 = str.charAt(3);
++                if (ch3 == '_') {
++                    return new Locale(str.substring(0, 2), "", str.substring(4));
++                }
++                char ch4 = str.charAt(4);
++                if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+                     throw new IllegalArgumentException("Invalid locale format: " + str);
+                 }
+-                return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
++                if (len == 5) {
++                    return new Locale(str.substring(0, 2), str.substring(3, 5));
++                } else {
++                    if (str.charAt(5) != '_') {
++                        throw new IllegalArgumentException("Invalid locale format: " + str);
++                    }
++                    return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
++                }
+             }
++            throw new IllegalArgumentException("Invalid locale format: " + str);
+         }
+     }
+ 

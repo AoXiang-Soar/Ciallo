@@ -1,0 +1,19 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Gson,1,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Gson,2,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Gson,3,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Gson,4,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Gson,5,SL SH SF,1,1815,1,0,0,1,
+defects4j,Gson,6,SF,0,21030,,0,22,22,
+defects4j,Gson,7,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Gson,8,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Gson,9,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Gson,10,SH SF,0,10408,,11,11,22,
+defects4j,Gson,11,SL SH SF,1,422,1,0,0,1,
+defects4j,Gson,12,SF,1,670,1,0,0,1,
+defects4j,Gson,13,SL SH SF,0,25541,,22,0,22,
+defects4j,Gson,14,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Gson,15,SL SH SF,1,494,1,0,0,1,
+defects4j,Gson,16,SF,1,1593,1,0,0,1,
+defects4j,Gson,17,SH SF,0,11315,,21,1,22,
+defects4j,Gson,18,SF,1,8365,13,11,1,13,

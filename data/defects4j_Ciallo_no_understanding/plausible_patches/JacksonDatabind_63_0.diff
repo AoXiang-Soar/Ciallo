@@ -1,0 +1,13 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/JsonMappingException.java b/src/main/java/com/fasterxml/jackson/databind/JsonMappingException.java
+index 482622b82..dc0c57f1c 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/JsonMappingException.java
++++ b/src/main/java/com/fasterxml/jackson/databind/JsonMappingException.java
+@@ -132,7 +132,7 @@ public class JsonMappingException
+                         sb.append(pkgName);
+                         sb.append('.');
+                     }
+-                    sb.append(cls.getSimpleName());
++                    sb.append(cls.isMemberClass() ? cls.getName().substring(cls.getPackageName().length()+1) : cls.getSimpleName());
+                 }
+                 sb.append('[');
+                 if (_fieldName != null) {

@@ -1,0 +1,46 @@
+diff --git a/src/main/java/humaneval/buggy/BY_LENGTH.java b/src/main/java/humaneval/buggy/BY_LENGTH.java
+index 0e33347..2e9c98d 100644
+--- a/src/main/java/humaneval/buggy/BY_LENGTH.java
++++ b/src/main/java/humaneval/buggy/BY_LENGTH.java
+@@ -2,8 +2,8 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ import java.util.Collections;
+-import java.util.Map;
+ import java.util.HashMap;
++import java.util.Map;
+ 
+ /*
+  * Given an array of integers, sort the integers that are between 1 and 9 inclusive,
+@@ -39,13 +39,24 @@ public class BY_LENGTH {
+         digit_map.put(7, "Seven");
+         digit_map.put(8, "Eight");
+         digit_map.put(9, "Nine");
+-        Collections.sort(a, Collections.reverseOrder());
+-        ArrayList<String> result = new ArrayList<>();
+-        for(int num : a) {
+-            if(digit_map.get(num) != "") {
+-                result.add(digit_map.get(num));
++
++        // Create a new array to store only numbers between 1 and 9
++        ArrayList<Integer> filtered = new ArrayList<>();
++        for (int num : a) {
++            if (num >= 1 && num <= 9) {
++                filtered.add(num);
+             }
+         }
++
++        // Sort this filtered array and reverse it
++        Collections.sort(filtered, Collections.reverseOrder());
++
++        // Convert numbers to their corresponding names
++        ArrayList<String> result = new ArrayList<>();
++        for (int num : filtered) {
++            result.add(digit_map.get(num));
++        }
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

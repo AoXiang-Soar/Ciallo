@@ -1,0 +1,15 @@
+diff --git a/src/main/java/humaneval/buggy/TRUNCATE_NUMBER.java b/src/main/java/humaneval/buggy/TRUNCATE_NUMBER.java
+index f2dc7eb..6a8e42e 100644
+--- a/src/main/java/humaneval/buggy/TRUNCATE_NUMBER.java
++++ b/src/main/java/humaneval/buggy/TRUNCATE_NUMBER.java
+@@ -2,6 +2,7 @@ package humaneval.buggy;
+ 
+ public class TRUNCATE_NUMBER {
+     public static double truncate_number(double number) {
+-        return number / 1.0;
++        // Get the fractional part by subtracting the floored value of the number
++        return number - Math.floor(number);
+     }
+-}
++}
+\ No newline at end of file

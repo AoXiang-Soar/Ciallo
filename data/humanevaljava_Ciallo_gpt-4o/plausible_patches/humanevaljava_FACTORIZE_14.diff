@@ -1,0 +1,41 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIZE.java b/src/main/java/humaneval/buggy/FACTORIZE.java
+index 57975b5..f087ac1 100644
+--- a/src/main/java/humaneval/buggy/FACTORIZE.java
++++ b/src/main/java/humaneval/buggy/FACTORIZE.java
+@@ -4,19 +4,28 @@ import java.util.ArrayList;
+ import java.util.List;
+ 
+ public class FACTORIZE {
+-    public static List<Integer> factorize(int n){
++    public static List<Integer> factorize(int n) {
+         List<Integer> result = new ArrayList<Integer>();
++        
++        // Handle factorization for 2 separately
++        while (n % 2 == 0) {
++            result.add(2);
++            n = n / 2;
++        }
+ 
+-        int i = 2;
+-        while (i <= (int)(Math.sqrt(n) + 1)){
+-            if (n % i == 0){
++        // Check for odd factors from 3 onwards
++        for (int i = 3; i * i <= n; i += 2) {
++            while (n % i == 0) {
+                 result.add(i);
+                 n = n / i;
+-            } else{
+-                i += 1;
+             }
+         }
++        
++        // Add the remaining prime number if n is greater than 1
++        if (n > 1) {
++            result.add(n);
++        }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

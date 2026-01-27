@@ -1,0 +1,37 @@
+diff --git a/src/main/java/humaneval/buggy/CHOOSE_NUM.java b/src/main/java/humaneval/buggy/CHOOSE_NUM.java
+index f029eb4..211ed9f 100644
+--- a/src/main/java/humaneval/buggy/CHOOSE_NUM.java
++++ b/src/main/java/humaneval/buggy/CHOOSE_NUM.java
+@@ -1,20 +1,16 @@
+ package humaneval.buggy;
+ 
+-/*
+-    This function takes two positive numbers x and y and returns the
+-    biggest even integer number that is in the range [x, y] inclusive. If 
+-    there's no such number, then the function should return -1.
+-
+-    For example:
+-    choose_num(12, 15) = 14
+-    choose_num(13, 12) = -1
+-*/
+-
+ public class CHOOSE_NUM {
+     public static int choose_num(int x, int y) {
+-        if(x < y) return -1;
+-        if((y % 2) == 0) return y;
+-        if(x == y) return -1;
+-        return y - 1;
++        if (x > y) return -1; // Ensure valid range by checking x is less than or equal to y
++        if (y % 2 == 0) {
++            return y; // If y is even, it is the largest even number in the range
++        } else {
++            // If y is odd, check if y-1 is within the range and is the largest even number
++            if (y - 1 >= x) {
++                return y - 1;
++            }
++        }
++        return -1; // Return -1 if there is no even number in the range
+     }
+-}
++}
+\ No newline at end of file

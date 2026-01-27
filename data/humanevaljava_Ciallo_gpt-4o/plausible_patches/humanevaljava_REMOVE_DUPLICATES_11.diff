@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java b/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java
+index 526f5cb..87ba80a 100644
+--- a/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java
++++ b/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java
+@@ -1,23 +1,30 @@
+ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+-import java.util.HashMap;
++import java.util.HashSet;
+ import java.util.List;
++import java.util.Set;
+ 
+ public class REMOVE_DUPLICATES {
+     public static List<Integer> remove_duplicates(List<Integer> numbers) {
+         List<Integer> result = new ArrayList<Integer>();
+-        HashMap<Integer, Integer> count = new HashMap<Integer, Integer>();
+-        
+-        for (Integer n : numbers){
+-            count.put(n, count.get(n) + 1);
++        Set<Integer> seen = new HashSet<Integer>();
++        Set<Integer> duplicates = new HashSet<Integer>();
++
++        // Identify all duplicates
++        for (Integer n : numbers) {
++            if (!seen.add(n)) {
++                duplicates.add(n);
++            }
+         }
+ 
+-        for (Integer n : numbers){
+-            if (count.get(n) == 1)
++        // Collect numbers that are not duplicated
++        for (Integer n : numbers) {
++            if (!duplicates.contains(n)) {
+                 result.add(n);
++            }
+         }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/ADD_ELEMENTS.java b/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
+index 359f8fb..ed3288a 100644
+--- a/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
++++ b/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
+@@ -21,10 +21,12 @@ public class ADD_ELEMENTS {
+     public static int add_elements(ArrayList<Integer> arr, int k) {
+         int result = 0;
+         for(int i = 0; i < k; i++) {
+-            if(Integer.toString(arr.get(i)).length() >= 2) {
+-                result -= arr.get(i);
++            int num = arr.get(i);
++            int absValue = Math.abs(num);
++            if(absValue < 10 || absValue < 100) { // Check if num has at most two digits
++                result += num;
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

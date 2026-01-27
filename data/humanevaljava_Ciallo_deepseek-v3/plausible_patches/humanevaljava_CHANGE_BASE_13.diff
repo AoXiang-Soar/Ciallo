@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/CHANGE_BASE.java b/src/main/java/humaneval/buggy/CHANGE_BASE.java
+index 6e31774..99d3fa9 100644
+--- a/src/main/java/humaneval/buggy/CHANGE_BASE.java
++++ b/src/main/java/humaneval/buggy/CHANGE_BASE.java
+@@ -12,12 +12,12 @@ base numbers are less than 10.
+ 
+ public class CHANGE_BASE {
+     public static String change_base(int x, int base) {
+-        String result = "";
++        StringBuilder result = new StringBuilder();
+ 
+         while (x > 0) {
+-            result = result + x % base;
+-            x = x - x / base;
++            result.insert(0, x % base); // Insert at position 0 for correct order
++            x = x / base; // Use integer division to update x
+         }
+-        return result;
++        return result.toString(); // Directly return the final string
+     }
+-}
++}
+\ No newline at end of file

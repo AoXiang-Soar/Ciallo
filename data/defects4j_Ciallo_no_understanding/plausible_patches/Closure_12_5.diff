@@ -1,0 +1,25 @@
+diff --git a/src/com/google/javascript/jscomp/MaybeReachingVariableUse.java b/src/com/google/javascript/jscomp/MaybeReachingVariableUse.java
+index add5c664a..8ebc76694 100644
+--- a/src/com/google/javascript/jscomp/MaybeReachingVariableUse.java
++++ b/src/com/google/javascript/jscomp/MaybeReachingVariableUse.java
+@@ -157,6 +157,20 @@ class MaybeReachingVariableUse extends
+   }
+ 
+   private boolean hasExceptionHandler(Node cfgNode) {
++    for (Node current = cfgNode; current != null; current = current.getParent()) {
++        if (current.isTry()) {
++            return true;
++        }
++        if (current.isBlock()) {
++            Node blockParent = current.getParent();
++            if (blockParent != null && blockParent.isTry()) {
++                Node tryBlock = blockParent.getFirstChild();
++                if (tryBlock == current) {
++                    return true;
++                }
++            }
++        }
++    }
+     return false;
+   }
+ 

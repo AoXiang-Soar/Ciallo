@@ -1,0 +1,16 @@
+{
+    "bug_id": 8,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIssue820() throws Exception {\n    // Don't redeclare function parameters, this is incompatible with\n    // strict mode.\n    testSame(\"function f(a){ var b=1; a=2; var c; }\");\n  }",
+    "test_line": "    testSame(\"function f(a){ var b=1; a=2; var c; }\");",
+    "test_name": "testIssue820",
+    "test_suite": "com.google.javascript.jscomp.CollapseVariableDeclarationsTest"
+}

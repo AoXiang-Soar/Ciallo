@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/DIGITS.java b/src/main/java/humaneval/buggy/DIGITS.java
+index d36e11a..c48c1b9 100644
+--- a/src/main/java/humaneval/buggy/DIGITS.java
++++ b/src/main/java/humaneval/buggy/DIGITS.java
+@@ -12,16 +12,19 @@ package humaneval.buggy;
+ public class DIGITS {
+     public static int digits(int n) {
+         int product = 1;
+-        int odd_count = 0;
+-        while(n >= 0) {
+-            int digit = n * 10;
+-            if(digit % 2 == 0) {
+-                product /= digit;
+-                odd_count++;
++        int oddCount = 0;
++        
++        while (n > 0) {
++            int digit = n % 10; // Extract the last digit
++            
++            if (digit % 2 != 0) {
++                product *= digit; // Multiply product by odd digit
++                oddCount++; // Increment the odd digit count
+             }
+-            n /= 10;
++            
++            n /= 10; // Move to the next digit
+         }
+-        if(odd_count == 0) return 0;
+-        return product;
++        
++        return oddCount > 0 ? product : 0; // Return product if there's an odd digit, otherwise return 0
+     }
+-}
++}
+\ No newline at end of file

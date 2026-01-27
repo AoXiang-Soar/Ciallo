@@ -1,0 +1,16 @@
+{
+    "bug_id": 12,
+    "bug_type": "SH SF",
+    "buggy_lines": "        return (_valueTypeDeserializer == null)",
+    "code": "    public boolean isCachable() {\n        /* As per [databind#735], existence of value or key deserializer (only passed\n         * if annotated to use non-standard one) should also prevent caching.\n         */\n        return (_valueTypeDeserializer == null)\n                && (_ignorableProperties == null);\n    }",
+    "fixed_code": "    public boolean isCachable() {\n        /* As per [databind#735], existence of value or key deserializer (only passed\n         * if annotated to use non-standard one) should also prevent caching.\n         */\n        return (_valueDeserializer == null)\n                && (_keyDeserializer == null)\n                && (_valueTypeDeserializer == null)\n                && (_ignorableProperties == null);\n    }",
+    "fixed_lines": "        return (_valueDeserializer == null)\n                && (_keyDeserializer == null)\n                && (_valueTypeDeserializer == null)",
+    "masked_code": "    public boolean isCachable() {\n        /* As per [databind#735], existence of value or key deserializer (only passed\n         * if annotated to use non-standard one) should also prevent caching.\n         */\n>>> [ INFILL ] <<<\n                && (_ignorableProperties == null);\n    }",
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<1> but was:<100>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCustomMapValueDeser735() throws Exception {\n        String json = \"{\\\"map1\\\":{\\\"a\\\":1},\\\"map2\\\":{\\\"a\\\":1}}\";\n        TestMapBean735 bean = MAPPER.readValue(json, TestMapBean735.class);\n\n        assertEquals(100, bean.map1.get(\"a\").intValue());\n        assertEquals(1, bean.map2.get(\"a\").intValue());\n    }",
+    "test_line": "        assertEquals(1, bean.map2.get(\"a\").intValue());",
+    "test_name": "testCustomMapValueDeser735",
+    "test_suite": "com.fasterxml.jackson.databind.deser.TestCustomDeserializers"
+}

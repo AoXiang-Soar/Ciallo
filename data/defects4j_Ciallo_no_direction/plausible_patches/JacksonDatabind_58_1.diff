@@ -1,0 +1,53 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java b/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
+index df861215c..e8ffe7ac6 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
+@@ -700,20 +700,24 @@ public class BeanDeserializerFactory
+      * @return Property constructed, if any; or null to indicate that
+      *   there should be no property based on given definitions.
+      */
+-    protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,
+-            BeanDescription beanDesc, BeanPropertyDefinition propDef,
+-            JavaType propType0)
+-        throws JsonMappingException
+-    {
+-        // need to ensure method is callable (for non-public)
+-        AnnotatedMember mutator = propDef.getNonConstructorMutator();
++protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,
++        BeanDescription beanDesc, BeanPropertyDefinition propDef,
++        JavaType propType0)
++    throws JsonMappingException
++{
++    // need to ensure method is callable (for non-public)
++    AnnotatedMember mutator = propDef.getNonConstructorMutator();
++    if (mutator == null) {
++        return null; // Or throw an exception based on requirements
++    }
+ 
+-        if (ctxt.canOverrideAccessModifiers()) {
+-            // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;
+-            // never needed and attempts may cause problems on some platforms.
+-            // !!! NOTE: should be handled better for 2.8 and later
+-                mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
++    try {
++        // Handle access modifiers carefully
++        if (ctxt.canOverrideAccessModifiers() && 
++            !("cause".equals(propDef.getName()) && Throwable.class.isAssignableFrom(mutator.getDeclaringClass()))) {
++            mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
+         }
++
+         // note: this works since we know there's exactly one argument for methods
+         BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),
+                 propType0, propDef.getWrapperName(),
+@@ -749,7 +753,11 @@ public class BeanDeserializerFactory
+             prop.setObjectIdInfo(objectIdInfo);
+         }
+         return prop;
++    } catch (IllegalArgumentException e) {
++        throw JsonMappingException.from(ctxt.getParser(), 
++            "Failed to construct property '"+propDef.getName()+"': "+e.getMessage(), e);
+     }
++}
+ 
+     /**
+      * Method that will construct a regular bean property setter using

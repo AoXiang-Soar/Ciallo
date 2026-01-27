@@ -1,0 +1,54 @@
+diff --git a/src/main/java/org/apache/commons/collections/list/TreeList.java b/src/main/java/org/apache/commons/collections/list/TreeList.java
+index 50c20a53..376ce78c 100644
+--- a/src/main/java/org/apache/commons/collections/list/TreeList.java
++++ b/src/main/java/org/apache/commons/collections/list/TreeList.java
+@@ -895,25 +895,30 @@ public class TreeList<E> extends AbstractList<E> {
+             return nextIndex() - 1;
+         }
+ 
+-        public void remove() {
+-            checkModCount();
+-            if (currentIndex == -1) {
+-                throw new IllegalStateException();
+-            }
+-            if (nextIndex == currentIndex) {
+-                next = next.next();
+-                parent.remove(currentIndex);
+-            } else {
+-                // remove() following next()
+-                parent.remove(currentIndex);
+-                nextIndex--;
+-            }
+-            // the AVL node referenced by next may have become stale after a remove
+-            // reset it now: will be retrieved by next call to next()/previous() via nextIndex
+-            current = null;
+-            currentIndex = -1;
+-            expectedModCount++;
+-        }
++public void remove() {
++    checkModCount();
++    if (currentIndex == -1) {
++        throw new IllegalStateException();
++    }
++    
++    if (nextIndex == currentIndex + 1) {
++        // Case where remove() follows next()
++        parent.remove(currentIndex);
++        nextIndex = currentIndex; // Back up since we removed current
++    } else {
++        // Case where remove() follows previous()
++        parent.remove(currentIndex);
++        // nextIndex stays the same (pointing to same relative position)
++    }
++    
++    // Reset current regardless of which case we're in
++    current = null;
++    currentIndex = -1;
++    expectedModCount++;
++    
++    // Important: Make sure next reflects any structural changes
++    next = null; // Will be recalculated on next operation
++}
+ 
+         public void set(final E obj) {
+             checkModCount();

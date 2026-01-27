@@ -1,0 +1,65 @@
+diff --git a/src/main/java/org/jsoup/nodes/Entities.java b/src/main/java/org/jsoup/nodes/Entities.java
+index 4daf7208..82d7ecfb 100644
+--- a/src/main/java/org/jsoup/nodes/Entities.java
++++ b/src/main/java/org/jsoup/nodes/Entities.java
+@@ -47,31 +47,38 @@ public class Entities {
+             return string;
+ 
+         Matcher m = unescapePattern.matcher(string); // &(#(x|X)?([0-9a-fA-F]+)|[a-zA-Z]+);?
+-        StringBuffer accum = new StringBuffer(string.length()); // pity matcher can't use stringbuilder, avoid syncs
+-        // todo: replace m.appendReplacement with own impl, so StringBuilder and quoteReplacement not required
++StringBuffer accum = new StringBuffer(string.length()); // pity matcher can't use stringbuilder, avoid syncs
++// todo: replace m.appendReplacement with own impl, so StringBuilder and quoteReplacement not required
+ 
+-        while (m.find()) {
+-            int charval = -1;
+-            String num = m.group(3);
+-            if (num != null) {
+-                try {
+-                    int base = m.group(2) != null ? 16 : 10; // 2 is hex indicator
+-                    charval = Integer.valueOf(num, base);
+-                } catch (NumberFormatException e) {
+-                } // skip
+-            } else {
+-                String name = m.group(1);
+-                if (full.containsKey(name))
+-                    charval = full.get(name);
+-            }
++while (m.find()) {
++    int charval = -1;
++    String num = m.group(3);
++    if (num != null) {
++        try {
++            int base = m.group(2) != null ? 16 : 10; // 2 is hex indicator
++            charval = Integer.valueOf(num, base);
++        } catch (NumberFormatException e) {
++        } // skip
++    } else {
++        String name = m.group(1);
++        if (full.containsKey(name))
++            charval = full.get(name);
++    }
+ 
+-            if (charval != -1 || charval > 0xFFFF) { // out of range
+-                String c = Character.toString((char) charval);
+-                m.appendReplacement(accum, c);
+-            } else {
+-                m.appendReplacement(accum, m.group(0));
+-            }
++    try {
++        if (charval != -1 && charval <= 0xFFFF) {
++            String c = Character.toString((char) charval);
++            m.appendReplacement(accum, c);
++        } else {
++            m.appendReplacement(accum, m.group(0));
+         }
++    } catch (IllegalArgumentException e) {
++        // In case of illegal group references, use the quoted replacement
++        String replacement = charval != -1 && charval <= 0xFFFF ? 
++            Character.toString((char) charval) : m.group(0);
++        m.appendReplacement(accum, Matcher.quoteReplacement(replacement));
++    }
++}
+         m.appendTail(accum);
+         return accum.toString();
+     }

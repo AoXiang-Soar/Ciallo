@@ -1,0 +1,64 @@
+diff --git a/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java b/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
+index c87b0101f..484400fe7 100644
+--- a/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
++++ b/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
+@@ -61,24 +61,44 @@ public class ChiSquareTestImpl implements UnknownDistributionChiSquareTest {
+      * @throws IllegalArgumentException if preconditions are not met
+      * or length is less than 2
+      */
+-    public double chiSquare(double[] expected, long[] observed)
++public double chiSquare(double[] expected, long[] observed)
+         throws IllegalArgumentException {
+-        if ((expected.length < 2) || (expected.length != observed.length)) {
+-            throw new IllegalArgumentException(
+-                    "observed, expected array lengths incorrect");
+-        }
+-        if (!isPositive(expected) || !isNonNegative(observed)) {
+-            throw new IllegalArgumentException(
+-                "observed counts must be non-negative and expected counts must be postive");
+-        }
+-        double sumSq = 0.0d;
+-        double dev = 0.0d;
+-        for (int i = 0; i < observed.length; i++) {
+-                dev = ((double) observed[i] - expected[i]);
+-                sumSq += dev * dev / expected[i];
++    if ((expected.length < 2) || (expected.length != observed.length)) {
++        throw new IllegalArgumentException(
++                "observed, expected array lengths incorrect");
++    }
++    if (!isPositive(expected) || !isNonNegative(observed)) {
++        throw new IllegalArgumentException(
++            "observed counts must be non-negative and expected counts must be positive");
++    }
++    
++    // Calculate scaling factor to normalize expected and observed totals
++    double sumExpected = 0.0;
++    double sumObserved = 0.0;
++    for (int i = 0; i < observed.length; i++) {
++        sumExpected += expected[i];
++        sumObserved += observed[i];
++    }
++    
++    // Avoid division by zero
++    if (sumExpected == 0) {
++        throw new IllegalArgumentException("Total expected counts cannot be zero");
++    }
++    
++    double scalingFactor = sumObserved / sumExpected;
++    double sumSq = 0.0;
++    
++    for (int i = 0; i < observed.length; i++) {
++        double adjustedExpected = expected[i] * scalingFactor;
++        if (adjustedExpected == 0) {
++            continue; // skip if expected is zero to avoid division by zero
+         }
+-        return sumSq;
++        double dev = observed[i] - adjustedExpected;
++        sumSq += (dev * dev) / adjustedExpected;
+     }
++    
++    return sumSq;
++}
+ 
+     /**
+      * {@inheritDoc}

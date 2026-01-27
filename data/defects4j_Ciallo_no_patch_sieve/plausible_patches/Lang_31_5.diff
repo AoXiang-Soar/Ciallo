@@ -1,0 +1,63 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index a90b0673d..259697c9e 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -1436,26 +1436,38 @@ public class StringUtils {
+      * @return the <code>true</code> if any of the chars are found,
+      * <code>false</code> if no match or null input
+      * @since 2.4
+-     */
+-	public static boolean containsAny(CharSequence cs, char[] searchChars) {
+-		if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
+-			return false;
+-		}
+-		int csLength = cs.length();
+-		int searchLength = searchChars.length;
+-		for (int i = 0; i < csLength; i++) {
+-			char ch = cs.charAt(i);
+-			for (int j = 0; j < searchLength; j++) {
+-				if (searchChars[j] == ch) {
+-						// ch is a supplementary character
+-						// ch is in the Basic Multilingual Plane
+-						return true;
+-				}
+-			}
+-		}
+-		return false;
+-	}
+-
++     */public static boolean containsAny(CharSequence cs, char[] searchChars) {
++    if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
++        return false;
++    }
++    int csLength = cs.length();
++    int searchLength = searchChars.length;
++    
++    for (int i = 0; i < csLength; i++) {
++        char ch = cs.charAt(i);
++        if (Character.isHighSurrogate(ch) && i + 1 < csLength) {
++            // Handle supplementary characters (surrogate pairs)
++            int codePoint = Character.codePointAt(cs, i);
++            for (int j = 0; j < searchLength; j++) {
++                if (Character.isHighSurrogate(searchChars[j]) && j + 1 < searchLength) {
++                    int searchCodePoint = Character.codePointAt(searchChars, j);
++                    if (codePoint == searchCodePoint) {
++                        return true;
++                    }
++                }
++            }
++            i++; // Skip the low surrogate
++        } else {
++            // Handle BMP characters
++            for (int j = 0; j < searchLength; j++) {
++                if (searchChars[j] == ch && !Character.isHighSurrogate(searchChars[j])) {
++                    return true;
++                }
++            }
++        }
++    }
++    return false;
++}
+     /**
+      * <p>
+      * Checks if the CharSequence contains any character in the given set of characters.

@@ -1,0 +1,40 @@
+diff --git a/src/org/mockito/internal/invocation/InvocationMatcher.java b/src/org/mockito/internal/invocation/InvocationMatcher.java
+index 203413fc9..0f9313521 100644
+--- a/src/org/mockito/internal/invocation/InvocationMatcher.java
++++ b/src/org/mockito/internal/invocation/InvocationMatcher.java
+@@ -89,15 +89,20 @@ public class InvocationMatcher implements PrintableInvocation, PrintingFriendlyI
+         return !overloadedButSameArgs;
+     }
+ 
+-    public boolean hasSameMethod(Invocation candidate) {        
+-        //not using method.equals() for 1 good reason:
+-        //sometimes java generates forwarding methods when generics are in play see JavaGenericsForwardingMethodsTest
+-        Method m1 = invocation.getMethod();
+-        Method m2 = candidate.getMethod();
+-        
+-        	/* Avoid unnecessary cloning */
+-        return m1.equals(m2);
++public boolean hasSameMethod(Invocation candidate) {
++    Method m1 = invocation.getMethod();
++    Method m2 = candidate.getMethod();
++
++    // Handle iterator() specially for Iterable cases
++    if ("iterator".equals(m1.getName()) && m1.getParameterCount() == 0 &&
++        Iterable.class.isAssignableFrom(m1.getDeclaringClass())) {
++        return "iterator".equals(m2.getName()) && m2.getParameterCount() == 0;
+     }
++
++    return m1.getName().equals(m2.getName()) &&
++           java.util.Arrays.equals(m1.getParameterTypes(), m2.getParameterTypes()) &&
++           m1.getReturnType().equals(m2.getReturnType());
++}
+     
+     public Location getLocation() {
+         return invocation.getLocation();
+@@ -126,4 +131,4 @@ public class InvocationMatcher implements PrintableInvocation, PrintingFriendlyI
+ 
+         return out;
+     }
+-}
+\ No newline at end of file
++}

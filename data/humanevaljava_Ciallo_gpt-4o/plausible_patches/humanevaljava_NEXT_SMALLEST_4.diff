@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+index 7791efd..569d63f 100644
+--- a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
++++ b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+@@ -14,13 +14,15 @@ next_smallest([1, 1]) == None */
+ public class NEXT_SMALLEST {
+     public static Integer next_smallest(int[] lst) {
+         List<Integer> numbers = new ArrayList<Integer>();
+-        for (Integer n : lst)
+-            numbers.add(n);
+-        Integer[] no_duplicate = numbers.toArray(new Integer[] {});
+-        Arrays.sort(no_duplicate);
++        for (Integer n : lst) {
++            if (!numbers.contains(n)) {
++                numbers.add(n);
++            }
++        }
++        Collections.sort(numbers);
+ 
+-        if (no_duplicate.length < 2)
++        if (numbers.size() < 2)
+             return null;
+-        return no_duplicate[1];
++        return numbers.get(1);
+     }
+-}
++}
+\ No newline at end of file

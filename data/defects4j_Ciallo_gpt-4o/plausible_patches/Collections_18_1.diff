@@ -1,0 +1,43 @@
+diff --git a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+index ce6926fa..8ca10bf6 100644
+--- a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
++++ b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+@@ -225,22 +225,26 @@ public class ListOrderedSet<E>
+     }
+ 
+     @Override
+-    public boolean retainAll(Collection<?> coll) {
+-        boolean result = collection.retainAll(coll);
+-        if (result == false) {
+-            return false;
++public boolean retainAll(Collection<?> coll) {
++    Set<?> retainSet = new HashSet<Object>(coll); // Explicitly specify type parameters
++    boolean modified = false;
++    for (Iterator<E> it = collection.iterator(); it.hasNext();) {
++        if (!retainSet.contains(it.next())) {
++            it.remove();
++            modified = true;
+         }
+-        if (collection.size() == 0) {
+-            setOrder.clear();
+-        } else {
+-            for (Iterator<E> it = setOrder.iterator(); it.hasNext();) {
+-                if (!collection.contains(it.next())) {
+-                    it.remove();
+-                }
++    }
++    if (collection.size() == 0) {
++        setOrder.clear();
++    } else {
++        for (Iterator<E> it = setOrder.iterator(); it.hasNext();) {
++            if (!collection.contains(it.next())) {
++                it.remove();
+             }
+         }
+-        return result;
+     }
++    return modified;
++}
+ 
+     @Override
+     public Object[] toArray() {

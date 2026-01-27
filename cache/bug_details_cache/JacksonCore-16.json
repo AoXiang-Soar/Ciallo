@@ -1,0 +1,16 @@
+{
+    "bug_id": 16,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonCore",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<2> but was:<3>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testInitialized() throws Exception\n    {\n        JsonParser p1 = JSON_FACTORY.createParser(\"1 2\");\n        JsonParser p2 = JSON_FACTORY.createParser(\"3 false\");\n        // consume '1', move to '2'\n        assertToken(JsonToken.VALUE_NUMBER_INT, p1.nextToken());\n        assertToken(JsonToken.VALUE_NUMBER_INT, p1.nextToken());\n\n        JsonParserSequence seq = JsonParserSequence.createFlattened(p1, p2);\n        assertToken(JsonToken.VALUE_NUMBER_INT, seq.nextToken());\n        assertEquals(2, seq.getIntValue());\n        assertToken(JsonToken.VALUE_NUMBER_INT, seq.nextToken());\n        assertEquals(3, seq.getIntValue());\n        seq.close();\n    }",
+    "test_line": "        assertEquals(2, seq.getIntValue());",
+    "test_name": "testInitialized",
+    "test_suite": "com.fasterxml.jackson.core.json.ParserSequenceTest"
+}

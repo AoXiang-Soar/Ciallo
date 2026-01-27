@@ -1,0 +1,40 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Cli,1,BF,5,51521,5,2,5,14,
+defects4j,Cli,2,SF,2,26309,20,19,1,41,
+defects4j,Cli,3,SH SF,18,14145,8,0,1,19,
+defects4j,Cli,4,SH SF,2,9291,7,3,0,8,
+defects4j,Cli,5,SH SF,2,6810,5,2,2,8,
+defects4j,Cli,7,BF,3,33904,6,0,2,5,
+defects4j,Cli,8,SL SH SF,1,18774,15,10,0,21,
+defects4j,Cli,9,SF,4,11651,5,7,3,21,
+defects4j,Cli,10,BF,,,,,,,Out of limited tokens. 
+defects4j,Cli,11,SL SH SF,3,8514,6,2,1,8,
+defects4j,Cli,12,SF,7,23028,8,7,0,21,
+defects4j,Cli,13,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,14,SF,4,30425,16,3,13,23,
+defects4j,Cli,15,SF,5,17271,8,9,0,23,
+defects4j,Cli,16,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,17,SL SH SF,18,33679,20,4,0,26,
+defects4j,Cli,18,BF,,,,,,,Out of limited tokens. 
+defects4j,Cli,19,SF,1,160770,174,9,114,171,
+defects4j,Cli,20,SF,0,591990,,163,127,2458,
+defects4j,Cli,21,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,22,BF,,,,,,,Out of limited tokens. 
+defects4j,Cli,23,BF,,,,,,,Out of limited tokens. 
+defects4j,Cli,24,SH SF,2,22254,10,10,2,24,
+defects4j,Cli,25,SL SH SF,1,16882,12,8,2,19,
+defects4j,Cli,26,SF,2,22562,19,20,2,44,
+defects4j,Cli,27,SF,4,17699,15,13,0,30,
+defects4j,Cli,28,SL SH SF,1,12319,5,3,0,7,
+defects4j,Cli,29,SF,3,9339,6,5,1,14,
+defects4j,Cli,30,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,31,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,32,SH SF,2,39614,25,16,12,46,
+defects4j,Cli,33,BF,,,,,,,Out of limited tokens. 
+defects4j,Cli,34,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,35,SH SF,4,8374,5,0,0,4,
+defects4j,Cli,36,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,37,SF,10,13134,5,4,0,18,
+defects4j,Cli,38,SF,1,11258,7,9,0,19,
+defects4j,Cli,39,BF,13,84745,7,0,6,19,
+defects4j,Cli,40,SL SH SF,7,12026,6,1,1,10,

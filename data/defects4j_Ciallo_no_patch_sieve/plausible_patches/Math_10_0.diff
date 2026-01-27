@@ -1,0 +1,18 @@
+diff --git a/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java b/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
+index bf6dd65d5..4c6a5dfc3 100644
+--- a/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
++++ b/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
+@@ -1416,6 +1416,13 @@ public class DSCompiler {
+         }
+ 
+         // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
++        // handle special cases where x or y is exactly zero
++        if (x[xOffset] == 0.0 && y[yOffset] == 0.0) {
++            result[resultOffset] = (Double.doubleToRawLongBits(x[xOffset]) >= 0) ? 
++                                 FastMath.copySign(0.0, y[yOffset]) : 
++                                 FastMath.copySign(FastMath.PI, y[yOffset]);
++            Arrays.fill(result, resultOffset + 1, resultOffset + getSize(), 0.0);
++        }
+ 
+     }
+ 

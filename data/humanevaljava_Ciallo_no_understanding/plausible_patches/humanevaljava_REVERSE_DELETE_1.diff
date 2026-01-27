@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/REVERSE_DELETE.java b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+old mode 100644
+new mode 100755
+index 93117a1..bb6aa2d
+--- a/src/main/java/humaneval/buggy/REVERSE_DELETE.java
++++ b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+@@ -15,11 +15,9 @@ import java.util.ArrayList;
+ 
+ public class REVERSE_DELETE {
+     public static ArrayList<Object> reverse_delete(String s, String c) {
+-        String new_s = "";
+-        for(int i = 0; i < s.length(); i++) {
+-            if(c.indexOf(s.charAt(i)) != -1) {
+-                new_s += s.charAt(i);
+-            }
++        String new_s = s;
++        for(int i = 0; i < c.length(); i++) {
++            new_s = new_s.replace(Character.toString(c.charAt(i)), "");
+         }
+         String reverse_s = "";
+         for(int i = new_s.length() - 1; i >= 0; i--) {
+@@ -30,4 +28,4 @@ public class REVERSE_DELETE {
+         res.add(reverse_s.equals(new_s));
+         return res;
+     }
+-}
++}
+\ No newline at end of file

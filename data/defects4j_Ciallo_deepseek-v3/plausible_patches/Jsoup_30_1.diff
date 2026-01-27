@@ -1,0 +1,35 @@
+diff --git a/src/main/java/org/jsoup/safety/Cleaner.java b/src/main/java/org/jsoup/safety/Cleaner.java
+index e4d45bd2..ad331f1e 100644
+--- a/src/main/java/org/jsoup/safety/Cleaner.java
++++ b/src/main/java/org/jsoup/safety/Cleaner.java
+@@ -61,7 +61,7 @@ public class Cleaner {
+ 
+         Document clean = Document.createShell(dirtyDocument.baseUri());
+         int numDiscarded = copySafeNodes(dirtyDocument.body(), clean.body());
+-        return numDiscarded == 0;
++        return numDiscarded == 0 && dirtyDocument.body().childNodes().size() == clean.body().childNodes().size();
+     }
+ 
+     /**
+@@ -90,11 +90,11 @@ public class Cleaner {
+                 TextNode sourceText = (TextNode) source;
+                 TextNode destText = new TextNode(sourceText.getWholeText(), source.baseUri());
+                 destination.appendChild(destText);
++            } else {
++                numDiscarded++;
+             }
+         }
+         return numDiscarded;
+-
+-
+     }
+ 
+     private ElementMeta createSafeElement(Element sourceEl) {
+@@ -125,5 +125,4 @@ public class Cleaner {
+             this.numAttribsDiscarded = numAttribsDiscarded;
+         }
+     }
+-
+-}
++}
+\ No newline at end of file

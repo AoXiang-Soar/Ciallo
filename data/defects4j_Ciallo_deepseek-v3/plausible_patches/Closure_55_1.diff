@@ -1,0 +1,36 @@
+diff --git a/src/com/google/javascript/jscomp/FunctionRewriter.java b/src/com/google/javascript/jscomp/FunctionRewriter.java
+index dbf000696..0edb1437d 100644
+--- a/src/com/google/javascript/jscomp/FunctionRewriter.java
++++ b/src/com/google/javascript/jscomp/FunctionRewriter.java
+@@ -113,9 +113,28 @@ class FunctionRewriter implements CompilerPass {
+     return (root != null) ? root.removeFirstChild() : null;
+   }
+ 
+-  private static boolean isReduceableFunctionExpression(Node n) {
+-    return NodeUtil.isFunctionExpression(n);
+-  }
++private static boolean isReduceableFunctionExpression(Node n) {
++    if (n == null) {
++        return false;
++    }
++    
++    // First check if it's a function expression
++    if (!NodeUtil.isFunctionExpression(n)) {
++        return false;
++    }
++    
++    // Then verify it's not being used in a way that makes it non-reducible
++    Node parent = n.getParent();
++    if (parent != null) {
++        int parentType = parent.getType();
++        // Check if parent is a call, new, or get/set operation
++        if (parentType == Token.CALL || parentType == Token.NEW || NodeUtil.isGetOrSetKey(parent)) {
++            return false;
++        }
++    }
++    
++    return true;
++}
+ 
+   /**
+    * Information needed to apply a reduction.

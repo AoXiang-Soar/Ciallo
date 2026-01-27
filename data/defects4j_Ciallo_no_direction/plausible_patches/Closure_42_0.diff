@@ -1,0 +1,171 @@
+diff --git a/src/com/google/javascript/jscomp/parsing/IRFactory.java b/src/com/google/javascript/jscomp/parsing/IRFactory.java
+index 1a95aa2f8..595e68da1 100644
+--- a/src/com/google/javascript/jscomp/parsing/IRFactory.java
++++ b/src/com/google/javascript/jscomp/parsing/IRFactory.java
+@@ -474,104 +474,109 @@ class IRFactory {
+     }
+ 
+     private boolean isDirective(Node n) {
+-      if (n == null) return false;
++        if (n == null) return false;
+ 
+-      int nType = n.getType();
+-      return nType == Token.EXPR_RESULT &&
+-          n.getFirstChild().isString() &&
+-          ALLOWED_DIRECTIVES.contains(n.getFirstChild().getString());
++        int nType = n.getType();
++        return nType == Token.EXPR_RESULT &&
++            n.getFirstChild().isString() &&
++            ALLOWED_DIRECTIVES.contains(n.getFirstChild().getString());
+     }
+ 
+     @Override
+     Node processBlock(Block blockNode) {
+-      return processGeneric(blockNode);
++        return processGeneric(blockNode);
+     }
+ 
+     @Override
+     Node processBreakStatement(BreakStatement statementNode) {
+-      Node node = newNode(Token.BREAK);
+-      if (statementNode.getBreakLabel() != null) {
+-        Node labelName = transform(statementNode.getBreakLabel());
+-        // Change the NAME to LABEL_NAME
+-        labelName.setType(Token.LABEL_NAME);
+-        node.addChildToBack(labelName);
+-      }
+-      return node;
++        Node node = newNode(Token.BREAK);
++        if (statementNode.getBreakLabel() != null) {
++            Node labelName = transform(statementNode.getBreakLabel());
++            // Change the NAME to LABEL_NAME
++            labelName.setType(Token.LABEL_NAME);
++            node.addChildToBack(labelName);
++        }
++        return node;
+     }
+ 
+     @Override
+     Node processCatchClause(CatchClause clauseNode) {
+-      AstNode catchVar = clauseNode.getVarName();
+-      Node node = newNode(Token.CATCH, transform(catchVar));
+-      if (clauseNode.getCatchCondition() != null) {
+-        errorReporter.error(
+-            "Catch clauses are not supported",
+-            sourceName,
+-            clauseNode.getCatchCondition().getLineno(), "", 0);
+-      }
+-      node.addChildToBack(transformBlock(clauseNode.getBody()));
+-      return node;
++        AstNode catchVar = clauseNode.getVarName();
++        Node node = newNode(Token.CATCH, transform(catchVar));
++        if (clauseNode.getCatchCondition() != null) {
++            errorReporter.error(
++                "Catch clauses are not supported",
++                sourceName,
++                clauseNode.getCatchCondition().getLineno(), "", 0);
++        }
++        node.addChildToBack(transformBlock(clauseNode.getBody()));
++        return node;
+     }
+ 
+     @Override
+     Node processConditionalExpression(ConditionalExpression exprNode) {
+-      return newNode(
+-          Token.HOOK,
+-          transform(exprNode.getTestExpression()),
+-          transform(exprNode.getTrueExpression()),
+-          transform(exprNode.getFalseExpression()));
++        return newNode(
++            Token.HOOK,
++            transform(exprNode.getTestExpression()),
++            transform(exprNode.getTrueExpression()),
++            transform(exprNode.getFalseExpression()));
+     }
+ 
+     @Override
+     Node processContinueStatement(ContinueStatement statementNode) {
+-      Node node = newNode(Token.CONTINUE);
+-      if (statementNode.getLabel() != null) {
+-        Node labelName = transform(statementNode.getLabel());
+-        // Change the NAME to LABEL_NAME
+-        labelName.setType(Token.LABEL_NAME);
+-        node.addChildToBack(labelName);
+-      }
+-      return node;
++        Node node = newNode(Token.CONTINUE);
++        if (statementNode.getLabel() != null) {
++            Node labelName = transform(statementNode.getLabel());
++            // Change the NAME to LABEL_NAME
++            labelName.setType(Token.LABEL_NAME);
++            node.addChildToBack(labelName);
++        }
++        return node;
+     }
+ 
+     @Override
+     Node processDoLoop(DoLoop loopNode) {
+-      return newNode(
+-          Token.DO,
+-          transformBlock(loopNode.getBody()),
+-          transform(loopNode.getCondition()));
++        return newNode(
++            Token.DO,
++            transformBlock(loopNode.getBody()),
++            transform(loopNode.getCondition()));
+     }
+ 
+     @Override
+     Node processElementGet(ElementGet getNode) {
+-      return newNode(
+-          Token.GETELEM,
+-          transform(getNode.getTarget()),
+-          transform(getNode.getElement()));
++        return newNode(
++            Token.GETELEM,
++            transform(getNode.getTarget()),
++            transform(getNode.getElement()));
+     }
+ 
+     @Override
+     Node processEmptyExpression(EmptyExpression exprNode) {
+-      Node node = newNode(Token.EMPTY);
+-      return node;
++        return newNode(Token.EMPTY);
+     }
+ 
+     @Override
+     Node processExpressionStatement(ExpressionStatement statementNode) {
+-      Node node = newNode(transformTokenType(statementNode.getType()));
+-      node.addChildToBack(transform(statementNode.getExpression()));
+-      return node;
++        Node expr = transform(statementNode.getExpression());
++        if (statementNode.getExpression() instanceof EmptyExpression) {
++            return newNode(Token.EMPTY);
++        }
++        return newNode(Token.EXPR_RESULT, expr);
+     }
+ 
+     @Override
+     Node processForInLoop(ForInLoop loopNode) {
+-
+-        // Return the bare minimum to put the AST in a valid state.
+-      return newNode(
+-          Token.FOR,
+-          transform(loopNode.getIterator()),
+-          transform(loopNode.getIteratedObject()),
+-          transformBlock(loopNode.getBody()));
++        if (loopNode.isForEach()) {
++            errorReporter.error(
++                "unsupported language extension: for each",
++                sourceName,
++                loopNode.getLineno(), "", 0);
++        }
++        return newNode(
++            Token.FOR,
++            transform(loopNode.getIterator()),
++            transform(loopNode.getIteratedObject()),
++            transformBlock(loopNode.getBody()));
+     }
+ 
+     @Override

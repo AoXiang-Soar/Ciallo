@@ -1,0 +1,123 @@
+diff --git a/src/main/java/humaneval/buggy/MIN_PATH.java b/src/main/java/humaneval/buggy/MIN_PATH.java
+index c19fee5..b664c14 100644
+--- a/src/main/java/humaneval/buggy/MIN_PATH.java
++++ b/src/main/java/humaneval/buggy/MIN_PATH.java
+@@ -1,55 +1,73 @@
+ package humaneval.buggy;
+ 
+-/*
+- * Given a grid with N rows and N columns (N >= 2) and a positive integer k, 
+-    each cell of the grid contains a value. Every integer in the range [1, N * N]
+-    inclusive appears exactly once on the cells of the grid.
+-
+-    You have to find the minimum path of length k in the grid. You can start
+-    from any cell, and in each step you can move to any of the neighbor cells,
+-    in other words, you can go to cells which share an edge with you current
+-    cell.
+-    Please note that a path of length k means visiting exactly k cells (not
+-    necessarily distinct).
+-    You CANNOT go off the grid.
+-    A path A (of length k) is considered less than a path B (of length k) if
+-    after making the ordered lists of the values on the cells that A and B go
+-    through (let's call them lst_A and lst_B), lst_A is lexicographically less
+-    than lst_B, in other words, there exist an integer index i (1 <= i <= k)
+-    such that lst_A[i] < lst_B[i] and for any j (1 <= j < i) we have
+-    lst_A[j] = lst_B[j].
+-    It is guaranteed that the answer is unique.
+-    Return an ordered list of the values on the cells that the minimum path go through.
+-
+-    Examples:
+-
+-        Input: grid = [ [1,2,3], [4,5,6], [7,8,9]], k = 3
+-        Output: [1, 2, 1]
+-
+-        Input: grid = [ [5,9,3], [4,1,6], [7,8,2]], k = 1
+-        Output: [1]
+-
+- */
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.List;
+ 
+ public class MIN_PATH {
++
+     public static int[] min_path(int[][] grid, int k) {
+         int n = grid.length;
+-        int val = n * n + 1;
+-        for(int i = 0; i < n; i++) {
+-            for(int j = 0; j < n; j++) {
+-                if(grid[i][j] == 1) {
+-                    if(i != 0) val = Math.max(val, grid[i][j + 1]);
+-                    if(j != 0) val = Math.min(val, grid[i - 1][j]);
+-                    if(i != n - 1) val = Math.min(val, grid[i - 1][j]);
+-                    if(j != n + 1) val = Math.max(val, grid[i][j - 1]);
++        List<int[]> paths = new ArrayList<>();
++        
++        // Helper method to perform backtracking to find paths of length k
++        findPaths(grid, n, k, new ArrayList<>(), paths); 
++
++        // Sorting all paths to get the lexicographically minimum one
++        Collections.sort(paths, (a, b) -> {
++            for (int i = 0; i < k; i++) {
++                if (a[i] != b[i]) {
++                    return Integer.compare(a[i], b[i]);
+                 }
+             }
++            return 0;
++        });
++        
++        return paths.get(0);
++    }
++    
++    private static void findPaths(int[][] grid, int n, int k, List<Integer> currentPath, List<int[]> paths) {
++        if (currentPath.size() == k) {
++            paths.add(currentPath.stream().mapToInt(i -> i).toArray());
++            return;
+         }
+-        int[] ans = new int[k];
+-        for(int i = 0; i < k; i++) {
+-            if((i % 2) == 0) ans[i] = 1;
+-            else ans[i] = val;
++        
++        if (currentPath.isEmpty()) {
++            // Start from every possible cell if the path is empty
++            for (int i = 0; i < n; i++) {
++                for (int j = 0; j < n; j++) {
++                    currentPath.add(grid[i][j]);
++                    findPaths(grid, n, k, currentPath, paths);
++                    currentPath.remove(currentPath.size() - 1);
++                }
++            }
++        } else {
++            int lastValue = currentPath.get(currentPath.size() - 1);
++            int row = -1, col = -1;
++            
++            // Find the current cell based on the last added value
++            outerLoop:
++            for (int i = 0; i < n; i++) {
++                for (int j = 0; j < n; j++) {
++                    if (grid[i][j] == lastValue) {
++                        row = i;
++                        col = j;
++                        break outerLoop;
++                    }
++                }
++            }
++            
++            // Explore neighbors
++            int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
++            for (int[] dir : directions) {
++                int newRow = row + dir[0];
++                int newCol = col + dir[1];
++                if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < n) {
++                    currentPath.add(grid[newRow][newCol]);
++                    findPaths(grid, n, k, currentPath, paths);
++                    currentPath.remove(currentPath.size() - 1);
++                }
++            }
+         }
+-        return ans;
+     }
+-}
++}
+\ No newline at end of file

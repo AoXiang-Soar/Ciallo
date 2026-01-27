@@ -1,0 +1,82 @@
+diff --git a/src/main/java/humaneval/buggy/ORDER_BY_POINTS.java b/src/main/java/humaneval/buggy/ORDER_BY_POINTS.java
+index 4e6cd94..e3dc342 100644
+--- a/src/main/java/humaneval/buggy/ORDER_BY_POINTS.java
++++ b/src/main/java/humaneval/buggy/ORDER_BY_POINTS.java
+@@ -2,44 +2,44 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ import java.util.Collections;
+-import java.util.HashMap;
+-
+-/* Write a function which sorts the given list of integers
+-in ascending order according to the sum of their digits.
+-Note: if there are several items with similar sum of their digits,
+-order them based on their index in original list.
+-
+-For example:
+->>> order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]
+->>> order_by_points([]) == [] */
++import java.util.Comparator;
+ 
+ public class ORDER_BY_POINTS {
+     public static Integer[] order_by_points(Integer[] nums) {
+-        ArrayList<Integer> digits = new ArrayList<Integer>();
+-        HashMap<Integer, ArrayList<Integer>> digits_number = new HashMap<Integer, ArrayList<Integer>>();
+-
+-        for (int i = 0; i < nums.length; i += 1){
+-            int neg = 1;
++        ArrayList<int[]> digitIndices = new ArrayList<int[]>();
++        
++        for (int i = 0; i < nums.length; i += 1) {
+             int n = nums[i];
+-            if (n < 0) {
+-                n = -1 * n;
+-                neg = -1;
++            int sum = 0;
++            
++            // Convert to string to properly handle negative sign
++            String numStr = Integer.toString(n);
++            for (int j = 0; j < numStr.length(); j++) {
++                char c = numStr.charAt(j);
++                if (c == '-') {
++                    // Negative sign affects the sum
++                    sum -= Character.getNumericValue(numStr.charAt(j+1));
++                    j++; // Skip next digit since we've already processed it
++                } else {
++                    sum += Character.getNumericValue(c);
++                }
+             }
+-            int digit = 0;
+-            for (int j = 0; j < (n + "").toCharArray().length; j += 1){
+-                digit += ((n + "").toCharArray()[j] - '0') * neg;
+-            }
+-            digits.add(digit);
+-            if (! digits_number.containsKey(digit))
+-                digits_number.put(digit, new ArrayList<Integer>());
+-            digits_number.get(digit).add(nums[i]);
++            digitIndices.add(new int[]{sum, i});
+         }
+-        Collections.sort(digits);
+         
+-        ArrayList<Integer> result = new ArrayList<Integer>();
+-        for (int i = 0; i < digits.size(); i += 1) {
+-            result.addAll(digits_number.get(digits.get(i)));
++        Collections.sort(digitIndices, new Comparator<int[]>() {
++            public int compare(int[] a, int[] b) {
++                if (a[0] != b[0]) {
++                    return Integer.compare(a[0], b[0]);
++                }
++                return Integer.compare(a[1], b[1]);
++            }
++        });
++        
++        Integer[] result = new Integer[nums.length];
++        for (int i = 0; i < digitIndices.size(); i += 1) {
++            result[i] = nums[digitIndices.get(i)[1]];
+         }
+-        return result.toArray(new Integer[] {});
++        return result;
+     }
+-}
++}
+\ No newline at end of file

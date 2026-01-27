@@ -1,0 +1,44 @@
+diff --git a/src/main/java/org/apache/commons/math/util/MathUtils.java b/src/main/java/org/apache/commons/math/util/MathUtils.java
+index 46368dc9f..db36e1c76 100644
+--- a/src/main/java/org/apache/commons/math/util/MathUtils.java
++++ b/src/main/java/org/apache/commons/math/util/MathUtils.java
+@@ -1620,15 +1620,32 @@ public final class MathUtils {
+      * @param p2 the second point
+      * @return the L<sub>2</sub> distance between the two points
+      */
+-    public static double distance(int[] p1, int[] p2) {
+-      int sum = 0;
+-      for (int i = 0; i < p1.length; i++) {
+-          final int dp = p1[i] - p2[i];
+-          sum += dp * dp;
+-      }
+-      return Math.sqrt(sum);
++public static double distance(int[] p1, int[] p2) {
++    // Check if either of the input arrays is null
++    if (p1 == null || p2 == null) {
++        throw new NullPointerException("Input point arrays must not be null");
++    }
++
++    // Check if the input arrays have the same length
++    if (p1.length != p2.length) {
++        throw new IllegalArgumentException("Input point arrays must have the same length");
+     }
+ 
++    double sum = 0.0;
++    for (int i = 0; i < p1.length; i++) {
++        final double dp = (double) p1[i] - p2[i];
++        sum += dp * dp;
++    }
++    return Math.sqrt(sum);
++}
++
++// Example usage
++public static void main(String[] args) {
++    int[] point1 = {1, 2, 3};
++    int[] point2 = {4, 5, 6};
++    System.out.println("Distance: " + distance(point1, point2));
++}
++
+     /**
+      * Calculates the L<sub>&infin;</sub> (max of abs) distance between two points.
+      *

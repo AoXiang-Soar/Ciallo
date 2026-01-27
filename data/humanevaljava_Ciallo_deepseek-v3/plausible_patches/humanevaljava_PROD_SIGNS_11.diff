@@ -1,0 +1,52 @@
+diff --git a/src/main/java/humaneval/buggy/PROD_SIGNS.java b/src/main/java/humaneval/buggy/PROD_SIGNS.java
+index 2d0aaa0..433d8e2 100644
+--- a/src/main/java/humaneval/buggy/PROD_SIGNS.java
++++ b/src/main/java/humaneval/buggy/PROD_SIGNS.java
+@@ -1,29 +1,23 @@
+ package humaneval.buggy;
+ 
+-/*
+- * You are given an array arr of integers and you need to return
+-    sum of magnitudes of integers multiplied by product of all signs
+-    of each number in the array, represented by 1, -1 or 0.
+-    Note: return -10 for empty arr.
+-
+-    Example:
+-    >>> prod_signs([1, 2, 2, -4]) == -9
+-    >>> prod_signs([0, 1]) == 0
+-    >>> prod_signs([]) == -10
+- */
+-
+ public class PROD_SIGNS {
+     public static int prod_signs(int[] arr) {
+-        if(arr.length == 0) return -10;
+-        int prod = 1;
+-        for(int i = 0; i < arr.length; i++) {
+-            if(arr[i] == 0) prod = 0;
+-            else if(arr[i] > 0) prod *= 1;
+-        }
+-        int sum = 0;
+-        for(int i = 0; i < arr.length; i++) {
+-            sum += Math.abs(arr[i]);
++        if (arr.length == 0) return -10;
++
++        int prod = 1; // Initial product of signs
++        int sum = 0;  // Sum of magnitudes
++
++        for (int value : arr) {
++            if (value == 0) {
++                return 0; // If there's any zero, the product of signs becomes zero
++            } else {
++                if (value < 0) {
++                    prod *= -1; // Change sign for negative numbers
++                }
++                sum += Math.abs(value); // Add absolute value to sum
++            }
+         }
+-        return prod * sum;
++
++        return prod * sum; // Result is product of signs multiplied by sum of magnitudes
+     }
+-}
++}
+\ No newline at end of file

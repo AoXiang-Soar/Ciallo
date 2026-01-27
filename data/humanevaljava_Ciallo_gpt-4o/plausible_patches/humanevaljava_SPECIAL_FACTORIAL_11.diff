@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/SPECIAL_FACTORIAL.java b/src/main/java/humaneval/buggy/SPECIAL_FACTORIAL.java
+index d2af5e4..003eb35 100644
+--- a/src/main/java/humaneval/buggy/SPECIAL_FACTORIAL.java
++++ b/src/main/java/humaneval/buggy/SPECIAL_FACTORIAL.java
+@@ -1,26 +1,20 @@
+ package humaneval.buggy;
+ 
+-/*
+- * he Brazilian factorial is defined as:
+-    brazilian_factorial(n) = n! * (n-1)! * (n-2)! * ... * 1!
+-    where n > 0
+-
+-    For example:
+-    >>> special_factorial(4)
+-    288
+-
+-    The function will receive an integer as input and should return the special
+-    factorial of this integer.
+-
+- */
+-
+ public class SPECIAL_FACTORIAL {
+     public static long special_factorial(long n) {
+-        long fact_i = 1, special_fact = 1;
++        long special_fact = 1;
+         for(long i = n; i >= 1; i--) {
+-            fact_i *= i * fact_i;
+-            special_fact += i * fact_i;
++            special_fact *= calcFactorial(i); // Correctly multiply by i! at each step
+         }
+         return special_fact;
+     }
+-}
++
++    private static long calcFactorial(long num) {
++        if(num <= 1) return 1;
++        long result = 1;
++        for(long j = 2; j <= num; j++) {
++            result *= j;
++        }
++        return result;
++    }
++}
+\ No newline at end of file

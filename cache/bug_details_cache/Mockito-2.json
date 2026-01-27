@@ -1,0 +1,16 @@
+{
+    "bug_id": 2,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Mockito",
+    "test_error_message": "junit.framework.AssertionFailedError: It is forbidden to create timer with negative value of timer's duration.",
+    "test_framework": "defects4j",
+    "test_function": "    public void should_throw_friendly_reminder_exception_when_duration_is_negative() {\n        try {\n            new Timer(-1);\n            Assert.fail(\"It is forbidden to create timer with negative value of timer's duration.\");\n        } catch (FriendlyReminderException e) {\n            Assert.assertTrue(true);\n        }\n    }",
+    "test_line": "            Assert.fail(\"It is forbidden to create timer with negative value of timer's duration.\");",
+    "test_name": "should_throw_friendly_reminder_exception_when_duration_is_negative",
+    "test_suite": "org.mockito.internal.util.TimerTest"
+}

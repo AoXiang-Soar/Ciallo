@@ -1,0 +1,30 @@
+diff --git a/src/main/java/org/jsoup/nodes/Element.java b/src/main/java/org/jsoup/nodes/Element.java
+index f87ffcb6..8e067266 100644
+--- a/src/main/java/org/jsoup/nodes/Element.java
++++ b/src/main/java/org/jsoup/nodes/Element.java
+@@ -1095,12 +1095,21 @@ public class Element extends Node {
+      * @return String of HTML.
+      * @see #outerHtml()
+      */
+-    public String html() {
+-        StringBuilder accum = new StringBuilder();
+-        html(accum);
+-        return accum.toString().trim();
++public String html() {
++    StringBuilder accum = new StringBuilder();
++    html(accum);
++    
++    // Default to prettyPrint being true if the ownerDocument or its settings are not available
++    boolean prettyPrintSetting = true;
++    
++    if (this.ownerDocument() != null && this.ownerDocument().outputSettings() != null) {
++        prettyPrintSetting = this.ownerDocument().outputSettings().prettyPrint();
+     }
+ 
++    // Return the string based on prettyPrint setting
++    return prettyPrintSetting ? accum.toString().trim() : accum.toString();
++}
++
+     private void html(StringBuilder accum) {
+         for (Node node : childNodes)
+             node.outerHtml(accum);

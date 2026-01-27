@@ -1,0 +1,86 @@
+diff --git a/src/main/java/org/apache/commons/math/optimization/direct/MultiDirectional.java b/src/main/java/org/apache/commons/math/optimization/direct/MultiDirectional.java
+index 42a4d9dfd..305fcffdb 100644
+--- a/src/main/java/org/apache/commons/math/optimization/direct/MultiDirectional.java
++++ b/src/main/java/org/apache/commons/math/optimization/direct/MultiDirectional.java
+@@ -58,45 +58,54 @@ public class MultiDirectional extends DirectSearchOptimizer {
+ 
+     /** {@inheritDoc} */
+     @Override
+-    protected void iterateSimplex(final Comparator<RealPointValuePair> comparator)
++protected void iterateSimplex(final Comparator<RealPointValuePair> comparator)
+         throws FunctionEvaluationException, OptimizationException, IllegalArgumentException {
+ 
+-        while (true) {
++    RealPointValuePair previousBest = null;
+ 
+-            incrementIterationsCounter();
++    while (true) {
+ 
+-            // save the original vertex
+-            final RealPointValuePair[] original = simplex;
+-            final RealPointValuePair best = original[0];
++        incrementIterationsCounter();
+ 
+-            // perform a reflection step
+-            final RealPointValuePair reflected = evaluateNewSimplex(original, 1.0, comparator);
+-            if (comparator.compare(reflected, best) < 0) {
+-
+-                // compute the expanded simplex
+-                final RealPointValuePair[] reflectedSimplex = simplex;
+-                final RealPointValuePair expanded = evaluateNewSimplex(original, khi, comparator);
+-                if (comparator.compare(reflected, expanded) <= 0) {
+-                    // accept the reflected simplex
+-                    simplex = reflectedSimplex;
+-                }
+-
+-                return;
++        // save the original vertex
++        final RealPointValuePair[] original = simplex;
++        final RealPointValuePair best = original[0];
+ 
++        // Check convergence based on best point improvement
++        if (previousBest != null && comparator.compare(previousBest, best) == 0) {
++            // Convergence criterion satisfied (no improvement)
++            return;
++        }
++        previousBest = best;
++
++        // perform a reflection step
++        final RealPointValuePair reflected = evaluateNewSimplex(original, 1.0, comparator);
++        if (comparator.compare(reflected, best) < 0) {
++
++            // compute the expanded simplex
++            final RealPointValuePair[] reflectedSimplex = simplex;
++            final RealPointValuePair expanded = evaluateNewSimplex(original, khi, comparator);
++            if (comparator.compare(reflected, expanded) <= 0) {
++                // accept the reflected simplex
++                simplex = reflectedSimplex;
+             }
+ 
+-            // compute the contracted simplex
+-            final RealPointValuePair contracted = evaluateNewSimplex(original, gamma, comparator);
+-            if (comparator.compare(contracted, best) < 0) {
+-                // accept the contracted simplex
+-
+-            // check convergence
+-                return;
+-            }
++            return;
++        }
+ 
++        // compute the contracted simplex
++        final RealPointValuePair contracted = evaluateNewSimplex(original, gamma, comparator);
++        if (comparator.compare(contracted, best) < 0) {
++            // accept the contracted simplex
++            return;
+         }
+ 
++        // If no improvement from either reflected or contracted, terminate
++        if (comparator.compare(contracted, best) >= 0) {
++            return;
++        }
+     }
++}
+ 
+     /** Compute and evaluate a new simplex.
+      * @param original original simplex (to be preserved)

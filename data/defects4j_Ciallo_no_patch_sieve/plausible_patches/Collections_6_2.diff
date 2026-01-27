@@ -1,0 +1,128 @@
+diff --git a/src/java/org/apache/commons/collections/map/Flat3Map.java b/src/java/org/apache/commons/collections/map/Flat3Map.java
+index 23ff969f..aecd556a 100644
+--- a/src/java/org/apache/commons/collections/map/Flat3Map.java
++++ b/src/java/org/apache/commons/collections/map/Flat3Map.java
+@@ -407,8 +407,11 @@ public class Flat3Map implements IterableMap, Serializable, Cloneable {
+         if (key == null) {
+             switch (size) {  // drop through
+                 case 3:
+-                    if (key3 == null) {
+-                        Object old = value3;
++                    if (key1 == null) {
++                        Object old = value1;
++                        hash1 = hash3;
++                        key1 = key3;
++                        value1 = value3;
+                         hash3 = 0;
+                         key3 = null;
+                         value3 = null;
+@@ -416,7 +419,7 @@ public class Flat3Map implements IterableMap, Serializable, Cloneable {
+                         return old;
+                     }
+                     if (key2 == null) {
+-                        Object old = value3;
++                        Object old = value2;
+                         hash2 = hash3;
+                         key2 = key3;
+                         value2 = value3;
+@@ -426,11 +429,8 @@ public class Flat3Map implements IterableMap, Serializable, Cloneable {
+                         size = 2;
+                         return old;
+                     }
+-                    if (key1 == null) {
++                    if (key3 == null) {
+                         Object old = value3;
+-                        hash1 = hash3;
+-                        key1 = key3;
+-                        value1 = value3;
+                         hash3 = 0;
+                         key3 = null;
+                         value3 = null;
+@@ -439,19 +439,19 @@ public class Flat3Map implements IterableMap, Serializable, Cloneable {
+                     }
+                     return null;
+                 case 2:
+-                    if (key2 == null) {
+-                        Object old = value2;
++                    if (key1 == null) {
++                        Object old = value1;
++                        hash1 = hash2;
++                        key1 = key2;
++                        value1 = value2;
+                         hash2 = 0;
+                         key2 = null;
+                         value2 = null;
+                         size = 1;
+                         return old;
+                     }
+-                    if (key1 == null) {
++                    if (key2 == null) {
+                         Object old = value2;
+-                        hash1 = hash2;
+-                        key1 = key2;
+-                        value1 = value2;
+                         hash2 = 0;
+                         key2 = null;
+                         value2 = null;
+@@ -474,8 +474,11 @@ public class Flat3Map implements IterableMap, Serializable, Cloneable {
+                 int hashCode = key.hashCode();
+                 switch (size) {  // drop through
+                     case 3:
+-                        if (hash3 == hashCode && key.equals(key3)) {
+-                            Object old = value3;
++                        if (hash1 == hashCode && key.equals(key1)) {
++                            Object old = value1;
++                            hash1 = hash3;
++                            key1 = key3;
++                            value1 = value3;
+                             hash3 = 0;
+                             key3 = null;
+                             value3 = null;
+@@ -483,7 +486,7 @@ public class Flat3Map implements IterableMap, Serializable, Cloneable {
+                             return old;
+                         }
+                         if (hash2 == hashCode && key.equals(key2)) {
+-                            Object old = value3;
++                            Object old = value2;
+                             hash2 = hash3;
+                             key2 = key3;
+                             value2 = value3;
+@@ -493,11 +496,8 @@ public class Flat3Map implements IterableMap, Serializable, Cloneable {
+                             size = 2;
+                             return old;
+                         }
+-                        if (hash1 == hashCode && key.equals(key1)) {
++                        if (hash3 == hashCode && key.equals(key3)) {
+                             Object old = value3;
+-                            hash1 = hash3;
+-                            key1 = key3;
+-                            value1 = value3;
+                             hash3 = 0;
+                             key3 = null;
+                             value3 = null;
+@@ -506,19 +506,19 @@ public class Flat3Map implements IterableMap, Serializable, Cloneable {
+                         }
+                         return null;
+                     case 2:
+-                        if (hash2 == hashCode && key.equals(key2)) {
+-                            Object old = value2;
++                        if (hash1 == hashCode && key.equals(key1)) {
++                            Object old = value1;
++                            hash1 = hash2;
++                            key1 = key2;
++                            value1 = value2;
+                             hash2 = 0;
+                             key2 = null;
+                             value2 = null;
+                             size = 1;
+                             return old;
+                         }
+-                        if (hash1 == hashCode && key.equals(key1)) {
++                        if (hash2 == hashCode && key.equals(key2)) {
+                             Object old = value2;
+-                            hash1 = hash2;
+-                            key1 = key2;
+-                            value1 = value2;
+                             hash2 = 0;
+                             key2 = null;
+                             value2 = null;

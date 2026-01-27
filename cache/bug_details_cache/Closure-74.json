@@ -1,0 +1,16 @@
+{
+    "bug_id": 74,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testFoldComparison3() {\n    fold(\"x = !1 == !0\", \"x = false\");\n\n    fold(\"x = !0 == !0\", \"x = true\");\n    fold(\"x = !1 == !1\", \"x = true\");\n    fold(\"x = !1 == null\", \"x = false\");\n    fold(\"x = !1 == !0\", \"x = false\");\n    fold(\"x = !0 == null\", \"x = false\");\n\n    fold(\"!0 == !0\", \"true\");\n    fold(\"!1 == null\", \"false\");\n    fold(\"!1 == !0\", \"false\");\n    fold(\"!0 == null\", \"false\");\n\n    fold(\"x = !0 === !0\", \"x = true\");\n    fold(\"x = !1 === !1\", \"x = true\");\n    fold(\"x = !1 === null\", \"x = false\");\n    fold(\"x = !1 === !0\", \"x = false\");\n    fold(\"x = !0 === null\", \"x = false\");\n\n    fold(\"!0 === !0\", \"true\");\n    fold(\"!1 === null\", \"false\");\n    fold(\"!1 === !0\", \"false\");\n    fold(\"!0 === null\", \"false\");\n  }",
+    "test_line": "    test(js, expected);",
+    "test_name": "testFoldComparison3",
+    "test_suite": "com.google.javascript.jscomp.PeepholeFoldConstantsTest"
+}

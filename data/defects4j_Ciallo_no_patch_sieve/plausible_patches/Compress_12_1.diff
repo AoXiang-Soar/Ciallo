@@ -1,0 +1,23 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+index bb670f30..19cceba3 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+@@ -195,7 +195,17 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+             return null;
+         }
+ 
+-        currEntry = new TarArchiveEntry(headerBuf);
++        try {
++            currEntry = new TarArchiveEntry(headerBuf);
++        } catch (IllegalArgumentException e) {
++            if (headerBuf.length >= 265 && headerBuf[257] == 'u' && headerBuf[258] == 's' 
++                && headerBuf[259] == 't' && headerBuf[260] == 'a' && headerBuf[261] == 'r') {
++                throw new IOException("Malformed GNU tar entry", e);
++            }
++            throw e;
++        }
++        entryOffset = 0;
++        entrySize = currEntry.getSize();
+         entryOffset = 0;
+         entrySize = currEntry.getSize();
+ 

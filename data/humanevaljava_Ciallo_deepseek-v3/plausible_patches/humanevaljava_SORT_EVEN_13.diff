@@ -1,0 +1,43 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_EVEN.java b/src/main/java/humaneval/buggy/SORT_EVEN.java
+index cce3d2a..be1edc5 100644
+--- a/src/main/java/humaneval/buggy/SORT_EVEN.java
++++ b/src/main/java/humaneval/buggy/SORT_EVEN.java
+@@ -5,19 +5,28 @@ import java.util.Arrays;
+ public class SORT_EVEN {
+     public static int[] sort_even(int[] l) {
+         int[] result = new int[l.length];
+-
+-        int[] evens = new int[1 + (int) (l.length / 2.)];
+-        for (int i = 0; i < l.length; i += 2) {
+-            evens[(int) i / 2] = l[i];
++        
++        // First determine the count of even indices
++        int evenCount = (l.length + 1) / 2; // Calculate how many even indices there are
++        int[] evens = new int[evenCount];
++        
++        // Collect even-indexed elements
++        for (int i = 0, j = 0; i < l.length; i += 2, j++) {
++            evens[j] = l[i];
+         }
++
++        // Sort even-indexed elements
+         Arrays.sort(evens);
+-        for (int i = 0; i < l.length; i += 1) {
+-            if (i % 2 == 0){
+-                result[i] = evens[(int) i / 2];
+-            } else{
++
++        // Populate the result array with sorted even-indexed elements and others as they are
++        for (int i = 0, evenIndex = 0; i < l.length; i++) {
++            if (i % 2 == 0) { // Fill sorted even elements at even indices
++                result[i] = evens[evenIndex++];
++            } else { // Copy original odd indexed elements
+                 result[i] = l[i];
+             }
+         }
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": "INCR_LIST",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_INCR_LIST.test_1:23 expected:<[2, 1, 0]> but was:<[4, 3, 2]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        List<Integer> result = humaneval.buggy.INCR_LIST.incr_list(\n            Arrays.asList(3, 2, 1)\n        );\n        org.junit.Assert.assertEquals(\n            result, Arrays.asList(4, 3, 2)\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_INCR_LIST"
+}

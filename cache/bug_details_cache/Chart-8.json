@@ -1,0 +1,16 @@
+{
+    "bug_id": 8,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        this(time, RegularTimePeriod.DEFAULT_TIME_ZONE, Locale.getDefault());",
+    "code": "    public Week(Date time, TimeZone zone) {\n        // defer argument checking...\n        this(time, RegularTimePeriod.DEFAULT_TIME_ZONE, Locale.getDefault());\n    }",
+    "fixed_code": "    public Week(Date time, TimeZone zone) {\n        // defer argument checking...\n        this(time, zone, Locale.getDefault());\n    }",
+    "fixed_lines": "        this(time, zone, Locale.getDefault());",
+    "masked_code": "    public Week(Date time, TimeZone zone) {\n        // defer argument checking...\n>>> [ INFILL ] <<<\n    }",
+    "project": "Chart",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<35> but was:<34>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testConstructor() {\n        Locale savedLocale = Locale.getDefault();\n        TimeZone savedZone = TimeZone.getDefault();\n        Locale.setDefault(new Locale(\"da\", \"DK\"));\n        TimeZone.setDefault(TimeZone.getTimeZone(\"Europe/Copenhagen\"));\n        GregorianCalendar cal = (GregorianCalendar) Calendar.getInstance(\n                TimeZone.getDefault(), Locale.getDefault());\n\n        // first day of week is monday\n        assertEquals(Calendar.MONDAY, cal.getFirstDayOfWeek());\n        cal.set(2007, Calendar.AUGUST, 26, 1, 0, 0);\n        cal.set(Calendar.MILLISECOND, 0);\n        Date t = cal.getTime();\n        Week w = new Week(t, TimeZone.getTimeZone(\"Europe/Copenhagen\"));\n        assertEquals(34, w.getWeek());\n\n        Locale.setDefault(Locale.US);\n        TimeZone.setDefault(TimeZone.getTimeZone(\"US/Detroit\"));\n        cal = (GregorianCalendar) Calendar.getInstance(TimeZone.getDefault());\n        // first day of week is Sunday\n        assertEquals(Calendar.SUNDAY, cal.getFirstDayOfWeek());\n        cal.set(2007, Calendar.AUGUST, 26, 1, 0, 0);\n        cal.set(Calendar.MILLISECOND, 0);\n\n        t = cal.getTime();\n        w = new Week(t, TimeZone.getTimeZone(\"Europe/Copenhagen\"));\n        assertEquals(35, w.getWeek());\n        w = new Week(t, TimeZone.getTimeZone(\"Europe/Copenhagen\"),\n                new Locale(\"da\", \"DK\"));\n        assertEquals(34, w.getWeek());\n\n        Locale.setDefault(savedLocale);\n        TimeZone.setDefault(savedZone);\n    }",
+    "test_line": "        assertEquals(35, w.getWeek());",
+    "test_name": "testConstructor",
+    "test_suite": "org.jfree.data.time.junit.WeekTests"
+}

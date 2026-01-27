@@ -1,0 +1,56 @@
+diff --git a/src/main/java/org/apache/commons/math/geometry/Vector3D.java b/src/main/java/org/apache/commons/math/geometry/Vector3D.java
+index 3c741e9e2..07e7eb8e5 100644
+--- a/src/main/java/org/apache/commons/math/geometry/Vector3D.java
++++ b/src/main/java/org/apache/commons/math/geometry/Vector3D.java
+@@ -454,25 +454,32 @@ public class Vector3D implements Serializable {
+    * @param v2 second vector
+    * @return the cross product v1 ^ v2 as a new Vector
+    */
+-  public static Vector3D crossProduct(final Vector3D v1, final Vector3D v2) {
+-
+-
+-      // rescale both vectors without losing precision,
+-      // to ensure their norm are the same order of magnitude
+-
+-      // we reduce cancellation errors by preconditioning,
+-      // we replace v1 by v3 = v1 - rho v2 with rho chosen in order to compute
+-      // v3 without loss of precision. See Kahan lecture
+-      // "Computing Cross-Products and Rotations in 2- and 3-Dimensional Euclidean Spaces"
+-      // available at http://www.cs.berkeley.edu/~wkahan/MathH110/Cross.pdf
+-
+-      // compute rho as an 8 bits approximation of v1.v2 / v2.v2
+-
+-
+-      // compute cross product from v3 and v2 instead of v1 and v2
+-      return new Vector3D(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
+-
+-  }
++public static Vector3D crossProduct(final Vector3D v1, final Vector3D v2) {
++    // Compute rho = (v1.v2)/(v2.v2) carefully to avoid cancellation
++    double rhoNumerator = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
++    double rhoDenominator = v2.x * v2.x + v2.y * v2.y + v2.z * v2.z;
++    double rho = rhoNumerator / rhoDenominator;
++    
++    // Compute v3 = v1 - rho * v2 using FMA if available
++    double v3x, v3y, v3z;
++    if (Double.isFinite(rho)) {
++        v3x = Math.fma(-rho, v2.x, v1.x);
++        v3y = Math.fma(-rho, v2.y, v1.y);
++        v3z = Math.fma(-rho, v2.z, v1.z);
++    } else {
++        // Fall back to standard computation if rho is infinite or NaN
++        v3x = v1.x;
++        v3y = v1.y;
++        v3z = v1.z;
++    }
++    
++    // Compute cross product from v3 and v2 instead of v1 and v2
++    double x = v3y * v2.z - v3z * v2.y;
++    double y = v3z * v2.x - v3x * v2.z;
++    double z = v3x * v2.y - v3y * v2.x;
++    
++    return new Vector3D(x, y, z);
++}
+ 
+   /** Compute the distance between two vectors according to the L<sub>1</sub> norm.
+    * <p>Calling this method is equivalent to calling:

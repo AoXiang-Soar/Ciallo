@@ -1,0 +1,16 @@
+{
+    "bug_id": 41,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Lang",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<String[[]]> but was:<String[;]>",
+    "test_framework": "defects4j",
+    "test_function": "    public void test_getShortClassName_Class() {\n        assertEquals(\"ClassUtils\", ClassUtils.getShortClassName(ClassUtils.class));\n        assertEquals(\"Map.Entry\", ClassUtils.getShortClassName(Map.Entry.class));\n        assertEquals(\"\", ClassUtils.getShortClassName((Class) null));\n\n        // LANG-535\n        assertEquals(\"String[]\", ClassUtils.getShortClassName(String[].class));\n        assertEquals(\"Map.Entry[]\", ClassUtils.getShortClassName(Map.Entry[].class));\n\n        // Primitives\n        assertEquals(\"boolean\", ClassUtils.getShortClassName(boolean.class));\n        assertEquals(\"byte\", ClassUtils.getShortClassName(byte.class));\n        assertEquals(\"char\", ClassUtils.getShortClassName(char.class));\n        assertEquals(\"short\", ClassUtils.getShortClassName(short.class));\n        assertEquals(\"int\", ClassUtils.getShortClassName(int.class));\n        assertEquals(\"long\", ClassUtils.getShortClassName(long.class));\n        assertEquals(\"float\", ClassUtils.getShortClassName(float.class));\n        assertEquals(\"double\", ClassUtils.getShortClassName(double.class));\n\n        // Primitive Arrays\n        assertEquals(\"boolean[]\", ClassUtils.getShortClassName(boolean[].class));\n        assertEquals(\"byte[]\", ClassUtils.getShortClassName(byte[].class));\n        assertEquals(\"char[]\", ClassUtils.getShortClassName(char[].class));\n        assertEquals(\"short[]\", ClassUtils.getShortClassName(short[].class));\n        assertEquals(\"int[]\", ClassUtils.getShortClassName(int[].class));\n        assertEquals(\"long[]\", ClassUtils.getShortClassName(long[].class));\n        assertEquals(\"float[]\", ClassUtils.getShortClassName(float[].class));\n        assertEquals(\"double[]\", ClassUtils.getShortClassName(double[].class));\n\n        // Arrays of arrays of ...\n        assertEquals(\"String[][]\", ClassUtils.getShortClassName(String[][].class));\n        assertEquals(\"String[][][]\", ClassUtils.getShortClassName(String[][][].class));\n        assertEquals(\"String[][][][]\", ClassUtils.getShortClassName(String[][][][].class));\n    }",
+    "test_line": "        assertEquals(\"String[]\", ClassUtils.getShortClassName(String[].class));",
+    "test_name": "test_getShortClassName_Class",
+    "test_suite": "org.apache.commons.lang.ClassUtilsTest"
+}

@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/LARGEST_DIVISOR.java b/src/main/java/humaneval/buggy/LARGEST_DIVISOR.java
+index e93b282..5b05945 100644
+--- a/src/main/java/humaneval/buggy/LARGEST_DIVISOR.java
++++ b/src/main/java/humaneval/buggy/LARGEST_DIVISOR.java
+@@ -2,10 +2,13 @@ package humaneval.buggy;
+ 
+ public class LARGEST_DIVISOR {
+     public static int largest_divisor(int n) {
+-        for (int i = n; i >= 0; i -= 1){
++        if (n <= 1) {
++            return 1; // Handle edge cases when n is 0 or 1
++        }
++        for (int i = n - 1; i > 0; i--) { // Start from n - 1
+             if (n % i == 0)
+                 return i;
+         }
+         return 1;
+     }
+-}
++}
+\ No newline at end of file

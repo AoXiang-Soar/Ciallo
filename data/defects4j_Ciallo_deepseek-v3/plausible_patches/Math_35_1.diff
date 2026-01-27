@@ -1,0 +1,51 @@
+diff --git a/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java b/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java
+index 67b368deb..6306038fb 100644
+--- a/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java
++++ b/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java
+@@ -48,7 +48,7 @@ public class ElitisticListPopulation extends ListPopulation {
+                                    final int populationLimit,
+                                    final double elitismRate) {
+         super(chromosomes, populationLimit);
+-        this.elitismRate = elitismRate;
++        setElitismRate(elitismRate);
+     }
+ 
+     /**
+@@ -62,7 +62,7 @@ public class ElitisticListPopulation extends ListPopulation {
+      */
+     public ElitisticListPopulation(final int populationLimit, final double elitismRate) {
+         super(populationLimit);
+-        this.elitismRate = elitismRate;
++        setElitismRate(elitismRate);
+     }
+ 
+     /**
+@@ -95,10 +95,19 @@ public class ElitisticListPopulation extends ListPopulation {
+      * @throws OutOfRangeException if the elitism rate is outside the [0, 1] range
+      */
+     public void setElitismRate(final double elitismRate) {
++        checkElitismRate(elitismRate);
++        this.elitismRate = elitismRate;
++    }
++
++    /**
++     * Checks that the elitism rate is valid.
++     * @param elitismRate the elitism rate to check
++     * @throws OutOfRangeException if the elitism rate is outside the [0, 1] range
++     */
++    private void checkElitismRate(final double elitismRate) {
+         if (elitismRate < 0 || elitismRate > 1) {
+             throw new OutOfRangeException(LocalizedFormats.ELITISM_RATE, elitismRate, 0, 1);
+         }
+-        this.elitismRate = elitismRate;
+     }
+ 
+     /**
+@@ -108,5 +117,4 @@ public class ElitisticListPopulation extends ListPopulation {
+     public double getElitismRate() {
+         return this.elitismRate;
+     }
+-
+-}
++}
+\ No newline at end of file

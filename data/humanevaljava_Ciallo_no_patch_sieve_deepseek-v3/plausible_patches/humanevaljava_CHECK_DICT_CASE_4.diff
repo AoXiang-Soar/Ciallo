@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+index ba94200..3c703b8 100644
+--- a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
++++ b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+@@ -20,8 +20,7 @@ public class CHECK_DICT_CASE {
+             String state = "start";
+             for (Object key : dict.keySet()) {
+                 if (!(key instanceof String)) {
+-                    state = "mixed";
+-                    break;
++                    return false;
+                 }
+                 String str_key = (String) key;
+                 if (state.equals("start")) {
+@@ -30,15 +29,14 @@ public class CHECK_DICT_CASE {
+                     else if (str_key.toLowerCase().equals(str_key))
+                         state = "lower";
+                     else {
+-                        state = "mixed";
+-                        break;
++                        return false;
+                     }
+-                } else if (state.equals("upper") && !str_key.toUpperCase().equals(str_key)) {
+-                    state = "mixed";
+-                    break;
++                } else if ((state.equals("upper") && !str_key.toUpperCase().equals(str_key)) ||
++                          (state.equals("lower") && !str_key.toLowerCase().equals(str_key))) {
++                    return false;
+                 }
+             }
+             return (state.equals("upper")) || (state.equals("lower"));
+         }
+     }
+-}
++}
+\ No newline at end of file

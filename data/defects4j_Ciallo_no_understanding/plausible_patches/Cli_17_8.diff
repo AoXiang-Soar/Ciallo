@@ -1,0 +1,58 @@
+diff --git a/src/java/org/apache/commons/cli/PosixParser.java b/src/java/org/apache/commons/cli/PosixParser.java
+index cafcede..9f64336 100644
+--- a/src/java/org/apache/commons/cli/PosixParser.java
++++ b/src/java/org/apache/commons/cli/PosixParser.java
+@@ -279,33 +279,30 @@ public class PosixParser extends Parser {
+      * @param stopAtNonOption Specifies whether to stop processing
+      * at the first non-Option encountered.
+      */
+-    protected void burstToken(String token, boolean stopAtNonOption)
+-    {
+-        for (int i = 1; i < token.length(); i++)
+-        {
+-            String ch = String.valueOf(token.charAt(i));
++protected void burstToken(String token, boolean stopAtNonOption) {
++    int i = 1;
++    while (i < token.length()) {
++        String ch = String.valueOf(token.charAt(i));
+ 
+-            if (options.hasOption(ch))
+-            {
+-                tokens.add("-" + ch);
+-                currentOption = options.getOption(ch);
++        if (options.hasOption(ch)) {
++            tokens.add("-" + ch);
++            currentOption = options.getOption(ch);
+ 
+-                if (currentOption.hasArg() && (token.length() != (i + 1)))
+-                {
+-                    tokens.add(token.substring(i + 1));
+-
+-                    break;
+-                }
+-            }
+-            else if (stopAtNonOption)
+-            {
+-                process(token.substring(i));
+-            }
+-            else
+-            {
+-                tokens.add(token);
++            if (currentOption.hasArg() && token.length() > i + 1) {
++                tokens.add(token.substring(i + 1));
+                 break;
+             }
++            i++;
++        } else if (stopAtNonOption) {
++            if (i > 1) {
++                tokens.add("-" + token.substring(1, i));
++            }
++            tokens.add(token.substring(i));
++            break;
++        } else {
++            tokens.add(token);
++            break;
+         }
+     }
+ }
++}

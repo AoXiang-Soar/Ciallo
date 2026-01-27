@@ -1,0 +1,83 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java b/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
+index 30807836d..50de37503 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
++++ b/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
+@@ -7,8 +7,7 @@ import com.fasterxml.jackson.databind.JavaType;
+  *
+  * @since 2.7
+  */
+-public class ResolvedRecursiveType extends TypeBase
+-{
++public class ResolvedRecursiveType extends TypeBase {
+     private static final long serialVersionUID = 1L;
+ 
+     protected JavaType _referencedType;
+@@ -17,33 +16,43 @@ public class ResolvedRecursiveType extends TypeBase
+         super(erasedType, bindings, null, null, 0, null, null, false);
+     }
+ 
+-    public void setReference(JavaType ref)
+-    {
+-        // sanity check; should not be called multiple times
++    public void setReference(JavaType ref) {
++        // Sanity check; should not be called multiple times
+         if (_referencedType != null) {
+-            throw new IllegalStateException("Trying to re-set self reference; old value = "+_referencedType+", new = "+ref);
++            throw new IllegalStateException("Trying to re-set self reference; old value = " + _referencedType + ", new = " + ref);
+         }
+         _referencedType = ref;
+     }
+-   
+ 
+-    public JavaType getSelfReferencedType() { return _referencedType; }
++    public JavaType getSelfReferencedType() {
++        return _referencedType;
++    }
++
++    // Implementing getSuperClass to return the superclass of the referenced type if available
++    @Override
++    public JavaType getSuperClass() {
++        return (_referencedType != null) ? _referencedType.getSuperClass() : null;
++    }
+ 
+     @Override
+     public StringBuilder getGenericSignature(StringBuilder sb) {
+-        return _referencedType.getGenericSignature(sb);
++        return (_referencedType != null) 
++            ? _referencedType.getGenericSignature(sb) 
++            : sb;
+     }
+ 
+     @Override
+     public StringBuilder getErasedSignature(StringBuilder sb) {
+-        return _referencedType.getErasedSignature(sb);
++        return (_referencedType != null) 
++            ? _referencedType.getErasedSignature(sb) 
++            : sb;
+     }
+ 
+     @Override
+     public JavaType withContentType(JavaType contentType) {
+         return this;
+     }
+-    
++
+     @Override
+     public JavaType withTypeHandler(Object h) {
+         return this;
+@@ -77,7 +86,7 @@ public class ResolvedRecursiveType extends TypeBase
+ 
+     @Override
+     public JavaType refine(Class<?> rawType, TypeBindings bindings,
+-            JavaType superClass, JavaType[] superInterfaces) {
++                           JavaType superClass, JavaType[] superInterfaces) {
+         return null;
+     }
+ 
+@@ -111,4 +120,4 @@ public class ResolvedRecursiveType extends TypeBase
+         return (o.getClass() == getClass()
+                 && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+     }
+-}
++}
+\ No newline at end of file

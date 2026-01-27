@@ -1,0 +1,41 @@
+diff --git a/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java b/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
+index 4045209..a9c1541 100644
+--- a/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
++++ b/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
+@@ -20,21 +20,23 @@ public class UNIQUE_DIGITS {
+     public static ArrayList<Integer> unique_digits(ArrayList<Integer> x) {
+         ArrayList<Integer> res = new ArrayList<Integer>();
+         for(int i : x) {
+-            int num = i;
+-            boolean all_odd = true;
+-            while(num > 0) {
+-                int curr_digit = num % 10;
+-                if((curr_digit % 2) != 0) {
+-                    all_odd = true;
+-                    break;
+-                }
+-                num /= 10;
+-            }
+-            if(all_odd) {
++            if(hasOddDigitsOnly(i)) {
+                 res.add(i);
+             }
+         }
+         Collections.sort(res);
+         return res;
+     }
+-}
++    
++    // Helper method to check if a number has only odd digits
++    private static boolean hasOddDigitsOnly(int num) {
++        while(num > 0) {
++            int currDigit = num % 10;
++            if(currDigit % 2 == 0) { // Check for even digit
++                return false;
++            }
++            num /= 10; // Move to the next digit
++        }
++        return true;
++    }
++}
+\ No newline at end of file

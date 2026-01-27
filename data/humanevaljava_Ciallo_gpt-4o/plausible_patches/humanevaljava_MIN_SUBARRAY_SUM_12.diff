@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java b/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java
+index 36e383f..c61e4bc 100644
+--- a/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java
++++ b/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java
+@@ -12,22 +12,23 @@ import java.util.ArrayList;
+ 
+ public class MIN_SUBARRAY_SUM {
+     public static long min_subarray_sum(ArrayList<Long> nums) {
+-        long max_sum = 0;
+-        long s = 0;
+-        for(long num : nums) {
+-            s += num;
+-            if(s < 0) {
+-                s = 0;
+-            }
+-            max_sum = Math.max(s, max_sum);
+-        }
+-        if(max_sum == 0) {
+-            max_sum = -nums.get(0);
+-            for(int i = 1; i < nums.size(); i++) {
+-                max_sum = Math.max(max_sum, -nums.get(i));
++        long min_sum = Long.MAX_VALUE; // Initialize min_sum to a large value
++        long current_sum = 0;
++
++        for (long num : nums) {
++            // Add current number to current subarray sum
++            current_sum += num;
++
++            // Update min_sum if the current sum is less
++            min_sum = Math.min(min_sum, current_sum);
++
++            // Reset current_sum to the current number if it exceeds the current number
++            // This ensures we're always considering the minimum local contiguous subarray
++            if (current_sum > 0) {
++                current_sum = 0;
+             }
+         }
+-        long min_sum = -max_sum;
++
+         return min_sum;
+     }
+-}
++}
+\ No newline at end of file

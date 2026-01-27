@@ -1,0 +1,23 @@
+diff --git a/src/main/java/org/jsoup/nodes/FormElement.java b/src/main/java/org/jsoup/nodes/FormElement.java
+index e498975d..867ffc28 100644
+--- a/src/main/java/org/jsoup/nodes/FormElement.java
++++ b/src/main/java/org/jsoup/nodes/FormElement.java
+@@ -46,6 +46,11 @@ public class FormElement extends Element {
+         return this;
+     }
+ 
++    @Override
++    public void removeChild(Node child) {
++        super.removeChild(child);
++        elements.remove(child);
++    }
+ 
+     /**
+      * Prepare to submit this form. A Connection object is created with the request set up from the form values. You
+@@ -105,4 +110,4 @@ public class FormElement extends Element {
+         }
+         return data;
+     }
+-}
++}
+\ No newline at end of file

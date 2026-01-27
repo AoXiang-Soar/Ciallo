@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/ADD.java b/src/main/java/humaneval/buggy/ADD.java
+index 186aae7..90aebf7 100644
+--- a/src/main/java/humaneval/buggy/ADD.java
++++ b/src/main/java/humaneval/buggy/ADD.java
+@@ -8,6 +8,12 @@ package humaneval.buggy;
+ 
+ public class ADD {
+     public static int add(int x, int y) {
+-        return x | y;
++        int sum = 0;
++        while (y != 0) {
++            int carry = x & y;
++            x = x ^ y;
++            y = carry << 1;
++        }
++        return x;
+     }
+-}
++}
+\ No newline at end of file

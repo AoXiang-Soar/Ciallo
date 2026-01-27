@@ -1,0 +1,31 @@
+diff --git a/src/java/org/apache/commons/cli/CommandLine.java b/src/java/org/apache/commons/cli/CommandLine.java
+index af1118d..719dcee 100644
+--- a/src/java/org/apache/commons/cli/CommandLine.java
++++ b/src/java/org/apache/commons/cli/CommandLine.java
+@@ -66,7 +66,18 @@ public class CommandLine {
+      */
+     public boolean hasOption(String opt)
+     {
+-        return options.containsKey(opt);
++        opt = Util.stripLeadingHyphens(opt);
++        
++        if (options.containsKey(opt)) {
++            return true;
++        }
++        
++        if (names.containsKey(opt)) {
++            String key = (String) names.get(opt);
++            return options.containsKey(key);
++        }
++        
++        return false;
+     }
+ 
+     /** 
+@@ -313,4 +324,4 @@ public class CommandLine {
+         // return the array
+         return (Option[]) processed.toArray(optionsArray);
+     }
+-}
++}
+\ No newline at end of file

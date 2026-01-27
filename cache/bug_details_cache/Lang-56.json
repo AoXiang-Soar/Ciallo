@@ -1,0 +1,16 @@
+{
+    "bug_id": 56,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Lang",
+    "test_error_message": "org.apache.commons.lang.SerializationException: java.io.NotSerializableException: org.apache.commons.lang.time.FastDateFormat$PaddedNumberField",
+    "test_framework": "defects4j",
+    "test_function": "    public void testLang303() {\n        FastDateFormat format = FastDateFormat.getInstance(\"yyyy/MM/dd\");\n        format = (FastDateFormat) SerializationUtils.deserialize( SerializationUtils.serialize( format ) );\n    }",
+    "test_line": "        format = (FastDateFormat) SerializationUtils.deserialize( SerializationUtils.serialize( format ) );",
+    "test_name": "testLang303",
+    "test_suite": "org.apache.commons.lang.time.FastDateFormatTest"
+}

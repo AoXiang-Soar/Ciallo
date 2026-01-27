@@ -1,0 +1,16 @@
+{
+    "bug_id": 7,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "",
+    "code": "        private void readTypeVariables() {\n            for (Type type : typeVariable.getBounds()) {\n                registerTypeVariablesOn(type);\n            }\n            registerTypeVariablesOn(getActualTypeArgumentFor(typeVariable));\n        }",
+    "fixed_code": "        private void readTypeVariables() {\n            for (Type type : typeVariable.getBounds()) {\n                registerTypeVariablesOn(type);\n            }\n            registerTypeParametersOn(new TypeVariable[] { typeVariable });\n            registerTypeVariablesOn(getActualTypeArgumentFor(typeVariable));\n        }",
+    "fixed_lines": "            registerTypeParametersOn(new TypeVariable[] { typeVariable });",
+    "masked_code": "        private void readTypeVariables() {\n            for (Type type : typeVariable.getBounds()) {\n                registerTypeVariablesOn(type);\n            }\n>>> [ INFILL ] <<<\n            registerTypeVariablesOn(getActualTypeArgumentFor(typeVariable));\n        }",
+    "project": "Mockito",
+    "test_error_message": "",
+    "test_framework": "defects4j",
+    "test_function": "",
+    "test_line": "",
+    "test_name": "",
+    "test_suite": ""
+}

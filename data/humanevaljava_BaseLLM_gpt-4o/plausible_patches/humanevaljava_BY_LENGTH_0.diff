@@ -1,0 +1,43 @@
+diff --git a/src/main/java/humaneval/buggy/BY_LENGTH.java b/src/main/java/humaneval/buggy/BY_LENGTH.java
+index 0e33347..3c60ca7 100644
+--- a/src/main/java/humaneval/buggy/BY_LENGTH.java
++++ b/src/main/java/humaneval/buggy/BY_LENGTH.java
+@@ -22,8 +22,8 @@ import java.util.HashMap;
+     
+       If the array has any strange number ignore it:
+       arr = [1, -1 , 55] 
+-            -> sort arr -> [-1, 1, 55]
+-            -> reverse arr -> [55, 1, -1]
++            -> sort arr -> [1]
++            -> reverse arr -> [1]
+       return = ['One']
+  */
+ 
+@@ -39,13 +39,20 @@ public class BY_LENGTH {
+         digit_map.put(7, "Seven");
+         digit_map.put(8, "Eight");
+         digit_map.put(9, "Nine");
+-        Collections.sort(a, Collections.reverseOrder());
+-        ArrayList<String> result = new ArrayList<>();
+-        for(int num : a) {
+-            if(digit_map.get(num) != "") {
+-                result.add(digit_map.get(num));
++
++        ArrayList<Integer> filtered = new ArrayList<>();
++        for (int num : a) {
++            if (digit_map.containsKey(num)) {
++                filtered.add(num);
+             }
+         }
++
++        Collections.sort(filtered, Collections.reverseOrder());
++        ArrayList<String> result = new ArrayList<>();
++        for (int num : filtered) {
++            result.add(digit_map.get(num));
++        }
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": "FILTER_BY_PREFIX",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_FILTER_BY_PREFIX.test_1:23 array lengths differed, expected.length=0 actual.length=3; arrays first differed at element [0]; expected:<end of array> but was:<xxx>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        List<String> result = humaneval.buggy.FILTER_BY_PREFIX.filter_by_prefix(\n            new ArrayList<String>(Arrays.asList(\"xxx\", \"asd\", \"xxy\", \"john doe\", \"xxxAAA\", \"xxx\")), \"xxx\"\n        );\n        org.junit.Assert.assertArrayEquals(\n            result.toArray(), Arrays.asList(\"xxx\", \"xxxAAA\", \"xxx\").toArray()\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertArrayEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_FILTER_BY_PREFIX"
+}

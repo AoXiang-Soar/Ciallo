@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/FIND_MAX.java b/src/main/java/humaneval/buggy/FIND_MAX.java
+index a44725f..e4136ed 100644
+--- a/src/main/java/humaneval/buggy/FIND_MAX.java
++++ b/src/main/java/humaneval/buggy/FIND_MAX.java
+@@ -24,9 +24,13 @@ public class FIND_MAX {
+                 HashSet<Character> s1 = new HashSet<Character>(Arrays.asList(c1));
+                 Character[] c2 = ((String) w2).chars().mapToObj(c -> (char)c).toArray(Character[]::new);
+                 HashSet<Character> s2 = new HashSet<Character>(Arrays.asList(c2));
+-                return s1.size() - s2.size();
++                int uniqueComparison = s2.size() - s1.size();
++                if (uniqueComparison != 0) {
++                    return uniqueComparison;
++                }
++                return ((String) w1).compareTo((String) w2);
+             }
+         );
+         return words_list.get(0);
+     }
+-}
++}
+\ No newline at end of file

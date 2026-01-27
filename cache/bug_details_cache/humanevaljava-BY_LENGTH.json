@@ -1,0 +1,16 @@
+{
+    "bug_id": "BY_LENGTH",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_BY_LENGTH.test_2:26 expected:<[null, One, null]> but was:<[One]>",
+    "test_framework": "humanevaljava",
+    "test_function": "\tpublic void test_2() throws java.lang.Exception {\n        ArrayList<Integer> input = new ArrayList<>(Arrays.asList(1, -1, 55));\n        ArrayList<String> result = humaneval.buggy.BY_LENGTH.by_length(input);\n        ArrayList<String> desired = new ArrayList<>(Arrays.asList(\"One\"));\n        org.junit.Assert.assertEquals(result, desired);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(result, desired);",
+    "test_name": "test_2",
+    "test_suite": "TEST_BY_LENGTH"
+}

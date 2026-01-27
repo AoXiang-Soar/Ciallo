@@ -1,0 +1,21 @@
+diff --git a/src/java/org/apache/commons/lang/LocaleUtils.java b/src/java/org/apache/commons/lang/LocaleUtils.java
+index 139d9a7f6..81651aa0d 100644
+--- a/src/java/org/apache/commons/lang/LocaleUtils.java
++++ b/src/java/org/apache/commons/lang/LocaleUtils.java
+@@ -111,6 +111,16 @@ public class LocaleUtils {
+                 throw new IllegalArgumentException("Invalid locale format: " + str);
+             }
+             char ch3 = str.charAt(3);
++            if (ch3 == '_') {
++                // Handle case like "fr__POSIX" where country code is empty
++                if (len == 3) {
++                    return new Locale(str.substring(0, 2), "");
++                }
++                if (len >= 4 && str.charAt(3) == '_') {
++                    return new Locale(str.substring(0, 2), "", len > 4 ? str.substring(4) : "");
++                }
++                throw new IllegalArgumentException("Invalid locale format: " + str);
++            }
+             char ch4 = str.charAt(4);
+             if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+                 throw new IllegalArgumentException("Invalid locale format: " + str);

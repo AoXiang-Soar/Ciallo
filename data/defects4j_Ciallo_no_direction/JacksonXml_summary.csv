@@ -1,0 +1,7 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,JacksonXml,1,SF,1,16376,1,0,3,1,
+defects4j,JacksonXml,2,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonXml,3,SF,2,11712,1,0,2,2,
+defects4j,JacksonXml,4,SF,1,8929,6,2,5,9,
+defects4j,JacksonXml,5,SL SH SF,1,5631,4,3,3,7,
+defects4j,JacksonXml,6,BF,,,,,,,Out of limited tokens. 

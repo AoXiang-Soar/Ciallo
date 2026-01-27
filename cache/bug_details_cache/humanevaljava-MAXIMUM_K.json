@@ -1,0 +1,16 @@
+{
+    "bug_id": "MAXIMUM_K",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MAXIMUM_K.test_0:12 expected:<[-4, -3, 5]> but was:<[5, -3, -4]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        ArrayList<Integer> input = new ArrayList<>(Arrays.asList(-3, -4, 5));\n        ArrayList<Integer> result = humaneval.buggy.MAXIMUM_K.maximum_k(input, 3);\n        ArrayList<Integer> desired = new ArrayList<>(Arrays.asList(-4, -3, 5));\n        org.junit.Assert.assertEquals(desired, result);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(desired, result);",
+    "test_name": "test_0",
+    "test_suite": "TEST_MAXIMUM_K"
+}

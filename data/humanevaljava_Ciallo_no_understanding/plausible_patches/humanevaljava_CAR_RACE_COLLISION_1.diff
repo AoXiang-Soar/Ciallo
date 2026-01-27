@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/CAR_RACE_COLLISION.java b/src/main/java/humaneval/buggy/CAR_RACE_COLLISION.java
+index 4ded3f1..97117c5 100644
+--- a/src/main/java/humaneval/buggy/CAR_RACE_COLLISION.java
++++ b/src/main/java/humaneval/buggy/CAR_RACE_COLLISION.java
+@@ -12,6 +12,13 @@ This function outputs the number of such collisions. */
+ 
+ public class CAR_RACE_COLLISION {
+     public static int car_race_collision(int n) {
+-        return n;
++        int collisions = 0;
++        for (int i = 1; i <= n; i++) {
++            collisions += i;
++        }
++        for (int i = 1; i < n; i++) {
++            collisions += i;
++        }
++        return collisions;
+     }
+-}
++}
+\ No newline at end of file

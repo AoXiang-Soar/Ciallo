@@ -1,0 +1,111 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,JacksonDatabind,1,SL SH SF,4,17446,8,3,1,11,
+defects4j,JacksonDatabind,2,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,3,BF,2,49513,6,2,8,14,
+defects4j,JacksonDatabind,4,BF,3,46920,6,3,4,13,
+defects4j,JacksonDatabind,5,SF,4,24565,10,6,7,23,
+defects4j,JacksonDatabind,6,SF,1,257482,79,76,7,304,
+defects4j,JacksonDatabind,7,SF,4,23679,20,17,2,40,
+defects4j,JacksonDatabind,8,SF,1,16591,8,4,6,15,
+defects4j,JacksonDatabind,9,SF,13,17649,7,0,0,13,
+defects4j,JacksonDatabind,10,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,11,SF,0,1069314,,320,258,4256,
+defects4j,JacksonDatabind,12,SH SF,5,12261,7,1,2,9,
+defects4j,JacksonDatabind,13,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,14,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,15,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,16,SL SH SF,4,11463,7,7,2,20,
+defects4j,JacksonDatabind,17,SL SH SF,1,12430,12,6,6,19,
+defects4j,JacksonDatabind,18,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,19,SH SF,1,15210,9,0,6,7,
+defects4j,JacksonDatabind,20,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,21,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,22,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,23,BF,1,45464,6,0,8,9,
+defects4j,JacksonDatabind,24,SF,3,17564,14,11,1,26,
+defects4j,JacksonDatabind,25,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,26,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,27,SL SH SF,1,18784,7,1,2,5,
+defects4j,JacksonDatabind,28,SF,0,476574,,0,195,195,
+defects4j,JacksonDatabind,29,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,30,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,31,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,32,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,33,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,34,SL SH SF,2,13390,6,0,6,8,
+defects4j,JacksonDatabind,35,SF,4,23730,8,7,0,18,
+defects4j,JacksonDatabind,36,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,37,SL SH SF,1,48863,52,7,29,50,
+defects4j,JacksonDatabind,38,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,39,SF,3,27083,24,15,16,49,
+defects4j,JacksonDatabind,40,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,41,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,42,SH SF,2,10888,7,3,0,8,
+defects4j,JacksonDatabind,43,BF,4,72763,21,1,20,26,
+defects4j,JacksonDatabind,44,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,45,SH SF,0,1096123,,494,234,6897,
+defects4j,JacksonDatabind,46,SL SH SF,2,6223,5,2,1,7,
+defects4j,JacksonDatabind,47,SF,12,97621,20,14,5,45,
+defects4j,JacksonDatabind,48,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,49,SF,1,14603,10,1,10,13,
+defects4j,JacksonDatabind,50,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,51,SF,2,286281,134,98,40,505,
+defects4j,JacksonDatabind,52,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,53,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,54,SF,9,47232,7,3,3,18,
+defects4j,JacksonDatabind,55,BF,2,58273,10,4,7,17,
+defects4j,JacksonDatabind,56,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,57,SL SH SF,1,10689,10,1,6,9,
+defects4j,JacksonDatabind,58,SF,5,29608,10,6,3,20,
+defects4j,JacksonDatabind,59,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,60,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,61,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,62,SH SF,1,253439,138,38,103,219,
+defects4j,JacksonDatabind,63,SF,10,24923,6,8,1,27,
+defects4j,JacksonDatabind,64,SF,3,56106,6,4,8,19,
+defects4j,JacksonDatabind,66,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,67,SF,2,17024,8,6,3,17,
+defects4j,JacksonDatabind,68,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,69,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,70,SL SH SF,4,9968,6,3,1,11,
+defects4j,JacksonDatabind,71,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,72,BF,5,85525,20,12,7,36,
+defects4j,JacksonDatabind,73,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,74,SH SF,14,53583,28,4,21,43,
+defects4j,JacksonDatabind,75,BF,1,46617,7,7,2,17,
+defects4j,JacksonDatabind,76,SH SF,3,26650,10,1,5,10,
+defects4j,JacksonDatabind,77,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,78,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,79,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,80,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,81,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,82,SL SH SF,1,33640,11,6,3,16,
+defects4j,JacksonDatabind,83,SF,6,20930,5,4,0,14,
+defects4j,JacksonDatabind,84,BF,3,38386,10,3,9,18,
+defects4j,JacksonDatabind,85,SF,4,796766,487,431,37,4816,
+defects4j,JacksonDatabind,86,BF,8,37975,7,0,7,15,
+defects4j,JacksonDatabind,87,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,88,SF,13,27795,6,2,2,19,
+defects4j,JacksonDatabind,90,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,91,SF,15,20052,11,5,0,25,
+defects4j,JacksonDatabind,92,SF,5,17950,7,1,2,9,
+defects4j,JacksonDatabind,93,SH SF,1,14956,8,4,4,13,
+defects4j,JacksonDatabind,94,BF,7,43353,6,4,1,16,
+defects4j,JacksonDatabind,95,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,96,SL SH SF,5,29704,13,8,5,26,
+defects4j,JacksonDatabind,97,SL SH SF,4,10677,5,0,2,6,
+defects4j,JacksonDatabind,98,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,99,SL SH SF,8,11186,10,3,2,16,
+defects4j,JacksonDatabind,100,SF,2,34288,28,25,4,56,
+defects4j,JacksonDatabind,101,SF,4,37651,10,8,2,22,
+defects4j,JacksonDatabind,102,SH SF,4,14091,5,1,3,9,
+defects4j,JacksonDatabind,103,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,104,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,105,BF,1,19522,8,1,7,10,
+defects4j,JacksonDatabind,106,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,107,SL SH SF,2,22285,7,2,7,13,
+defects4j,JacksonDatabind,108,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonDatabind,109,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,110,BF,2,68458,12,4,9,19,
+defects4j,JacksonDatabind,111,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,112,SF,4,92664,42,30,11,90,

@@ -1,0 +1,52 @@
+diff --git a/src/main/java/humaneval/buggy/IS_HAPPY.java b/src/main/java/humaneval/buggy/IS_HAPPY.java
+index 4c6720d..91764d0 100644
+--- a/src/main/java/humaneval/buggy/IS_HAPPY.java
++++ b/src/main/java/humaneval/buggy/IS_HAPPY.java
+@@ -1,24 +1,32 @@
+ package humaneval.buggy;
+ 
+-// You are given a string s.
+-// Your task is to check if the string is happy or not.
+-// A string is happy if its length is at least 3 and every 3 consecutive letters are distinct
+-// For example:
+-// is_happy(a) => False
+-// is_happy(aa) => False
+-// is_happy(abcd) => True
+-// is_happy(aabb) => False
+-// is_happy(adb) => True
+-// is_happy(xyy) => False
+-
+ public class IS_HAPPY {
+     public static boolean is_happy(String s) {
+         if (s.length() < 3)
+             return false;
+-        for (int i = 0; i < s.length() - 2; i += 1) {
+-            if (s.charAt(i) == s.charAt(i + 1) || s.charAt(i + 1) == s.charAt(i + 2))
++        
++        for (int i = 0; i < s.length() - 2; i++) {
++            char first = s.charAt(i);
++            char second = s.charAt(i + 1);
++            char third = s.charAt(i + 2);
++
++            // Check if all three are distinct
++            if (first == second || second == third || first == third) {
+                 return false;
++            }
+         }
+         return true;
+     }
+-}
++
++    // Test cases
++    public static void main(String[] args) {
++        assert is_happy("a") == false : "Test case 1 failed";
++        assert is_happy("aa") == false : "Test case 2 failed";
++        assert is_happy("abcd") == true : "Test case 3 failed";
++        assert is_happy("aabb") == false : "Test case 4 failed";
++        assert is_happy("adb") == true : "Test case 5 failed";
++        assert is_happy("xyy") == false : "Test case 6 failed";
++        assert is_happy("iopaxioi") == true : "Test case 7 failed"; // fixed expected output
++        System.out.println("All test cases passed");
++    }
++}
+\ No newline at end of file

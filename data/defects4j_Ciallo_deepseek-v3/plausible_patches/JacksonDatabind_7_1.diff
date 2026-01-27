@@ -1,0 +1,34 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/util/TokenBuffer.java b/src/main/java/com/fasterxml/jackson/databind/util/TokenBuffer.java
+index 21a6b287b..5f04c205f 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/util/TokenBuffer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/util/TokenBuffer.java
+@@ -400,15 +400,22 @@ public class TokenBuffer
+      * 
+      * @since 2.3
+      */
+-    public TokenBuffer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException
+-    {
++public TokenBuffer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException
++{
++    if (jp.getCurrentToken() == JsonToken.FIELD_NAME) {
++        // Missing START_OBJECT case
++        writeStartObject();
++        while (jp.getCurrentToken() == JsonToken.FIELD_NAME) {
+             copyCurrentStructure(jp);
+-        /* 28-Oct-2014, tatu: As per #592, need to support a special case of starting from
+-         *    FIELD_NAME, which is taken to mean that we are missing START_OBJECT, but need
+-         *    to assume one did exist.
+-         */
+-        return this;
++            jp.nextToken(); // move to value
++            copyCurrentStructure(jp);
++        }
++        writeEndObject();
++    } else {
++        copyCurrentStructure(jp);
+     }
++    return this;
++}
+     
+     @Override
+     @SuppressWarnings("resource")

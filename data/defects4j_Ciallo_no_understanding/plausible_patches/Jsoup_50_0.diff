@@ -1,0 +1,75 @@
+diff --git a/src/main/java/org/jsoup/helper/DataUtil.java b/src/main/java/org/jsoup/helper/DataUtil.java
+index 34880d8b..4c7b8476 100644
+--- a/src/main/java/org/jsoup/helper/DataUtil.java
++++ b/src/main/java/org/jsoup/helper/DataUtil.java
+@@ -90,9 +90,41 @@ public final class DataUtil {
+         Document doc = null;
+ 
+         // look for BOM - overrides any other header or input
++        if (byteData.remaining() >= 2) {
++            byteData.mark();
++            byte bom1 = byteData.get();
++            byte bom2 = byteData.get();
++            if (bom1 == (byte) 0xFE && bom2 == (byte) 0xFF) {
++                charsetName = "UTF-16BE";
++            } else if (bom1 == (byte) 0xFF && bom2 == (byte) 0xFE) {
++                if (byteData.remaining() >= 2) {
++                    byte bom3 = byteData.get();
++                    byte bom4 = byteData.get();
++                    if (bom3 == 0 && bom4 == 0) {
++                        charsetName = "UTF-32LE";
++                    } else {
++                        charsetName = "UTF-16LE";
++                        byteData.position(byteData.position() - 2);
++                    }
++                } else {
++                    charsetName = "UTF-16LE";
++                }
++            } else if (bom1 == 0 && bom2 == 0 && byteData.remaining() >= 2) {
++                byte bom3 = byteData.get();
++                byte bom4 = byteData.get();
++                if (bom3 == (byte) 0xFE && bom4 == (byte) 0xFF) {
++                    charsetName = "UTF-32BE";
++                } else {
++                    byteData.reset();
++                }
++            } else if (bom1 == (byte) 0xEF && bom2 == (byte) 0xBB && byteData.remaining() >= 1 && byteData.get() == (byte) 0xBF) {
++                charsetName = defaultCharset;
++            } else {
++                byteData.reset();
++            }
++        }
+ 
+         if (charsetName == null) { // determine from meta. safe parse as UTF-8
+-            // look for <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">
+             docData = Charset.forName(defaultCharset).decode(byteData).toString();
+             doc = parser.parseInput(docData, baseUri);
+             Element meta = doc.select("meta[http-equiv=content-type], meta[charset]").first();
+@@ -111,7 +143,7 @@ public final class DataUtil {
+                     }
+                 }
+ 
+-                if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) { // need to re-decode
++                if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) {
+                     foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+                     charsetName = foundCharset;
+                     byteData.rewind();
+@@ -119,17 +151,10 @@ public final class DataUtil {
+                     doc = null;
+                 }
+             }
+-        } else { // specified by content type header (or by user on file load)
++        } else {
+             Validate.notEmpty(charsetName, "Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML");
+             docData = Charset.forName(charsetName).decode(byteData).toString();
+         }
+-        if (docData.length() > 0 && docData.charAt(0) == UNICODE_BOM) {
+-            byteData.rewind();
+-            docData = Charset.forName(defaultCharset).decode(byteData).toString();
+-            docData = docData.substring(1);
+-            charsetName = defaultCharset;
+-            doc = null;
+-        }
+         if (doc == null) {
+             doc = parser.parseInput(docData, baseUri);
+             doc.outputSettings().charset(charsetName);

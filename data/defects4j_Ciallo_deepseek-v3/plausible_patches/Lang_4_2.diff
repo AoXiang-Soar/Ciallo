@@ -1,0 +1,61 @@
+diff --git a/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java b/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java
+index 8ed51bc3c..5883d33c7 100644
+--- a/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java
++++ b/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java
+@@ -19,6 +19,7 @@ package org.apache.commons.lang3.text.translate;
+ import java.io.IOException;
+ import java.io.Writer;
+ import java.util.HashMap;
++import java.util.Map;
+ 
+ /**
+  * Translates a value using a lookup table.
+@@ -28,7 +29,7 @@ import java.util.HashMap;
+  */
+ public class LookupTranslator extends CharSequenceTranslator {
+ 
+-    private final HashMap<CharSequence, CharSequence> lookupMap;
++    private final Map<CharSequence, CharSequence> lookupMap;
+     private final int shortest;
+     private final int longest;
+ 
+@@ -43,7 +44,31 @@ public class LookupTranslator extends CharSequenceTranslator {
+      * @param lookup CharSequence[][] table of size [*][2]
+      */
+     public LookupTranslator(final CharSequence[]... lookup) {
+-        lookupMap = new HashMap<CharSequence, CharSequence>();
++        lookupMap = new HashMap<CharSequence, CharSequence>() {
++            @Override
++            public CharSequence get(Object key) {
++                if (key instanceof CharSequence) {
++                    for (Entry<CharSequence, CharSequence> entry : entrySet()) {
++                        if (contentEquals(entry.getKey(), (CharSequence)key)) {
++                            return entry.getValue();
++                        }
++                    }
++                }
++                return null;
++            }
++
++            private boolean contentEquals(CharSequence cs1, CharSequence cs2) {
++                if (cs1.length() != cs2.length()) {
++                    return false;
++                }
++                for (int i = 0; i < cs1.length(); i++) {
++                    if (cs1.charAt(i) != cs2.charAt(i)) {
++                        return false;
++                    }
++                }
++                return true;
++            }
++        };
+         int _shortest = Integer.MAX_VALUE;
+         int _longest = 0;
+         if (lookup != null) {
+@@ -82,4 +107,4 @@ public class LookupTranslator extends CharSequenceTranslator {
+         }
+         return 0;
+     }
+-}
++}
+\ No newline at end of file

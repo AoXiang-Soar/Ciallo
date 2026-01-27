@@ -1,0 +1,53 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/filter/FilteringParserDelegate.java b/src/main/java/com/fasterxml/jackson/core/filter/FilteringParserDelegate.java
+index e6558fd0..8d402d41 100644
+--- a/src/main/java/com/fasterxml/jackson/core/filter/FilteringParserDelegate.java
++++ b/src/main/java/com/fasterxml/jackson/core/filter/FilteringParserDelegate.java
+@@ -223,8 +223,7 @@ public class FilteringParserDelegate extends JsonParserDelegate
+     /**********************************************************
+      */
+ 
+-    @Override
+-    public JsonToken nextToken() throws IOException
++    @Override    public JsonToken nextToken() throws IOException
+     {
+         // 23-May-2017, tatu: To be honest, code here is rather hairy and I don't like all
+         //    conditionals; and it seems odd to return `null` but NOT considering input
+@@ -236,7 +235,7 @@ public class FilteringParserDelegate extends JsonParserDelegate
+         if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
+             //if not scalar and ended successfully, and !includePath, then return null
+                 if (_currToken.isStructEnd()) {
+-                    if (_headContext.isStartHandled()) {
++                    if (_headContext.isStartHandled() && !_includePath) {
+                         return (_currToken = null);
+                     }
+                 } else if (_currToken.isScalarValue()) {
+@@ -262,21 +261,9 @@ public class FilteringParserDelegate extends JsonParserDelegate
+                     _exposedContext = null;
+                     if (ctxt.inArray()) {
+                         t = delegate.getCurrentToken();
+-// Is this guaranteed to work without further checks?
+-//                        if (t != JsonToken.START_ARRAY) {
+-                        _currToken = t;
+-                        return t;
+-                    }
+-
+-                    // Almost! Most likely still have the current token;
+-                    // with the sole exception of 
+-                    /*
+-                    t = delegate.getCurrentToken();
+-                    if (t != JsonToken.FIELD_NAME) {
+                         _currToken = t;
+                         return t;
+                     }
+-                    */
+                     break;
+                 }
+                 // If not, traverse down the context chain
+@@ -452,7 +439,6 @@ public class FilteringParserDelegate extends JsonParserDelegate
+         // We get here if token was not yet found; offlined handling
+         return _nextToken2();
+     }
+-
+     /**
+      * Offlined handling for cases where there was no buffered token to
+      * return, and the token read next could not be returned as-is,

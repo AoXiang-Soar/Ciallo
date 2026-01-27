@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/VOWELS_COUNT.java b/src/main/java/humaneval/buggy/VOWELS_COUNT.java
+old mode 100644
+new mode 100755
+index 5b0715f..024cff4
+--- a/src/main/java/humaneval/buggy/VOWELS_COUNT.java
++++ b/src/main/java/humaneval/buggy/VOWELS_COUNT.java
+@@ -17,12 +17,12 @@ public class VOWELS_COUNT {
+         char[] str_chars = str.toCharArray();
+ 
+         for (char c : str_chars) {
+-            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'A' || c == 'E' || c == 'I' || c == 'O'
+-                    || c == 'U')
++            char lower = Character.toLowerCase(c);
++            if (lower == 'a' || lower == 'e' || lower == 'i' || lower == 'o' || lower == 'u')
+                 result += 1;
+         }
+-        if (str_chars[str_chars.length - 1] == 'y')
++        if (str_chars.length > 0 && Character.toLowerCase(str_chars[str_chars.length - 1]) == 'y')
+             result += 1;
+         return result;
+     }
+-}
++}
+\ No newline at end of file

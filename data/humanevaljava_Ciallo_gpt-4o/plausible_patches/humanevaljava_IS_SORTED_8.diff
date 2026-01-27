@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/IS_SORTED.java b/src/main/java/humaneval/buggy/IS_SORTED.java
+index 173398c..c167b48 100644
+--- a/src/main/java/humaneval/buggy/IS_SORTED.java
++++ b/src/main/java/humaneval/buggy/IS_SORTED.java
+@@ -20,19 +20,26 @@ import java.util.HashMap;
+ 
+ public class IS_SORTED {
+     public static boolean is_sorted(int[] lst) {
+-        HashMap<Integer, Integer> count_num = new HashMap<>();
+-        for(int i = 0; i < lst.length; i++) {
+-            count_num.put(lst[i], 0);
+-        }
+-        for(int i = 0; i < lst.length; i++) {
+-            count_num.put(lst[i], count_num.get(lst[i]) + 1);
++        if (lst.length < 2) { // Short-circuit for lists of length 0 or 1.
++            return true;
+         }
++        
++        HashMap<Integer, Integer> count_num = new HashMap<>();
++        
+         for(int i = 0; i < lst.length; i++) {
+-            if(count_num.get(lst[i]) > 2) return false;
+-        }
+-        for(int i = 0; i < lst.length - 1; i++) {
+-            if(lst[i] <= lst[i + 1]) return false;
++            // Check if the elements are sorted
++            if (i > 0 && lst[i - 1] > lst[i]) {
++                return false;
++            }
++            
++            // Count the occurrences of each number
++            count_num.put(lst[i], count_num.getOrDefault(lst[i], 0) + 1);
++            // If any number appears more than twice, return false
++            if (count_num.get(lst[i]) > 2) {
++                return false;
++            }
+         }
+-        return true;
++        
++        return true; // If the loop completes, the list is sorted with at most one duplicate for any number.
+     }
+-}
++}
+\ No newline at end of file

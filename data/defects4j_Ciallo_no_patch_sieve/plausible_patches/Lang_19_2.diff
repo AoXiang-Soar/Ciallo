@@ -1,0 +1,101 @@
+diff --git a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+index 68891ace7..b190680a6 100644
+--- a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
++++ b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+@@ -34,41 +34,47 @@ public class NumericEntityUnescaper extends CharSequenceTranslator {
+      * {@inheritDoc}
+      */
+     @Override
+-    public int translate(CharSequence input, int index, Writer out) throws IOException {
+-        int seqEnd = input.length();
+-        // Uses -2 to ensure there is something after the &#
+-        if(input.charAt(index) == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {
+-            int start = index + 2;
+-            boolean isHex = false;
+-
+-            char firstChar = input.charAt(start);
+-            if(firstChar == 'x' || firstChar == 'X') {
+-                start++;
+-                isHex = true;
++public int translate(CharSequence input, int index, Writer out) throws IOException {
++    int seqEnd = input.length();
++    // Uses -2 to ensure there is something after the &#
++    if (input.charAt(index) == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {
++        int start = index + 2;
++        if (start >= seqEnd) {  // Check if we're at the end after &#
++            return 0;
++        }
+ 
+-                // Check there's more than just an x after the &#
++        boolean isHex = false;
++        char firstChar = input.charAt(start);
++        if (firstChar == 'x' || firstChar == 'X') {
++            start++;
++            isHex = true;
++            if (start >= seqEnd) {  // Check if we're at the end after &#x
++                return 0;
+             }
++        }
+ 
+-            int end = start;
+-            // Note that this supports character codes without a ; on the end
+-            while(input.charAt(end) != ';') 
+-            {
+-                end++;
+-            }
++        int end = start;
++        // Search for semicolon or end of string
++        while (end < seqEnd && Character.isDigit(input.charAt(end)) 
++                || (isHex && isHexDigit(input.charAt(end)))) {
++            end++;
++        }
+ 
+-            int entityValue;
+-            try {
+-                if(isHex) {
+-                    entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 16);
+-                } else {
+-                    entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
+-                }
+-            } catch(NumberFormatException nfe) {
+-            System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start +"]["+ end +"]");
+-                return 0;
+-            }
++        // If we didn't find any digits, bail out
++        if (end == start) {
++            return 0;
++        }
++
++        // Check if we stopped at a semicolon
++        boolean hasSemicolon = (end < seqEnd && input.charAt(end) == ';');
+ 
+-            if(entityValue > 0xFFFF) {
++        try {
++            String numberStr = input.subSequence(start, end).toString();
++            int entityValue = isHex 
++                ? Integer.parseInt(numberStr, 16) 
++                : Integer.parseInt(numberStr, 10);
++
++            if (entityValue > 0xFFFF) {
+                 char[] chrs = Character.toChars(entityValue);
+                 out.write(chrs[0]);
+                 out.write(chrs[1]);
+@@ -76,9 +82,15 @@ public class NumericEntityUnescaper extends CharSequenceTranslator {
+                 out.write(entityValue);
+             }
+ 
+-
+-            return 2 + (end - start) + (isHex ? 1 : 0) + 1;
++            return 2 + (end - start) + (isHex ? 1 : 0) + (hasSemicolon ? 1 : 0);
++        } catch (NumberFormatException nfe) {
++            return 0;
+         }
+-        return 0;
+     }
++    return 0;
++}
++
++private boolean isHexDigit(char c) {
++    return (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F') || Character.isDigit(c);
++}
+ }

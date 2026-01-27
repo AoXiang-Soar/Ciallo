@@ -1,0 +1,16 @@
+{
+    "bug_id": 100,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "java.lang.ArrayIndexOutOfBoundsException: Index 6 out of bounds for length 6",
+    "test_framework": "defects4j",
+    "test_function": "  public void testBoundParameters() throws EstimationException {\n      EstimatedParameter[] p = {\n        new EstimatedParameter(\"unbound0\", 2, false),\n        new EstimatedParameter(\"unbound1\", 2, false),\n        new EstimatedParameter(\"bound\",    2, true)\n      };\n      LinearProblem problem = new LinearProblem(new LinearMeasurement[] {\n        new LinearMeasurement(new double[] { 1.0, 1.0, 1.0 },\n                              new EstimatedParameter[] { p[0], p[1], p[2] },\n                              3.0),\n        new LinearMeasurement(new double[] { 1.0, -1.0, 1.0 },\n                              new EstimatedParameter[] { p[0], p[1], p[2] },\n                              1.0),\n        new LinearMeasurement(new double[] { 1.0, 3.0, 2.0 },\n                              new EstimatedParameter[] { p[0], p[1], p[2] },\n                              7.0)\n      });\n\n      GaussNewtonEstimator estimator = new GaussNewtonEstimator(100, 1.0e-6, 1.0e-6);\n      estimator.estimate(problem);\n      assertTrue(estimator.getRMS(problem) < 1.0e-10);\n      double[][] covariances = estimator.getCovariances(problem);\n      int i0 = 0, i1 = 1;\n      if (problem.getUnboundParameters()[0].getName().endsWith(\"1\")) {\n          i0 = 1;\n          i1 = 0;\n      }\n      assertEquals(11.0 / 24, covariances[i0][i0], 1.0e-10);\n      assertEquals(-3.0 / 24, covariances[i0][i1], 1.0e-10);\n      assertEquals(-3.0 / 24, covariances[i1][i0], 1.0e-10);\n      assertEquals( 3.0 / 24, covariances[i1][i1], 1.0e-10);\n\n      double[] errors = estimator.guessParametersErrors(problem);\n      assertEquals(0, errors[i0], 1.0e-10);\n      assertEquals(0, errors[i1], 1.0e-10);\n\n  }",
+    "test_line": "      double[][] covariances = estimator.getCovariances(problem);",
+    "test_name": "testBoundParameters",
+    "test_suite": "org.apache.commons.math.estimation.GaussNewtonEstimatorTest"
+}

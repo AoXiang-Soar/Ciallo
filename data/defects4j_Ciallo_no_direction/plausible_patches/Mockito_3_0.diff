@@ -1,0 +1,56 @@
+diff --git a/src/org/mockito/internal/invocation/InvocationMatcher.java b/src/org/mockito/internal/invocation/InvocationMatcher.java
+index a3a7c08df..d2e09b1b8 100644
+--- a/src/org/mockito/internal/invocation/InvocationMatcher.java
++++ b/src/org/mockito/internal/invocation/InvocationMatcher.java
+@@ -117,17 +117,30 @@ public class InvocationMatcher implements DescribedInvocation, CapturesArgumensF
+ 
+     public void captureArgumentsFrom(Invocation invocation) {
+         if (invocation.getMethod().isVarArgs()) {
+-            int indexOfVararg = invocation.getRawArguments().length - 1;
+-            for (int position = 0; position < indexOfVararg; position++) {
++            int nonVarArgsCount = invocation.getMethod().getParameterTypes().length - 1;
++            
++            // Capture non-varargs arguments
++            for (int position = 0; position < nonVarArgsCount; position++) {
+                 Matcher m = matchers.get(position);
+                 if (m instanceof CapturesArguments) {
+                     ((CapturesArguments) m).captureFrom(invocation.getArgumentAt(position, Object.class));
+                 }
+             }
+-            for (int position = indexOfVararg; position < matchers.size(); position++) {
+-                Matcher m = matchers.get(position);
+-                if (m instanceof CapturesArguments) {
+-                    ((CapturesArguments) m).captureFrom(invocation.getRawArguments()[position - indexOfVararg]);
++            
++            // Handle varargs
++            Object[] rawArguments = invocation.getRawArguments();
++            Object varArgsArray = rawArguments[nonVarArgsCount];
++            int matcherPosition = nonVarArgsCount;
++            
++            if (varArgsArray != null && varArgsArray.getClass().isArray()) {
++                int varArgsLength = Array.getLength(varArgsArray);
++                for (int i = 0; i < varArgsLength; i++) {
++                    Object arg = Array.get(varArgsArray, i);
++                    Matcher m = matchers.size() > matcherPosition ? matchers.get(matcherPosition) : matchers.get(nonVarArgsCount);
++                    if (m instanceof CapturesArguments) {
++                        ((CapturesArguments) m).captureFrom(arg);
++                    }
++                    matcherPosition++;
+                 }
+             }
+         } else {
+@@ -140,7 +153,6 @@ public class InvocationMatcher implements DescribedInvocation, CapturesArgumensF
+         }
+     }
+ 
+-
+     public static List<InvocationMatcher> createFrom(List<Invocation> invocations) {
+         LinkedList<InvocationMatcher> out = new LinkedList<InvocationMatcher>();
+         for (Invocation i : invocations) {
+@@ -148,4 +160,4 @@ public class InvocationMatcher implements DescribedInvocation, CapturesArgumensF
+         }
+         return out;
+     }
+-}
++}
+\ No newline at end of file

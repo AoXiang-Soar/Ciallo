@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java b/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
+index 4389f67..b78ed77 100644
+--- a/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
++++ b/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
+@@ -16,11 +16,15 @@ anti_shuffle('Hello World!!!') returns 'Hello !!!Wdlor' */
+ public class ANTI_SHUFFLE {
+     public static String anti_shuffle(String s) {
+         String result = "";
+-        for (String str : s.split(" ")) {
+-            char[] chars = str.toCharArray();
++        String[] words = s.split(" ", -1);
++        for (int i = 0; i < words.length; i++) {
++            char[] chars = words[i].toCharArray();
+             Arrays.sort(chars);
+             result += new String(chars);
++            if (i != words.length - 1) {
++                result += " ";
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

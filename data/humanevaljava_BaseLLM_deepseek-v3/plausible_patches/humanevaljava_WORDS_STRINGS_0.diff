@@ -1,0 +1,33 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_STRINGS.java b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+index e98a5f0..422aaac 100644
+--- a/src/main/java/humaneval/buggy/WORDS_STRINGS.java
++++ b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+@@ -2,18 +2,12 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ 
+-/*
+- * You will be given a string of words separated by commas or spaces. Your task is
+- * to split the string into words and return an array of the words.
+- *
+- * For example:
+- * words_string("Hi, my name is John") == ["Hi", "my", "name", "is", "John"]
+- * words_string("One, two, three, four, five, six") == ["One", "two", "three", "four", "five", "six"]
+- */
+-
+ public class WORDS_STRINGS {
+ 	public static ArrayList<String> words_strings(String s) {
+ 		ArrayList<String> result = new ArrayList<String>();
++		if (s.trim().isEmpty()) {
++			return result;
++		}
+ 		String s_list = "";
+ 		for(char c : s.toCharArray()) {
+ 			if(c == ',') {
+@@ -28,4 +22,4 @@ public class WORDS_STRINGS {
+ 		}
+ 		return result;
+ 	}
+-}
++}
+\ No newline at end of file

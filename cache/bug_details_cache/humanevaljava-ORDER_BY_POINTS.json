@@ -1,0 +1,16 @@
+{
+    "bug_id": "ORDER_BY_POINTS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_ORDER_BY_POINTS.test_0:9 arrays first differed at element [0]; expected:<-12> but was:<-1>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        Integer[] result = humaneval.buggy.ORDER_BY_POINTS.order_by_points(\n            new Integer[] {1, 11, -1, -11, -12}\n        );\n        org.junit.Assert.assertArrayEquals(\n            result, new Integer[] {-1, -11, 1, -12, 11}\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertArrayEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_ORDER_BY_POINTS"
+}

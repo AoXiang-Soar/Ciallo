@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/CHECK_IF_LAST_CHAR_IS_A_LETTER.java b/src/main/java/humaneval/buggy/CHECK_IF_LAST_CHAR_IS_A_LETTER.java
+index 1ac3068..9b97d38 100644
+--- a/src/main/java/humaneval/buggy/CHECK_IF_LAST_CHAR_IS_A_LETTER.java
++++ b/src/main/java/humaneval/buggy/CHECK_IF_LAST_CHAR_IS_A_LETTER.java
+@@ -16,12 +16,20 @@ package humaneval.buggy;
+ 
+ public class CHECK_IF_LAST_CHAR_IS_A_LETTER {
+     public static boolean check_if_last_char_is_a_letter(String txt) {
+-        String[] parts = txt.split(" ");
+-        String last = " ";
+-        last = parts[parts.length - 1];
+-        if(txt.charAt(txt.length() - 1) == ' ') last = " ";
+-        if(txt.length() == 1) last = " ";
+-        int last_char_pos = Character.toUpperCase(last.charAt(0)) - 'a';
+-        return (last.length() == 1) || (0 <= last_char_pos || last_char_pos <= 25);
++        if (txt.isEmpty()) return false;
++        
++        char lastChar = txt.charAt(txt.length() - 1);
++        if (!Character.isLetter(lastChar)) return false;
++        
++        // Check if this character is part of a word (has non-space character before it)
++        int lastSpacePos = txt.lastIndexOf(' ');
++        if (lastSpacePos == -1) {
++            // Only one word, but we want single-letter words
++            return txt.length() == 1;
++        }
++        
++        // Get the substring after last space
++        String afterLastSpace = txt.substring(lastSpacePos + 1);
++        return afterLastSpace.length() == 1;
+     }
+-}
++}
+\ No newline at end of file

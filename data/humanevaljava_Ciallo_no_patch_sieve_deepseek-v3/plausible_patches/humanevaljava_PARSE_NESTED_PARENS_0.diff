@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/PARSE_NESTED_PARENS.java b/src/main/java/humaneval/buggy/PARSE_NESTED_PARENS.java
+index 6bc914f..35095f8 100644
+--- a/src/main/java/humaneval/buggy/PARSE_NESTED_PARENS.java
++++ b/src/main/java/humaneval/buggy/PARSE_NESTED_PARENS.java
+@@ -15,6 +15,8 @@ public class PARSE_NESTED_PARENS {
+                 if (c == '('){
+                     depth += 1;
+                     max_depth = Math.max(depth, max_depth);
++                } else if (c == ')') {
++                    depth -= 1;
+                 }
+             }
+             result.add(max_depth);
+@@ -22,4 +24,4 @@ public class PARSE_NESTED_PARENS {
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

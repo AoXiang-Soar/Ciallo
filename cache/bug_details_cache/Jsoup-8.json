@@ -1,0 +1,16 @@
+{
+    "bug_id": 8,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void parentlessToString() {\n        Document doc = Jsoup.parse(\"<img src='foo'>\");\n        Element img = doc.select(\"img\").first();\n        assertEquals(\"\\n<img src=\\\"foo\\\" />\", img.toString());\n\n        img.remove(); // lost its parent\n        assertEquals(\"<img src=\\\"foo\\\" />\", img.toString());\n    }",
+    "test_line": "        assertEquals(\"<img src=\\\"foo\\\" />\", img.toString());",
+    "test_name": "parentlessToString",
+    "test_suite": "org.jsoup.nodes.ElementTest"
+}

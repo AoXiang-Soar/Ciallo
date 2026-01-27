@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_THIRD.java b/src/main/java/humaneval/buggy/SORT_THIRD.java
+index e57d2bb..4e29c69 100644
+--- a/src/main/java/humaneval/buggy/SORT_THIRD.java
++++ b/src/main/java/humaneval/buggy/SORT_THIRD.java
+@@ -14,13 +14,15 @@ public class SORT_THIRD {
+         }
+         Collections.sort(thirds);
+ 
++        int thirdIndex = 0;  // Use a separate index for the sorted thirds
+         for (int i = 0; i < l.size(); i += 1){
+             if (i % 3 == 0){
+-                result.add(thirds.get(i));
++                result.add(thirds.get(thirdIndex));
++                thirdIndex++;
+             } else{
+                 result.add(l.get(i));
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

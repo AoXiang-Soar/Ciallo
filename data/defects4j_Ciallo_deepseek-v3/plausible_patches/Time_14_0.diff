@@ -1,0 +1,56 @@
+diff --git a/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java b/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java
+index afca44e6..f7a5d14f 100644
+--- a/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java
++++ b/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java
+@@ -200,24 +200,40 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
+     }
+ 
+     //-----------------------------------------------------------------------
+-    public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+-        // overridden as superclass algorithm can't handle
+-        // 2004-02-29 + 48 months -> 2008-02-29 type dates
+-        if (valueToAdd == 0) {
+-            return values;
+-        }
+-            // month is largest field and being added to, such as month-day
+-        if (DateTimeUtils.isContiguous(partial)) {
+-            long instant = 0L;
++public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
++    if (valueToAdd == 0) {
++        return values;
++    }
++    
++    if (DateTimeUtils.isContiguous(partial)) {
++        // Create a temporary datetime with year set to a leap year
++        // to handle Feb 29th cases correctly
++        long instant = 0L;
++        boolean isMonthDay = (partial.size() == 2 && 
++                             partial.getFieldType(0) == DateTimeFieldType.monthOfYear() &&
++                             partial.getFieldType(1) == DateTimeFieldType.dayOfMonth());
++        
++        if (isMonthDay) {
++            // Use a leap year as base year to preserve Feb 29th
++            instant = iChronology.getDateTimeMillis(2000, values[0], values[1], 0, 0, 0, 0);
++            instant = add(instant, valueToAdd);
++            // Get back month and day from the new instant
++            return new int[] {
++                iChronology.monthOfYear().get(instant),
++                iChronology.dayOfMonth().get(instant)
++            };
++        } else {
++            // Original handling for other cases
+             for (int i = 0, isize = partial.size(); i < isize; i++) {
+                 instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+             }
+             instant = add(instant, valueToAdd);
+             return iChronology.get(partial, instant);
+-        } else {
+-            return super.add(partial, fieldIndex, values, valueToAdd);
+         }
++    } else {
++        return super.add(partial, fieldIndex, values, valueToAdd);
+     }
++}
+ 
+     //-----------------------------------------------------------------------
+     /**

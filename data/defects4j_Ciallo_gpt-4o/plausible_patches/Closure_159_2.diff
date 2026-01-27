@@ -1,0 +1,46 @@
+diff --git a/src/com/google/javascript/jscomp/InlineFunctions.java b/src/com/google/javascript/jscomp/InlineFunctions.java
+index 814a07f49..50abad583 100644
+--- a/src/com/google/javascript/jscomp/InlineFunctions.java
++++ b/src/com/google/javascript/jscomp/InlineFunctions.java
+@@ -770,21 +770,30 @@ class InlineFunctions implements SpecializationAwareCompilerPass {
+   /**
+    * @see #findCalledFunctions(Node)
+    */
+-  private void findCalledFunctions(
+-      Node node, Set<String> changed) {
+-    Preconditions.checkArgument(changed != null);
+-    // For each referenced function, add a new reference
+-    if (node.getType() == Token.CALL) {
+-      Node child = node.getFirstChild();
+-      if (child.getType() == Token.NAME) {
+-        changed.add(child.getString());
++private void findCalledFunctions(
++    Node node, Set<String> changed) {
++  Preconditions.checkArgument(changed != null);
++  // For each referenced function, add a new reference
++  if (node.getType() == Token.CALL) {
++    Node child = node.getFirstChild();
++    if (child.getType() == Token.NAME) {
++      changed.add(child.getString());
++    } else if (child.getType() == Token.GETPROP) {
++      // Handle calls made through the call or apply methods
++      Node grandChild = child.getFirstChild();
++      if (grandChild != null && grandChild.getType() == Token.NAME) {
++        String functionName = child.getLastChild().getString();
++        if ("call".equals(functionName) || "apply".equals(functionName)) {
++          changed.add(grandChild.getString());
++        }
+       }
+     }
++  }
+ 
+-    for (Node c = node.getFirstChild(); c != null; c = c.getNext()) {
+-      findCalledFunctions(c, changed);
+-    }
++  for (Node c = node.getFirstChild(); c != null; c = c.getNext()) {
++    findCalledFunctions(c, changed);
+   }
++}
+ 
+   /**
+    * For any call-site that needs it, prepare the call-site for inlining

@@ -1,0 +1,27 @@
+diff --git a/src/main/java/org/apache/commons/cli/DefaultParser.java b/src/main/java/org/apache/commons/cli/DefaultParser.java
+index 6aeaebe..339117b 100644
+--- a/src/main/java/org/apache/commons/cli/DefaultParser.java
++++ b/src/main/java/org/apache/commons/cli/DefaultParser.java
+@@ -296,13 +296,16 @@ public class DefaultParser implements CommandLineParser
+      * 
+      * @param token
+      */
+-    private boolean isShortOption(String token)
+-    {
+-        // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+-        return token.startsWith("-") && token.length() >= 2 && options.hasShortOption(token.substring(1, 2));
+-
+-        // remove leading "-" and "=value"
++private boolean isShortOption(String token) {
++    // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
++    if (!token.startsWith("-") || token.length() < 2) {
++        return false;
+     }
++    
++    // Extract the option name (everything after '-' until first non-option character)
++    String optionName = token.substring(1).split("[^a-zA-Z0-9]")[0];
++    return !optionName.isEmpty() && options.hasShortOption(optionName);
++}
+ 
+     /**
+      * Tells if the token looks like a long option.

@@ -1,0 +1,45 @@
+diff --git a/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java b/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
+index 094f5de..c69def3 100644
+--- a/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
++++ b/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
+@@ -4,27 +4,24 @@ import java.util.ArrayList;
+ import java.util.Collections;
+ import java.util.List;
+ 
+-/* Given list of integers, return list in strange order.
+-Strange sorting, is when you start with the minimum value,
+-then maximum of the remaining integers, then minimum and so on.
+-
+-Examples:
+-strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]
+-strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]
+-strange_sort_list([]) == [] */
+-
+ public class STRANGE_SORT_LIST {
+     public static List<Integer> strange_sort_list(List<Integer> lst) {
+         List<Integer> result = new ArrayList<Integer>();
++        List<Integer> tempList = new ArrayList<>(lst);  // Create a copy of the input list
+ 
+-        boolean switched = true;
+-        while (lst.size() > 0) {
+-            if (switched) {
+-                result.add(Collections.min(lst));
++        boolean pickMin = true;
++        while (tempList.size() > 0) {
++            if (pickMin) {
++                int min = Collections.min(tempList);
++                result.add(min);
++                tempList.remove(tempList.indexOf(min));
+             } else {
+-                result.add(Collections.max(lst));
++                int max = Collections.max(tempList);
++                result.add(max);
++                tempList.remove(tempList.indexOf(max));
+             }
++            pickMin = !pickMin;
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

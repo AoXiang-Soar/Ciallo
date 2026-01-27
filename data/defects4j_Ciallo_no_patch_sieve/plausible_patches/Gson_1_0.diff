@@ -1,0 +1,72 @@
+diff --git a/gson/src/main/java/com/google/gson/TypeInfoFactory.java b/gson/src/main/java/com/google/gson/TypeInfoFactory.java
+index eaf3a101..a19d53c4 100644
+--- a/gson/src/main/java/com/google/gson/TypeInfoFactory.java
++++ b/gson/src/main/java/com/google/gson/TypeInfoFactory.java
+@@ -77,21 +77,29 @@ final class TypeInfoFactory {
+           TypeUtils.wrapWithArray(TypeUtils.toRawClass(actualType))
+           : new GenericArrayTypeImpl(actualType);
+     } else if (typeToEvaluate instanceof TypeVariable<?>) {
+-      if (parentType instanceof ParameterizedType) {
+-        // The class definition has the actual types used for the type variables.
+-        // Find the matching actual type for the Type Variable used for the field.
+-        // For example, class Foo<A> { A a; }
+-        // new Foo<Integer>(); defines the actual type of A to be Integer.
+-        // So, to find the type of the field a, we will have to look at the class'
+-        // actual type arguments.
+-        TypeVariable<?> fieldTypeVariable = (TypeVariable<?>) typeToEvaluate;
+-        TypeVariable<?>[] classTypeVariables = rawParentClass.getTypeParameters();
+-        ParameterizedType objParameterizedType = (ParameterizedType) parentType;
+-        int indexOfActualTypeArgument = getIndex(classTypeVariables, fieldTypeVariable);
+-        Type[] actualTypeArguments = objParameterizedType.getActualTypeArguments();
++      TypeVariable<?> fieldTypeVariable = (TypeVariable<?>) typeToEvaluate;
++      TypeVariable<?>[] classTypeVariables = rawParentClass.getTypeParameters();
++      int indexOfActualTypeArgument = getIndex(classTypeVariables, fieldTypeVariable);
++      if (indexOfActualTypeArgument != -1 && parentType instanceof ParameterizedType) {
++        Type[] actualTypeArguments = ((ParameterizedType) parentType).getActualTypeArguments();
+         return actualTypeArguments[indexOfActualTypeArgument];
+-
+-
++      }
++      
++      // Check interfaces if not found in class
++      for (Type genericInterface : rawParentClass.getGenericInterfaces()) {
++        Type resolvedType = getActualType(typeToEvaluate, genericInterface, TypeUtils.toRawClass(genericInterface));
++        if (resolvedType != typeToEvaluate) {
++          return resolvedType;
++        }
++      }
++      
++      // Check superclass if not found in class or interfaces
++      Type genericSuperclass = rawParentClass.getGenericSuperclass();
++      if (genericSuperclass != null) {
++        Type resolvedType = getActualType(typeToEvaluate, genericSuperclass, TypeUtils.toRawClass(genericSuperclass));
++        if (resolvedType != typeToEvaluate) {
++          return resolvedType;
++        }
+       }
+ 
+       throw new UnsupportedOperationException("Expecting parameterized type, got " + parentType
+@@ -106,12 +114,6 @@ final class TypeInfoFactory {
+     }
+   }
+ 
+-
+-      // Evaluate type on this type
+-
+-
+-
+-
+   private static Type[] extractRealTypes(
+       Type[] actualTypeArguments, Type parentType, Class<?> rawParentClass) {
+     Preconditions.checkNotNull(actualTypeArguments);
+@@ -129,7 +131,6 @@ final class TypeInfoFactory {
+         return i;
+       }
+     }
+-    throw new IllegalStateException(
+-        "How can the type variable not be present in the class declaration!");
++    return -1;
+   }
+-}
++}
+\ No newline at end of file

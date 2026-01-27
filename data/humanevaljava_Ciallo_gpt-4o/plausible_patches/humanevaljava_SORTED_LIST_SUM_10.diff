@@ -1,0 +1,46 @@
+diff --git a/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java b/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
+index fba3afc..deddf65 100644
+--- a/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
++++ b/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
+@@ -2,6 +2,7 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ import java.util.Collections;
++import java.util.Comparator;
+ 
+ /* Write a function that accepts a list of strings as a parameter,
+ deletes the strings that have odd lengths from it,
+@@ -19,17 +20,24 @@ assert list_sort(["ab", "a", "aaa", "cd"]) => ["ab", "cd"] */
+ 
+ public class SORTED_LIST_SUM {
+     public static ArrayList<String> sorted_list_sum(ArrayList<String> lst) {
+-        ArrayList<String> result = new ArrayList<String>();
++        ArrayList<String> result = new ArrayList<>();
+         for (String str : lst) {
+-            if (str.length() % 2 == 1) continue;
+-            result.add(str);
++            if (str.length() % 2 == 0) {
++                result.add(str);
++            }
+         }
+ 
+-        Collections.sort(
+-            result,
+-            (s1, s2) -> s1.length() - s2.length()
+-        );
++        // Sort the list first by length, then by natural order (lexicographic)
++        Collections.sort(result, new Comparator<String>() {
++            public int compare(String s1, String s2) {
++                if (s1.length() != s2.length()) {
++                    return Integer.compare(s1.length(), s2.length());
++                } else {
++                    return s1.compareTo(s2);
++                }
++            }
++        });
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

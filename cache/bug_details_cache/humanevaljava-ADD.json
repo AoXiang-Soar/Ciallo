@@ -1,0 +1,16 @@
+{
+    "bug_id": "ADD",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_ADD.test_2:23 expected:<3> but was:<5>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_2() throws java.lang.Exception {\n        int result = humaneval.buggy.ADD.add(2, 3);\n        org.junit.Assert.assertEquals(\n            result, 5\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_2",
+    "test_suite": "TEST_ADD"
+}

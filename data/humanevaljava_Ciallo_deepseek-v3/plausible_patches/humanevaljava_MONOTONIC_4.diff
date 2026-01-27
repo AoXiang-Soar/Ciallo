@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/MONOTONIC.java b/src/main/java/humaneval/buggy/MONOTONIC.java
+index f56e3bd..590c980 100644
+--- a/src/main/java/humaneval/buggy/MONOTONIC.java
++++ b/src/main/java/humaneval/buggy/MONOTONIC.java
+@@ -1,7 +1,5 @@
+ package humaneval.buggy;
+ 
+-import java.util.Arrays;
+-
+ // Return True is list elements are monotonically increasing or decreasing.
+ // >>> monotonic([1, 2, 4, 20])
+ // True
+@@ -12,18 +10,18 @@ import java.util.Arrays;
+ 
+ public class MONOTONIC {
+     public static boolean monotonic(int[] l) {
+-        int[] sorted = new int[l.length];
+-        int[] reverse_sorted = new int[l.length];
++        boolean increasing = true;
++        boolean decreasing = true;
+ 
+-        sorted = l;
+-        
+-        Arrays.sort(sorted);
+-        
+-        for (int i = 0; i < l.length; i += 1)
+-            reverse_sorted[i] = sorted[l.length - i - 1]; 
++        for (int i = 1; i < l.length; i++) {
++            if (l[i] < l[i - 1]) {
++                increasing = false;
++            }
++            if (l[i] > l[i - 1]) {
++                decreasing = false;
++            }
++        }
+         
+-        if (Arrays.equals(l, sorted) || Arrays.equals(l, reverse_sorted))
+-            return true;
+-        return false;
++        return increasing || decreasing;
+     }
+-}
++}
+\ No newline at end of file

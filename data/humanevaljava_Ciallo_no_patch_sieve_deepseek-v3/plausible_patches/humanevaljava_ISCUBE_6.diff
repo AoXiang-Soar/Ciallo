@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/ISCUBE.java b/src/main/java/humaneval/buggy/ISCUBE.java
+index 84d62dc..52d5d7c 100644
+--- a/src/main/java/humaneval/buggy/ISCUBE.java
++++ b/src/main/java/humaneval/buggy/ISCUBE.java
+@@ -16,10 +16,12 @@ import java.math.RoundingMode;
+ 
+ public class ISCUBE {
+     public static boolean iscube(int a) {
+-        double root = Math.pow(a, 1./3);
+-        BigDecimal bd = BigDecimal.valueOf(root);
+-        int round_root = (int) bd.setScale(0, RoundingMode.HALF_UP).doubleValue();
+-
+-        return ((int) Math.pow(round_root, 3)) == a;
++        double root = Math.pow(Math.abs(a), 1./3);
++        root = a < 0 ? -root : root;
++        int floor_root = (int) Math.floor(root);
++        int ceil_root = (int) Math.ceil(root);
++        
++        return ((int) Math.pow(floor_root, 3)) == a || 
++               ((int) Math.pow(ceil_root, 3)) == a;
+     }
+-}
++}
+\ No newline at end of file

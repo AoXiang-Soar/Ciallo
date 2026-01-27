@@ -1,0 +1,16 @@
+diff --git a/src/main/java/org/jsoup/parser/Parser.java b/src/main/java/org/jsoup/parser/Parser.java
+index e6ea8338..aae728dc 100644
+--- a/src/main/java/org/jsoup/parser/Parser.java
++++ b/src/main/java/org/jsoup/parser/Parser.java
+@@ -203,7 +203,10 @@ public class Parser {
+         if (key.length() != 0)
+             return Attribute.createFromEncoded(key, value);
+         else {
+-            tq.consume();
++            // Consume until a space, '>', or end of the input to avoid parsing errors
++            while (!tq.isEmpty() && !tq.matchesAny("<", "/>", ">", "=", "\"", "'") && !tq.matchesWhitespace()) {
++                tq.consume();
++            }
+                 
+             return null;
+         }

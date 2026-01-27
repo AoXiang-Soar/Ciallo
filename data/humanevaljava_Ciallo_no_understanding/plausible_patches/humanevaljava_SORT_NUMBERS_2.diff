@@ -1,0 +1,40 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_NUMBERS.java b/src/main/java/humaneval/buggy/SORT_NUMBERS.java
+old mode 100644
+new mode 100755
+index 7063e12..8fa72d4
+--- a/src/main/java/humaneval/buggy/SORT_NUMBERS.java
++++ b/src/main/java/humaneval/buggy/SORT_NUMBERS.java
+@@ -4,20 +4,13 @@ import java.util.*;
+ 
+ public class SORT_NUMBERS {
+     public static String sort_numbers(String numbers) {
+-        final HashMap<String, Integer> value_map = new HashMap<String, Integer>();
+-        value_map.put("zero", 0);
+-        value_map.put("one", 1);
+-        value_map.put("two", 2);
+-        value_map.put("three", 3);
+-        value_map.put("four", 4);
+-        value_map.put("five", 5);
+-        value_map.put("six", 6);
+-        value_map.put("seven", 7);
+-        value_map.put("eight", 8);
+-        value_map.put("nine", 9);
+-
++        final List<String> numberWords = Arrays.asList(
++            "zero", "one", "two", "three", "four", 
++            "five", "six", "seven", "eight", "nine"
++        );
++        
+         ArrayList<String> number_array = new ArrayList<String>(Arrays.asList(numbers.split(" ")));
+-        Collections.sort(number_array);
++        number_array.sort(Comparator.comparingInt(numberWords::indexOf));
+         
+         String result = "";
+         for (String number : number_array){
+@@ -25,4 +18,4 @@ public class SORT_NUMBERS {
+         }
+         return result.trim();
+     }
+-}
++}
+\ No newline at end of file

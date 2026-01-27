@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_ARRAY.java b/src/main/java/humaneval/buggy/SORT_ARRAY.java
+index 04eb5e2..bb1c92e 100644
+--- a/src/main/java/humaneval/buggy/SORT_ARRAY.java
++++ b/src/main/java/humaneval/buggy/SORT_ARRAY.java
+@@ -19,15 +19,16 @@ public class SORT_ARRAY {
+     public static int[] sort_array(int[] array) {
+         if (array.length == 0)
+             return array;
+-        Arrays.sort(array);
+-        if ((array[0] + array[array.length - 1]) % 2 == 1)
+-            return array;
+-        else {
+-            for (int i = 0; i < array.length / 2; i += 1){
+-                array[i] = array[array.length - i - 1];
+-                array[array.length - i - 1] = array[i];
++        int[] copy = array.clone();
++        Arrays.sort(copy);
++        if ((array[0] + array[array.length - 1]) % 2 == 0) {
++            // Reverse the sorted array
++            for (int i = 0; i < copy.length / 2; i++) {
++                int temp = copy[i];
++                copy[i] = copy[copy.length - 1 - i];
++                copy[copy.length - 1 - i] = temp;
+             }
+-            return array;
+         }
++        return copy;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 4,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<a> but was:<null>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testPutWithList() {\n        MultiValueMap test = MultiValueMap.decorate(new HashMap(), ArrayList.class);\n        assertEquals(\"a\", test.put(\"A\", \"a\"));\n        assertEquals(\"b\", test.put(\"A\", \"b\"));\n        assertEquals(1, test.size());\n        assertEquals(2, test.size(\"A\"));\n        assertEquals(2, test.totalSize());\n    }",
+    "test_line": "        assertEquals(\"a\", test.put(\"A\", \"a\"));",
+    "test_name": "testPutWithList",
+    "test_suite": "org.apache.commons.collections.map.TestMultiValueMap"
+}

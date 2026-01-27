@@ -1,0 +1,46 @@
+diff --git a/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java b/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
+index 4389f67..ee120f4 100644
+--- a/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
++++ b/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
+@@ -15,12 +15,34 @@ anti_shuffle('Hello World!!!') returns 'Hello !!!Wdlor' */
+ 
+ public class ANTI_SHUFFLE {
+     public static String anti_shuffle(String s) {
+-        String result = "";
+-        for (String str : s.split(" ")) {
+-            char[] chars = str.toCharArray();
++        String[] words = s.split(" ");
++        StringBuilder result = new StringBuilder();
++
++        for (int i = 0; i < words.length; i++) {
++            char[] chars = words[i].toCharArray();
+             Arrays.sort(chars);
+-            result += new String(chars);
++            result.append(new String(chars));
++            
++            // Add the spaces between words, but not after the last word
++            if (i < words.length - 1) {
++                result.append(" ");
++            } else {
++                // Add trailing spaces if they exist
++                int spacesCount = countTrailingSpaces(s);
++                for (int j = 0; j < spacesCount; j++) {
++                    result.append(" ");
++                }
++            }
++        }
++        
++        return result.toString();
++    }
++
++    private static int countTrailingSpaces(String s) {
++        int count = 0;
++        for (int i = s.length() - 1; i >= 0 && s.charAt(i) == ' '; i--) {
++            count++;
+         }
+-        return result;
++        return count;
+     }
+-}
++}
+\ No newline at end of file

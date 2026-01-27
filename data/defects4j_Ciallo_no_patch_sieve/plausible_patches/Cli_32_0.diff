@@ -1,0 +1,29 @@
+diff --git a/src/main/java/org/apache/commons/cli/HelpFormatter.java b/src/main/java/org/apache/commons/cli/HelpFormatter.java
+index 6b74e4e..2e35272 100644
+--- a/src/main/java/org/apache/commons/cli/HelpFormatter.java
++++ b/src/main/java/org/apache/commons/cli/HelpFormatter.java
+@@ -914,7 +914,6 @@ public class HelpFormatter
+             return -1;
+         }
+ 
+-
+         // look for the last whitespace character before startPos+width
+         pos = startPos + width;
+ 
+@@ -932,14 +931,8 @@ public class HelpFormatter
+             return pos;
+         }
+         
+-        // if we didn't find one, simply chop at startPos+width
+-        pos = startPos + width;
+-        while ((pos <= text.length()) && ((c = text.charAt(pos)) != ' ')
+-               && (c != '\n') && (c != '\r'))
+-        {
+-            ++pos;
+-        }        
+-        return pos == text.length() ? -1 : pos;
++        // if we didn't find one, return startPos + width directly
++        return startPos + width;
+     }
+ 
+     /**

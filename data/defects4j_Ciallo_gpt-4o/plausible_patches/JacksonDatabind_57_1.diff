@@ -1,0 +1,45 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+index 10fddc4d6..665411db5 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+@@ -1432,16 +1432,32 @@ public class ObjectReader
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.
+      */
+-    public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
+-        throws IOException, JsonProcessingException
+-    {
+-        if (_dataFormatReaders != null) {
+-            return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
+-        }
+-        return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-                true));
++public <T> MappingIterator<T> readValues(byte[] src, int offset, int length) 
++    throws IOException
++{
++    // Check if the offset and length are within the bounds of the source array
++    if (offset < 0 || length < 0 || offset + length > src.length) {
++        throw new IllegalArgumentException("Invalid offset/length for the input byte array");
+     }
+ 
++    if (_dataFormatReaders != null) {
++        return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
++    }
++    try {
++        // Create a parser for the specified segment of the byte array
++        JsonParser parser = _parserFactory.createParser(src, offset, length);
++        
++        // Consider applying filters if necessary
++        return _bindAndReadValues(_considerFilter(parser, true));
++    } catch (JsonParseException e) {
++        // Handle JSON parsing specific exceptions
++        throw new IOException("Failed to parse JSON data", e);
++    } catch (Exception e) {
++        // Handle generic exceptions thrown during parsing
++        throw new IOException("Failed to parse data", e);
++    }
++}
++
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.
+      */

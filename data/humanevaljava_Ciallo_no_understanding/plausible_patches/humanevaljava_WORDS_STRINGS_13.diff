@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_STRINGS.java b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+old mode 100644
+new mode 100755
+index e98a5f0..f5186b1
+--- a/src/main/java/humaneval/buggy/WORDS_STRINGS.java
++++ b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+@@ -12,20 +12,19 @@ import java.util.ArrayList;
+  */
+ 
+ public class WORDS_STRINGS {
+-	public static ArrayList<String> words_strings(String s) {
+-		ArrayList<String> result = new ArrayList<String>();
+-		String s_list = "";
+-		for(char c : s.toCharArray()) {
+-			if(c == ',') {
+-				s_list += ' ';
+-			} else {
+-				s_list += c;
+-			}
+-		}
+-		String[] result_array = s_list.trim().split("\\s+");
+-		for(String r : result_array) {
+-			result.add(r);
+-		}
+-		return result;
+-	}
+-}
++    public static ArrayList<String> words_strings(String s) {
++        ArrayList<String> result = new ArrayList<String>();
++        if (s.trim().isEmpty()) {
++            return result;
++        }
++        
++        // Split on commas or whitespace, and filter out empty strings
++        String[] parts = s.split("[,\\s]+");
++        for (String part : parts) {
++            if (!part.isEmpty()) {
++                result.add(part);
++            }
++        }
++        return result;
++    }
++}
+\ No newline at end of file

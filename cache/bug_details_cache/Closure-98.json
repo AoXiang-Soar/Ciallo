@@ -1,0 +1,16 @@
+{
+    "bug_id": 98,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testNoInlineAliasesInLoop() {\n    testSame(\n        \"function f() { \" +\n        \"  for (var i = 0; i < 5; i++) {\" +\n        \"    var x = extern();\" +\n        \"    (function() {\" +\n        \"       var y = x; window.setTimeout(function() { extern(y); }, 0);\" +\n        \"     })();\" +\n        \"  }\" +\n        \"}\");\n  }",
+    "test_line": "    testSame(",
+    "test_name": "testNoInlineAliasesInLoop",
+    "test_suite": "com.google.javascript.jscomp.InlineVariablesTest"
+}

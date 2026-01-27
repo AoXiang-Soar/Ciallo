@@ -1,0 +1,16 @@
+{
+    "bug_id": 22,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Compress",
+    "test_error_message": "java.io.IOException: unexpected end of stream",
+    "test_framework": "defects4j",
+    "test_function": "    public void testPartialReadTruncatedData() throws IOException {\n        //with BZ2File(self.filename) as f:\n        //    self.assertEqual(f.read(len(self.TEXT)), self.TEXT)\n        //    self.assertRaises(EOFError, f.read, 1)\n\n        final int length = TEXT.length();\n        ByteBuffer buffer = ByteBuffer.allocate(length);\n        bz2Channel.read(buffer);\n\n        assertArrayEquals(Arrays.copyOfRange(TEXT.getBytes(), 0, length),\n                buffer.array());\n\n        // subsequent read should throw\n        buffer = ByteBuffer.allocate(1);\n        try {\n            bz2Channel.read(buffer);\n            Assert.fail(\"The read should have thrown.\");\n        } catch (IOException e) {\n            // pass\n        }\n    }",
+    "test_line": "        bz2Channel.read(buffer);",
+    "test_name": "testPartialReadTruncatedData",
+    "test_suite": "org.apache.commons.compress.compressors.bzip2.PythonTruncatedBzip2Test"
+}

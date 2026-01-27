@@ -1,0 +1,16 @@
+diff --git a/src/main/java/humaneval/buggy/COUNT_DISTINCT_CHARACTERS.java b/src/main/java/humaneval/buggy/COUNT_DISTINCT_CHARACTERS.java
+index 75ad8e5..3471e75 100644
+--- a/src/main/java/humaneval/buggy/COUNT_DISTINCT_CHARACTERS.java
++++ b/src/main/java/humaneval/buggy/COUNT_DISTINCT_CHARACTERS.java
+@@ -8,8 +8,8 @@ public class COUNT_DISTINCT_CHARACTERS {
+ 
+         for (char c : string.toCharArray()) {
+             if (! distinct.contains(Character.toLowerCase(c)))
+-                distinct.add(c);
++                distinct.add(Character.toLowerCase(c));
+         }
+         return distinct.size();
+     }
+-}
++}
+\ No newline at end of file

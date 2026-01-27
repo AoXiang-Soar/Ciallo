@@ -1,0 +1,47 @@
+diff --git a/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java b/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
+index 558a5864..24469c24 100644
+--- a/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
++++ b/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
+@@ -2537,17 +2537,34 @@ public class DateTimeFormatterBuilder {
+             return MAX_LENGTH;
+         }
+ 
+-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+-            String str = text.substring(position);
+-            for (String id : ALL_IDS) {
+-                if (str.startsWith(id)) {
+-                    bucket.setZone(DateTimeZone.forID(id));
+-                    return position + id.length();
+-                }
++public int parseInto(DateTimeParserBucket bucket, String text, int position) {
++    int longestMatchLength = -1;
++    String matchedZoneId = null;
++    
++    // Iterate over all potential timezone IDs
++    for (String id : ALL_IDS) {
++        int endPos = position + id.length();
++        
++        // Check if the substring of the text matches the timezone ID and is within bounds
++        if (endPos <= text.length() && text.substring(position, endPos).equals(id)) {
++            // Update if we found a longer match
++            if (id.length() > longestMatchLength) {
++                longestMatchLength = id.length();
++                matchedZoneId = id;
+             }
+-            return ~position;
+         }
+     }
++    
++    // If we found a match, set the zone in the bucket and return the new position
++    if (matchedZoneId != null) {
++        bucket.setZone(DateTimeZone.forID(matchedZoneId));
++        return position + longestMatchLength;
++    }
++    
++    // No match found, indicate failure by returning the bitwise complement of the position
++    return ~position;
++}
++    }
+ 
+     //-----------------------------------------------------------------------
+     static class Composite

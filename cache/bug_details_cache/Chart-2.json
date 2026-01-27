@@ -1,0 +1,16 @@
+{
+    "bug_id": 2,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Chart",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testBug2849731_2() {\n        XYIntervalSeriesCollection d = new XYIntervalSeriesCollection();\n        XYIntervalSeries s = new XYIntervalSeries(\"S1\");\n        s.add(1.0, Double.NaN, Double.NaN, Double.NaN, 1.5, Double.NaN);\n        d.addSeries(s);\n        Range r = DatasetUtilities.iterateDomainBounds(d);\n        assertEquals(1.0, r.getLowerBound(), EPSILON);\n        assertEquals(1.0, r.getUpperBound(), EPSILON);\n\n        s.add(1.0, 1.5, Double.NaN, Double.NaN, 1.5, Double.NaN);\n        r = DatasetUtilities.iterateDomainBounds(d);\n        assertEquals(1.0, r.getLowerBound(), EPSILON);\n        assertEquals(1.5, r.getUpperBound(), EPSILON);\n\n        s.add(1.0, Double.NaN, 0.5, Double.NaN, 1.5, Double.NaN);\n        r = DatasetUtilities.iterateDomainBounds(d);\n        assertEquals(0.5, r.getLowerBound(), EPSILON);\n        assertEquals(1.5, r.getUpperBound(), EPSILON);\n    }",
+    "test_line": "        assertEquals(1.0, r.getLowerBound(), EPSILON);",
+    "test_name": "testBug2849731_2",
+    "test_suite": "org.jfree.data.general.junit.DatasetUtilitiesTests"
+}

@@ -1,0 +1,69 @@
+diff --git a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+index 0cc8226d8..2b9fbc294 100644
+--- a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
++++ b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+@@ -18,11 +18,45 @@ public class ConstructorInstantiator implements Instantiator {
+     }
+ 
+     private <T> T withOuterClass(Class<T> cls) {
++        // Try all potential constructors in order:
++        // 1. Constructor with exact outer class type
++        // 2. Constructor with outer class's declaring class (for inner classes)
++        // 3. Constructor with any compatible outer class type
+         try {
+-            //this is kind of overengineered because we don't need to support more params
+-            //however, I know we will be needing it :)
+-            Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass());
+-            return c.newInstance(outerClassInstance);
++            Constructor<T> exactConstructor = cls.getDeclaredConstructor(outerClassInstance.getClass());
++            exactConstructor.setAccessible(true);
++            return exactConstructor.newInstance(outerClassInstance);
++        } catch (NoSuchMethodException exactEx) {
++            try {
++                Class<?> declaringClass = cls.getDeclaringClass();
++                if (declaringClass != null) {
++                    Constructor<T> declaringConstructor = cls.getDeclaredConstructor(declaringClass);
++                    declaringConstructor.setAccessible(true);
++                    return declaringConstructor.newInstance(outerClassInstance);
++                }
++            } catch (NoSuchMethodException declaringEx) {
++                // Fall through to try compatible constructors
++            } catch (Exception otherEx) {
++                throw paramsException(cls, otherEx);
++            }
++
++            // Try all constructors that accept compatible outer class instances
++            for (Constructor<?> constructor : cls.getDeclaredConstructors()) {
++                Class<?>[] parameterTypes = constructor.getParameterTypes();
++                if (parameterTypes.length == 1 && 
++                    parameterTypes[0].isAssignableFrom(outerClassInstance.getClass())) {
++                    try {
++                        @SuppressWarnings("unchecked")
++                        Constructor<T> compatibleConstructor = (Constructor<T>) constructor;
++                        compatibleConstructor.setAccessible(true);
++                        return compatibleConstructor.newInstance(outerClassInstance);
++                    } catch (Exception e) {
++                        throw paramsException(cls, e);
++                    }
++                }
++            }
++            
++            throw paramsException(cls, exactEx);
+         } catch (Exception e) {
+             throw paramsException(cls, e);
+         }
+@@ -33,7 +67,6 @@ public class ConstructorInstantiator implements Instantiator {
+                 + cls.getSimpleName() + "'.\nPlease ensure that the outer instance has correct type and that the target class has parameter-less constructor.", e);
+     }
+ 
+-
+     private static <T> T noArgConstructor(Class<T> cls) {
+         try {
+             return cls.newInstance();
+@@ -42,4 +75,4 @@ public class ConstructorInstantiator implements Instantiator {
+                     + cls.getSimpleName() + "'.\nPlease ensure it has parameter-less constructor.", e);
+         }
+     }
+-}
++}
+\ No newline at end of file

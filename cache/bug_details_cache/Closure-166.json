@@ -1,0 +1,16 @@
+{
+    "bug_id": 166,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<{[a: (boolean|undefined), b: (string|undefined)]}> but was:<{[]}>",
+    "test_framework": "defects4j",
+    "test_function": "  public void testRecordInference() {\n    inFunction(\n        \"/** @param {{a: (boolean|undefined)}|{b: (string|undefined)}} x */\" +\n        \"function f(x) {}\" +\n        \"var out = {};\" +\n        \"f(out);\");\n    assertEquals(\"{a: (boolean|undefined), b: (string|undefined)}\",\n        getType(\"out\").toString());\n  }",
+    "test_line": "    assertEquals(\"{a: (boolean|undefined), b: (string|undefined)}\",",
+    "test_name": "testRecordInference",
+    "test_suite": "com.google.javascript.jscomp.TypeInferenceTest"
+}

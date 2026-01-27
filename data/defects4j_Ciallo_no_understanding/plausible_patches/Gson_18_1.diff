@@ -1,0 +1,53 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+index f86ad36f..4c516dd5 100644
+--- a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
++++ b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+@@ -274,12 +274,43 @@ public final class $Gson$Types {
+    *
+    * @param supertype a superclass of, or interface implemented by, this.
+    */
+-  static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
+-      // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead
++static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
+     checkArgument(supertype.isAssignableFrom(contextRawType));
+-    return resolve(context, contextRawType,
+-        $Gson$Types.getGenericSupertype(context, contextRawType, supertype));
+-  }
++    Type supertypeToken = $Gson$Types.getGenericSupertype(context, contextRawType, supertype);
++    
++    // If the supertype is just a raw class, return it directly
++    if (supertypeToken instanceof Class<?>) {
++        return supertypeToken;
++    }
++    
++    // Handle ParameterizedType including wildcards
++    if (supertypeToken instanceof ParameterizedType) {
++        ParameterizedType parameterizedType = (ParameterizedType) supertypeToken;
++        Type ownerType = parameterizedType.getOwnerType();
++        Type rawType = parameterizedType.getRawType();
++        Type[] typeArgs = parameterizedType.getActualTypeArguments();
++        
++        Type[] resolvedTypeArgs = new Type[typeArgs.length];
++        for (int i = 0; i < typeArgs.length; i++) {
++            Type typeArg = typeArgs[i];
++            if (typeArg instanceof WildcardType) {
++                WildcardType wildcard = (WildcardType) typeArg;
++                // Always use the upper bound for wildcards
++                Type[] upperBounds = wildcard.getUpperBounds();
++                resolvedTypeArgs[i] = resolve(context, contextRawType, upperBounds[0]);
++            } else {
++                resolvedTypeArgs[i] = resolve(context, contextRawType, typeArg);
++            }
++        }
++        
++        return $Gson$Types.newParameterizedTypeWithOwner(
++            ownerType != null ? resolve(context, contextRawType, ownerType) : null,
++            rawType,
++            resolvedTypeArgs);
++    }
++    
++    return resolve(context, contextRawType, supertypeToken);
++}
+ 
+   /**
+    * Returns the component type of this array type.

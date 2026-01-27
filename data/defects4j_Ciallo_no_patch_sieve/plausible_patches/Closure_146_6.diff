@@ -1,0 +1,14 @@
+diff --git a/src/com/google/javascript/rhino/jstype/JSType.java b/src/com/google/javascript/rhino/jstype/JSType.java
+index aa8c7bc9c..b4b099ccd 100644
+--- a/src/com/google/javascript/rhino/jstype/JSType.java
++++ b/src/com/google/javascript/rhino/jstype/JSType.java
+@@ -703,7 +703,8 @@ public abstract class JSType implements Serializable {
+     // other types
+     switch (this.testForEquality(that)) {
+       case TRUE:
+-        return new TypePair(null, null);
++        JSType noType = registry.getNativeType(JSTypeNative.NO_TYPE);
++        return new TypePair(noType, noType);
+ 
+       case FALSE:
+       case UNKNOWN:

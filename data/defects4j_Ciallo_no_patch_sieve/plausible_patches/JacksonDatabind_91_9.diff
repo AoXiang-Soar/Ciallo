@@ -1,0 +1,42 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/DeserializerCache.java b/src/main/java/com/fasterxml/jackson/databind/deser/DeserializerCache.java
+index aae7e87f5..83385f2f5 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/DeserializerCache.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/DeserializerCache.java
+@@ -533,17 +533,28 @@ public final class DeserializerCache
+      *
+      * @since 2.8.11
+      */
+-    private boolean _hasCustomHandlers(JavaType t) {
+-        if (t.isContainerType()) {
+-            // First: value types may have both value and type handlers
+-            JavaType ct = t.getContentType();
+-            if (ct != null) {
+-                return (ct.getValueHandler() != null) || (ct.getTypeHandler() != null);
+-            // Second: map(-like) types may have value handler for key (but not type; keys are untyped)
+-            }
+-        }
++private boolean _hasCustomHandlers(JavaType t) {
++    if (!t.isContainerType()) {
+         return false;
+     }
++    
++    // Check for key handlers in Map-like types
++    if (t.isMapLikeType()) {
++        JavaType keyType = t.getKeyType();
++        if (keyType != null && keyType.getValueHandler() != null) {
++            return true;
++        }
++    }
++    
++    // Check for value/content handlers
++    JavaType contentType = t.getContentType();
++    if (contentType != null) {
++        return (contentType.getValueHandler() != null) || 
++               (contentType.getTypeHandler() != null);
++    }
++    
++    return false;
++}
+ 
+     private Class<?> _verifyAsClass(Object src, String methodName, Class<?> noneClass)
+     {

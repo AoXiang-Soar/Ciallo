@@ -1,0 +1,16 @@
+{
+    "bug_id": 106,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError: Expected failure for `long` overflow",
+    "test_framework": "defects4j",
+    "test_function": "    public void testNumberOverflowLong() throws IOException\n    {\n        final BigInteger tooBig = BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE);\n        try (final JsonParser p = MAPPER.readTree(\"[ \"+tooBig+\" ]\").traverse()) {\n            assertToken(JsonToken.START_ARRAY, p.nextToken());\n            assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());\n            assertEquals(NumberType.BIG_INTEGER, p.getNumberType());\n            try {\n                p.getLongValue();\n                fail(\"Expected failure for `long` overflow\");\n            } catch (InputCoercionException e) {\n                verifyException(e, \"Numeric value (\"+tooBig+\") out of range of long\");\n            }\n        }\n        try (final JsonParser p = MAPPER.readTree(\"{ \\\"value\\\" : \"+tooBig+\" }\").traverse()) {\n            assertToken(JsonToken.START_OBJECT, p.nextToken());\n            assertToken(JsonToken.FIELD_NAME, p.nextToken());\n            assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());\n            assertEquals(NumberType.BIG_INTEGER, p.getNumberType());\n            try {\n                p.getLongValue();\n                fail(\"Expected failure for `long` overflow\");\n            } catch (InputCoercionException e) {\n                verifyException(e, \"Numeric value (\"+tooBig+\") out of range of long\");\n            }\n        }\n        // But also from floating-point\n        final String tooBig2 = \"1.0e30\";\n        try (final JsonParser p = MAPPER.readTree(\"[ \"+tooBig2+\" ]\").traverse()) {\n            assertToken(JsonToken.START_ARRAY, p.nextToken());\n            assertToken(JsonToken.VALUE_NUMBER_FLOAT, p.nextToken());\n            assertEquals(NumberType.DOUBLE, p.getNumberType());\n            try {\n                p.getLongValue();\n                fail(\"Expected failure for `long` overflow\");\n            } catch (InputCoercionException e) {\n                verifyException(e, \"Numeric value (\"+tooBig2+\") out of range of long\");\n            }\n        }\n    }",
+    "test_line": "                fail(\"Expected failure for `long` overflow\");",
+    "test_name": "testNumberOverflowLong",
+    "test_suite": "com.fasterxml.jackson.databind.node.TestTreeTraversingParser"
+}

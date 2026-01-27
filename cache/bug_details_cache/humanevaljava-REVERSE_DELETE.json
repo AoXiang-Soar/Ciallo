@@ -1,0 +1,16 @@
+{
+    "bug_id": "REVERSE_DELETE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_REVERSE_DELETE.test_0:11 expected:<[bcd, false]> but was:<[ae, false]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        ArrayList<Object> result = humaneval.buggy.REVERSE_DELETE.reverse_delete(\"abcde\", \"ae\");\n        ArrayList<Object> desired = new ArrayList<Object>(Arrays.asList(\"bcd\", false));\n        org.junit.Assert.assertEquals(desired, result);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(desired, result);",
+    "test_name": "test_0",
+    "test_suite": "TEST_REVERSE_DELETE"
+}

@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/IS_MULTIPLY_PRIME.java b/src/main/java/humaneval/buggy/IS_MULTIPLY_PRIME.java
+index 2fe6456..5ca26dd 100644
+--- a/src/main/java/humaneval/buggy/IS_MULTIPLY_PRIME.java
++++ b/src/main/java/humaneval/buggy/IS_MULTIPLY_PRIME.java
+@@ -20,7 +20,8 @@ public class IS_MULTIPLY_PRIME {
+         for (int i = 2; i < a; i += 1){
+             if (! is_prime(i)) continue;
+             for (int j = i; j < a; j += 1) {
+-                for (int k = j; k < a; j += 1) {
++                if (! is_prime(j)) continue;
++                for (int k = j; k < a; k += 1) {
+                     if (! is_prime(k)) continue;
+                     if (i * j * k == a)
+                         return true;
+@@ -29,4 +30,4 @@ public class IS_MULTIPLY_PRIME {
+         }
+         return false;
+     }
+-}
++}
+\ No newline at end of file

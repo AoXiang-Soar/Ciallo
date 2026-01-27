@@ -1,0 +1,16 @@
+{
+    "bug_id": "IS_SORTED",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_IS_SORTED.test_1:12 expected:<true> but was:<false>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        int[] input = {1, 2, 3, 4, 5};\n        org.junit.Assert.assertEquals(true, humaneval.buggy.IS_SORTED.is_sorted(input));\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(true, humaneval.buggy.IS_SORTED.is_sorted(input));",
+    "test_name": "test_1",
+    "test_suite": "TEST_IS_SORTED"
+}

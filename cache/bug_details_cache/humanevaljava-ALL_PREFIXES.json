@@ -1,0 +1,16 @@
+{
+    "bug_id": "ALL_PREFIXES",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_ALL_PREFIXES.test_1:17 arrays first differed at element [0]; expected:<[sdfgh]> but was:<[a]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        List<String> result = humaneval.buggy.ALL_PREFIXES.all_prefixes(\"asdfgh\");\n        org.junit.Assert.assertArrayEquals(\n            result.toArray(), new String[] {\"a\", \"as\", \"asd\", \"asdf\", \"asdfg\", \"asdfgh\"} \n        );\n    }",
+    "test_line": "        org.junit.Assert.assertArrayEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_ALL_PREFIXES"
+}

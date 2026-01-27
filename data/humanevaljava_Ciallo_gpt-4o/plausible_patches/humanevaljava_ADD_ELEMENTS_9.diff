@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/ADD_ELEMENTS.java b/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
+index 359f8fb..df028c8 100644
+--- a/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
++++ b/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
+@@ -21,10 +21,14 @@ public class ADD_ELEMENTS {
+     public static int add_elements(ArrayList<Integer> arr, int k) {
+         int result = 0;
+         for(int i = 0; i < k; i++) {
+-            if(Integer.toString(arr.get(i)).length() >= 2) {
+-                result -= arr.get(i);
++            int num = arr.get(i);
++            // Calculate the absolute value to handle negative sign correctly
++            int absNum = Math.abs(num);
++            // Check if the absolute number has at most two digits
++            if(absNum < 100) {
++                result += num;
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

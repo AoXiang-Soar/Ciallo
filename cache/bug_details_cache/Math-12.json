@@ -1,0 +1,16 @@
+{
+    "bug_id": 12,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<10.688186123440644> but was:<13.675503685260901>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testDistributionClone()\n        throws IOException,\n               ClassNotFoundException {\n        // Construct a distribution and initialize its internal random\n        // generator, using a fixed seed for deterministic results.\n        distribution.reseedRandomGenerator(123);\n        distribution.sample();\n\n        // Clone the distribution.\n        final RealDistribution cloned = deepClone();\n\n        // Make sure they still produce the same samples.\n        final double s1 = distribution.sample();\n        final double s2 = cloned.sample();\n        Assert.assertEquals(s1, s2, 0d);\n    }",
+    "test_line": "        Assert.assertEquals(s1, s2, 0d);",
+    "test_name": "testDistributionClone",
+    "test_suite": "org.apache.commons.math3.distribution.RealDistributionAbstractTest"
+}

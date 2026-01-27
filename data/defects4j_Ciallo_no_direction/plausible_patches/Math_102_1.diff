@@ -1,0 +1,64 @@
+diff --git a/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java b/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
+index c87b0101f..f8faf0f82 100644
+--- a/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
++++ b/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
+@@ -61,25 +61,43 @@ public class ChiSquareTestImpl implements UnknownDistributionChiSquareTest {
+      * @throws IllegalArgumentException if preconditions are not met
+      * or length is less than 2
+      */
+-    public double chiSquare(double[] expected, long[] observed)
+-        throws IllegalArgumentException {
+-        if ((expected.length < 2) || (expected.length != observed.length)) {
+-            throw new IllegalArgumentException(
+-                    "observed, expected array lengths incorrect");
+-        }
+-        if (!isPositive(expected) || !isNonNegative(observed)) {
+-            throw new IllegalArgumentException(
+-                "observed counts must be non-negative and expected counts must be postive");
+-        }
+-        double sumSq = 0.0d;
+-        double dev = 0.0d;
+-        for (int i = 0; i < observed.length; i++) {
+-                dev = ((double) observed[i] - expected[i]);
+-                sumSq += dev * dev / expected[i];
++public double chiSquare(double[] expected, long[] observed)
++    throws IllegalArgumentException {
++    if (expected.length < 2 || expected.length != observed.length) {
++        throw new IllegalArgumentException(
++                "observed, expected array lengths incorrect");
++    }
++    if (!isPositive(expected) || !isNonNegative(observed)) {
++        throw new IllegalArgumentException(
++            "observed counts must be non-negative and expected counts must be positive");
++    }
++
++    // Calculate scaling factor if totals differ
++    double sumExpected = 0.0;
++    long sumObserved = 0L;
++    for (int i = 0; i < observed.length; i++) {
++        sumExpected += expected[i];
++        sumObserved += observed[i];
++    }
++
++    // Scale expected values to match observed total
++    double[] scaledExpected = new double[expected.length];
++    if (sumExpected != 0) {
++        double scale = sumObserved / sumExpected;
++        for (int i = 0; i < expected.length; i++) {
++            scaledExpected[i] = expected[i] * scale;
+         }
+-        return sumSq;
+     }
+ 
++    double sumSq = 0.0d;
++    for (int i = 0; i < observed.length; i++) {
++        double dev = observed[i] - scaledExpected[i];
++        sumSq += dev * dev / scaledExpected[i];
++    }
++
++    return sumSq;
++}
++
+     /**
+      * {@inheritDoc}
+      * <p><strong>Note: </strong>This implementation rescales the 

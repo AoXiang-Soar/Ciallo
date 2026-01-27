@@ -1,0 +1,59 @@
+diff --git a/src/main/java/org/apache/commons/codec/language/Soundex.java b/src/main/java/org/apache/commons/codec/language/Soundex.java
+index 71d1f07f..c5049650 100644
+--- a/src/main/java/org/apache/commons/codec/language/Soundex.java
++++ b/src/main/java/org/apache/commons/codec/language/Soundex.java
+@@ -180,22 +180,41 @@ public class Soundex implements StringEncoder {
+      * @throws IllegalArgumentException
+      *                  if the character is not mapped
+      */
+-    private char getMappingCode(final String str, final int index) {
+-        // map() throws IllegalArgumentException
+-        final char mappedChar = this.map(str.charAt(index));
+-        // HW rule check
+-        if (index > 1 && mappedChar != '0') {
+-            final char hwChar = str.charAt(index - 1);
+-            if ('H' == hwChar || 'W' == hwChar) {
+-                final char preHWChar = str.charAt(index - 2);
+-                final char firstCode = this.map(preHWChar);
+-                if (firstCode == mappedChar || 'H' == preHWChar || 'W' == preHWChar) {
+-                    return 0;
+-                }
++private char getMappingCode(final String str, final int index) {
++    final char c = str.charAt(index);
++    final char mappedChar = this.map(c);
++    
++    if (mappedChar == '0') {
++        return '0'; // skip vowels
++    }
++    
++    // HW rule: if current char shares same code with character before H/W
++    if (index > 1) {
++        char prevChar = str.charAt(index - 1);
++        if (prevChar == 'H' || prevChar == 'W') {
++            char prevPrevChar = str.charAt(index - 2);
++            char prevPrevMapped = this.map(prevPrevChar);
++            if (prevPrevMapped == mappedChar) {
++                return '0'; // suppress this code
++            }
++        }
++    }
++    
++    // Also check if previous non-H/W character had same code
++    int prevIndex = index - 1;
++    while (prevIndex >= 0) {
++        char prevChar = str.charAt(prevIndex);
++        if (prevChar != 'H' && prevChar != 'W') {
++            if (this.map(prevChar) == mappedChar) {
++                return '0'; // adjacent same codes
+             }
++            break;
+         }
+-        return mappedChar;
++        prevIndex--;
+     }
++    
++    return mappedChar;
++}
+ 
+     /**
+      * Returns the maxLength. Standard Soundex

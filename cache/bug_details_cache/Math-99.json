@@ -1,0 +1,16 @@
+{
+    "bug_id": 99,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: expecting ArithmeticException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testGcd() {\n        int a = 30;\n        int b = 50;\n        int c = 77;\n\n        assertEquals(0, MathUtils.gcd(0, 0));\n\n        assertEquals(b, MathUtils.gcd(0, b));\n        assertEquals(a, MathUtils.gcd(a, 0));\n        assertEquals(b, MathUtils.gcd(0, -b));\n        assertEquals(a, MathUtils.gcd(-a, 0));\n\n        assertEquals(10, MathUtils.gcd(a, b));\n        assertEquals(10, MathUtils.gcd(-a, b));\n        assertEquals(10, MathUtils.gcd(a, -b));\n        assertEquals(10, MathUtils.gcd(-a, -b));\n\n        assertEquals(1, MathUtils.gcd(a, c));\n        assertEquals(1, MathUtils.gcd(-a, c));\n        assertEquals(1, MathUtils.gcd(a, -c));\n        assertEquals(1, MathUtils.gcd(-a, -c));\n\n        assertEquals(3 * (1<<15), MathUtils.gcd(3 * (1<<20), 9 * (1<<15)));\n\n        assertEquals(Integer.MAX_VALUE, MathUtils.gcd(Integer.MAX_VALUE, 0));\n        assertEquals(Integer.MAX_VALUE, MathUtils.gcd(-Integer.MAX_VALUE, 0));\n        assertEquals(1<<30, MathUtils.gcd(1<<30, -Integer.MIN_VALUE));\n        try {\n            // gcd(Integer.MIN_VALUE, 0) > Integer.MAX_VALUE\n            MathUtils.gcd(Integer.MIN_VALUE, 0);\n            fail(\"expecting ArithmeticException\");\n        } catch (ArithmeticException expected) {\n            // expected\n        }\n        try {\n            // gcd(0, Integer.MIN_VALUE) > Integer.MAX_VALUE\n            MathUtils.gcd(0, Integer.MIN_VALUE);\n            fail(\"expecting ArithmeticException\");\n        } catch (ArithmeticException expected) {\n            // expected\n        }\n        try {\n            // gcd(Integer.MIN_VALUE, Integer.MIN_VALUE) > Integer.MAX_VALUE\n            MathUtils.gcd(Integer.MIN_VALUE, Integer.MIN_VALUE);\n            fail(\"expecting ArithmeticException\");\n        } catch (ArithmeticException expected) {\n            // expected\n        }\n    }",
+    "test_line": "            fail(\"expecting ArithmeticException\");",
+    "test_name": "testGcd",
+    "test_suite": "org.apache.commons.math.util.MathUtilsTest"
+}

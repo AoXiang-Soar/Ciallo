@@ -1,0 +1,52 @@
+diff --git a/src/java/org/apache/commons/cli/Parser.java b/src/java/org/apache/commons/cli/Parser.java
+index 35b025e..66e7d0c 100644
+--- a/src/java/org/apache/commons/cli/Parser.java
++++ b/src/java/org/apache/commons/cli/Parser.java
+@@ -287,26 +287,31 @@ public abstract class Parser implements CommandLineParser {
+      * @throws MissingOptionException if any of the required Options
+      * are not present.
+      */
+-    private void checkRequiredOptions()
+-        throws MissingOptionException
++private void checkRequiredOptions()
++    throws MissingOptionException
++{
++    // if there are required options that have not been
++    // processsed
++    if (requiredOptions.size() > 0)
+     {
+-        // if there are required options that have not been
+-        // processsed
+-        if (requiredOptions.size() > 0)
+-        {
+-            Iterator iter = requiredOptions.iterator();
+-            StringBuffer buff = new StringBuffer();
+-
+-
+-            // loop through the required options
+-            while (iter.hasNext())
+-            {
+-                buff.append(iter.next());
+-            }
++        Iterator iter = requiredOptions.iterator();
++        StringBuffer buff = new StringBuffer("Missing required option");
++        
++        // handle pluralization
++        if (requiredOptions.size() > 1) {
++            buff.append("s");
++        }
++        buff.append(": ");
+ 
+-            throw new MissingOptionException(buff.toString());
++        // loop through the required options
++        while (iter.hasNext())
++        {
++            buff.append(iter.next());
+         }
++
++        throw new MissingOptionException(buff.toString());
+     }
++}
+ 
+     /**
+      * <p>Process the argument values for the specified Option

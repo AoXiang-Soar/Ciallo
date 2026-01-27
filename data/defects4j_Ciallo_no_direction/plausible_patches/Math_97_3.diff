@@ -1,0 +1,87 @@
+diff --git a/src/java/org/apache/commons/math/analysis/BrentSolver.java b/src/java/org/apache/commons/math/analysis/BrentSolver.java
+index 766d87ed5..c547729d2 100644
+--- a/src/java/org/apache/commons/math/analysis/BrentSolver.java
++++ b/src/java/org/apache/commons/math/analysis/BrentSolver.java
+@@ -122,34 +122,59 @@ public class BrentSolver extends UnivariateRealSolverImpl {
+      * @throws IllegalArgumentException if min is not less than max or the
+      * signs of the values of the function at the endpoints are not opposites
+      */
+-    public double solve(double min, double max) throws MaxIterationsExceededException, 
+-        FunctionEvaluationException {
++public double solve(double min, double max) throws MaxIterationsExceededException, 
++    FunctionEvaluationException {
++    
++    clearResult();
++    verifyInterval(min, max);
++    
++    double ret = Double.NaN;
++    
++    double yMin = f.value(min);
++    double yMax = f.value(max);
++    
++    // Check if either endpoint is already a solution
++    final double fva = getFunctionValueAccuracy();
++    if (Math.abs(yMin) < fva) {
++        return min;
++    }
++    if (Math.abs(yMax) < fva) {
++        return max;
++    }
++    
++    // Verify bracketing
++    double sign = yMin * yMax;
++    if (sign >= 0) {
++        // Try to adaptively find a subinterval with sign change
++        double delta = (max - min) / 4;
++        double x1 = min + delta;
++        double x2 = min + 2 * delta;
++        double x3 = min + 3 * delta;
+         
+-        clearResult();
+-        verifyInterval(min, max);
++        double y1 = f.value(x1);
++        double y2 = f.value(x2);
++        double y3 = f.value(x3);
+         
+-        double ret = Double.NaN;
++        if (Math.abs(y1) < fva) return x1;
++        if (Math.abs(y2) < fva) return x2;
++        if (Math.abs(y3) < fva) return x3;
+         
+-        double yMin = f.value(min);
+-        double yMax = f.value(max);
++        if (yMin * y1 < 0) return solve(min, yMin, x1, y1, min, yMin);
++        if (y1 * y2 < 0) return solve(x1, y1, x2, y2, x1, y1);
++        if (y2 * y3 < 0) return solve(x2, y2, x3, y3, x2, y2);
++        if (y3 * yMax < 0) return solve(x3, y3, max, yMax, x3, y3);
+         
+-        // Verify bracketing
+-        double sign = yMin * yMax;
+-        if (sign >= 0) {
+-            // check if either value is close to a zero
+-                // neither value is close to zero and min and max do not bracket root.
+-                throw new IllegalArgumentException
+-                ("Function values at endpoints do not have different signs." +
+-                        "  Endpoints: [" + min + "," + max + "]" + 
+-                        "  Values: [" + yMin + "," + yMax + "]");
+-        } else {
+-            // solve using only the first endpoint as initial guess
+-            ret = solve(min, yMin, max, yMax, min, yMin);
+-            // either min or max is a root
+-        }
+-
+-        return ret;
++        throw new IllegalArgumentException
++        ("Function values at endpoints do not have different signs." +
++                "  Endpoints: [" + min + "," + max + "]" + 
++                "  Values: [" + yMin + "," + yMax + "]");
++    } else {
++        // solve using only the first endpoint as initial guess
++        ret = solve(min, yMin, max, yMax, min, yMin);
+     }
++
++    return ret;
++}
+         
+     /**
+      * Find a zero starting search according to the three provided points.

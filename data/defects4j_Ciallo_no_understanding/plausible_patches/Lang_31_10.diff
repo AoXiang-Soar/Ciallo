@@ -1,0 +1,82 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index a90b0673d..85bc9e18c 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -1436,26 +1436,57 @@ public class StringUtils {
+      * @return the <code>true</code> if any of the chars are found,
+      * <code>false</code> if no match or null input
+      * @since 2.4
+-     */
+-	public static boolean containsAny(CharSequence cs, char[] searchChars) {
+-		if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
+-			return false;
+-		}
+-		int csLength = cs.length();
+-		int searchLength = searchChars.length;
+-		for (int i = 0; i < csLength; i++) {
+-			char ch = cs.charAt(i);
+-			for (int j = 0; j < searchLength; j++) {
+-				if (searchChars[j] == ch) {
+-						// ch is a supplementary character
+-						// ch is in the Basic Multilingual Plane
+-						return true;
+-				}
+-			}
+-		}
+-		return false;
+-	}
+-
++     */public static boolean containsAny(CharSequence cs, char[] searchChars) {
++    if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
++        return false;
++    }
++    
++    int csLength = cs.length();
++    int searchLength = searchChars.length;
++    
++    // Convert searchChars to code points for easier comparison
++    int[] searchCodePoints = new int[searchLength];
++    int searchCodePointCount = 0;
++    for (int j = 0; j < searchLength; ) {
++        char c1 = searchChars[j++];
++        if (Character.isHighSurrogate(c1) && j < searchLength) {
++            char c2 = searchChars[j];
++            if (Character.isLowSurrogate(c2)) {
++                searchCodePoints[searchCodePointCount++] = Character.toCodePoint(c1, c2);
++                j++;
++                continue;
++            }
++        }
++        searchCodePoints[searchCodePointCount++] = c1;
++    }
++    
++    for (int i = 0; i < csLength; i++) {
++        char ch = cs.charAt(i);
++        
++        if (Character.isHighSurrogate(ch) && i + 1 < csLength) {
++            char low = cs.charAt(i + 1);
++            if (Character.isLowSurrogate(low)) {
++                int codePoint = Character.toCodePoint(ch, low);
++                for (int j = 0; j < searchCodePointCount; j++) {
++                    if (codePoint == searchCodePoints[j]) {
++                        return true;
++                    }
++                }
++                i++; // skip the low surrogate
++                continue;
++            }
++        }
++        
++        // Check against BMP characters in search array
++        for (int j = 0; j < searchCodePointCount; j++) {
++            if (searchCodePoints[j] == ch) {
++                return true;
++            }
++        }
++    }
++    
++    return false;
++}
+     /**
+      * <p>
+      * Checks if the CharSequence contains any character in the given set of characters.

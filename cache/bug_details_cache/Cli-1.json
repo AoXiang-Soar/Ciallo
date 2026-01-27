@@ -1,0 +1,16 @@
+{
+    "bug_id": 1,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Cli",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCLI13()\n        throws ParseException\n    {\n        final String debugOpt = \"debug\";\n        Option debug = OptionBuilder\n            .withArgName( debugOpt )\n            .withDescription( \"turn on debugging\" )\n            .withLongOpt( debugOpt )\n            .hasArg()\n            .create( 'd' );\n        Options options = new Options();\n        options.addOption( debug );\n        CommandLine commandLine = new PosixParser().parse( options, new String[]{\"-d\", \"true\"} );\n\n        assertEquals(\"true\", commandLine.getOptionValue( debugOpt ));\n        assertEquals(\"true\", commandLine.getOptionValue( 'd' ));\n        assertTrue(commandLine.hasOption( 'd'));\n        assertTrue(commandLine.hasOption( debugOpt));\n    }",
+    "test_line": "        assertTrue(commandLine.hasOption( debugOpt));",
+    "test_name": "testCLI13",
+    "test_suite": "org.apache.commons.cli.bug.BugCLI13Test"
+}

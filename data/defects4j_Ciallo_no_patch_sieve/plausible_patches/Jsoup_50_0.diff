@@ -1,0 +1,126 @@
+diff --git a/src/main/java/org/jsoup/helper/DataUtil.java b/src/main/java/org/jsoup/helper/DataUtil.java
+index 34880d8b..3e570d05 100644
+--- a/src/main/java/org/jsoup/helper/DataUtil.java
++++ b/src/main/java/org/jsoup/helper/DataUtil.java
+@@ -85,57 +85,76 @@ public final class DataUtil {
+     // reads bytes first into a buffer, then decodes with the appropriate charset. done this way to support
+     // switching the chartset midstream when a meta http-equiv tag defines the charset.
+     // todo - this is getting gnarly. needs a rewrite.
+-    static Document parseByteData(ByteBuffer byteData, String charsetName, String baseUri, Parser parser) {
+-        String docData;
+-        Document doc = null;
+-
+-        // look for BOM - overrides any other header or input
+-
+-        if (charsetName == null) { // determine from meta. safe parse as UTF-8
+-            // look for <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">
+-            docData = Charset.forName(defaultCharset).decode(byteData).toString();
+-            doc = parser.parseInput(docData, baseUri);
+-            Element meta = doc.select("meta[http-equiv=content-type], meta[charset]").first();
+-            if (meta != null) { // if not found, will keep utf-8 as best attempt
+-                String foundCharset = null;
+-                if (meta.hasAttr("http-equiv")) {
+-                    foundCharset = getCharsetFromContentType(meta.attr("content"));
+-                }
+-                if (foundCharset == null && meta.hasAttr("charset")) {
+-                    try {
+-                        if (Charset.isSupported(meta.attr("charset"))) {
+-                            foundCharset = meta.attr("charset");
+-                        }
+-                    } catch (IllegalCharsetNameException e) {
+-                        foundCharset = null;
++static Document parseByteData(ByteBuffer byteData, String charsetName, String baseUri, Parser parser) {
++    String docData;
++    Document doc = null;
++
++    // BOM sniffing - handle all standard Unicode BOMs
++    if (byteData.remaining() >= 2) {
++        byteData.mark();
++        byte bom1 = byteData.get();
++        byte bom2 = byteData.get();
++        if (bom1 == (byte) 0xFE && bom2 == (byte) 0xFF) {
++            charsetName = "UTF-16BE";
++        } else if (bom1 == (byte) 0xFF && bom2 == (byte) 0xFE) {
++            if (byteData.remaining() >= 2 && byteData.get() == 0 && byteData.get() == 0) {
++                charsetName = "UTF-32LE";
++            } else {
++                byteData.reset();
++                byteData.get(); byteData.get(); // reconsume first two bytes
++                charsetName = "UTF-16LE";
++            }
++        } else if (byteData.remaining() >= 2 && bom1 == 0 && bom2 == 0) {
++            if (byteData.get() == (byte) 0xFE && byteData.get() == (byte) 0xFF) {
++                charsetName = "UTF-32BE";
++            } else {
++                byteData.reset();
++            }
++        } else if (bom1 == (byte) 0xEF && bom2 == (byte) 0xBB && byteData.remaining() >= 1 && byteData.get() == (byte) 0xBF) {
++            charsetName = "UTF-8";
++        } else {
++            byteData.reset();
++        }
++    }
++
++    if (charsetName == null) {
++        docData = Charset.forName(defaultCharset).decode(byteData).toString();
++        doc = parser.parseInput(docData, baseUri);
++        Element meta = doc.select("meta[http-equiv=content-type], meta[charset]").first();
++        if (meta != null) {
++            String foundCharset = null;
++            if (meta.hasAttr("http-equiv")) {
++                foundCharset = getCharsetFromContentType(meta.attr("content"));
++            }
++            if (foundCharset == null && meta.hasAttr("charset")) {
++                try {
++                    if (Charset.isSupported(meta.attr("charset"))) {
++                        foundCharset = meta.attr("charset");
+                     }
++                } catch (IllegalCharsetNameException e) {
++                    foundCharset = null;
+                 }
++            }
+ 
+-                if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) { // need to re-decode
+-                    foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+-                    charsetName = foundCharset;
+-                    byteData.rewind();
+-                    docData = Charset.forName(foundCharset).decode(byteData).toString();
+-                    doc = null;
+-                }
++            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) {
++                foundCharset = foundCharset.trim().replaceAll("[\"']", "");
++                charsetName = foundCharset;
++                byteData.rewind();
++                docData = Charset.forName(foundCharset).decode(byteData).toString();
++                doc = null;
+             }
+-        } else { // specified by content type header (or by user on file load)
+-            Validate.notEmpty(charsetName, "Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML");
+-            docData = Charset.forName(charsetName).decode(byteData).toString();
+-        }
+-        if (docData.length() > 0 && docData.charAt(0) == UNICODE_BOM) {
+-            byteData.rewind();
+-            docData = Charset.forName(defaultCharset).decode(byteData).toString();
+-            docData = docData.substring(1);
+-            charsetName = defaultCharset;
+-            doc = null;
+         }
+-        if (doc == null) {
+-            doc = parser.parseInput(docData, baseUri);
+-            doc.outputSettings().charset(charsetName);
+-        }
+-        return doc;
++    } else {
++        Validate.notEmpty(charsetName, "Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML");
++        docData = Charset.forName(charsetName).decode(byteData).toString();
++    }
++    
++    if (doc == null) {
++        doc = parser.parseInput(docData, baseUri);
++        doc.outputSettings().charset(charsetName);
+     }
++    return doc;
++}
+ 
+     /**
+      * Read the input stream into a byte buffer.

@@ -1,0 +1,16 @@
+{
+    "bug_id": "SKJKASDKD",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SKJKASDKD.test_0:7 expected:<154> but was:<10>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        int result = humaneval.buggy.SKJKASDKD.skjkasdkd(new int[] {0,3,2,1,3,5,7,4,5,5,5,2,181,32,4,32,3,2,32,324,4,3});\n        org.junit.Assert.assertEquals(\n            result, 10\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_SKJKASDKD"
+}

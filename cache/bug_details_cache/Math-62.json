@@ -1,0 +1,16 @@
+{
+    "bug_id": 62,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<-0.2719561293> but was:<-0.2719561278056452>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testQuinticMin() throws MathException {\n        // The quintic function has zeros at 0, +-0.5 and +-1.\n        // The function has extrema (first derivative is zero) at 0.27195613 and 0.82221643,\n        UnivariateRealFunction f = new QuinticFunction();\n        UnivariateRealOptimizer underlying = new BrentOptimizer(1e-9, 1e-14);\n        underlying.setMaxEvaluations(300);\n        JDKRandomGenerator g = new JDKRandomGenerator();\n        g.setSeed(4312000053L);\n        MultiStartUnivariateRealOptimizer optimizer =\n            new MultiStartUnivariateRealOptimizer(underlying, 5, g);\n\n        UnivariateRealPointValuePair optimum\n            = optimizer.optimize(f, GoalType.MINIMIZE, -0.3, -0.2);\n        assertEquals(-0.2719561293, optimum.getPoint(), 1e-9);\n        assertEquals(-0.0443342695, optimum.getValue(), 1e-9);\n\n        UnivariateRealPointValuePair[] optima = optimizer.getOptima();\n        for (int i = 0; i < optima.length; ++i) {\n            assertEquals(f.value(optima[i].getPoint()), optima[i].getValue(), 1e-9);\n        }\n        assertTrue(optimizer.getEvaluations() >= 50);\n        assertTrue(optimizer.getEvaluations() <= 100);\n    }",
+    "test_line": "        assertEquals(-0.2719561293, optimum.getPoint(), 1e-9);",
+    "test_name": "testQuinticMin",
+    "test_suite": "org.apache.commons.math.optimization.univariate.MultiStartUnivariateRealOptimizerTest"
+}

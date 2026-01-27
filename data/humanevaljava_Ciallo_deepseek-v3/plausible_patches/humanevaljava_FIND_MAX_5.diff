@@ -1,0 +1,56 @@
+diff --git a/src/main/java/humaneval/buggy/FIND_MAX.java b/src/main/java/humaneval/buggy/FIND_MAX.java
+index a44725f..bd6c529 100644
+--- a/src/main/java/humaneval/buggy/FIND_MAX.java
++++ b/src/main/java/humaneval/buggy/FIND_MAX.java
+@@ -1,8 +1,5 @@
+ package humaneval.buggy;
+ 
+-import java.util.ArrayList;
+-import java.util.Arrays;
+-import java.util.Collections;
+ import java.util.HashSet;
+ 
+ // Write a function that accepts a list of strings.
+@@ -16,17 +13,29 @@ import java.util.HashSet;
+ 
+ public class FIND_MAX {
+     public static String find_max(String[] words) {
+-        ArrayList<String> words_list = new ArrayList<String>(Arrays.asList(words));
+-        Collections.sort(
+-            words_list,
+-            (w1, w2) -> {
+-                Character[] c1 = ((String) w1).chars().mapToObj(c -> (char)c).toArray(Character[]::new);
+-                HashSet<Character> s1 = new HashSet<Character>(Arrays.asList(c1));
+-                Character[] c2 = ((String) w2).chars().mapToObj(c -> (char)c).toArray(Character[]::new);
+-                HashSet<Character> s2 = new HashSet<Character>(Arrays.asList(c2));
+-                return s1.size() - s2.size();
++        // Initialize maxWord as null and maxUniqueCharacters as -1 initially
++        String maxWord = null;
++        int maxUniqueCharacters = -1;
++
++        // Iterate over each word in the list
++        for (String word : words) {
++            // Use a HashSet to determine unique characters in current word
++            HashSet<Character> uniqueChars = new HashSet<>();
++            for (char c : word.toCharArray()) {
++                uniqueChars.add(c);
+             }
+-        );
+-        return words_list.get(0);
++
++            int uniqueCount = uniqueChars.size();
++
++            // Check if the current word has more unique characters
++            // Or if it has the same number of unique characters but is lexicographically smaller
++            if (uniqueCount > maxUniqueCharacters || 
++                (uniqueCount == maxUniqueCharacters && (maxWord == null || word.compareTo(maxWord) < 0))) {
++                maxUniqueCharacters = uniqueCount;
++                maxWord = word;
++            }
++        }
++
++        return maxWord;
+     }
+-}
++}
+\ No newline at end of file

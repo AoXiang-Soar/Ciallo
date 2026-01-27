@@ -1,0 +1,25 @@
+diff --git a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+old mode 100644
+new mode 100755
+index 05f44d8..5f28ff4
+--- a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+@@ -14,12 +14,12 @@ public class MAKE_PALINDROME {
+             return "";
+ 
+         int beginning_of_suffix = 0;
+-        while (! is_palindrome(str.substring(beginning_of_suffix))){
++        while (!is_palindrome(str.substring(beginning_of_suffix))){
+             beginning_of_suffix += 1;
+         }
+         
+-        String result = str;
+-        result += str.substring(0, beginning_of_suffix);
+-        return result;
++        String prefix = str.substring(0, beginning_of_suffix);
++        String reversed = new StringBuilder(prefix).reverse().toString();
++        return str + reversed;
+     }
+-}
++}
+\ No newline at end of file

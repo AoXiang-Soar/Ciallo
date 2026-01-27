@@ -1,0 +1,31 @@
+diff --git a/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java b/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java
+index 5cb0e4382..5ea6fdc52 100644
+--- a/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java
++++ b/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java
+@@ -178,20 +178,18 @@ public class DiscreteDistribution<T> {
+      * @throws NotStrictlyPositiveException if {@code sampleSize} is not
+      * positive.
+      */
++    @SuppressWarnings("unchecked")
+     public T[] sample(int sampleSize) throws NotStrictlyPositiveException {
+         if (sampleSize <= 0) {
+             throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_SAMPLES,
+                     sampleSize);
+         }
+ 
+-        final T[]out = (T[]) java.lang.reflect.Array.newInstance(singletons.get(0).getClass(), sampleSize);
+-
++        // Create Object array and cast to T[] at the end
++        Object[] out = new Object[sampleSize];
+         for (int i = 0; i < sampleSize; i++) {
+             out[i] = sample();
+         }
+-
+-        return out;
+-
++        return (T[]) out;
+     }
+-
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,25 @@
+diff --git a/src/com/google/javascript/jscomp/InlineCostEstimator.java b/src/com/google/javascript/jscomp/InlineCostEstimator.java
+index 76a5d0aab..4ca6994ee 100644
+--- a/src/com/google/javascript/jscomp/InlineCostEstimator.java
++++ b/src/com/google/javascript/jscomp/InlineCostEstimator.java
+@@ -95,9 +95,14 @@ class InlineCostEstimator {
+       add(ESTIMATED_IDENTIFIER);
+     }
+ 
+-    /**
+-     * Constants (true, false, null) are considered basically free,
+-     * because it's likely that they will get folded when we're done.
+-     */
++    @Override
++    void addNumber(double x) {
++      add("1");
++    }
++
++    @Override
++    void addConstant(String newcode) {
++      add("1");
++    }
+   }
+-}
++}
+\ No newline at end of file

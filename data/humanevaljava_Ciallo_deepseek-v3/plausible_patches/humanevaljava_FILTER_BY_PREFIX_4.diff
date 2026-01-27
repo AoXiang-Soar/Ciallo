@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java b/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java
+index 312f344..f2b5a68 100644
+--- a/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java
++++ b/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java
+@@ -7,11 +7,12 @@ public class FILTER_BY_PREFIX {
+     public static List<String> filter_by_prefix(List<String> strings, String prefix) {
+         List<String> result = new ArrayList<String>();
+ 
++        // Fix the code to start checking from the beginning of each string (at index 0).
+         for (String string : strings){
+-            if (string.startsWith(prefix, 1)){
++            if (string.startsWith(prefix)){
+                 result.add(string);
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

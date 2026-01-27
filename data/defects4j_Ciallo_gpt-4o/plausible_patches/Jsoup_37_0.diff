@@ -1,0 +1,18 @@
+diff --git a/src/main/java/org/jsoup/nodes/Element.java b/src/main/java/org/jsoup/nodes/Element.java
+index f87ffcb6..5a500a84 100644
+--- a/src/main/java/org/jsoup/nodes/Element.java
++++ b/src/main/java/org/jsoup/nodes/Element.java
+@@ -1097,8 +1097,12 @@ public class Element extends Node {
+      */
+     public String html() {
+         StringBuilder accum = new StringBuilder();
++        Document.OutputSettings settings = this.ownerDocument() != null ? this.ownerDocument().outputSettings() : new Document.OutputSettings();
++        if (!settings.prettyPrint()) {
++            settings.indentAmount(0); // Ensure no indentation
++        }
+         html(accum);
+-        return accum.toString().trim();
++        return settings.prettyPrint() ? accum.toString().trim() : accum.toString();
+     }
+ 
+     private void html(StringBuilder accum) {

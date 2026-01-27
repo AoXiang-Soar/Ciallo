@@ -1,0 +1,57 @@
+diff --git a/src/main/java/humaneval/buggy/REVERSE_DELETE.java b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+index 93117a1..f045084 100644
+--- a/src/main/java/humaneval/buggy/REVERSE_DELETE.java
++++ b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+@@ -3,7 +3,7 @@ package humaneval.buggy;
+ import java.util.ArrayList;
+ 
+ /*
+- * We are given two strings s and c, you have to deleted all the characters in s that are equal to any character in c
++ * We are given two strings s and c, you have to delete all the characters in s that are equal to any character in c
+     then check if the result string is palindrome.
+     A string is called palindrome if it reads the same backward as forward.
+     You should return a tuple containing the result string and True/False for the check.
+@@ -15,19 +15,31 @@ import java.util.ArrayList;
+ 
+ public class REVERSE_DELETE {
+     public static ArrayList<Object> reverse_delete(String s, String c) {
+-        String new_s = "";
+-        for(int i = 0; i < s.length(); i++) {
+-            if(c.indexOf(s.charAt(i)) != -1) {
+-                new_s += s.charAt(i);
++        StringBuilder new_s = new StringBuilder();
++        for (int i = 0; i < s.length(); i++) {
++            if (c.indexOf(s.charAt(i)) == -1) {
++                new_s.append(s.charAt(i));
+             }
+         }
+-        String reverse_s = "";
+-        for(int i = new_s.length() - 1; i >= 0; i--) {
+-            reverse_s += new_s.charAt(i);
+-        }
++        String resultString = new_s.toString();
++        boolean isPalindrome = isPalindrome(resultString);
++        
+         ArrayList<Object> res = new ArrayList<>();
+-        res.add(new_s);
+-        res.add(reverse_s.equals(new_s));
++        res.add(resultString);
++        res.add(isPalindrome);
+         return res;
+     }
+-}
++    
++    private static boolean isPalindrome(String s) {
++        int left = 0;
++        int right = s.length() - 1;
++        while (left < right) {
++            if (s.charAt(left) != s.charAt(right)) {
++                return false;
++            }
++            left++;
++            right--;
++        }
++        return true;
++    }
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": "REMOVE_VOWELS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_REMOVE_VOWELS.test_4:39 expected:<cB[AA]> but was:<cB[]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_4() throws java.lang.Exception {\n        String result = humaneval.buggy.REMOVE_VOWELS.remove_vowels(\"acBAA\");\n        org.junit.Assert.assertEquals(\n            result, \"cB\"\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_4",
+    "test_suite": "TEST_REMOVE_VOWELS"
+}

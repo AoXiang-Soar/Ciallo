@@ -1,0 +1,16 @@
+{
+    "bug_id": "CHECK_IF_LAST_CHAR_IS_A_LETTER",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_CHECK_IF_LAST_CHAR_IS_A_LETTER.test_0:6 expected:<false> but was:<true>\nTEST_CHECK_IF_LAST_CHAR_IS_A_LETTER.test_6:30 \u00bb StringIndexOutOfBounds String ...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        org.junit.Assert.assertEquals(false, humaneval.buggy.CHECK_IF_LAST_CHAR_IS_A_LETTER.check_if_last_char_is_a_letter(\"apple\"));\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(false, humaneval.buggy.CHECK_IF_LAST_CHAR_IS_A_LETTER.check_if_last_char_is_a_letter(\"apple\"));",
+    "test_name": "test_0",
+    "test_suite": "TEST_CHECK_IF_LAST_CHAR_IS_A_LETTER"
+}

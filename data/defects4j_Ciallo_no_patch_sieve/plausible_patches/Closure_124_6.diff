@@ -1,0 +1,48 @@
+diff --git a/src/com/google/javascript/jscomp/ExploitAssigns.java b/src/com/google/javascript/jscomp/ExploitAssigns.java
+index 0f03e3558..dc36336cd 100644
+--- a/src/com/google/javascript/jscomp/ExploitAssigns.java
++++ b/src/com/google/javascript/jscomp/ExploitAssigns.java
+@@ -203,21 +203,29 @@ class ExploitAssigns extends AbstractPeepholeOptimization {
+    * changed.
+    * @return Whether the replacement can be made.
+    */
+-  private boolean isSafeReplacement(Node node, Node replacement) {
++private boolean isSafeReplacement(Node node, Node replacement) {
+     // No checks are needed for simple names.
+     if (node.isName()) {
+-      return true;
++        return true;
+     }
+     Preconditions.checkArgument(node.isGetProp());
+ 
+-      node = node.getFirstChild();
+-    if (node.isName()
+-        && isNameAssignedTo(node.getString(), replacement)) {
+-      return false;
++    // Traverse down the property access chain to check all name nodes
++    Node child = node.getFirstChild();
++    while (child != null) {
++        if (child.isName()) {
++            if (isNameAssignedTo(child.getString(), replacement)) {
++                return false;
++            }
++        }
++        if (!child.isGetProp()) {
++            break;
++        }
++        child = child.getFirstChild();
+     }
+ 
+     return true;
+-  }
++}
+ 
+   /**
+    * @return Whether name is assigned in the expression rooted at node.
+@@ -241,4 +249,4 @@ class ExploitAssigns extends AbstractPeepholeOptimization {
+ 
+     return false;
+   }
+-}
+\ No newline at end of file
++}

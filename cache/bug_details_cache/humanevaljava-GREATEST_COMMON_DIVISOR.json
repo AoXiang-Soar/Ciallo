@@ -1,0 +1,16 @@
+{
+    "bug_id": "GREATEST_COMMON_DIVISOR",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_GREATEST_COMMON_DIVISOR.test_0:7 expected:<7> but was:<1>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        int result = humaneval.buggy.GREATEST_COMMON_DIVISOR.greatest_common_divisor(3, 7);\n        org.junit.Assert.assertEquals(\n            result, 1\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_GREATEST_COMMON_DIVISOR"
+}

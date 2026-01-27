@@ -1,0 +1,28 @@
+diff --git a/src/java/org/apache/commons/math/distribution/FDistributionImpl.java b/src/java/org/apache/commons/math/distribution/FDistributionImpl.java
+index e19e97aef..477061bf8 100644
+--- a/src/java/org/apache/commons/math/distribution/FDistributionImpl.java
++++ b/src/java/org/apache/commons/math/distribution/FDistributionImpl.java
+@@ -140,13 +140,17 @@ public class FDistributionImpl
+      * @param p the desired probability for the critical value
+      * @return initial domain value
+      */
+-    protected double getInitialDomain(double p) {
+-        double ret;
+-        double d = getDenominatorDegreesOfFreedom();
+-            // use mean
+-            ret = d / (d - 2.0);
+-        return ret;
++protected double getInitialDomain(double p) {
++    double d = getDenominatorDegreesOfFreedom();
++    // Ensure the domain is positive and finite
++    if (d <= 2.0) {
++        // When df <= 2, the mean is undefined (or infinite), so use a small positive value
++        return Double.MIN_VALUE;
++    } else {
++        // For df > 2, use the well-defined mean
++        return d / (d - 2.0);
+     }
++}
+     
+     /**
+      * Modify the numerator degrees of freedom.

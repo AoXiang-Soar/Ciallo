@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/SUM_SQUARED_NUMS.java b/src/main/java/humaneval/buggy/SUM_SQUARED_NUMS.java
+index df5bab5..0388a57 100644
+--- a/src/main/java/humaneval/buggy/SUM_SQUARED_NUMS.java
++++ b/src/main/java/humaneval/buggy/SUM_SQUARED_NUMS.java
+@@ -14,10 +14,10 @@ package humaneval.buggy;
+ 
+ public class SUM_SQUARED_NUMS {
+     public static long sum_squared_nums(double[] lst) {
+-        int result = 0, i = 0;
++        int result = 0;
+         for(int j = 0; j < lst.length; j++) {
+-            result += (Math.floor((int) lst[i])) * (Math.ceil((int) lst[i]));
++            result += Math.pow(Math.ceil(lst[j]), 2);
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

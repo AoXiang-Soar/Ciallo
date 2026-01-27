@@ -1,0 +1,55 @@
+diff --git a/src/main/java/org/apache/commons/collections/functors/EqualPredicate.java b/src/main/java/org/apache/commons/collections/functors/EqualPredicate.java
+index 03588b74..8ef2db8c 100644
+--- a/src/main/java/org/apache/commons/collections/functors/EqualPredicate.java
++++ b/src/main/java/org/apache/commons/collections/functors/EqualPredicate.java
+@@ -52,7 +52,7 @@ public final class EqualPredicate<T> implements Predicate<T>, Serializable {
+         if (object == null) {
+             return nullPredicate();
+         }
+-        return new EqualPredicate<T>(object);
++        return new EqualPredicate<T>(object, null);
+     }
+ 
+     /**
+@@ -72,25 +72,12 @@ public final class EqualPredicate<T> implements Predicate<T>, Serializable {
+         return new EqualPredicate<T>(object, equator);
+     }
+ 
+-    /**
+-     * Constructor that performs no validation.
+-     * Use <code>getInstance</code> if you want that.
+-     * 
+-     * @param object  the object to compare to
+-     */
+-    public EqualPredicate(T object) {
+-        // do not use the DefaultEquator to keep backwards compatibility
+-        // the DefaultEquator returns also true if the two object references are equal
+-        this(object, new DefaultEquator<T>());
+-    }
+-
+     /**
+      * Constructor that performs no validation.
+      * Use <code>getInstance</code> if you want that.
+      * 
+      * @param object  the object to compare to
+      * @param equator  the equator to use for comparison
+-     * @since 4.0
+      */
+     public EqualPredicate(T object, Equator<T> equator) {
+         super();
+@@ -105,7 +92,7 @@ public final class EqualPredicate<T> implements Predicate<T>, Serializable {
+      * @return true if input object equals stored value
+      */
+     public boolean evaluate(T object) {
+-            return equator.equate(iValue, object);
++        return equator == null ? iValue.equals(object) : equator.equate(iValue, object);
+     }
+ 
+     /**
+@@ -118,4 +105,4 @@ public final class EqualPredicate<T> implements Predicate<T>, Serializable {
+         return iValue;
+     }
+ 
+-}
++}
+\ No newline at end of file

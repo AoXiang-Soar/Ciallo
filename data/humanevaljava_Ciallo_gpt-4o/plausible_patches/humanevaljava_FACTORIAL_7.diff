@@ -1,0 +1,59 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIAL.java b/src/main/java/humaneval/buggy/FACTORIAL.java
+index 0347b28..be0a89a 100644
+--- a/src/main/java/humaneval/buggy/FACTORIAL.java
++++ b/src/main/java/humaneval/buggy/FACTORIAL.java
+@@ -2,30 +2,34 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ 
+-/*
+- * Implement the function f that takes n as a parameter,
+-    and returns a list of size n, such that the value of the element at index i is the factorial of i if i is even
+-    or the sum of numbers from 1 to i otherwise.
+-    i starts from 1.
+-    the factorial of i is the multiplication of the numbers from 1 to i (1 * 2 * ... * i).
+-    Example:
+-    f(5) == [1, 2, 6, 24, 15]
+- */
+-
+ public class FACTORIAL {
+     public static ArrayList<Integer> factorial(int n) {
+         ArrayList<Integer> ret = new ArrayList<>();
+-        for(int i = 1; i <= n; i++) {
+-            if((i % 2) == 0) {
+-                int x = 1;
+-                for(int j = 1; j <= i; j++) x *= j;
+-                ret.add(x);
++        for (int i = 1; i <= n; i++) {
++            if (i % 2 == 0) {
++                ret.add(factorialOf(i));
+             } else {
+-                int x = 0;
+-                for(int j = 1; j <= i; i++) x -= j;
+-                ret.add(x);
++                ret.add(sumUpTo(i));
+             }
+         }
+         return ret;
+     }
+-}
++    
++    // Method to calculate factorial
++    private static int factorialOf(int num) {
++        int result = 1;
++        for (int j = 1; j <= num; j++) {
++            result *= j;
++        }
++        return result;
++    }
++    
++    // Method to calculate sum up to a number
++    private static int sumUpTo(int num) {
++        int result = 0;
++        for (int j = 1; j <= num; j++) {
++            result += j;
++        }
++        return result;
++    }
++}
+\ No newline at end of file

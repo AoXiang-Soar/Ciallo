@@ -1,0 +1,47 @@
+diff --git a/src/main/java/org/jsoup/parser/TreeBuilder.java b/src/main/java/org/jsoup/parser/TreeBuilder.java
+index 3984e87c..4cd65665 100644
+--- a/src/main/java/org/jsoup/parser/TreeBuilder.java
++++ b/src/main/java/org/jsoup/parser/TreeBuilder.java
+@@ -58,22 +58,39 @@ abstract class TreeBuilder {
+     protected abstract boolean process(Token token);
+ 
+     protected boolean processStartTag(String name) {
++        if ("table".equals(name) && currentElement() != null) {
++            // Ensure proper table structure by closing any open elements that can't be in tables
++            while (currentElement() != null && !"table".equals(currentElement().tagName())) {
++                processEndTag(currentElement().tagName());
++            }
++        }
+         return process(start.reset().name(name));
+     }
+ 
+     public boolean processStartTag(String name, Attributes attrs) {
++        if ("table".equals(name) && currentElement() != null) {
++            // Ensure proper table structure by closing any open elements that can't be in tables
++            while (currentElement() != null && !"table".equals(currentElement().tagName())) {
++                processEndTag(currentElement().tagName());
++            }
++        }
+         start.reset();
+         start.nameAttr(name, attrs);
+         return process(start);
+     }
+ 
+     protected boolean processEndTag(String name) {
++        if ("table".equals(name)) {
++            // When closing a table, ensure all table-related elements are properly closed
++            while (currentElement() != null && !"table".equals(currentElement().tagName())) {
++                processEndTag(currentElement().tagName());
++            }
++        }
+         return process(end.reset().name(name));
+     }
+ 
+-
+     protected Element currentElement() {
+         int size = stack.size();
+         return size > 0 ? stack.get(size-1) : null;
+     }
+-}
++}
+\ No newline at end of file

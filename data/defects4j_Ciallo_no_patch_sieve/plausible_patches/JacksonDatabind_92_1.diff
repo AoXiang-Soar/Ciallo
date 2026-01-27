@@ -1,0 +1,19 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java b/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
+index bb73abfbc..c342021c3 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
+@@ -58,11 +58,9 @@ public class BeanDeserializerFactory
+         s.add("org.springframework.beans.factory.ObjectFactory");
+         s.add("com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl");
+         s.add("org.apache.xalan.xsltc.trax.TemplatesImpl");
+-        // [databind#1680]: may or may not be problem, take no chance
+-        s.add("com.sun.rowset.JdbcRowSetImpl");
+-        // [databind#1737]; JDK provided
+-        // [databind#1737]; 3rd party
+-
++        // JDK classes (per [databind#1737])
++        s.add("java.util.logging.FileHandler");
++        s.add("java.rmi.server.UnicastRemoteObject");
+         DEFAULT_NO_DESER_CLASS_NAMES = Collections.unmodifiableSet(s);
+     }
+ 

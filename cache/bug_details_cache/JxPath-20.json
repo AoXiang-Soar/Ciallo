@@ -1,0 +1,16 @@
+{
+    "bug_id": 20,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JxPath",
+    "test_error_message": "junit.framework.AssertionFailedError: Evaluating <$a + $b <= $c> expected:<true> but was:<false>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testComplexOperationWithVariables() {\n        JXPathContext context = JXPathContext.newContext(null);\n        context.getVariables().declareVariable(\"a\", Integer.valueOf(0));\n        context.getVariables().declareVariable(\"b\", Integer.valueOf(0));\n        context.getVariables().declareVariable(\"c\", Integer.valueOf(1));\n        assertXPathValue(context, \"$a + $b <= $c\", Boolean.TRUE);\n    }",
+    "test_line": "        assertXPathValue(context, \"$a + $b <= $c\", Boolean.TRUE);",
+    "test_name": "testComplexOperationWithVariables",
+    "test_suite": "org.apache.commons.jxpath.ri.compiler.JXPath149Test"
+}

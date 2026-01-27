@@ -1,0 +1,17 @@
+diff --git a/src/java/org/apache/commons/codec/binary/Base64.java b/src/java/org/apache/commons/codec/binary/Base64.java
+index e4d1276c..0039786a 100644
+--- a/src/java/org/apache/commons/codec/binary/Base64.java
++++ b/src/java/org/apache/commons/codec/binary/Base64.java
+@@ -221,9 +221,9 @@ public class Base64 implements BinaryEncoder, BinaryDecoder {
+      * When decoding all variants are supported.
+      * </p>
+      */
+-    public Base64() {
+-        this(false);
+-    }
++public Base64() {
++    this(0, null);  // 0 means no line breaks
++}
+ 
+     /**
+      * Creates a Base64 codec used for decoding (all modes) and encoding in the given URL-safe mode.

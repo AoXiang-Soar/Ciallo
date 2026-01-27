@@ -1,0 +1,32 @@
+diff --git a/src/java/org/apache/commons/lang3/time/FastDateFormat.java b/src/java/org/apache/commons/lang3/time/FastDateFormat.java
+index 6b10a94f0..612d84544 100644
+--- a/src/java/org/apache/commons/lang3/time/FastDateFormat.java
++++ b/src/java/org/apache/commons/lang3/time/FastDateFormat.java
+@@ -867,13 +867,21 @@ public class FastDateFormat extends Format {
+      * @param buf  the buffer to format into
+      * @return the specified string buffer
+      */
+-    public StringBuffer format(Calendar calendar, StringBuffer buf) {
+-        if (mTimeZoneForced) {
+-            calendar = (Calendar) calendar.clone();
+-            calendar.setTimeZone(mTimeZone);
+-        }
+-        return applyRules(calendar, buf);
++public StringBuffer format(Calendar calendar, StringBuffer buf) {
++    if (mTimeZoneForced) {
++        calendar = (Calendar) calendar.clone();
++        
++        // Capture the current time in milliseconds
++        long currentTimeMillis = calendar.getTimeInMillis();
++        
++        // Set the time zone
++        calendar.setTimeZone(mTimeZone);
++        
++        // Restore the time in milliseconds to adjust fields according to the new time zone
++        calendar.setTimeInMillis(currentTimeMillis);
+     }
++    return applyRules(calendar, buf);
++}
+ 
+     /**
+      * <p>Performs the formatting by applying the rules to the

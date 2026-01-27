@@ -1,0 +1,64 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+index fe2c1133..26931884 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+@@ -566,31 +566,42 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+      * @throws IOException on error
+      */
+     @Override
+-    public int read(byte[] buf, int offset, int numToRead) throws IOException {
+-    	int totalRead = 0;
++public int read(byte[] buf, int offset, int numToRead) throws IOException {
++    int totalRead = 0;
+ 
+-        if (hasHitEOF || entryOffset >= entrySize) {
+-            return -1;
+-        }
++    if (hasHitEOF || entryOffset >= entrySize) {
++        return -1;
++    }
+ 
+-        if (currEntry == null) {
+-            throw new IllegalStateException("No current tar entry");
+-        }
++    if (currEntry == null) {
++        throw new IllegalStateException("No current tar entry");
++    }
++
++    numToRead = Math.min(numToRead, available());
+ 
+-        numToRead = Math.min(numToRead, available());
+-        
+-        totalRead = is.read(buf, offset, numToRead);
+-        count(totalRead);
+-        
+-        if (totalRead == -1) {
++    // Use a loop to ensure we attempt to read the desired amount even if it requires multiple reads
++    while (totalRead < numToRead) {
++        int bytesRead = is.read(buf, offset + totalRead, numToRead - totalRead);
++
++        // If bytesRead is -1, we have hit the end of the stream unexpectedly
++        if (bytesRead == -1) {
+             hasHitEOF = true;
+-        } else {
+-            entryOffset += totalRead;
++            throw new IOException("Truncated tar entry detected");
+         }
+ 
+-        return totalRead;
++        totalRead += bytesRead;
++        entryOffset += bytesRead;
++
++        // Stop reading if the entry is completely read
++        if (entryOffset >= entrySize) {
++            break;
++        }
+     }
+ 
++    count(totalRead);
++    return totalRead;
++}
++
+     /**
+      * Whether this class is able to read the given entry.
+      *

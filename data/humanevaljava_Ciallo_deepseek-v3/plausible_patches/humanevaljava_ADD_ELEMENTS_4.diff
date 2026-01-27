@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/ADD_ELEMENTS.java b/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
+index 359f8fb..af5d2f8 100644
+--- a/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
++++ b/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
+@@ -21,10 +21,14 @@ public class ADD_ELEMENTS {
+     public static int add_elements(ArrayList<Integer> arr, int k) {
+         int result = 0;
+         for(int i = 0; i < k; i++) {
+-            if(Integer.toString(arr.get(i)).length() >= 2) {
+-                result -= arr.get(i);
++            int numDigits = Integer.toString(arr.get(i)).length();
++            if(arr.get(i) < 0) {
++                numDigits--; // Remove 1 digit count for the '-' sign in negative numbers
++            }
++            if(numDigits <= 2) {
++                result += arr.get(i);
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

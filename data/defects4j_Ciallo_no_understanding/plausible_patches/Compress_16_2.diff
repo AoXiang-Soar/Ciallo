@@ -1,0 +1,19 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java b/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
+index 37dfbe03..2e0f672c 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
++++ b/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
+@@ -209,6 +209,14 @@ public class ArchiveStreamFactory {
+         try {
+             int signatureLength = in.read(signature);
+             in.reset();
++            if (signatureLength >= 4) {
++                // Check for common non-archive formats first
++                if ((signature[0] == 'F' && signature[1] == 'O' && signature[2] == 'R' && signature[3] == 'M') || // AIFF
++                    (signature[0] == 'R' && signature[1] == 'I' && signature[2] == 'F' && signature[3] == 'F') || // WAV
++                    (signature[0] == (byte)0xFF && signature[1] == (byte)0xD8)) { // JPEG
++                    throw new ArchiveException("No Archiver found for the stream signature");
++                }
++            }
+             if (ZipArchiveInputStream.matches(signature, signatureLength)) {
+                 return new ZipArchiveInputStream(in);
+             } else if (JarArchiveInputStream.matches(signature, signatureLength)) {

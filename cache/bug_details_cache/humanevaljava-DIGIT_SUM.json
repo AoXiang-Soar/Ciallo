@@ -1,0 +1,16 @@
+{
+    "bug_id": "DIGIT_SUM",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_DIGIT_SUM.test_6:55 expected:<0> but was:<151>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_6() throws java.lang.Exception {\n        int result = humaneval.buggy.DIGIT_SUM.digit_sum(\" How are yOu?\");\n        org.junit.Assert.assertEquals(\n            result, 151\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_6",
+    "test_suite": "TEST_DIGIT_SUM"
+}

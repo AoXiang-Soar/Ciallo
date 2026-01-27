@@ -1,0 +1,16 @@
+{
+    "bug_id": 19,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Chart",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testGetRangeAxisIndex() {\n        CategoryAxis domainAxis1 = new CategoryAxis(\"X1\");\n        NumberAxis rangeAxis1 = new NumberAxis(\"Y1\");\n        NumberAxis rangeAxis2 = new NumberAxis(\"Y2\");\n        CategoryPlot plot = new CategoryPlot(null, domainAxis1, rangeAxis1, \n                null);\n        assertEquals(0, plot.getRangeAxisIndex(rangeAxis1));\n        assertEquals(-1, plot.getRangeAxisIndex(rangeAxis2));\n        plot.setRangeAxis(1, rangeAxis2);\n        assertEquals(1, plot.getRangeAxisIndex(rangeAxis2));\n        assertEquals(-1, plot.getRangeAxisIndex(new NumberAxis(\"Y2\")));\n        boolean pass = false;\n        try {\n            plot.getRangeAxisIndex(null);\n        }\n        catch (IllegalArgumentException e) {\n            pass = true;\n        }\n        assertTrue(pass);\n    }",
+    "test_line": "        assertTrue(pass);",
+    "test_name": "testGetRangeAxisIndex",
+    "test_suite": "org.jfree.chart.plot.junit.CategoryPlotTests"
+}

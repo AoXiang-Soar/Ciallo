@@ -1,0 +1,49 @@
+diff --git a/src/java/org/apache/commons/cli/OptionBuilder.java b/src/java/org/apache/commons/cli/OptionBuilder.java
+index 4d21b8b..5aa67ea 100644
+--- a/src/java/org/apache/commons/cli/OptionBuilder.java
++++ b/src/java/org/apache/commons/cli/OptionBuilder.java
+@@ -343,23 +343,26 @@ public final class OptionBuilder
+      * @throws IllegalArgumentException if <code>opt</code> is not
+      * a valid character.  See Option.
+      */
+-    public static Option create(String opt) throws IllegalArgumentException
+-    {
+-            // create the option
+-        Option option = new Option(opt, description);
+-
+-            // set the option properties
+-            option.setLongOpt(longopt);
+-            option.setRequired(required);
+-            option.setOptionalArg(optionalArg);
+-            option.setArgs(numberOfArgs);
+-            option.setType(type);
+-            option.setValueSeparator(valuesep);
+-            option.setArgName(argName);
+-            // reset the OptionBuilder properties
+-            OptionBuilder.reset();
+-
+-        // return the Option instance
+-        return option;
++public static Option create(String opt) throws IllegalArgumentException
++{
++    Option option = null;
++    try {
++        // create the option with current description (may be null)
++        option = new Option(opt, description);
++        
++        // set the option properties
++        option.setLongOpt(longopt);
++        option.setRequired(required);
++        option.setOptionalArg(optionalArg);
++        option.setArgs(numberOfArgs);
++        option.setType(type);
++        option.setValueSeparator(valuesep);
++        option.setArgName(argName);
++    } finally {
++        // reset the OptionBuilder properties regardless of success/failure
++        OptionBuilder.reset();
+     }
++    
++    return option;
++}
+ }

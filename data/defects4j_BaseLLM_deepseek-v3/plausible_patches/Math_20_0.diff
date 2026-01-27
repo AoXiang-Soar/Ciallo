@@ -1,0 +1,18 @@
+diff --git a/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java b/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
+index 4b7dbf6bb..0e2a35e85 100644
+--- a/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
++++ b/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
+@@ -918,6 +918,13 @@ public class CMAESOptimizer
+          * @return the original objective variables, possibly repaired.
+          */
+         public double[] repairAndDecode(final double[] x) {
++            for (int i = 0; i < x.length; i++) {
++                if (x[i] < 0) {
++                    x[i] = 0;
++                } else if (x[i] > 1) {
++                    x[i] = 1;
++                }
++            }
+             return
+                 decode(x);
+         }

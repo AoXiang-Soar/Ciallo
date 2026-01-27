@@ -1,0 +1,59 @@
+diff --git a/src/main/java/humaneval/buggy/GET_MAX_TRIPLES.java b/src/main/java/humaneval/buggy/GET_MAX_TRIPLES.java
+index e32d115..db39cb7 100644
+--- a/src/main/java/humaneval/buggy/GET_MAX_TRIPLES.java
++++ b/src/main/java/humaneval/buggy/GET_MAX_TRIPLES.java
+@@ -1,31 +1,31 @@
+ package humaneval.buggy;
+ 
+-/* You are given a positive integer n. You have to create an integer array a of length n.
+-    For each i (1 ≤ i ≤ n), the value of a[i] = i * i - i + 1.
+-    Return the number of triples (a[i], a[j], a[k]) of a where i < j < k, 
+-and a[i] + a[j] + a[k] is a multiple of 3.
+-
+-Example :
+-    Input: n = 5
+-    Output: 1
+-    Explanation: 
+-    a = [1, 3, 7, 13, 21]
+-    The only valid triple is (1, 7, 13). */
+-
+ public class GET_MAX_TRIPLES {
+     public static int get_max_triples(int n) {
+         int[] A = new int[n];
+-        for (int i = 1; i <= n; i += 1)
+-            A[i - 1] = i * i - i + 1;
+         
+-        int result = 0;
+-        for (int i = 0; i < n-2; i += 1) {
+-            for (int j = 0; j < n-1; j += 1) {
+-                for (int k = 0; k < n; k += 1) {
+-                    if ((A[i] + A[j] + A[k]) % 3 == 0) result += 1;
+-                }
+-            }
++        // Array to count the occurrences of numbers with remainder 0, 1, and 2 when divided by 3
++        int[] modCount = new int[3];
++
++        for (int i = 1; i <= n; i++) {
++            A[i - 1] = i * i - i + 1;
++            // Count the number of elements with each remainder when divided by 3
++            modCount[A[i - 1] % 3]++;
+         }
++
++        int result = 0;
++
++        // Count all triples i, j, k with the sum (A[i] + A[j] + A[k]) divisible by 3
++
++        // Use combinatorial counting:
++        // - Choose 3 elements from those that give a particular remainder
++        result += (modCount[0] * (modCount[0] - 1) * (modCount[0] - 2)) / 6;
++        result += (modCount[1] * (modCount[1] - 1) * (modCount[1] - 2)) / 6;
++        result += (modCount[2] * (modCount[2] - 1) * (modCount[2] - 2)) / 6;
++
++        // - Choose one element from each remainder group to make the sum divisible by 3
++        result += modCount[0] * modCount[1] * modCount[2];
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

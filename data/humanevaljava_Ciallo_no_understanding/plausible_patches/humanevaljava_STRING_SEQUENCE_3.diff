@@ -1,0 +1,25 @@
+diff --git a/src/main/java/humaneval/buggy/STRING_SEQUENCE.java b/src/main/java/humaneval/buggy/STRING_SEQUENCE.java
+old mode 100644
+new mode 100755
+index d745307..dabb6bd
+--- a/src/main/java/humaneval/buggy/STRING_SEQUENCE.java
++++ b/src/main/java/humaneval/buggy/STRING_SEQUENCE.java
+@@ -1,11 +1,11 @@
+ package humaneval.buggy;
+ 
++import java.util.stream.IntStream;
++
+ public class STRING_SEQUENCE {
+     public static String string_sequence(int n) {
+-        String result = "";
+-        for (int i = 0; i <= n; i += 1){
+-            result += i + " ";
+-        }
+-        return result;
++        return IntStream.rangeClosed(0, n)
++            .mapToObj(String::valueOf)
++            .reduce("", (a, b) -> a + (a.isEmpty() ? "" : " ") + b);
+     }
+-}
++}
+\ No newline at end of file

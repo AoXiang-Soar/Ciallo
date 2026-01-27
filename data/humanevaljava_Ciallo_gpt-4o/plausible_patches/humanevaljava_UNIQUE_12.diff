@@ -1,0 +1,37 @@
+diff --git a/src/main/java/humaneval/buggy/UNIQUE.java b/src/main/java/humaneval/buggy/UNIQUE.java
+index 8e621ef..5b45e34 100644
+--- a/src/main/java/humaneval/buggy/UNIQUE.java
++++ b/src/main/java/humaneval/buggy/UNIQUE.java
+@@ -1,18 +1,26 @@
+ package humaneval.buggy;
+ 
++import java.util.HashSet;
++import java.util.List;
+ import java.util.ArrayList;
+ import java.util.Collections;
+-import java.util.List;
+ 
+ public class UNIQUE {
+     public static List<Integer> unique(List<Integer> l) {
+-        List<Integer> result = new ArrayList<Integer>();
++        // Create a HashSet to track seen numbers and avoid duplicates
++        HashSet<Integer> seen = new HashSet<>();
++        List<Integer> result = new ArrayList<>();
+ 
+-        for (Integer n : l){
+-            result.add(n);
++        // Add elements to result only if they haven't been seen before
++        for (Integer n : l) {
++            if (seen.add(n)) { // add returns true if the set did not already contain the specified element
++                result.add(n);
++            }
+         }
++
++        // Sort the resulting list
+         Collections.sort(result);
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

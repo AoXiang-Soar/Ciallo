@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/MONOTONIC.java b/src/main/java/humaneval/buggy/MONOTONIC.java
+old mode 100644
+new mode 100755
+index f56e3bd..7e63e41
+--- a/src/main/java/humaneval/buggy/MONOTONIC.java
++++ b/src/main/java/humaneval/buggy/MONOTONIC.java
+@@ -15,7 +15,7 @@ public class MONOTONIC {
+         int[] sorted = new int[l.length];
+         int[] reverse_sorted = new int[l.length];
+ 
+-        sorted = l;
++        System.arraycopy(l, 0, sorted, 0, l.length);
+         
+         Arrays.sort(sorted);
+         
+@@ -26,4 +26,4 @@ public class MONOTONIC {
+             return true;
+         return false;
+     }
+-}
++}
+\ No newline at end of file

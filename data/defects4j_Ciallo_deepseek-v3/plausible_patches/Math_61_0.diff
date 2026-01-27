@@ -1,0 +1,63 @@
+diff --git a/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java b/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java
+index 148daad0d..e2dbab51b 100644
+--- a/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java
++++ b/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java
+@@ -19,11 +19,11 @@ package org.apache.commons.math.distribution;
+ import java.io.Serializable;
+ 
+ import org.apache.commons.math.MathException;
+-import org.apache.commons.math.MathRuntimeException;
+ import org.apache.commons.math.exception.util.LocalizedFormats;
+ import org.apache.commons.math.special.Gamma;
+ import org.apache.commons.math.util.MathUtils;
+ import org.apache.commons.math.util.FastMath;
++import org.apache.commons.math.exception.NotStrictlyPositiveException;
+ 
+ /**
+  * Implementation for the {@link PoissonDistribution}.
+@@ -74,7 +74,7 @@ public class PoissonDistributionImpl extends AbstractIntegerDistribution
+      * must be positive; otherwise an <code>IllegalArgument</code> is thrown.
+      *
+      * @param p the Poisson mean
+-     * @throws IllegalArgumentException if p &le; 0
++     * @throws NotStrictlyPositiveException if p ≤ 0
+      */
+     public PoissonDistributionImpl(double p) {
+         this(p, DEFAULT_EPSILON, DEFAULT_MAX_ITERATIONS);
+@@ -87,11 +87,12 @@ public class PoissonDistributionImpl extends AbstractIntegerDistribution
+      * @param p the Poisson mean
+      * @param epsilon the convergence criteria for cumulative probabilites
+      * @param maxIterations the maximum number of iterations for cumulative probabilites
++     * @throws NotStrictlyPositiveException if p ≤ 0
+      * @since 2.1
+      */
+     public PoissonDistributionImpl(double p, double epsilon, int maxIterations) {
+         if (p <= 0) {
+-            throw MathRuntimeException.createIllegalArgumentException(LocalizedFormats.NOT_POSITIVE_POISSON_MEAN, p);
++            throw new NotStrictlyPositiveException(LocalizedFormats.NOT_POSITIVE_POISSON_MEAN, p);
+         }
+         mean = p;
+         normal = new NormalDistributionImpl(p, FastMath.sqrt(p));
+@@ -104,6 +105,7 @@ public class PoissonDistributionImpl extends AbstractIntegerDistribution
+      *
+      * @param p the Poisson mean
+      * @param epsilon the convergence criteria for cumulative probabilites
++     * @throws NotStrictlyPositiveException if p ≤ 0
+      * @since 2.1
+      */
+     public PoissonDistributionImpl(double p, double epsilon) {
+@@ -115,6 +117,7 @@ public class PoissonDistributionImpl extends AbstractIntegerDistribution
+      *
+      * @param p the Poisson mean
+      * @param maxIterations the maximum number of iterations for cumulative probabilites
++     * @throws NotStrictlyPositiveException if p ≤ 0
+      * @since 2.1
+      */
+     public PoissonDistributionImpl(double p, int maxIterations) {
+@@ -238,4 +241,4 @@ public class PoissonDistributionImpl extends AbstractIntegerDistribution
+     protected int getDomainUpperBound(double p) {
+         return Integer.MAX_VALUE;
+     }
+-}
++}
+\ No newline at end of file

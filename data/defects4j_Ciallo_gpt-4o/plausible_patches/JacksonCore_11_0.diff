@@ -1,0 +1,42 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/sym/ByteQuadsCanonicalizer.java b/src/main/java/com/fasterxml/jackson/core/sym/ByteQuadsCanonicalizer.java
+index f19acc72..cf160dce 100644
+--- a/src/main/java/com/fasterxml/jackson/core/sym/ByteQuadsCanonicalizer.java
++++ b/src/main/java/com/fasterxml/jackson/core/sym/ByteQuadsCanonicalizer.java
+@@ -871,19 +871,26 @@ public final class ByteQuadsCanonicalizer
+         }
+     }
+ 
+-    private void _verifySharing()
+-    {
+-        if (_hashShared) {
+-            _hashArea = Arrays.copyOf(_hashArea, _hashArea.length);
+-            _names = Arrays.copyOf(_names, _names.length);
+-            _hashShared = false;
+-            // 09-Sep-2015, tatu: As per [jackson-core#216], also need to ensure
+-            //    we rehash as needed, as need-rehash flag is not copied from parent
+-        }
+-        if (_needRehash) {
+-            rehash();
++private void _verifySharing()
++{
++    if (_hashShared) {
++        // Apply a more conservative strategy for resizing arrays.
++        int newSize = Math.min(_hashArea.length * 2, 1024); // Limit growth to a maximum defined size
++        
++        // If the current size is already larger than our conservative growth size, do not grow it further
++        if (newSize > _hashArea.length) {
++            _hashArea = Arrays.copyOf(_hashArea, newSize);
++            _names = Arrays.copyOf(_names, newSize);
+         }
++
++        _hashShared = false;
++
++        // Ensure to rehash if needed
+     }
++    if (_needRehash) {
++        rehash();
++    }
++}
+ 
+     /**
+      * Method called to find the location within hash table to add a new symbol in.

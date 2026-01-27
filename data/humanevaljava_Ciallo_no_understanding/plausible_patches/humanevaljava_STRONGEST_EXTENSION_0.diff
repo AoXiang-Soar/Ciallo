@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/STRONGEST_EXTENSION.java b/src/main/java/humaneval/buggy/STRONGEST_EXTENSION.java
+old mode 100644
+new mode 100755
+index 7ff1563..c0e0569
+--- a/src/main/java/humaneval/buggy/STRONGEST_EXTENSION.java
++++ b/src/main/java/humaneval/buggy/STRONGEST_EXTENSION.java
+@@ -25,12 +25,15 @@ public class STRONGEST_EXTENSION {
+             int CAP = 0;
+             int SM = 0;
+             for (char c : s.toCharArray()) {
+-                if (Character.toUpperCase(c) == c) SM += 1;
+-                if (Character.toLowerCase(c) == c) CAP += 1;
++                if (Character.toUpperCase(c) == c) CAP += 1;
++                if (Character.toLowerCase(c) == c) SM += 1;
++            }
++            int current_val = CAP - SM;
++            if (current_val > val) {
++                val = current_val;
++                strong = s;
+             }
+-            val = CAP - SM;
+-            strong = s;
+         }
+         return class_name + "." + strong;
+     }
+-}
++}
+\ No newline at end of file

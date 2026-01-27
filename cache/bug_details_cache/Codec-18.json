@@ -1,0 +1,16 @@
+{
+    "bug_id": 18,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        return CharSequenceUtils.regionMatches(cs1, false, 0, cs2, 0, Math.max(cs1.length(), cs2.length()));",
+    "code": "    public static boolean equals(final CharSequence cs1, final CharSequence cs2) {\n        if (cs1 == cs2) {\n            return true;\n        }\n        if (cs1 == null || cs2 == null) {\n            return false;\n        }\n        if (cs1 instanceof String && cs2 instanceof String) {\n            return cs1.equals(cs2);\n        }\n        return CharSequenceUtils.regionMatches(cs1, false, 0, cs2, 0, Math.max(cs1.length(), cs2.length()));\n    }",
+    "fixed_code": "    public static boolean equals(final CharSequence cs1, final CharSequence cs2) {\n        if (cs1 == cs2) {\n            return true;\n        }\n        if (cs1 == null || cs2 == null) {\n            return false;\n        }\n        if (cs1 instanceof String && cs2 instanceof String) {\n            return cs1.equals(cs2);\n        }\n        return cs1.length() == cs2.length() && CharSequenceUtils.regionMatches(cs1, false, 0, cs2, 0, cs1.length());\n    }",
+    "fixed_lines": "        return cs1.length() == cs2.length() && CharSequenceUtils.regionMatches(cs1, false, 0, cs2, 0, cs1.length());",
+    "masked_code": "    public static boolean equals(final CharSequence cs1, final CharSequence cs2) {\n        if (cs1 == cs2) {\n            return true;\n        }\n        if (cs1 == null || cs2 == null) {\n            return false;\n        }\n        if (cs1 instanceof String && cs2 instanceof String) {\n            return cs1.equals(cs2);\n        }\n>>> [ INFILL ] <<<\n    }",
+    "project": "Codec",
+    "test_error_message": "java.lang.StringIndexOutOfBoundsException: index 3,length 3",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEqualsCS1() {\n        Assert.assertFalse(StringUtils.equals(new StringBuilder(\"abc\"), null));\n        Assert.assertFalse(StringUtils.equals(null, new StringBuilder(\"abc\")));\n        Assert.assertTrue(StringUtils.equals(new StringBuilder(\"abc\"), new StringBuilder(\"abc\")));\n        Assert.assertFalse(StringUtils.equals(new StringBuilder(\"abc\"), new StringBuilder(\"abcd\")));\n        Assert.assertFalse(StringUtils.equals(new StringBuilder(\"abcd\"), new StringBuilder(\"abc\")));\n        Assert.assertFalse(StringUtils.equals(new StringBuilder(\"abc\"), new StringBuilder(\"ABC\")));\n    }",
+    "test_line": "        Assert.assertFalse(StringUtils.equals(new StringBuilder(\"abc\"), new StringBuilder(\"abcd\")));",
+    "test_name": "testEqualsCS1",
+    "test_suite": "org.apache.commons.codec.binary.StringUtilsTest"
+}

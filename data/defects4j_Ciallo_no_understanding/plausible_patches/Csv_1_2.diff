@@ -1,0 +1,32 @@
+diff --git a/src/main/java/org/apache/commons/csv/ExtendedBufferedReader.java b/src/main/java/org/apache/commons/csv/ExtendedBufferedReader.java
+index 563ece1b..fbc1557d 100644
+--- a/src/main/java/org/apache/commons/csv/ExtendedBufferedReader.java
++++ b/src/main/java/org/apache/commons/csv/ExtendedBufferedReader.java
+@@ -53,14 +53,22 @@ class ExtendedBufferedReader extends BufferedReader {
+     }
+ 
+     @Override
+-    public int read() throws IOException {
+-        int current = super.read();
+-        if (current == '\n') {
++public int read() throws IOException {
++    int current = super.read();
++    if (current == '\n') {
++        // Increment line counter for \n unless preceded by \r
++        if (lastChar != '\r') {
+             lineCounter++;
+         }
+-        lastChar = current;
+-        return lastChar;
++    } else if (current == '\r') {
++        lineCounter++;
++    } else if (current == -1 && lastChar == '\r') {
++        // Handle case where file ends with \r
++        lineCounter++;
+     }
++    lastChar = current;
++    return current;
++}
+ 
+     /**
+      * Returns the last character that was read as an integer (0 to 65535). This

@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_NUMBERS.java b/src/main/java/humaneval/buggy/SORT_NUMBERS.java
+index 7063e12..530879c 100644
+--- a/src/main/java/humaneval/buggy/SORT_NUMBERS.java
++++ b/src/main/java/humaneval/buggy/SORT_NUMBERS.java
+@@ -4,7 +4,7 @@ import java.util.*;
+ 
+ public class SORT_NUMBERS {
+     public static String sort_numbers(String numbers) {
+-        final HashMap<String, Integer> value_map = new HashMap<String, Integer>();
++        final Map<String, Integer> value_map = new HashMap<>();
+         value_map.put("zero", 0);
+         value_map.put("one", 1);
+         value_map.put("two", 2);
+@@ -16,13 +16,11 @@ public class SORT_NUMBERS {
+         value_map.put("eight", 8);
+         value_map.put("nine", 9);
+ 
+-        ArrayList<String> number_array = new ArrayList<String>(Arrays.asList(numbers.split(" ")));
+-        Collections.sort(number_array);
+-        
+-        String result = "";
+-        for (String number : number_array){
+-            result += number + " ";
+-        }
+-        return result.trim();
++        List<String> number_array = new ArrayList<>(Arrays.asList(numbers.split(" ")));
++
++        // Sort the number_array using a comparator of the value_map
++        number_array.sort(Comparator.comparing(value_map::get));
++
++        return String.join(" ", number_array);
+     }
+-}
++}
+\ No newline at end of file

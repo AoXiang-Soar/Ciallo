@@ -1,0 +1,16 @@
+{
+    "bug_id": 9,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Compress",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<10240> but was:<76>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCount() throws Exception {\n        File f = File.createTempFile(\"commons-compress-tarcount\", \".tar\");\n        f.deleteOnExit();\n        FileOutputStream fos = new FileOutputStream(f);\n\n        ArchiveOutputStream tarOut = new ArchiveStreamFactory()\n            .createArchiveOutputStream(ArchiveStreamFactory.TAR, fos);\n\n        File file1 = getFile(\"test1.xml\");\n        TarArchiveEntry sEntry = new TarArchiveEntry(file1);\n        tarOut.putArchiveEntry(sEntry);\n\n        FileInputStream in = new FileInputStream(file1);\n        byte[] buf = new byte[8192];\n\n        int read = 0;\n        while ((read = in.read(buf)) > 0) {\n            tarOut.write(buf, 0, read);\n        }\n\n        in.close();\n        tarOut.closeArchiveEntry();\n        tarOut.close();\n\n        assertEquals(f.length(), tarOut.getBytesWritten());\n    }",
+    "test_line": "        assertEquals(f.length(), tarOut.getBytesWritten());",
+    "test_name": "testCount",
+    "test_suite": "org.apache.commons.compress.archivers.tar.TarArchiveOutputStreamTest"
+}

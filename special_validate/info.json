@@ -1,0 +1,17 @@
+{
+  "Closure-11": "/Closure-11/src/com/google/javascript/jscomp/TypeCheck.java",
+  "Closure-66": "/Closure-66/src/com/google/javascript/jscomp/TypeCheck.java",
+  "Closure-123": "/Closure-123/src/com/google/javascript/jscomp/CodeGenerator.java",
+  "Gson-6": "/Gson-6/gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+  "JacksonCore-15": "/JacksonCore-15/src/main/java/com/fasterxml/jackson/core/filter/FilteringParserDelegate.java",
+  "JacksonCore-21": "/JacksonCore-21/src/main/java/com/fasterxml/jackson/core/filter/FilteringParserDelegate.java",
+  "JacksonCore-23": "/JacksonCore-23/src/main/java/com/fasterxml/jackson/core/util/DefaultPrettyPrinter.java",
+  "JacksonDatabind-19": "/JacksonDatabind-19/src/main/java/com/fasterxml/jackson/databind/type/TypeFactory.java",
+  "Jsoup-15": "/Jsoup-15/src/main/java/org/jsoup/parser/TreeBuilderState.java",
+  "Jsoup-35": "/Jsoup-35/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java",
+  "Jsoup-38": "/Jsoup-38/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java",
+  "Jsoup-62": "/Jsoup-62/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java",
+  "Jsoup-76": "/Jsoup-76/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java",
+  "Lang-31": "/Lang-31/src/main/java/org/apache/commons/lang3/StringUtils.java",
+  "Mockito-18": "/Mockito-18/src/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java"
+}

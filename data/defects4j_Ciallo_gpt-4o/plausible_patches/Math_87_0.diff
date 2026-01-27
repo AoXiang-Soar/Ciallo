@@ -1,0 +1,48 @@
+diff --git a/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java b/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java
+index 0ab790cd6..431f6ebab 100644
+--- a/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java
++++ b/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java
+@@ -269,19 +269,35 @@ class SimplexTableau implements Serializable {
+      * @param col index of the column to check
+      * @return the row that the variable is basic in.  null if the column is not basic
+      */
+-    private Integer getBasicRow(final int col) {
+-        Integer row = null;
+-        for (int i = getNumObjectiveFunctions(); i < getHeight(); i++) {
+-            if (!MathUtils.equals(getEntry(i, col), 0.0, epsilon)) {
+-                if (row == null) {
++private Integer getBasicRow(final int col) {
++    Integer row = null;
++    for (int i = getNumObjectiveFunctions(); i < getHeight(); i++) {
++        double entry = getEntry(i, col);
++        if (!MathUtils.equals(entry, 0.0, epsilon)) {
++            if (row == null) {
+                 row = i;
+-                } else {
++            } else {
++                // More than one row has a non-zero entry in this column; 
++                // this means this can't be a basic column, so return null.
+                 return null;
+-                }
+             }
+         }
+-        return row;
+     }
++    // Validate that the column is a basic column: one entry is 1.0, others are 0.0.
++    if (row != null) {
++        // Check that all entries in this column except one are zero
++        for (int i = getNumObjectiveFunctions(); i < getHeight(); i++) {
++            if (i != row && !MathUtils.equals(getEntry(i, col), 0.0, epsilon)) {
++                return null;  // Invalid basic column
++            }
++        }
++        // Finally, ensure that the identified row has a '1.0'
++        if (!MathUtils.equals(getEntry(row, col), 1.0, epsilon)) {
++            return null;
++        }
++    }
++    return row;
++}
+ 
+     /**
+      * Removes the phase 1 objective function and artificial variables from this tableau.

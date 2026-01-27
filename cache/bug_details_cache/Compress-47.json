@@ -1,0 +1,16 @@
+{
+    "bug_id": 47,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Compress",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void properlyMarksEntriesAsUnreadableIfUncompressedSizeIsUnknown() throws Exception {\n        // we never read any data\n        try (ZipArchiveInputStream zis = new ZipArchiveInputStream(new ByteArrayInputStream(new byte[0]))) {\n            ZipArchiveEntry e = new ZipArchiveEntry(\"test\");\n            e.setMethod(ZipMethod.DEFLATED.getCode());\n            assertTrue(zis.canReadEntryData(e));\n            e.setMethod(ZipMethod.ENHANCED_DEFLATED.getCode());\n            assertTrue(zis.canReadEntryData(e));\n            e.setMethod(ZipMethod.BZIP2.getCode());\n            assertFalse(zis.canReadEntryData(e));\n        }\n    }",
+    "test_line": "            assertFalse(zis.canReadEntryData(e));",
+    "test_name": "properlyMarksEntriesAsUnreadableIfUncompressedSizeIsUnknown",
+    "test_suite": "org.apache.commons.compress.archivers.zip.ZipArchiveInputStreamTest"
+}

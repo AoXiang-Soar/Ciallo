@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/SUM_PRODUCT.java b/src/main/java/humaneval/buggy/SUM_PRODUCT.java
+index 3cb1afd..82b1d38 100644
+--- a/src/main/java/humaneval/buggy/SUM_PRODUCT.java
++++ b/src/main/java/humaneval/buggy/SUM_PRODUCT.java
+@@ -4,11 +4,11 @@ import java.util.List;
+ 
+ public class SUM_PRODUCT {
+     public static Integer[] sum_product(List<Integer> numbers) {
+-        Integer[] result = new Integer[2];
+-        for (Integer n : numbers){
++        Integer[] result = new Integer[]{0, 1};
++        for (Integer n : numbers) {
+             result[0] += n;
+             result[1] *= n;
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/COMMON.java b/src/main/java/humaneval/buggy/COMMON.java
+index f818c29..ac928c1 100644
+--- a/src/main/java/humaneval/buggy/COMMON.java
++++ b/src/main/java/humaneval/buggy/COMMON.java
+@@ -14,8 +14,9 @@ public class COMMON {
+         
+         for (int i = 0; i < l1.length; i += 1){
+             for (int j = 0; j < l2.length; j += 1){
+-                if (l1[i] == l2[j])
++                if (l1[i] == l2[j] && !common.contains(l1[i])) {
+                     common.add(l1[i]);
++                }
+             }
+         }
+         int[] result = new int[common.size()];
+@@ -27,4 +28,4 @@ public class COMMON {
+         Arrays.sort(result);
+         return result;
+     }
+-}
++}
+\ No newline at end of file

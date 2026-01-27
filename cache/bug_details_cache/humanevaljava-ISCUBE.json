@@ -1,0 +1,16 @@
+{
+    "bug_id": "ISCUBE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_ISCUBE.test_2:22 \u00bb NumberFormat Character N is neither a decimal digit nu...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_2() throws java.lang.Exception {\n        boolean result = humaneval.buggy.ISCUBE.iscube(-1);\n        org.junit.Assert.assertEquals(\n            result, true\n        );\n    }",
+    "test_line": "        boolean result = humaneval.buggy.ISCUBE.iscube(-1);",
+    "test_name": "test_2",
+    "test_suite": "TEST_ISCUBE"
+}

@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/FILTER_BY_SUBSTRING.java b/src/main/java/humaneval/buggy/FILTER_BY_SUBSTRING.java
+index 1cd3089..adf49d8 100644
+--- a/src/main/java/humaneval/buggy/FILTER_BY_SUBSTRING.java
++++ b/src/main/java/humaneval/buggy/FILTER_BY_SUBSTRING.java
+@@ -6,9 +6,12 @@ import java.util.List;
+ public class FILTER_BY_SUBSTRING {
+     public static List<String> filter_by_substring(List<String> strings, String substring) {
+         List<String> result = new ArrayList<String>();
+-        for (String string : strings){
+-            result.add(string);
++        for (int i = 0; i < strings.size(); i++) {
++            String s = strings.get(i);
++            if (s.indexOf(substring) != -1) {
++                result.add(s);
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

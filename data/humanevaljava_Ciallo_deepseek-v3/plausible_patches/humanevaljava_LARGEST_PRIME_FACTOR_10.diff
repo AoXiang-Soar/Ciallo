@@ -1,0 +1,45 @@
+diff --git a/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java b/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java
+index 794cf2e..4f7bdaf 100644
+--- a/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java
++++ b/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java
+@@ -10,7 +10,7 @@ public class LARGEST_PRIME_FACTOR {
+     public static boolean is_prime(int k) {
+         if (k < 2)
+             return false;
+-        for (int i = 2; i < k; i += 1){
++        for (int i = 2; i <= Math.sqrt(k); i += 1){
+             if (k % i == 0)
+                 return false;
+         }
+@@ -19,11 +19,26 @@ public class LARGEST_PRIME_FACTOR {
+ 
+     public static int largest_prime_factor(int n) {
+         int largest = 1;
+-        for (int j = 2; j < n; j += 1) {
+-            if (is_prime(j)){
+-                largest = n % j;
++        
++        // Start with 2 and divide by 2 until n is odd
++        while (n % 2 == 0) {
++            largest = 2;
++            n /= 2;
++        }
++        
++        // Check and divide by odd numbers starting from 3
++        for (int j = 3; j <= Math.sqrt(n); j += 2) {
++            while (n % j == 0) {
++                largest = j;
++                n /= j;
+             }
+         }
++        
++        // If n is still greater than 2 then it must be a prime number
++        if (n > 2) {
++            largest = n;
++        }
++        
+         return largest;
+     }
+-}
++}
+\ No newline at end of file

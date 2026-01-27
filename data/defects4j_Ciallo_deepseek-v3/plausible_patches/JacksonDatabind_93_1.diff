@@ -1,0 +1,24 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/SubTypeValidator.java b/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/SubTypeValidator.java
+index afc7c45ba..aa56756f0 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/SubTypeValidator.java
++++ b/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/SubTypeValidator.java
+@@ -69,6 +69,10 @@ public class SubTypeValidator
+         // There are certain nasty classes that could cause problems, mostly
+         // via default typing -- catch them here.
+         final Class<?> raw = type.getRawClass();
++        // Add null check for raw class
++        if (raw == null) {
++            return;
++        }
+         String full = raw.getName();
+ 
+         main_check:
+@@ -81,7 +85,7 @@ public class SubTypeValidator
+             //    for some Spring framework types
+             // 05-Jan-2017, tatu: ... also, only applies to classes, not interfaces
+             if (full.startsWith(PREFIX_STRING)) {
+-                for (Class<?> cls = raw; cls != Object.class; cls = cls.getSuperclass()) {
++                for (Class<?> cls = raw; cls != null && cls != Object.class; cls = cls.getSuperclass()) {
+                     String name = cls.getSimpleName();
+                     // looking for "AbstractBeanFactoryPointcutAdvisor" but no point to allow any is there?
+                     if ("AbstractPointcutAdvisor".equals(name)

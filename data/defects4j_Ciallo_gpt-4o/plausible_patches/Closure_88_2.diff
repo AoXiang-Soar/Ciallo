@@ -1,0 +1,63 @@
+diff --git a/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java b/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java
+index ef33e4c04..248fd24ac 100644
+--- a/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java
++++ b/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java
+@@ -320,29 +320,38 @@ class DeadAssignmentsElimination extends AbstractPostOrderCallback implements
+    * reference of that variable is a read. It returns KILL, if the first
+    * reference of that variable is an assignment. It returns MAY_LIVE otherwise.
+    */
+-  private VariableLiveness isVariableReadBeforeKill(
+-      Node n, String variable) {
+-    if (NodeUtil.isName(n) && variable.equals(n.getString())) {
+-      if (NodeUtil.isLhs(n, n.getParent())) {
+-        // The expression to which the assignment is made is evaluated before
+-        // the RHS is evaluated (normal left to right evaluation) but the KILL
+-        // occurs after the RHS is evaluated.
+-        return VariableLiveness.KILL;
+-      } else {
+-        return VariableLiveness.READ;
+-      }
++private VariableLiveness isVariableReadBeforeKill(
++    Node n, String variable) {
++  // Check if the current node is the variable name we're looking for
++  if (NodeUtil.isName(n) && variable.equals(n.getString())) {
++    if (NodeUtil.isLhs(n, n.getParent())) {
++      // If the node is on the left-hand side of an assignment, mark it as a KILL.
++      return VariableLiveness.KILL;
++    } else {
++      // Otherwise, it is being read.
++      return VariableLiveness.READ;
+     }
++  }
+ 
+-    // Expressions are evaluated left-right, depth first.
+-    for (Node child = n.getFirstChild();
+-        child != null; child = child.getNext()) {
+-      if (!ControlFlowGraph.isEnteringNewCfgNode(child)) { // Not a FUNCTION
+-        VariableLiveness state = isVariableReadBeforeKill(child, variable);
+-        if (state != VariableLiveness.MAYBE_LIVE) {
+-          return state;
+-        }
++  // By default, indicate that nothing has been determined yet for this subtree
++  VariableLiveness result = VariableLiveness.MAYBE_LIVE;
++  
++  // Traverse child nodes
++  for (Node child = n.getFirstChild(); child != null; child = child.getNext()) {
++    // Skip new control flow graph nodes such as functions to avoid incorrect liveness evaluation
++    if (!ControlFlowGraph.isEnteringNewCfgNode(child)) {
++      VariableLiveness childState = isVariableReadBeforeKill(child, variable);
++      if (childState == VariableLiveness.READ) {
++        // If a READ is found, return immediately as we can't have a KILL before it
++        return VariableLiveness.READ;
++      } else if (childState == VariableLiveness.KILL && result != VariableLiveness.READ) {
++        // Set result to KILL, but keep traversing to check for potential READs
++        result = VariableLiveness.KILL;
+       }
++      // If MAYBE_LIVE, continue to check other children
+     }
+-    return VariableLiveness.MAYBE_LIVE;
+   }
++  
++  return result;
++}
+ }

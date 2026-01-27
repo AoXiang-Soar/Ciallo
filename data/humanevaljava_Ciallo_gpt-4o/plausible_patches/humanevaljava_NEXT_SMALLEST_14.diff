@@ -1,0 +1,53 @@
+diff --git a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+index 7791efd..410a102 100644
+--- a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
++++ b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+@@ -2,25 +2,29 @@ package humaneval.buggy;
+ 
+ import java.util.*;
+ 
+-/* You are given a list of integers.
+-Write a function next_smallest() that returns the 2nd smallest element of the list.
+-Return None if there is no such element.
+-
+-next_smallest([1, 2, 3, 4, 5]) == 2
+-next_smallest([5, 1, 4, 3, 2]) == 2
+-next_smallest([]) == None
+-next_smallest([1, 1]) == None */
+-
+ public class NEXT_SMALLEST {
+     public static Integer next_smallest(int[] lst) {
+-        List<Integer> numbers = new ArrayList<Integer>();
+-        for (Integer n : lst)
+-            numbers.add(n);
+-        Integer[] no_duplicate = numbers.toArray(new Integer[] {});
+-        Arrays.sort(no_duplicate);
+-
+-        if (no_duplicate.length < 2)
++        // Check if the array is empty or has fewer than 2 elements
++        if (lst.length < 2) {
+             return null;
+-        return no_duplicate[1];
++        }
++
++        // Initialize variables to store the smallest and second smallest values
++        Integer smallest = Integer.MAX_VALUE;
++        Integer secondSmallest = Integer.MAX_VALUE;
++
++        // Iterate over the array to find the smallest and second smallest unique values
++        for (int n : lst) {
++            if (n < smallest) {
++                // Update second smallest before updating smallest
++                secondSmallest = smallest;
++                smallest = n;
++            } else if (n > smallest && n < secondSmallest) {
++                secondSmallest = n;
++            }
++        }
++
++        // If second smallest is not updated, it means there is no valid second smallest element
++        return (secondSmallest == Integer.MAX_VALUE) ? null : secondSmallest;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,33 @@
+diff --git a/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java b/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java
+old mode 100644
+new mode 100755
+index 905614f..1925512
+--- a/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java
++++ b/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java
+@@ -2,6 +2,10 @@ package humaneval.buggy;
+ 
+ public class RESCALE_TO_UNIT {
+     public static double[] rescale_to_unit(double[] numbers){
++        if (numbers.length == 1) {
++            return new double[] {1.0};
++        }
++        
+         double min = Double.MAX_VALUE;
+         double max = Double.MIN_VALUE;
+ 
+@@ -9,7 +13,7 @@ public class RESCALE_TO_UNIT {
+             if (numbers[i] > max) {
+                 max = numbers[i];
+             }
+-            else if (numbers[i] < min) {
++            if (numbers[i] < min) {
+                 min = numbers[i];
+             }
+         }
+@@ -20,4 +24,4 @@ public class RESCALE_TO_UNIT {
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

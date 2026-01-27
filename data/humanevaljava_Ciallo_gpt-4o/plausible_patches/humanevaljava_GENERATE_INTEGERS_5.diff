@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java b/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
+index 8d523c9..481338a 100644
+--- a/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
++++ b/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
+@@ -12,13 +12,17 @@ import java.util.ArrayList;
+ 
+ public class GENERATE_INTEGERS {
+     public static ArrayList<Integer> generate_integers(int a, int b) {
+-        int lower = Math.max(2, a);
+-        int upper = Math.min(8, b);
++        // Ensure lower is the minimum and upper is the maximum of a and b
++        int lower = Math.min(a, b);
++        int upper = Math.max(a, b);
++        
++        lower = Math.max(2, lower);  // Adjust lower to at least 2
++        upper = Math.min(8, upper);  // Adjust upper to at most 8
+ 
+         ArrayList<Integer> result = new ArrayList<Integer>();
+         for (int i = lower; i <= upper; i += 1) {
+-            if (i % 2 == 0) result.add(i);
++            if (i % 2 == 0) result.add(i);  // Check for even numbers
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

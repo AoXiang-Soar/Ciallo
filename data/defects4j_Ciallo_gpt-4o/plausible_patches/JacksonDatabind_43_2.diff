@@ -1,0 +1,44 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java b/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java
+index dc0b05f48..e01708ad0 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java
+@@ -4,6 +4,7 @@ import java.io.IOException;
+ import java.lang.annotation.Annotation;
+ 
+ import com.fasterxml.jackson.core.JsonParser;
++import com.fasterxml.jackson.core.JsonToken;
+ import com.fasterxml.jackson.databind.*;
+ import com.fasterxml.jackson.databind.deser.*;
+ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+@@ -75,6 +76,16 @@ public final class ObjectIdValueProperty
+     public Object deserializeSetAndReturn(JsonParser p,
+     		DeserializationContext ctxt, Object instance) throws IOException
+     {
++        if (p.getCurrentToken() == JsonToken.VALUE_NULL) {
++            // Handle null values gracefully
++            SettableBeanProperty idProp = _objectIdReader.idProperty;
++            if (idProp != null) {
++                // Set the property as null, but return the instance
++                idProp.set(instance, null);
++            }
++            return instance;
++        }
++        
+         Object id = _valueDeserializer.deserialize(p, ctxt);
+         /* 02-Apr-2015, tatu: Actually, as per [databind#742], let it be;
+          *  missing or null id is needed for some cases, such as cases where id
+@@ -85,6 +96,7 @@ public final class ObjectIdValueProperty
+         if (id == null) {
+             return null;
+         }
++        
+         ReadableObjectId roid = ctxt.findObjectId(id, _objectIdReader.generator, _objectIdReader.resolver);
+         roid.bindItem(instance);
+         // also: may need to set a property value as well
+@@ -110,4 +122,4 @@ public final class ObjectIdValueProperty
+         }
+         return idProp.setAndReturn(instance, value);
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": "HAS_CLOSE_ELEMENTS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_HAS_CLOSE_ELEMENTS.test_1:20 expected:<true> but was:<false>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        boolean result = humaneval.buggy.HAS_CLOSE_ELEMENTS.has_close_elements(\n            new ArrayList<Double>(Arrays.asList(1.0, 2.0, 3.9, 4.0, 5.0, 2.2)), 0.05\n        );\n        org.junit.Assert.assertEquals(result, false);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(result, false);",
+    "test_name": "test_1",
+    "test_suite": "TEST_HAS_CLOSE_ELEMENTS"
+}

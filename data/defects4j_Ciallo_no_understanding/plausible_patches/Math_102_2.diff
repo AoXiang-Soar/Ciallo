@@ -1,0 +1,66 @@
+diff --git a/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java b/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
+index c87b0101f..fa0fa1359 100644
+--- a/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
++++ b/src/java/org/apache/commons/math/stat/inference/ChiSquareTestImpl.java
+@@ -61,24 +61,44 @@ public class ChiSquareTestImpl implements UnknownDistributionChiSquareTest {
+      * @throws IllegalArgumentException if preconditions are not met
+      * or length is less than 2
+      */
+-    public double chiSquare(double[] expected, long[] observed)
+-        throws IllegalArgumentException {
+-        if ((expected.length < 2) || (expected.length != observed.length)) {
+-            throw new IllegalArgumentException(
+-                    "observed, expected array lengths incorrect");
+-        }
+-        if (!isPositive(expected) || !isNonNegative(observed)) {
+-            throw new IllegalArgumentException(
+-                "observed counts must be non-negative and expected counts must be postive");
+-        }
+-        double sumSq = 0.0d;
+-        double dev = 0.0d;
+-        for (int i = 0; i < observed.length; i++) {
+-                dev = ((double) observed[i] - expected[i]);
+-                sumSq += dev * dev / expected[i];
+-        }
+-        return sumSq;
++public double chiSquare(double[] expected, long[] observed)
++    throws IllegalArgumentException {
++    if ((expected.length < 2) || (expected.length != observed.length)) {
++        throw new IllegalArgumentException(
++                "observed, expected array lengths incorrect");
+     }
++    if (!isPositive(expected) || !isNonNegative(observed)) {
++        throw new IllegalArgumentException(
++            "observed counts must be non-negative and expected counts must be positive");
++    }
++
++    // Calculate total observed and expected
++    double totalExpected = 0.0;
++    long totalObserved = 0;
++    for (int i = 0; i < observed.length; i++) {
++        totalExpected += expected[i];
++        totalObserved += observed[i];
++    }
++    
++    // Handle zero cases
++    if (totalExpected == 0 && totalObserved == 0) {
++        return 0.0;
++    }
++    if (totalExpected == 0 || totalObserved == 0) {
++        throw new IllegalArgumentException(
++            "Either observed or expected counts sum to zero while the other does not");
++    }
++    
++    // Calculate chi-square statistic by proportionally scaling expected to match observed total
++    double sumSq = 0.0;
++    double scale = totalObserved/totalExpected;
++    for (int i = 0; i < observed.length; i++) {
++        double e = expected[i] * scale;
++        double diff = observed[i] - e;
++        sumSq += diff * diff / e;
++    }
++    return sumSq;
++}
+ 
+     /**
+      * {@inheritDoc}

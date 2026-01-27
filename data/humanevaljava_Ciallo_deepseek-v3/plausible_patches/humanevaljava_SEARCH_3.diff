@@ -1,0 +1,56 @@
+diff --git a/src/main/java/humaneval/buggy/SEARCH.java b/src/main/java/humaneval/buggy/SEARCH.java
+index 285deda..783077d 100644
+--- a/src/main/java/humaneval/buggy/SEARCH.java
++++ b/src/main/java/humaneval/buggy/SEARCH.java
+@@ -1,27 +1,33 @@
+ package humaneval.buggy;
+ 
+-/* You are given a non-empty list of positive integers. Return the greatest integer that is greater than 
+-zero, and has a frequency greater than or equal to the value of the integer itself. 
+-The frequency of an integer is the number of times it appears in the list.
+-If no such a value exist, return -1.
+-Examples:
+-    search([4, 1, 2, 2, 3, 1]) == 2
+-    search([1, 2, 2, 3, 3, 3, 4, 4, 4]) == 3
+-    search([5, 5, 4, 4, 4]) == -1 */
++import java.util.HashMap;
++import java.util.Map;
+ 
+ public class SEARCH {
+     public static int search(int[] lst) {
+-        int max = -1;
+-        for (Integer i : lst) {
+-            if (i > max)
+-                max = i;
++        // Create a map to store the frequency of each number
++        Map<Integer, Integer> frequencyMap = new HashMap<>();
++
++        // Calculate the frequency for each number in the list
++        for (int num : lst) {
++            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+         }
+ 
++        // Initialize the result variable for the greatest valid number found
+         int result = -1;
+-        int[] frq = new int[max];
+-        for (int i = 0; i < lst.length; i += 1)  frq[i] += 1;
+-        for (int i = 0; i < frq.length; i += 1) if (frq[i] >= i) result = i;
+-        
++
++        // Traverse the map to check the condition
++        for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
++            int num = entry.getKey();
++            int frequency = entry.getValue();
++
++            // Check if frequency is greater than or equal to the number
++            if (frequency >= num && num > result) {
++                result = num;
++            }
++        }
++
++        // Return the greatest valid number found or -1 if none
+         return result;
+     }
+-}
++}
+\ No newline at end of file

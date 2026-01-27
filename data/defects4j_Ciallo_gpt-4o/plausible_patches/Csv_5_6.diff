@@ -1,0 +1,25 @@
+diff --git a/src/main/java/org/apache/commons/csv/CSVPrinter.java b/src/main/java/org/apache/commons/csv/CSVPrinter.java
+index 32553606..b9a2105b 100644
+--- a/src/main/java/org/apache/commons/csv/CSVPrinter.java
++++ b/src/main/java/org/apache/commons/csv/CSVPrinter.java
+@@ -320,11 +320,16 @@ public final class CSVPrinter implements Flushable, Closeable {
+      * @throws IOException
+      *             If an I/O error occurs
+      */
+-    public void println() throws IOException {
+-        final String recordSeparator = format.getRecordSeparator();
+-            out.append(recordSeparator);
+-        newRecord = true;
++public void println() throws IOException {
++    final String recordSeparator = format.getRecordSeparator();
++    
++    // Only append if the recordSeparator is not null
++    if (recordSeparator != null) {
++        out.append(recordSeparator);
+     }
++    
++    newRecord = true;
++}
+ 
+     /**
+      * Prints a single line of delimiter separated values. The values will be quoted if needed. Quotes and newLine

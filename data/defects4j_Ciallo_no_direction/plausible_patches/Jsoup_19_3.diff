@@ -1,0 +1,54 @@
+diff --git a/src/main/java/org/jsoup/safety/Whitelist.java b/src/main/java/org/jsoup/safety/Whitelist.java
+index 51349dab..43454751 100644
+--- a/src/main/java/org/jsoup/safety/Whitelist.java
++++ b/src/main/java/org/jsoup/safety/Whitelist.java
+@@ -335,21 +335,31 @@ public class Whitelist {
+         return false;
+     }
+ 
+-    private boolean testValidProtocol(Element el, Attribute attr, Set<Protocol> protocols) {
+-        // try to resolve relative urls to abs, and optionally update the attribute so output html has abs.
+-        // rels without a baseuri get removed
+-        String value = el.absUrl(attr.getKey());
+-        if (!preserveRelativeLinks)
+-            attr.setValue(value);
+-        
+-        for (Protocol protocol : protocols) {
+-            String prot = protocol.toString() + ":";
+-            if (value.toLowerCase().startsWith(prot)) {
+-                return true;
+-            }
++private boolean testValidProtocol(Element el, Attribute attr, Set<Protocol> protocols) {
++    // Get both original and absolute URLs
++    String originalValue = attr.getValue();
++    String absValue = el.absUrl(attr.getKey());
++    
++    // Use original value if absolute URL is empty (custom protocol case)
++    String valueToCheck = absValue.isEmpty() ? originalValue : absValue;
++    
++    // Only update attribute if:
++    // 1. Not preserving relative links
++    // 2. Absolute URL is available
++    // 3. Value would actually change
++    if (!preserveRelativeLinks && !absValue.isEmpty() && !absValue.equals(originalValue)) {
++        attr.setValue(absValue);
++    }
++    
++    // Check against protocols (case-insensitive)
++    String lowerValue = valueToCheck.toLowerCase();
++    for (Protocol protocol : protocols) {
++        if (lowerValue.startsWith(protocol.toString().toLowerCase() + ":")) {
++            return true;
+         }
+-        return false;
+     }
++    return false;
++}
+ 
+     Attributes getEnforcedAttributes(String tagName) {
+         Attributes attrs = new Attributes();
+@@ -439,4 +449,3 @@ public class Whitelist {
+         }
+     }
+ }
+-

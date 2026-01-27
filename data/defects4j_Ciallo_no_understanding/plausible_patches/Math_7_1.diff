@@ -1,0 +1,33 @@
+diff --git a/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java b/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java
+index f24f87c39..6526b35c2 100644
+--- a/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java
++++ b/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java
+@@ -329,9 +329,13 @@ public abstract class AbstractIntegrator implements FirstOrderIntegrator {
+             while (!occuringEvents.isEmpty()) {
+ 
+                 // handle the chronologically first event
+-                final Iterator<EventState> iterator = occuringEvents.iterator();
+-                final EventState currentEvent = iterator.next();
+-                iterator.remove();
++                final EventState currentEvent = Collections.min(occuringEvents, 
++                    new Comparator<EventState>() {
++                        public int compare(EventState es0, EventState es1) {
++                            return orderingSign * Double.compare(es0.getEventTime(), es1.getEventTime());
++                        }
++                    });
++                occuringEvents.remove(currentEvent);
+ 
+                 // restrict the interpolator to the first part of the step, up to the event
+                 final double eventT = currentEvent.getEventTime();
+@@ -344,6 +348,11 @@ public abstract class AbstractIntegrator implements FirstOrderIntegrator {
+ 
+                 // advance all event states to current time
+                 currentEvent.stepAccepted(eventT, eventY);
++                for (final EventState state : eventsStates) {
++                    if (state != currentEvent) {
++                        state.stepAccepted(eventT, eventY);
++                    }
++                }
+                 isLastStep = currentEvent.stop();
+ 
+                 // handle the first part of the step, up to the event

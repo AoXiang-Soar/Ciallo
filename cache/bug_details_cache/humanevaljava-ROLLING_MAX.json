@@ -1,0 +1,16 @@
+{
+    "bug_id": "ROLLING_MAX",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_ROLLING_MAX.test_1:21 \u00bb NullPointer",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        List<Integer> result = humaneval.buggy.ROLLING_MAX.rolling_max(\n            new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4))\n        );\n        org.junit.Assert.assertArrayEquals(\n            result.toArray(), \n            new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4)).toArray()\n        );\n    }",
+    "test_line": "        List<Integer> result = humaneval.buggy.ROLLING_MAX.rolling_max(",
+    "test_name": "test_1",
+    "test_suite": "TEST_ROLLING_MAX"
+}

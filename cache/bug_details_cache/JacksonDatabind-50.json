@@ -1,0 +1,16 @@
+{
+    "bug_id": 50,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of com.fasterxml.jackson.databind.objectid.ObjectWithCreator1261Test$Child out of START_ARRAY token",
+    "test_framework": "defects4j",
+    "test_function": "    public void testObjectIds1261() throws Exception\n    {\n         ObjectMapper mapper = new ObjectMapper();\n         mapper.enable(SerializationFeature.INDENT_OUTPUT);\n         mapper.enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);\n\n         Answer initialAnswer = createInitialAnswer();\n         String initialAnswerString = mapper.writeValueAsString(initialAnswer);\n// System.out.println(\"Initial answer:\\n\"+initialAnswerString);\n         JsonNode tree = mapper.readTree(initialAnswerString);\n         Answer deserializedAnswer = mapper.readValue(initialAnswerString,\n               Answer.class);\n         String reserializedAnswerString = mapper\n               .writeValueAsString(deserializedAnswer);\n         JsonNode newTree = mapper.readTree(reserializedAnswerString);\n         if (!tree.equals(newTree)) {\n                  fail(\"Original and recovered Json are different. Recovered = \\n\"\n                        + reserializedAnswerString + \"\\n\");\n         }\n   }",
+    "test_line": "         Answer deserializedAnswer = mapper.readValue(initialAnswerString,\n               Answer.class);",
+    "test_name": "testObjectIds1261",
+    "test_suite": "com.fasterxml.jackson.databind.objectid.ObjectWithCreator1261Test"
+}

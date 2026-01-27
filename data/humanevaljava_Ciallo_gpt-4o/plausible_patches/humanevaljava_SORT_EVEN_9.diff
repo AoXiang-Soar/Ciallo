@@ -1,0 +1,47 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_EVEN.java b/src/main/java/humaneval/buggy/SORT_EVEN.java
+index cce3d2a..fa7568a 100644
+--- a/src/main/java/humaneval/buggy/SORT_EVEN.java
++++ b/src/main/java/humaneval/buggy/SORT_EVEN.java
+@@ -4,20 +4,34 @@ import java.util.Arrays;
+ 
+ public class SORT_EVEN {
+     public static int[] sort_even(int[] l) {
++        // Quickly return the array if it is empty or has only one element
++        if (l.length <= 1) {
++            return l.clone(); // Return a clone to maintain immutability of the input
++        }
++
+         int[] result = new int[l.length];
+ 
+-        int[] evens = new int[1 + (int) (l.length / 2.)];
++        // Calculate the number of even-indexed elements
++        int evenCount = (l.length + 1) / 2;
++        int[] evens = new int[evenCount];
++
++        // Collect even-index elements from array 'l'
+         for (int i = 0; i < l.length; i += 2) {
+-            evens[(int) i / 2] = l[i];
++            evens[i / 2] = l[i];
+         }
++
++        // Sort this array of even-index elements
+         Arrays.sort(evens);
+-        for (int i = 0; i < l.length; i += 1) {
+-            if (i % 2 == 0){
+-                result[i] = evens[(int) i / 2];
+-            } else{
++
++        // Merge sorted even elements back into their original positions
++        for (int i = 0; i < l.length; i++) {
++            if (i % 2 == 0) { // If the index is even, use the sorted value
++                result[i] = evens[i / 2];
++            } else { // If the index is odd, use the original value
+                 result[i] = l[i];
+             }
+         }
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

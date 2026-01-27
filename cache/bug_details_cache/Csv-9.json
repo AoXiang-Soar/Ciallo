@@ -1,0 +1,16 @@
+{
+    "bug_id": 9,
+    "bug_type": "SH SF",
+    "buggy_lines": "",
+    "code": "    public Iterator<String> iterator() {\n        return toList().iterator();\n    }\n\n    /**\n     * Puts all values of this record into the given Map.\n     *\n     * @param map The Map to populate.\n     * @return the given map.\n     */\n    <M extends Map<String, String>> M putIn(final M map) {\n        for (final Entry<String, Integer> entry : mapping.entrySet()) {\n            final int col = entry.getValue().intValue();\n            if (col < values.length) {\n                map.put(entry.getKey(), values[col]);\n            }\n        }\n        return map;\n    }",
+    "fixed_code": "    public Iterator<String> iterator() {\n        return toList().iterator();\n    }\n\n    /**\n     * Puts all values of this record into the given Map.\n     *\n     * @param map The Map to populate.\n     * @return the given map.\n     */\n    <M extends Map<String, String>> M putIn(final M map) {\n        if (mapping == null) {\n            return map;\n        }\n        for (final Entry<String, Integer> entry : mapping.entrySet()) {\n            final int col = entry.getValue().intValue();\n            if (col < values.length) {\n                map.put(entry.getKey(), values[col]);\n            }\n        }\n        return map;\n    }",
+    "fixed_lines": "        if (mapping == null) {\n            return map;\n        }",
+    "masked_code": "    public Iterator<String> iterator() {\n        return toList().iterator();\n    }\n\n    /**\n     * Puts all values of this record into the given Map.\n     *\n     * @param map The Map to populate.\n     * @return the given map.\n     */\n    <M extends Map<String, String>> M putIn(final M map) {\n>>> [ INFILL ] <<<\n        for (final Entry<String, Integer> entry : mapping.entrySet()) {\n            final int col = entry.getValue().intValue();\n            if (col < values.length) {\n                map.put(entry.getKey(), values[col]);\n            }\n        }\n        return map;\n    }",
+    "project": "Csv",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testToMapWithNoHeader() throws Exception {\n       final CSVParser parser =  CSVParser.parse(\"a,b\", CSVFormat.newFormat(','));\n       final CSVRecord shortRec = parser.iterator().next();\n       Map<String, String> map = shortRec.toMap();\n       assertNotNull(\"Map is not null.\", map);\n       assertTrue(\"Map is empty.\", map.isEmpty());\n    }",
+    "test_line": "       Map<String, String> map = shortRec.toMap();",
+    "test_name": "testToMapWithNoHeader",
+    "test_suite": "org.apache.commons.csv.CSVRecordTest"
+}

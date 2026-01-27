@@ -1,0 +1,45 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_STRINGS.java b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+index e98a5f0..46281db 100644
+--- a/src/main/java/humaneval/buggy/WORDS_STRINGS.java
++++ b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+@@ -12,20 +12,22 @@ import java.util.ArrayList;
+  */
+ 
+ public class WORDS_STRINGS {
+-	public static ArrayList<String> words_strings(String s) {
+-		ArrayList<String> result = new ArrayList<String>();
+-		String s_list = "";
+-		for(char c : s.toCharArray()) {
+-			if(c == ',') {
+-				s_list += ' ';
+-			} else {
+-				s_list += c;
+-			}
+-		}
+-		String[] result_array = s_list.trim().split("\\s+");
+-		for(String r : result_array) {
+-			result.add(r);
+-		}
+-		return result;
+-	}
+-}
++    public static ArrayList<String> words_strings(String s) {
++        ArrayList<String> result = new ArrayList<String>();
++
++        // Check for null or empty input string to quickly return an empty list
++        if (s == null || s.trim().isEmpty()) {
++            return result;
++        }
++
++        // Split on either commas or whitespace characters using regex
++        String[] result_array = s.split("[,\\s]+");
++
++        // Add each non-empty resulting word to the result list
++        for (String r : result_array) {
++            result.add(r);
++        }
++        
++        return result;
++    }
++}
+\ No newline at end of file

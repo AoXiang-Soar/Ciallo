@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/FRUIT_DISTRIBUTION.java b/src/main/java/humaneval/buggy/FRUIT_DISTRIBUTION.java
+index 93d0852..1b8f4ad 100644
+--- a/src/main/java/humaneval/buggy/FRUIT_DISTRIBUTION.java
++++ b/src/main/java/humaneval/buggy/FRUIT_DISTRIBUTION.java
+@@ -14,11 +14,14 @@ fruit_distribution("100 apples and 1 oranges",120) -> 120 - 100 - 1 = 19 */
+ public class FRUIT_DISTRIBUTION {
+     public static int fruit_distribution(String s, int n) {
+         int result = n;
+-
+-        for (String str : s.split(" ")) {
+-            int cnt = Integer.parseInt(str);
+-            result -= cnt;
+-        }
++        String[] parts = s.split(" ");
++        
++        // The numbers are always at index 0 and index 3 in the string
++        int apples = Integer.parseInt(parts[0]);
++        int oranges = Integer.parseInt(parts[3]);
++        
++        result -= apples;
++        result -= oranges;
+         return result;
+     }
+-}
++}
+\ No newline at end of file

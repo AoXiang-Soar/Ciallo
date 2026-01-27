@@ -1,0 +1,43 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/util/TokenBuffer.java b/src/main/java/com/fasterxml/jackson/databind/util/TokenBuffer.java
+index 21a6b287b..1c7861a2d 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/util/TokenBuffer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/util/TokenBuffer.java
+@@ -400,15 +400,30 @@ public class TokenBuffer
+      * 
+      * @since 2.3
+      */
+-    public TokenBuffer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException
+-    {
+-            copyCurrentStructure(jp);
+-        /* 28-Oct-2014, tatu: As per #592, need to support a special case of starting from
+-         *    FIELD_NAME, which is taken to mean that we are missing START_OBJECT, but need
+-         *    to assume one did exist.
+-         */
+-        return this;
++public TokenBuffer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException
++{
++    TokenBuffer buffer = new TokenBuffer(jp.getCodec(), false);
++
++    // Check if the current token is FIELD_NAME
++    if (jp.getCurrentToken() == JsonToken.FIELD_NAME) {
++        // Write START_OBJECT to indicate the start of an object
++        buffer.writeStartObject();
++        
++        // Process each field until END_OBJECT is reached
++        do {
++            // Write the current field name to the buffer
++            buffer.copyCurrentStructure(jp);
++        } while (jp.nextToken() != JsonToken.END_OBJECT);
++        
++        // Write the END_OBJECT to signify the end of the object
++        buffer.writeEndObject();
++    } else {
++        // If it's not a FIELD_NAME, simply copy the structure
++        buffer.copyCurrentStructure(jp);
+     }
++
++    return buffer;
++}
+     
+     @Override
+     @SuppressWarnings("resource")

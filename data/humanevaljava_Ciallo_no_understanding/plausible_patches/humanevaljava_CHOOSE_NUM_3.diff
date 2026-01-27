@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/CHOOSE_NUM.java b/src/main/java/humaneval/buggy/CHOOSE_NUM.java
+index f029eb4..5f2ca38 100644
+--- a/src/main/java/humaneval/buggy/CHOOSE_NUM.java
++++ b/src/main/java/humaneval/buggy/CHOOSE_NUM.java
+@@ -12,9 +12,15 @@ package humaneval.buggy;
+ 
+ public class CHOOSE_NUM {
+     public static int choose_num(int x, int y) {
+-        if(x < y) return -1;
+-        if((y % 2) == 0) return y;
+-        if(x == y) return -1;
+-        return y - 1;
++        if (x > y) {
++            return -1;
++        }
++        // Iterate from y down to x
++        for (int i = y; i >= x; i--) {
++            if (i % 2 == 0) {
++                return i;
++            }
++        }
++        return -1;
+     }
+-}
++}
+\ No newline at end of file

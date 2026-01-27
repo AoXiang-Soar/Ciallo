@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java b/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
+index fba3afc..897beb7 100644
+--- a/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
++++ b/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
+@@ -25,11 +25,15 @@ public class SORTED_LIST_SUM {
+             result.add(str);
+         }
+ 
+-        Collections.sort(
+-            result,
+-            (s1, s2) -> s1.length() - s2.length()
+-        );
++        Collections.sort(result, (s1, s2) -> {
++            int lengthDiff = s1.length() - s2.length();
++            if (lengthDiff != 0) {
++                return lengthDiff;
++            } else {
++                return s1.compareTo(s2);
++            }
++        });
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

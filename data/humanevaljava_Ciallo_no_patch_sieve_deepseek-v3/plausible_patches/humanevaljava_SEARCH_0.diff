@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/SEARCH.java b/src/main/java/humaneval/buggy/SEARCH.java
+old mode 100644
+new mode 100755
+index 285deda..37ce8e6
+--- a/src/main/java/humaneval/buggy/SEARCH.java
++++ b/src/main/java/humaneval/buggy/SEARCH.java
+@@ -18,10 +18,10 @@ public class SEARCH {
+         }
+ 
+         int result = -1;
+-        int[] frq = new int[max];
+-        for (int i = 0; i < lst.length; i += 1)  frq[i] += 1;
+-        for (int i = 0; i < frq.length; i += 1) if (frq[i] >= i) result = i;
++        int[] frq = new int[max + 1];
++        for (int i = 0; i < lst.length; i += 1) frq[lst[i]] += 1;
++        for (int i = 1; i < frq.length; i += 1) if (frq[i] >= i) result = i;
+         
+         return result;
+     }
+-}
++}
+\ No newline at end of file

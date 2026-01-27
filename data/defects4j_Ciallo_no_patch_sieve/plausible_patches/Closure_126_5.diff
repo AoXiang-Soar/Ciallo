@@ -1,0 +1,15 @@
+diff --git a/src/com/google/javascript/jscomp/MinimizeExitPoints.java b/src/com/google/javascript/jscomp/MinimizeExitPoints.java
+index 4146f1777..0c048fb19 100644
+--- a/src/com/google/javascript/jscomp/MinimizeExitPoints.java
++++ b/src/com/google/javascript/jscomp/MinimizeExitPoints.java
+@@ -140,7 +140,9 @@ class MinimizeExitPoints
+        */
+       if (NodeUtil.hasFinally(n)) {
+         Node finallyBlock = n.getLastChild();
+-        tryMinimizeExits(finallyBlock, exitType, labelName);
++        // Don't minimize exits in finally blocks to prevent changing the 
++        // completion type which could affect program behavior per ECMA 262
++        // Sections 8.9 & 12.14
+       }
+     }
+ 

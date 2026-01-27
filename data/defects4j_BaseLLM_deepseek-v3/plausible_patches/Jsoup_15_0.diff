@@ -1,0 +1,33 @@
+diff --git a/src/main/java/org/jsoup/parser/TreeBuilderState.java b/src/main/java/org/jsoup/parser/TreeBuilderState.java
+index e82eed53..8c356590 100644
+--- a/src/main/java/org/jsoup/parser/TreeBuilderState.java
++++ b/src/main/java/org/jsoup/parser/TreeBuilderState.java
+@@ -242,8 +242,7 @@ enum TreeBuilderState {
+             return tb.process(t);
+         }
+     },
+-    InBody {
+-        boolean process(Token t, TreeBuilder tb) {
++    InBody {        boolean process(Token t, TreeBuilder tb) {
+             switch (t.type) {
+                 case Character: {
+                     Token.Character c = t.asCharacter();
+@@ -279,9 +278,7 @@ enum TreeBuilderState {
+                         for (Attribute attribute : startTag.getAttributes()) {
+                             if (!html.hasAttr(attribute.getKey()))
+                                 html.attributes().put(attribute);
+-                        }
+-                    } else if (StringUtil.in(name, "base", "basefont", "bgsound", "command", "link", "meta", "noframes", "style", "title")) {
+-                        return tb.process(t, InHead);
++                        }                    } else if (StringUtil.in(name, "base", "basefont", "bgsound", "command", "link", "meta", "noframes", "script", "style", "title")) {                        return tb.process(t, InHead);
+                     } else if (name.equals("body")) {
+                         tb.error(this);
+                         LinkedList<Element> stack = tb.getStack();
+@@ -759,7 +756,6 @@ enum TreeBuilderState {
+             }
+             return true;
+         }
+-
+         boolean anyOtherEndTag(Token t, TreeBuilder tb) {
+             String name = t.asEndTag().name();
+             DescendableLinkedList<Element> stack = tb.getStack();

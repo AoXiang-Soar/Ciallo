@@ -1,0 +1,64 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+index fe2c1133..0e6726c1 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+@@ -566,31 +566,40 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+      * @throws IOException on error
+      */
+     @Override
+-    public int read(byte[] buf, int offset, int numToRead) throws IOException {
+-    	int totalRead = 0;
++public int read(byte[] buf, int offset, int numToRead) throws IOException {
++    int totalRead = 0;
+ 
+-        if (hasHitEOF || entryOffset >= entrySize) {
+-            return -1;
+-        }
++    if (hasHitEOF || entryOffset >= entrySize) {
++        return -1;
++    }
+ 
+-        if (currEntry == null) {
+-            throw new IllegalStateException("No current tar entry");
+-        }
++    if (currEntry == null) {
++        throw new IllegalStateException("No current tar entry");
++    }
+ 
+-        numToRead = Math.min(numToRead, available());
+-        
+-        totalRead = is.read(buf, offset, numToRead);
+-        count(totalRead);
+-        
+-        if (totalRead == -1) {
+-            hasHitEOF = true;
+-        } else {
+-            entryOffset += totalRead;
+-        }
++    numToRead = Math.min(numToRead, available());
++    
++    // Initially attempt to read
++    totalRead = is.read(buf, offset, numToRead);
++
++    // If unable to read any bytes, it's an unexpected EOF situation
++    if (totalRead == -1) {
++        hasHitEOF = true;
++        throw new IOException("Unexpected end of entry");
++    }
+ 
+-        return totalRead;
++    // Track the read bytes and update the entry offset
++    count(totalRead);
++    entryOffset += totalRead;
++
++    // After updating the entry offset, check if it exceeds entrySize
++    if (entryOffset > entrySize) {
++        throw new IOException("Truncated entry detected");
+     }
+ 
++    return totalRead;
++}
++
+     /**
+      * Whether this class is able to read the given entry.
+      *

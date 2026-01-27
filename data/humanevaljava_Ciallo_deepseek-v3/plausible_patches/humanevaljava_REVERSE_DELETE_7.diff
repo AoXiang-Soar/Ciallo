@@ -1,0 +1,59 @@
+diff --git a/src/main/java/humaneval/buggy/REVERSE_DELETE.java b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+index 93117a1..fbf1563 100644
+--- a/src/main/java/humaneval/buggy/REVERSE_DELETE.java
++++ b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+@@ -3,8 +3,8 @@ package humaneval.buggy;
+ import java.util.ArrayList;
+ 
+ /*
+- * We are given two strings s and c, you have to deleted all the characters in s that are equal to any character in c
+-    then check if the result string is palindrome.
++ * We are given two strings s and c, you have to delete all the characters in s that are equal to any character in c
++    then check if the result string is a palindrome.
+     A string is called palindrome if it reads the same backward as forward.
+     You should return a tuple containing the result string and True/False for the check.
+     Example
+@@ -15,19 +15,32 @@ import java.util.ArrayList;
+ 
+ public class REVERSE_DELETE {
+     public static ArrayList<Object> reverse_delete(String s, String c) {
+-        String new_s = "";
+-        for(int i = 0; i < s.length(); i++) {
+-            if(c.indexOf(s.charAt(i)) != -1) {
+-                new_s += s.charAt(i);
++        // Step 1: Remove chars in s that are present in c
++        StringBuilder new_s = new StringBuilder();
++        for (int i = 0; i < s.length(); i++) {
++            if (c.indexOf(s.charAt(i)) == -1) {
++                new_s.append(s.charAt(i));
+             }
+         }
+-        String reverse_s = "";
+-        for(int i = new_s.length() - 1; i >= 0; i--) {
+-            reverse_s += new_s.charAt(i);
++
++        // Step 2: Convert StringBuilder to String
++        String resultString = new_s.toString();
++
++        // Step 3: Check if the resultant string is a palindrome
++        boolean isPalindrome = true;
++        int n = resultString.length();
++        for (int i = 0; i < n / 2; i++) {
++            if (resultString.charAt(i) != resultString.charAt(n - i - 1)) {
++                isPalindrome = false;
++                break;
++            }
+         }
++
++        // Step 4: Prepare the result
+         ArrayList<Object> res = new ArrayList<>();
+-        res.add(new_s);
+-        res.add(reverse_s.equals(new_s));
++        res.add(resultString);
++        res.add(isPalindrome);
++
+         return res;
+     }
+-}
++}
+\ No newline at end of file

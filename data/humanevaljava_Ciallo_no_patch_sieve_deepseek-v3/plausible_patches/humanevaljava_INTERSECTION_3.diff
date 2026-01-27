@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/INTERSECTION.java b/src/main/java/humaneval/buggy/INTERSECTION.java
+index 2955ca2..14ce096 100644
+--- a/src/main/java/humaneval/buggy/INTERSECTION.java
++++ b/src/main/java/humaneval/buggy/INTERSECTION.java
+@@ -31,10 +31,10 @@ public class INTERSECTION {
+         return true;
+     }
+     public static String intersection(int[] interval1, int[] interval2) {
+-        int l = Math.min(interval1[0], interval2[0]);
+-        int r = Math.max(interval1[1], interval2[1]);
+-        int length = r - l;
++        int start = Math.max(interval1[0], interval2[0]);
++        int end = Math.min(interval1[1], interval2[1]);
++        int length = end - start;
+         if(length > 0 && is_prime(length)) return "YES";
+         return "NO";
+     }
+-}
++}
+\ No newline at end of file

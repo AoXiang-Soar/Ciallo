@@ -1,0 +1,16 @@
+{
+    "bug_id": "ODD_COUNT",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_ODD_COUNT.test_0:14 expected:<[the number of odd elements 4n the str4ng 4 of the 4nput.]> but was:<[the number of odd elements -3n the str-3ng -3 of the -3nput.]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        ArrayList<String> input = new ArrayList<>(Arrays.asList(\"1234567\"));\n        ArrayList<String> result = humaneval.buggy.ODD_COUNT.odd_count(input);\n        ArrayList<String> desired = new ArrayList<>(Arrays.asList(\n            \"the number of odd elements 4n the str4ng 4 of the 4nput.\"\n        ));\n        org.junit.Assert.assertEquals(desired, result);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(desired, result);",
+    "test_name": "test_0",
+    "test_suite": "TEST_ODD_COUNT"
+}

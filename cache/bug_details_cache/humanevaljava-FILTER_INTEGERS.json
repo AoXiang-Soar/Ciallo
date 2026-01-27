@@ -1,0 +1,16 @@
+{
+    "bug_id": "FILTER_INTEGERS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_FILTER_INTEGERS.test_1:18 \u00bb ClassCast class java.util.HashSet cannot be c...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        List<Integer> result = humaneval.buggy.FILTER_INTEGERS.filter_integers(\n            new ArrayList<Object>(Arrays.asList(\n                4, new HashSet<>(), new ArrayList<>(), 23.0, 9, \"adasd\"\n            ))\n        );\n        org.junit.Assert.assertArrayEquals(\n            result.toArray(), Arrays.asList(4, 9).toArray()\n        );\n    }",
+    "test_line": "        List<Integer> result = humaneval.buggy.FILTER_INTEGERS.filter_integers(",
+    "test_name": "test_1",
+    "test_suite": "TEST_FILTER_INTEGERS"
+}

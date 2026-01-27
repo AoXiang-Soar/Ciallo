@@ -1,0 +1,18 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_STRINGS.java b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+index e98a5f0..aa8cce5 100644
+--- a/src/main/java/humaneval/buggy/WORDS_STRINGS.java
++++ b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+@@ -24,8 +24,10 @@ public class WORDS_STRINGS {
+ 		}
+ 		String[] result_array = s_list.trim().split("\\s+");
+ 		for(String r : result_array) {
+-			result.add(r);
++			if (!r.isEmpty()) {
++				result.add(r);
++			}
+ 		}
+ 		return result;
+ 	}
+-}
++}
+\ No newline at end of file

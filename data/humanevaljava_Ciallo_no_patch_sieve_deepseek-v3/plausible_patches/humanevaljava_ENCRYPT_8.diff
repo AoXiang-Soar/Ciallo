@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/ENCRYPT.java b/src/main/java/humaneval/buggy/ENCRYPT.java
+index 84c720b..44e050c 100644
+--- a/src/main/java/humaneval/buggy/ENCRYPT.java
++++ b/src/main/java/humaneval/buggy/ENCRYPT.java
+@@ -13,16 +13,15 @@ encrypt('et') returns 'ix' */
+ public class ENCRYPT {
+     public static String encrypt(String s) {
+         StringBuilder sb = new StringBuilder();
+-        String d = "abcdefghijklmnopqrstuvwxyz";
+-        for (char c : s.toCharArray()){
+-            if ('a' <= c && c <= 'z'){
+-                sb.append(
+-                    d.charAt(s.indexOf((int) c) + 2 * 2)
+-                );
++        for (char c : s.toCharArray()) {
++            if ('a' <= c && c <= 'z') {
++                int shifted = c - 'a' + 4;  // 2 * 2 = 4
++                shifted = shifted % 26;     // wrap around alphabet
++                sb.append((char) ('a' + shifted));
+             } else {
+                 sb.append(c);
+             }
+         }
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

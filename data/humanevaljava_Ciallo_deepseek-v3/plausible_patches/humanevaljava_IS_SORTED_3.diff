@@ -1,0 +1,50 @@
+diff --git a/src/main/java/humaneval/buggy/IS_SORTED.java b/src/main/java/humaneval/buggy/IS_SORTED.java
+index 173398c..df009b4 100644
+--- a/src/main/java/humaneval/buggy/IS_SORTED.java
++++ b/src/main/java/humaneval/buggy/IS_SORTED.java
+@@ -1,6 +1,6 @@
+ package humaneval.buggy;
+ 
+-import java.util.HashMap;
++import java.util.HashSet;
+ 
+ /*
+  * Given a list of numbers, return whether or not they are sorted
+@@ -20,19 +20,26 @@ import java.util.HashMap;
+ 
+ public class IS_SORTED {
+     public static boolean is_sorted(int[] lst) {
+-        HashMap<Integer, Integer> count_num = new HashMap<>();
++        HashSet<Integer> seenOnce = new HashSet<>();
++        HashSet<Integer> seenTwice = new HashSet<>();
++        
+         for(int i = 0; i < lst.length; i++) {
+-            count_num.put(lst[i], 0);
+-        }
+-        for(int i = 0; i < lst.length; i++) {
+-            count_num.put(lst[i], count_num.get(lst[i]) + 1);
+-        }
+-        for(int i = 0; i < lst.length; i++) {
+-            if(count_num.get(lst[i]) > 2) return false;
++            int num = lst[i];
++            if(seenTwice.contains(num)) {
++                return false;
++            } else if(seenOnce.contains(num)) {
++                seenTwice.add(num);
++            } else {
++                seenOnce.add(num);
++            }
+         }
++        
+         for(int i = 0; i < lst.length - 1; i++) {
+-            if(lst[i] <= lst[i + 1]) return false;
++            if(lst[i] > lst[i + 1]) {
++                return false;
++            }
+         }
++        
+         return true;
+     }
+-}
++}
+\ No newline at end of file

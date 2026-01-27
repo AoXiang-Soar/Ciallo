@@ -1,0 +1,16 @@
+{
+    "bug_id": 33,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Cli",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<...e: foobar",
+    "test_framework": "defects4j",
+    "test_function": "    public void testIndentedHeaderAndFooter()\n    {\n        // related to CLI-207\n        Options options = new Options();\n        HelpFormatter formatter = new HelpFormatter();\n        String header = \"  Header1\\n  Header2\";\n        String footer = \"  Footer1\\n  Footer2\";\n        StringWriter out = new StringWriter();\n        formatter.printHelp(new PrintWriter(out), 80, \"foobar\", header, options, 2, 2, footer, true);\n\n        assertEquals(\n                \"usage: foobar\" + EOL +\n                \"  Header1\" + EOL +\n                \"  Header2\" + EOL +\n                \"\" + EOL +\n                \"  Footer1\" + EOL +\n                \"  Footer2\" + EOL\n                , out.toString());\n    }",
+    "test_line": "        assertEquals(",
+    "test_name": "testIndentedHeaderAndFooter",
+    "test_suite": "org.apache.commons.cli.HelpFormatterTest"
+}

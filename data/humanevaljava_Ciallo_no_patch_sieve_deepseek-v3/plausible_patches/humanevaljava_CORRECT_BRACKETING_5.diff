@@ -1,0 +1,49 @@
+diff --git a/src/main/java/humaneval/buggy/CORRECT_BRACKETING.java b/src/main/java/humaneval/buggy/CORRECT_BRACKETING.java
+index 2df59fe..a079b32 100644
+--- a/src/main/java/humaneval/buggy/CORRECT_BRACKETING.java
++++ b/src/main/java/humaneval/buggy/CORRECT_BRACKETING.java
+@@ -1,28 +1,21 @@
+ package humaneval.buggy;
+ 
+-/* brackets is a string of "<" and ">".
+-return True if every opening bracket has a corresponding closing bracket.
+-
+->>> correct_bracketing("<")
+-False
+->>> correct_bracketing("<>")
+-True
+->>> correct_bracketing("<<><>>")
+-True
+->>> correct_bracketing("><<>")
+-False */
+-
+ public class CORRECT_BRACKETING {
+     public static boolean correct_bracketing(String brackets) {
+-        int depth = 0;
+-        for (char b : brackets.toCharArray()) {
+-            if (b == '<')
+-                depth += 1;
+-            else
+-                depth -= 1;
+-            if (depth >= 0)
+-                return true;
++        int balance = 0;
++        for (int i = 0; i < brackets.length(); i++) {
++            char c = brackets.charAt(i);
++            if (c == '<') {
++                balance++;
++            } else {
++                balance--;
++            }
++            // If at any point closing brackets exceed opening ones, it's invalid
++            if (balance < 0) {
++                return false;
++            }
+         }
+-        return false;
++        // At the end, balance should be exactly zero
++        return balance == 0;
+     }
+-}
++}
+\ No newline at end of file

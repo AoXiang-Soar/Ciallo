@@ -1,0 +1,60 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveOutputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveOutputStream.java
+index 4c57133d..ff973875 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveOutputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveOutputStream.java
+@@ -451,17 +451,20 @@ public class TarArchiveOutputStream extends ArchiveOutputStream {
+      * Writes a PAX extended header with the given map as contents.
+      * @since 1.4
+      */
+-    void writePaxHeaders(String entryName,
+-                         Map<String, String> headers) throws IOException {
+-        String name = "./PaxHeaders.X/" + stripTo7Bits(entryName);
+-            // TarEntry's constructor would think this is a directory
+-            // and not allow any data to be written
+-        if (name.length() >= TarConstants.NAMELEN) {
+-            name = name.substring(0, TarConstants.NAMELEN - 1);
+-        }
+-        TarArchiveEntry pex = new TarArchiveEntry(name,
+-                                                  TarConstants.LF_PAX_EXTENDED_HEADER_LC);
++void writePaxHeaders(String entryName,
++                     Map<String, String> headers) throws IOException {
++    String name = "./PaxHeaders.X/" + stripTo7Bits(entryName);
++    // TarEntry's constructor would think this is a directory
++    // and not allow any data to be written
++    if (name.length() >= TarConstants.NAMELEN) {
++        name = name.substring(0, TarConstants.NAMELEN - 1);
++    }
++    TarArchiveEntry pex = new TarArchiveEntry(name,
++                                            TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+ 
++    // Prepare the data only if there are headers to write
++    byte[] data = new byte[0];
++    if (!headers.isEmpty()) {
+         StringWriter w = new StringWriter();
+         for (Map.Entry<String, String> h : headers.entrySet()) {
+             String key = h.getKey();
+@@ -483,12 +486,20 @@ public class TarArchiveOutputStream extends ArchiveOutputStream {
+             }
+             w.write(line);
+         }
+-        byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+-        pex.setSize(data.length);
+-        putArchiveEntry(pex);
++        data = w.toString().getBytes(CharsetNames.UTF_8);
++    }
++
++    // Always set the size based on whether this is a directory or not
++    pex.setSize(pex.isDirectory() ? 0 : data.length);
++    putArchiveEntry(pex);
++    
++    // Only write data if this isn't a directory and we have data to write
++    if (!pex.isDirectory() && data.length > 0) {
+         write(data);
+-        closeArchiveEntry();
+     }
++    
++    closeArchiveEntry();
++}
+ 
+     private String stripTo7Bits(String name) {
+         final int length = name.length();

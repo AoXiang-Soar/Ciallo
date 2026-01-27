@@ -1,0 +1,33 @@
+diff --git a/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java b/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java
+index 7769d68..b3ed0e9 100644
+--- a/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java
++++ b/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java
+@@ -10,14 +10,18 @@ public class SEPARATE_PAREN_GROUPS {
+         int current_depth = 0;
+ 
+         for (char c : paren_string.toCharArray()) {
+-            if (c == '('){
++            if (c == '(') {
++                if (current_depth == 0 && !current_string.isEmpty()) {
++                    result.add(current_string);
++                    current_string = "";
++                }
+                 current_depth += 1;
+                 current_string += String.valueOf(c);
+-            } else {
++            } else if (c == ')') {
+                 current_depth -= 1;
+                 current_string += String.valueOf(c);
+ 
+-                if (current_depth == 0){
++                if (current_depth == 0) {
+                     result.add(current_string);
+                     current_string = "";
+                 }
+@@ -25,4 +29,4 @@ public class SEPARATE_PAREN_GROUPS {
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

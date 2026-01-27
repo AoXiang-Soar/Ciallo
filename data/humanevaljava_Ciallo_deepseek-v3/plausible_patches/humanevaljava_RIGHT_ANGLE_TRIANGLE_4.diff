@@ -1,0 +1,40 @@
+diff --git a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+index da0fd0a..72fb330 100644
+--- a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
++++ b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+@@ -1,15 +1,24 @@
+ package humaneval.buggy;
+ 
+-// Given the lengths of the three sides of a triangle. Return True if the three
+-// sides form a right-angled triangle, False otherwise.
+-// A right-angled triangle is a triangle in which one angle is right angle or 
+-// 90 degree.
+-// Example:
+-// right_angle_triangle(3, 4, 5) == True
+-// right_angle_triangle(1, 2, 3) == False
+-
+ public class RIGHT_ANGLE_TRIANGLE {
+     public static boolean right_angle_triangle(int a, int b, int c) {
+-        return a*a + b*b == c*c;
++        // Find the largest side
++        int max = Math.max(a, Math.max(b, c));
++        
++        // Assign the other two sides as x and y
++        int x, y;
++        if (max == a) {
++            x = b;
++            y = c;
++        } else if (max == b) {
++            x = a;
++            y = c;
++        } else {
++            x = a;
++            y = b;
++        }
++
++        // Check if it's a right-angled triangle
++        return max * max == x * x + y * y;
+     }
+-}
++}
+\ No newline at end of file

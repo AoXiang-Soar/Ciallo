@@ -1,0 +1,16 @@
+{
+    "bug_id": "IS_PALINDROME",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_IS_PALINDROME.test_0:7 expected:<false> but was:<true>\nTEST_IS_PALINDROME.test_1:14 \u00bb StringIndexOutOfBounds String index out of rang...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        boolean result = humaneval.buggy.IS_PALINDROME.is_palindrome(\"\");\n        org.junit.Assert.assertEquals(\n            result, true\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_IS_PALINDROME"
+}

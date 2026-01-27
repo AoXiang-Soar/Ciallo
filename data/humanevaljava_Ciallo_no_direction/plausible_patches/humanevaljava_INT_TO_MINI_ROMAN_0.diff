@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java b/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
+index 0f3c881..d8b0574 100644
+--- a/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
++++ b/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
+@@ -19,10 +19,13 @@ public class INT_TO_MINI_ROMAN {
+         int i = 12;
+         String result = "";
+         while (number > 0) {
+-            result += sym[i];
+-            number %= num[i];
++            int div = number / num[i];
++            while (div-- > 0) {
++                result += sym[i];
++                number -= num[i];
++            }
+             i -= 1;
+         }
+         return result.toLowerCase();
+     }
+-}
++}
+\ No newline at end of file

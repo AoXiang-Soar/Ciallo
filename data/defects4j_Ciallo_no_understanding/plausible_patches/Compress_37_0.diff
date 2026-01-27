@@ -1,0 +1,20 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+index 7a409d65..09a7a041 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+@@ -459,7 +459,14 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+             int read = 0;
+             while((ch = i.read()) != -1) {
+                 read++;
+-                if (ch == ' '){
++                if (ch == ' ' || ch == '\n') {
++                    if (ch == '\n' && len == 0) {
++                        // Skip empty lines
++                        break;
++                    }
++                    if (len <= 0) {
++                        throw new IOException("Invalid length in pax header");
++                    }
+                     // Get keyword
+                     final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+                     while((ch = i.read()) != -1) {

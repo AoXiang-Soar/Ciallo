@@ -1,0 +1,57 @@
+diff --git a/src/com/google/javascript/jscomp/CodeConsumer.java b/src/com/google/javascript/jscomp/CodeConsumer.java
+index 146d2f8b4..00012f7d0 100644
+--- a/src/com/google/javascript/jscomp/CodeConsumer.java
++++ b/src/com/google/javascript/jscomp/CodeConsumer.java
+@@ -1,24 +1,7 @@
+-/*
+- * Copyright 2004 The Closure Compiler Authors.
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+ package com.google.javascript.jscomp;
+ 
+ import com.google.javascript.rhino.Node;
+ 
+-
+ /**
+  * Abstracted consumer of the CodeGenerator output.
+  *
+@@ -238,6 +221,12 @@ abstract class CodeConsumer {
+       add(" ");
+     }
+ 
++    // Check for negative zero
++    if (Double.doubleToRawLongBits(x) == Double.doubleToRawLongBits(-0.0)) {
++      add("-0.0");
++      return;
++    }
++
+     if ((long) x == x) {
+       long value = (long) x;
+       long mantissa = value;
+@@ -256,7 +245,6 @@ abstract class CodeConsumer {
+     } else {
+       add(String.valueOf(x));
+     }
+-
+   }
+ 
+   static boolean isWordChar(char ch) {
+@@ -286,4 +274,4 @@ abstract class CodeConsumer {
+ 
+   /** Called when we're at the end of a file. */
+   void endFile() {}
+-}
++}
+\ No newline at end of file

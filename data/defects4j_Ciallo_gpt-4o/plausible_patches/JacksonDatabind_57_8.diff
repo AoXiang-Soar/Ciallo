@@ -1,0 +1,48 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+index 10fddc4d6..e05a2eb26 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+@@ -1432,15 +1432,36 @@ public class ObjectReader
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.
+      */
+-    public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
+-        throws IOException, JsonProcessingException
+-    {
+-        if (_dataFormatReaders != null) {
+-            return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
++public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
++    throws IOException, JsonProcessingException
++{
++    if (_dataFormatReaders != null) {
++        DataFormatReaders.Match match = _dataFormatReaders.findFormat(src, offset, length);
++        if (match.hasMatch()) {
++            return _detectBindAndReadValues(match, false);
++        } else {
++            // Throw a meaningful exception if no format matches
++            throw new JsonProcessingException("Could not detect data format for the provided input") {
++                private static final long serialVersionUID = 1L;
++            };
+         }
+-        return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-                true));
+     }
++    
++    try {
++        // Ensure parsing considers the offset and length
++        ByteArrayInputStream inputStream = new ByteArrayInputStream(src, offset, length);
++        JsonParser parser = _parserFactory.createParser(inputStream);
++        return _bindAndReadValues(_considerFilter(parser, true));
++    } catch (JsonParseException e) {
++        // Provide specific feedback for JSON parsing issues
++        throw new JsonProcessingException("Invalid JSON content encountered", e) {
++            private static final long serialVersionUID = 1L;
++        };
++    } catch (IOException e) {
++        // General error handling for IO-related issues
++        throw new IOException("An unexpected I/O error occurred during parsing", e);
++    }
++}
+ 
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.

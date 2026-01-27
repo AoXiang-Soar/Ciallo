@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java b/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
+index 4ab2c82..0b4ecfd 100644
+--- a/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
++++ b/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
+@@ -12,11 +12,12 @@ package humaneval.buggy;
+ public class SMALLEST_CHANGE {
+     public static int smallest_change(int[] arr) {
+         int result = 0;
+-        for (int i = 0; i < arr.length; i += 1) {
+-            if (arr[i] != arr[arr.length - i])
++        for (int i = 0; i < arr.length / 2; i++) {
++            int mirror_index = arr.length - 1 - i;
++            if (arr[i] != arr[mirror_index]) {
+                 result += 1;
++            }
+         }
+-
+         return result;
+     }
+-}
++}
+\ No newline at end of file

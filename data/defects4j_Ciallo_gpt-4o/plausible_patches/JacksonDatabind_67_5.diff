@@ -1,0 +1,75 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java b/src/main/java/com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java
+index 7d6a7bf5e..4f0437d0c 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java
+@@ -1382,38 +1382,44 @@ public abstract class BasicDeserializerFactory
+      */
+     
+     @Override
+-    public KeyDeserializer createKeyDeserializer(DeserializationContext ctxt,
+-            JavaType type)
+-        throws JsonMappingException
+-    {
+-        final DeserializationConfig config = ctxt.getConfig();
+-        KeyDeserializer deser = null;
+-        if (_factoryConfig.hasKeyDeserializers()) {
+-            BeanDescription beanDesc = config.introspectClassAnnotations(type.getRawClass());
+-            for (KeyDeserializers d  : _factoryConfig.keyDeserializers()) {
+-                deser = d.findKeyDeserializer(type, config, beanDesc);
+-                if (deser != null) {
+-                    break;
+-                }
++public KeyDeserializer createKeyDeserializer(DeserializationContext ctxt,
++        JavaType type)
++    throws JsonMappingException
++{
++    final DeserializationConfig config = ctxt.getConfig();
++    KeyDeserializer deser = null;
++    
++    // Step 1: Check for registered key deserializers
++    if (_factoryConfig.hasKeyDeserializers()) {
++        BeanDescription beanDesc = config.introspectClassAnnotations(type.getRawClass());
++        for (KeyDeserializers d : _factoryConfig.keyDeserializers()) {
++            deser = d.findKeyDeserializer(type, config, beanDesc);
++            if (deser != null) {
++                break;
+             }
+         }
+-        // the only non-standard thing is this:
+-        if (deser == null) {
+-            if (type.isEnumType()) {
+-                return _createEnumKeyDeserializer(ctxt, type);
+-            }
++    }
++    
++    // Step 2: If no custom deserializers found, handle standard cases
++    if (deser == null) {
++        if (type.isEnumType()) {
++            // Enum types have their own deserialization method
++            deser = _createEnumKeyDeserializer(ctxt, type);
++        } else {
++            // String-based key deserializers as fallback
+             deser = StdKeyDeserializers.findStringBasedKeyDeserializer(config, type);
+         }
+-        // and then post-processing
+-        if (deser != null) {
+-            if (_factoryConfig.hasDeserializerModifiers()) {
+-                for (BeanDeserializerModifier mod : _factoryConfig.deserializerModifiers()) {
+-                    deser = mod.modifyKeyDeserializer(config, type, deser);
+-                }
+-            }
++    }
++    
++    // Step 3: Apply deserializer modifiers if they exist
++    if (_factoryConfig.hasDeserializerModifiers() && deser != null) {
++        for (BeanDeserializerModifier mod : _factoryConfig.deserializerModifiers()) {
++            deser = mod.modifyKeyDeserializer(config, type, deser);
+         }
+-        return deser;
+     }
++    
++    return deser;
++}
+ 
+     private KeyDeserializer _createEnumKeyDeserializer(DeserializationContext ctxt,
+             JavaType type)

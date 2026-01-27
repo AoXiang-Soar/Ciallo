@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/INTERSPERSE.java b/src/main/java/humaneval/buggy/INTERSPERSE.java
+index 5b736e9..0c69586 100644
+--- a/src/main/java/humaneval/buggy/INTERSPERSE.java
++++ b/src/main/java/humaneval/buggy/INTERSPERSE.java
+@@ -7,14 +7,18 @@ public class INTERSPERSE {
+     public static List<Integer> intersperse(List<Integer> numbers, int delimeter) {
+         List<Integer> result = new ArrayList<Integer>();
+ 
+-        if (numbers.size() == 0)
+-            return result;
+-        
+-        for (int i = 0; i < numbers.size(); i += 1) {
++        if (numbers.isEmpty()) {
++            return result; // Return an empty result if the input list is empty
++        }
++
++        for (int i = 0; i < numbers.size(); i++) {
+             result.add(numbers.get(i));
+-            result.add(delimeter);
++            // Add the delimiter after each element except the last one
++            if (i != numbers.size() - 1) {
++                result.add(delimeter);
++            }
+         }
+-        result.add(numbers.get(numbers.size() - 1));
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

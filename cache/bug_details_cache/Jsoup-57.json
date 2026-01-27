@@ -1,0 +1,16 @@
+{
+    "bug_id": 57,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "                attributes.remove(attrKey);",
+    "code": "    public void removeIgnoreCase(String key) {\n        Validate.notEmpty(key);\n        if (attributes == null)\n            return;\n        for (Iterator<String> it = attributes.keySet().iterator(); it.hasNext(); ) {\n            String attrKey = it.next();\n            if (attrKey.equalsIgnoreCase(key))\n                attributes.remove(attrKey);\n        }\n    }",
+    "fixed_code": "    public void removeIgnoreCase(String key) {\n        Validate.notEmpty(key);\n        if (attributes == null)\n            return;\n        for (Iterator<String> it = attributes.keySet().iterator(); it.hasNext(); ) {\n            String attrKey = it.next();\n            if (attrKey.equalsIgnoreCase(key))\n                it.remove();\n        }\n    }",
+    "fixed_lines": "                it.remove();",
+    "masked_code": "    public void removeIgnoreCase(String key) {\n        Validate.notEmpty(key);\n        if (attributes == null)\n            return;\n        for (Iterator<String> it = attributes.keySet().iterator(); it.hasNext(); ) {\n            String attrKey = it.next();\n            if (attrKey.equalsIgnoreCase(key))\n>>> [ INFILL ] <<<\n        }\n    }",
+    "project": "Jsoup",
+    "test_error_message": "java.util.ConcurrentModificationException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testChainedRemoveAttributes() {\n        String html = \"<a one two three four>Text</a>\";\n        Document doc = Jsoup.parse(html);\n        Element a = doc.select(\"a\").first();\n        a\n            .removeAttr(\"zero\")\n            .removeAttr(\"one\")\n            .removeAttr(\"two\")\n            .removeAttr(\"three\")\n            .removeAttr(\"four\")\n            .removeAttr(\"five\");\n        assertEquals(\"<a>Text</a>\", a.outerHtml());\n    }",
+    "test_line": "            .removeAttr(\"one\")",
+    "test_name": "testChainedRemoveAttributes",
+    "test_suite": "org.jsoup.nodes.ElementTest"
+}

@@ -1,0 +1,51 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java b/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
+index 7fe03f9..a3929bf 100644
+--- a/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
++++ b/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
+@@ -2,7 +2,6 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ import java.util.Collections;
+-import java.util.Comparator;
+ 
+ /*
+  * In this Kata, you have to sort an array of non-negative integers according to
+@@ -18,29 +17,18 @@ import java.util.Comparator;
+ public class SORT_ARRAY_BINARY {
+    public static int number_ones(int n) {
+       if(n < 0) n *= -1;
+-      int count = 0;
+-      while(n > 0) {
+-         count += n & 1;
+-         n >>= 1;
+-      }
+-      return count;
++      return Integer.bitCount(n);
+    }
+ 
+    public static ArrayList<Integer> sort_array_binary(ArrayList<Integer> arr) {
+-      Collections.sort(arr, new Comparator<Integer>() {
+-         @Override
+-         public int compare(Integer o1, Integer o2) {
+-            int num_ones_o1 = number_ones(o1);
+-            int num_ones_o2 = number_ones(o2);
+-            if(num_ones_o1 == num_ones_o2) {
+-               if(o1 == o2) return 1;
+-               if(o1 < o2) return 0;
+-               if(o1 > o2) return -1;
+-            }
+-            if(num_ones_o1 < num_ones_o2) return -1;
+-            else return 1;
++      Collections.sort(arr, (o1, o2) -> {
++         int num_ones_o1 = number_ones(o1);
++         int num_ones_o2 = number_ones(o2);
++         if(num_ones_o1 == num_ones_o2) {
++            return Integer.compare(o1, o2);
+          }
++         return Integer.compare(num_ones_o1, num_ones_o2);
+       });
+       return arr;
+    }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,109 @@
+diff --git a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+index 68891ace7..8a66fcd63 100644
+--- a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
++++ b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+@@ -34,41 +34,56 @@ public class NumericEntityUnescaper extends CharSequenceTranslator {
+      * {@inheritDoc}
+      */
+     @Override
+-    public int translate(CharSequence input, int index, Writer out) throws IOException {
+-        int seqEnd = input.length();
+-        // Uses -2 to ensure there is something after the &#
+-        if(input.charAt(index) == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {
+-            int start = index + 2;
+-            boolean isHex = false;
+-
+-            char firstChar = input.charAt(start);
+-            if(firstChar == 'x' || firstChar == 'X') {
+-                start++;
+-                isHex = true;
++public int translate(CharSequence input, int index, Writer out) throws IOException {
++    int seqEnd = input.length();
++    // Check if we have at least &#
++    if (input.charAt(index) == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {
++        int start = index + 2;
++        if (start >= seqEnd) {  // Handle case like "&#"
++            return 0;
++        }
+ 
+-                // Check there's more than just an x after the &#
++        boolean isHex = false;
++        char firstChar = input.charAt(start);
++        if (firstChar == 'x' || firstChar == 'X') {
++            start++;
++            isHex = true;
++            if (start >= seqEnd) {  // Handle case like "&#x"
++                return 0;
+             }
++        }
+ 
+-            int end = start;
+-            // Note that this supports character codes without a ; on the end
+-            while(input.charAt(end) != ';') 
+-            {
+-                end++;
++        int end = start;
++        // Scan until semicolon or end of input
++        while (end < seqEnd && input.charAt(end) != ';') {
++            char c = input.charAt(end);
++            if (isHex) {
++                if (!(c >= '0' && c <= '9') && !(c >= 'a' && c <= 'f') && !(c >= 'A' && c <= 'F')) {
++                    break;
++                }
++            } else {
++                if (!(c >= '0' && c <= '9')) {
++                    break;
++                }
+             }
++            end++;
++        }
+ 
++        // If no digits were found
++        if (end == start) {
++            return 0;
++        }
++
++        try {
++            String numberStr = input.subSequence(start, end).toString();
+             int entityValue;
+-            try {
+-                if(isHex) {
+-                    entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 16);
+-                } else {
+-                    entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
+-                }
+-            } catch(NumberFormatException nfe) {
+-            System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start +"]["+ end +"]");
+-                return 0;
++            if (isHex) {
++                entityValue = Integer.parseInt(numberStr, 16);
++            } else {
++                entityValue = Integer.parseInt(numberStr, 10);
+             }
+ 
+-            if(entityValue > 0xFFFF) {
++            if (entityValue > 0xFFFF) {
+                 char[] chrs = Character.toChars(entityValue);
+                 out.write(chrs[0]);
+                 out.write(chrs[1]);
+@@ -76,9 +91,17 @@ public class NumericEntityUnescaper extends CharSequenceTranslator {
+                 out.write(entityValue);
+             }
+ 
+-
+-            return 2 + (end - start) + (isHex ? 1 : 0) + 1;
++            // Calculate length: &#[x]digits[;]
++            int length = 2; // for &#
++            if (isHex) length++;
++            length += (end - start);
++            if (end < seqEnd && input.charAt(end) == ';') length++;
++            
++            return length;
++        } catch (NumberFormatException nfe) {
++            return 0;
+         }
+-        return 0;
+     }
++    return 0;
++}
+ }

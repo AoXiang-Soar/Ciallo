@@ -1,0 +1,16 @@
+{
+    "bug_id": 110,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `java.util.Collections$UnmodifiableList` (no Creators, like default construct, exist): no default no-arguments constructor found",
+    "test_framework": "defects4j",
+    "test_function": "   public void testUnmodifiableListFromLinkedList() throws Exception {\n       final List<String> input = new LinkedList<>();\n       input.add(\"first\");\n       input.add(\"second\");\n\n       // Can't use simple \"_verifyCollection\" as type may change; instead use\n       // bit more flexible check:\n       Collection<?> act = _writeReadCollection(Collections.unmodifiableList(input));\n       assertEquals(input, act);\n\n       // and this check may be bit fragile (may need to revisit), but is good enough for now:\n       assertEquals(Collections.unmodifiableList(new ArrayList<>(input)).getClass(), act.getClass());\n   }",
+    "test_line": "       return DEFAULT_MAPPER.readValue(json, Collection.class);",
+    "test_name": "testUnmodifiableListFromLinkedList",
+    "test_suite": "com.fasterxml.jackson.databind.deser.jdk.UtilCollectionsTypesTest"
+}

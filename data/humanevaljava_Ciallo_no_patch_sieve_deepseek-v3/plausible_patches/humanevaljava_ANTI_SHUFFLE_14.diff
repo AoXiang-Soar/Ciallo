@@ -1,0 +1,45 @@
+diff --git a/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java b/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
+index 4389f67..59e7e6b 100644
+--- a/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
++++ b/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
+@@ -2,25 +2,22 @@ package humaneval.buggy;
+ 
+ import java.util.Arrays;
+ 
+-/* Write a function that takes a string and returns an ordered version of it.
+-Ordered version of string, is a string where all words (separated by space)
+-are replaced by a new word where all the characters arranged in
+-ascending order based on ascii value.
+-Note: You should keep the order of words and blank spaces in the sentence.
+-
+-For example:
+-anti_shuffle('Hi') returns 'Hi'
+-anti_shuffle('hello') returns 'ehllo'
+-anti_shuffle('Hello World!!!') returns 'Hello !!!Wdlor' */
+-
+ public class ANTI_SHUFFLE {
+     public static String anti_shuffle(String s) {
+-        String result = "";
+-        for (String str : s.split(" ")) {
+-            char[] chars = str.toCharArray();
++        StringBuilder result = new StringBuilder();
++        String[] words = s.split(" ", -1); // Note: using -1 to keep trailing spaces
++        
++        for (int i = 0; i < words.length; i++) {
++            char[] chars = words[i].toCharArray();
+             Arrays.sort(chars);
+-            result += new String(chars);
++            result.append(new String(chars));
++            
++            // Add space if not last word or if original had trailing spaces
++            if (i < words.length - 1 || s.endsWith(" ")) {
++                result.append(" ");
++            }
+         }
+-        return result;
++        
++        return result.toString().trim();
+     }
+-}
++}
+\ No newline at end of file

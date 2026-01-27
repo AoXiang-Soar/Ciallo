@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java b/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
+index 8d523c9..b2a6da1 100644
+--- a/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
++++ b/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
+@@ -12,13 +12,25 @@ import java.util.ArrayList;
+ 
+ public class GENERATE_INTEGERS {
+     public static ArrayList<Integer> generate_integers(int a, int b) {
+-        int lower = Math.max(2, a);
+-        int upper = Math.min(8, b);
+-
+         ArrayList<Integer> result = new ArrayList<Integer>();
++        int start = Math.min(a, b);
++        int end = Math.max(a, b);
++        
++        // Check if the ranges overlap with single-digit even numbers (2,4,6,8)
++        if (end < 2 || start > 8) {
++            return result;
++        }
++        
++        // Adjust bounds to be within 2-8 range
++        int lower = Math.max(start, 2);
++        int upper = Math.min(end, 8);
++        
++        // Add all even numbers in the range
+         for (int i = lower; i <= upper; i += 1) {
+-            if (i % 2 == 0) result.add(i);
++            if (i % 2 == 0) {
++                result.add(i);
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

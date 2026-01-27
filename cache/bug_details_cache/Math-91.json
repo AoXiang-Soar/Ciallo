@@ -1,0 +1,16 @@
+{
+    "bug_id": 91,
+    "bug_type": "SH SF",
+    "buggy_lines": "        double nOd = doubleValue();\n        double dOn = object.doubleValue();",
+    "code": "    public int compareTo(Fraction object) {\n        double nOd = doubleValue();\n        double dOn = object.doubleValue();\n        return (nOd < dOn) ? -1 : ((nOd > dOn) ? +1 : 0);\n    }",
+    "fixed_code": "    public int compareTo(Fraction object) {\n        long nOd = ((long) numerator) * object.denominator;\n        long dOn = ((long) denominator) * object.numerator;\n        return (nOd < dOn) ? -1 : ((nOd > dOn) ? +1 : 0);\n    }",
+    "fixed_lines": "        long nOd = ((long) numerator) * object.denominator;\n        long dOn = ((long) denominator) * object.numerator;",
+    "masked_code": "    public int compareTo(Fraction object) {\n>>> [ INFILL ] <<<\n        return (nOd < dOn) ? -1 : ((nOd > dOn) ? +1 : 0);\n    }",
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<-1> but was:<0>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCompareTo() {\n        Fraction first = new Fraction(1, 2);\n        Fraction second = new Fraction(1, 3);\n        Fraction third = new Fraction(1, 2);\n        \n        assertEquals(0, first.compareTo(first));\n        assertEquals(0, first.compareTo(third));\n        assertEquals(1, first.compareTo(second));\n        assertEquals(-1, second.compareTo(first));\n\n        // these two values are different approximations of PI\n        // the first  one is approximately PI - 3.07e-18\n        // the second one is approximately PI + 1.936e-17\n        Fraction pi1 = new Fraction(1068966896, 340262731);\n        Fraction pi2 = new Fraction( 411557987, 131002976);\n        assertEquals(-1, pi1.compareTo(pi2));\n        assertEquals( 1, pi2.compareTo(pi1));\n        assertEquals(0.0, pi1.doubleValue() - pi2.doubleValue(), 1.0e-20);\n    }",
+    "test_line": "        assertEquals(-1, pi1.compareTo(pi2));",
+    "test_name": "testCompareTo",
+    "test_suite": "org.apache.commons.math.fraction.FractionTest"
+}

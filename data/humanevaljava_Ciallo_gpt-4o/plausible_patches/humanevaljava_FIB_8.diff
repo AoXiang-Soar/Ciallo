@@ -1,0 +1,37 @@
+diff --git a/src/main/java/humaneval/buggy/FIB.java b/src/main/java/humaneval/buggy/FIB.java
+index fdc9c32..25591f5 100644
+--- a/src/main/java/humaneval/buggy/FIB.java
++++ b/src/main/java/humaneval/buggy/FIB.java
+@@ -1,15 +1,22 @@
+ package humaneval.buggy;
+ 
+-/* Return n-th Fibonacci number.
+->>> fib(10)
+-55
+->>> fib(1)
+-1
+->>> fib(8)
+-21 */
++import java.util.HashMap;
+ 
+ public class FIB {
++
++    private static HashMap<Integer, Integer> memo = new HashMap<>();
++
+     public static int fib(int n) {
+-        return fib(n - 1) + fib(n - 2);
++        if (n <= 1) {
++            return n;
++        }
++        
++        if (memo.containsKey(n)) {
++            return memo.get(n);
++        }
++        
++        int result = fib(n - 1) + fib(n - 2);
++        memo.put(n, result);
++        return result;
+     }
+-}
++}
+\ No newline at end of file

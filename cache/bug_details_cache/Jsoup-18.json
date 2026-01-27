@@ -1,0 +1,16 @@
+{
+    "bug_id": 18,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<one []> but was:<one [\n two \n]>",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void handleCarriageReturnAsLineFeed() {\n        String in = \"one \\r two \\r\\n three\";\n        CharacterReader r = new CharacterReader(in);\n\n        String first = r.consumeTo('\\n');\n        assertEquals(\"one \", first);\n        assertEquals(\"\\n two \\n three\", r.consumeToEnd());\n    }",
+    "test_line": "        assertEquals(\"one \", first);",
+    "test_name": "handleCarriageReturnAsLineFeed",
+    "test_suite": "org.jsoup.parser.CharacterReaderTest"
+}

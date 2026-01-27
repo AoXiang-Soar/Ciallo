@@ -1,0 +1,16 @@
+{
+    "bug_id": 13,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "    private RealMatrix squareRoot(RealMatrix m) {\n            final EigenDecomposition dec = new EigenDecomposition(m);\n            return dec.getSquareRoot();\n    }",
+    "fixed_code": "    private RealMatrix squareRoot(RealMatrix m) {\n        if (m instanceof DiagonalMatrix) {\n            final int dim = m.getRowDimension();\n            final RealMatrix sqrtM = new DiagonalMatrix(dim);\n            for (int i = 0; i < dim; i++) {\n               sqrtM.setEntry(i, i, FastMath.sqrt(m.getEntry(i, i)));\n            }\n            return sqrtM;\n        } else {\n            final EigenDecomposition dec = new EigenDecomposition(m);\n            return dec.getSquareRoot();\n        }\n    }",
+    "fixed_lines": "        if (m instanceof DiagonalMatrix) {\n            final int dim = m.getRowDimension();\n            final RealMatrix sqrtM = new DiagonalMatrix(dim);\n            for (int i = 0; i < dim; i++) {\n               sqrtM.setEntry(i, i, FastMath.sqrt(m.getEntry(i, i)));\n            }\n            return sqrtM;\n        } else {\n        }",
+    "masked_code": "    private RealMatrix squareRoot(RealMatrix m) {\n            final EigenDecomposition dec = new EigenDecomposition(m);\n            return dec.getSquareRoot();\n>>> [ INFILL ] <<<\n    }",
+    "project": "Math",
+    "test_error_message": "java.lang.OutOfMemoryError: Java heap space",
+    "test_framework": "defects4j",
+    "test_function": "    public void testLargeSample() {\n        Random randomizer = new Random(0x5551480dca5b369bl);\n        double maxError = 0;\n        for (int degree = 0; degree < 10; ++degree) {\n            PolynomialFunction p = buildRandomPolynomial(degree, randomizer);\n\n            PolynomialFitter fitter = new PolynomialFitter(new LevenbergMarquardtOptimizer());\n            for (int i = 0; i < 40000; ++i) {\n                double x = -1.0 + i / 20000.0;\n                fitter.addObservedPoint(1.0, x,\n                                        p.value(x) + 0.1 * randomizer.nextGaussian());\n            }\n\n            final double[] init = new double[degree + 1];\n            PolynomialFunction fitted = new PolynomialFunction(fitter.fit(init));\n\n            for (double x = -1.0; x < 1.0; x += 0.01) {\n                double error = FastMath.abs(p.value(x) - fitted.value(x)) /\n                              (1.0 + FastMath.abs(p.value(x)));\n                maxError = FastMath.max(maxError, error);\n                Assert.assertTrue(FastMath.abs(error) < 0.01);\n            }\n        }\n        Assert.assertTrue(maxError > 0.001);\n    }",
+    "test_line": "                double error = FastMath.abs(p.value(x) - fitted.value(x)) /",
+    "test_name": "testLargeSample",
+    "test_suite": "org.apache.commons.math3.optimization.fitting.PolynomialFitterTest"
+}

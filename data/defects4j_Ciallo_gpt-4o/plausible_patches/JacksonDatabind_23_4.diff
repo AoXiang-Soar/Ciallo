@@ -1,0 +1,100 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java b/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java
+index c11155e6c..b96b1c609 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java
+@@ -106,8 +106,24 @@ public class NumberSerializers
+             }
+             return this;
+         }
++
++        @Override
++        public boolean isEmpty(SerializerProvider prov, T value) {
++            if (value == null) {
++                return true;
++            }
++            Number numValue = (Number) value;
++            if (_isInt) {
++                // Treat integer and long 0 as empty (Short and Byte are covered since they are subclasses)
++                return numValue.longValue() == 0L;
++            } else if (_numberType == JsonParser.NumberType.FLOAT || _numberType == JsonParser.NumberType.DOUBLE) {
++                // Treat float/double 0.0 as empty
++                return numValue.doubleValue() == 0.0;
++            }
++            return false;
++        }
+     }
+-    
++
+     /*
+     /**********************************************************
+     /* Concrete serializers, numerics
+@@ -121,7 +137,6 @@ public class NumberSerializers
+ 
+         public ShortSerializer() { super(Short.class, JsonParser.NumberType.INT, "number"); }
+ 
+-
+         @Override
+         public void serialize(Short value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+             gen.writeNumber(value.shortValue());
+@@ -155,7 +170,6 @@ public class NumberSerializers
+             // no type info, just regular serialization
+             serialize(value, gen, provider);            
+         }
+-
+     }
+ 
+     /**
+@@ -172,7 +186,6 @@ public class NumberSerializers
+             super(Number.class, JsonParser.NumberType.INT, "integer");
+         }
+ 
+-
+         @Override
+         public void serialize(Number value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+             gen.writeNumber(value.intValue());
+@@ -182,12 +195,10 @@ public class NumberSerializers
+     @JacksonStdImpl
+     public final static class LongSerializer extends Base<Object>
+     {
+-
+         final static LongSerializer instance = new LongSerializer();
+     
+         public LongSerializer() { super(Long.class, JsonParser.NumberType.LONG, "number"); }
+ 
+-
+         @Override
+         public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+             gen.writeNumber(((Long) value).longValue());
+@@ -197,12 +208,10 @@ public class NumberSerializers
+     @JacksonStdImpl
+     public final static class FloatSerializer extends Base<Object>
+     {
+-
+         final static FloatSerializer instance = new FloatSerializer();
+ 
+         public FloatSerializer() { super(Float.class, JsonParser.NumberType.FLOAT, "number"); }
+ 
+-
+         @Override
+         public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+             gen.writeNumber(((Float) value).floatValue());
+@@ -219,12 +228,10 @@ public class NumberSerializers
+     @JacksonStdImpl
+     public final static class DoubleSerializer extends Base<Object>
+     {
+-
+         final static DoubleSerializer instance = new DoubleSerializer();
+     
+         public DoubleSerializer() { super(Double.class, JsonParser.NumberType.DOUBLE, "number"); }
+ 
+-
+         @Override
+         public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+             gen.writeNumber(((Double) value).doubleValue());
+@@ -238,4 +245,4 @@ public class NumberSerializers
+             serialize(value, gen, provider);            
+         }
+     }
+-}
++}
+\ No newline at end of file

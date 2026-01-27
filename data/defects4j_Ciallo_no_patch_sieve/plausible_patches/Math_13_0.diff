@@ -1,0 +1,26 @@
+diff --git a/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java b/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java
+index 99d86e92a..454c2a645 100644
+--- a/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java
++++ b/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java
+@@ -558,8 +558,18 @@ public abstract class AbstractLeastSquaresOptimizer
+      * @param m Symmetric, positive-definite (weight) matrix.
+      * @return the square-root of the weight matrix.
+      */
+-    private RealMatrix squareRoot(RealMatrix m) {
+-            final EigenDecomposition dec = new EigenDecomposition(m);
+-            return dec.getSquareRoot();
++private RealMatrix squareRoot(RealMatrix m) {
++    if (m instanceof DiagonalMatrix) {
++        // For diagonal matrices, compute square root directly on diagonal elements
++        double[] diagonal = ((DiagonalMatrix) m).getDataRef(); // Direct access to diagonal data
++        double[] sqrtDiagonal = new double[diagonal.length];
++        for (int i = 0; i < diagonal.length; i++) {
++            sqrtDiagonal[i] = FastMath.sqrt(diagonal[i]);
++        }
++        return new DiagonalMatrix(sqrtDiagonal, false); // false = don't copy the array
+     }
++    // For non-diagonal matrices, use EigenDecomposition
++    final EigenDecomposition dec = new EigenDecomposition(m);
++    return dec.getSquareRoot();
++}
+ }

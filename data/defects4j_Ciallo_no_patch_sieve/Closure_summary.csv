@@ -1,0 +1,175 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Closure,1,SH SF,1,22402,14,2,13,18,
+defects4j,Closure,2,SF,7,15948,6,0,5,12,
+defects4j,Closure,3,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,4,SF,0,567414,,221,166,2987,
+defects4j,Closure,5,SH SF,7,23600,9,5,1,18,
+defects4j,Closure,6,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,7,SF,1,9483,6,8,0,17,
+defects4j,Closure,8,BF,1,90828,16,2,16,21,
+defects4j,Closure,9,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,10,SL SH SF,5,10540,8,1,3,10,
+defects4j,Closure,11,SH SF,1,10811,7,6,3,16,
+defects4j,Closure,12,SH SF,6,11131,8,2,4,14,
+defects4j,Closure,13,SF,2,58698,44,24,21,81,
+defects4j,Closure,14,SL SH SF,1,20501,8,5,1,12,
+defects4j,Closure,15,SH SF,3,32835,22,12,12,39,
+defects4j,Closure,16,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,17,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,18,SL SH SF,3,23287,6,0,0,3,
+defects4j,Closure,19,SF,21,20357,7,0,0,21,
+defects4j,Closure,20,SH SF,3,21311,14,7,0,17,
+defects4j,Closure,21,SF,2,446568,163,150,8,760,
+defects4j,Closure,22,SF,1,451661,154,138,15,750,
+defects4j,Closure,23,SF,0,534171,,196,10,2727,
+defects4j,Closure,24,SF,0,683738,,397,69,5328,
+defects4j,Closure,25,SF,4,157577,95,43,51,197,
+defects4j,Closure,26,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,27,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,28,BF,3,62375,18,15,4,45,
+defects4j,Closure,29,SF,0,1495024,,327,270,4464,
+defects4j,Closure,30,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,31,SL SH SF,1,44303,16,3,12,19,
+defects4j,Closure,32,SF,0,1144792,,404,34,5574,
+defects4j,Closure,33,SH SF,1,24086,16,3,15,22,
+defects4j,Closure,34,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,35,SH SF,0,1169375,,175,470,2994,
+defects4j,Closure,36,SH SF,2,16232,7,2,5,11,
+defects4j,Closure,37,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,38,SL SH SF,5,12481,6,4,1,14,
+defects4j,Closure,39,SF,0,495881,,71,186,1180,
+defects4j,Closure,40,SF,3,25311,10,8,1,20,
+defects4j,Closure,41,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,42,SF,1,45700,22,2,21,26,
+defects4j,Closure,43,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,44,SF,9,20906,10,10,3,32,
+defects4j,Closure,45,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,46,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,47,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,48,SF,0,2071426,,309,233,4138,
+defects4j,Closure,49,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,50,SF,0,2087833,,527,95,6731,
+defects4j,Closure,51,BF,5,93374,7,2,15,24,
+defects4j,Closure,52,SL SH SF,4,14198,8,2,0,8,
+defects4j,Closure,53,SF,11,43630,8,7,5,30,
+defects4j,Closure,54,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,55,SH SF,1,19556,20,3,20,27,
+defects4j,Closure,56,SF,15,21775,6,1,0,17,
+defects4j,Closure,57,SL SH SF,3,8963,6,2,2,9,
+defects4j,Closure,58,SF,6,30072,7,6,1,19,
+defects4j,Closure,59,SH SF,2,63098,29,10,16,38,
+defects4j,Closure,60,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,61,SH SF,4,14622,7,1,1,7,
+defects4j,Closure,62,SL SH SF,4,13426,6,0,3,7,
+defects4j,Closure,64,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,65,SL SH SF,1,16329,7,2,2,7,
+defects4j,Closure,66,SF,,,,,,,Out of limited tokens. 
+defects4j,Closure,67,SL SH SF,1,164912,150,99,28,483,
+defects4j,Closure,68,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,69,SH SF,1,1430591,706,252,421,3064,
+defects4j,Closure,70,SL SH SF,2,12577,8,2,1,7,
+defects4j,Closure,71,SL SH SF,0,1793467,,395,111,5113,
+defects4j,Closure,72,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,73,SL SH SF,4,16080,6,1,0,6,
+defects4j,Closure,74,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,75,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,76,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,77,SL SH SF,3,16424,7,1,0,5,
+defects4j,Closure,78,SF,1,34230,10,10,2,23,
+defects4j,Closure,79,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,80,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,81,SH SF,1,35931,12,9,5,24,
+defects4j,Closure,82,SH SF,0,640718,,131,155,2159,
+defects4j,Closure,83,SH SF,1,15968,14,4,5,14,
+defects4j,Closure,84,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,85,BF,0,2693358,,346,137,4465,
+defects4j,Closure,86,SL SH SF,7,27907,7,3,0,13,
+defects4j,Closure,87,SF,0,694075,,199,320,2898,
+defects4j,Closure,88,SF,3,19281,8,2,9,16,
+defects4j,Closure,89,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,90,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,91,SH SF,0,1550888,,534,250,7505,
+defects4j,Closure,92,SL SH SF,1,16511,8,2,1,6,
+defects4j,Closure,94,SF,4,16481,8,0,6,10,
+defects4j,Closure,95,SF,0,1487933,,335,223,4573,
+defects4j,Closure,96,SF,2,29752,14,4,11,21,
+defects4j,Closure,97,SH SF,7,24370,5,5,0,17,
+defects4j,Closure,98,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,99,SF,0,839063,,393,43,5235,
+defects4j,Closure,100,BF,0,1669375,,296,98,3889,
+defects4j,Closure,101,SF,2,16091,12,3,8,16,
+defects4j,Closure,102,SF,3,25719,19,8,12,31,
+defects4j,Closure,103,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,104,SL SH SF,3,13396,10,5,4,17,
+defects4j,Closure,105,SF,0,1641646,,424,97,5646,
+defects4j,Closure,106,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,107,SL SH SF,1,238412,122,13,75,141,
+defects4j,Closure,108,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,109,SH SF,4,21173,16,5,9,23,
+defects4j,Closure,110,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,111,SH SF,1,42742,51,11,38,70,
+defects4j,Closure,112,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,113,SL SH SF,0,1011830,,253,152,3627,
+defects4j,Closure,114,SL SH SF,1,12981,8,7,2,17,
+defects4j,Closure,115,SF,1,114999,44,30,15,95,
+defects4j,Closure,116,SF,0,914160,,288,94,3478,
+defects4j,Closure,117,SF,0,702433,,276,24,3685,
+defects4j,Closure,118,SH SF,1,516621,373,200,141,1545,
+defects4j,Closure,119,SL SH SF,3,22335,7,4,1,12,
+defects4j,Closure,120,SH SF,1,672006,445,52,320,760,
+defects4j,Closure,121,SF,0,1308044,,359,123,4876,
+defects4j,Closure,122,SH SF,9,15172,10,4,2,19,
+defects4j,Closure,123,SL SH SF,,,,,,,Out of limited tokens. 
+defects4j,Closure,124,SF,12,15510,6,3,0,18,
+defects4j,Closure,125,SL SH SF,6,14243,10,4,1,15,
+defects4j,Closure,126,SH SF,10,24866,5,2,3,17,
+defects4j,Closure,127,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,128,SF,8,10689,7,2,1,13,
+defects4j,Closure,129,SH SF,6,14284,8,1,0,8,
+defects4j,Closure,130,SL SH SF,1,58793,37,15,22,53,
+defects4j,Closure,131,SF,4,12621,12,13,0,30,
+defects4j,Closure,132,SH SF,0,4283600,,420,344,6024,
+defects4j,Closure,133,SL SH SF,1,48242,46,20,30,71,
+defects4j,Closure,134,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,135,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,136,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,137,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,138,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,139,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,140,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,141,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,142,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,143,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,144,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,145,SF,4,77606,68,61,6,243,
+defects4j,Closure,146,SH SF,8,22667,14,9,8,34,
+defects4j,Closure,147,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,148,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,149,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,150,SH SF,0,1069627,,465,275,6096,
+defects4j,Closure,151,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,152,SH SF,1,30107,21,6,17,30,
+defects4j,Closure,153,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,154,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,155,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,156,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,157,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,158,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,159,SH SF,1,17512,16,2,14,19,
+defects4j,Closure,160,SF,8,26433,7,1,4,14,
+defects4j,Closure,161,SH SF,4,19280,11,1,6,12,
+defects4j,Closure,162,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,163,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,164,SF,1,37015,14,13,3,30,
+defects4j,Closure,165,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,166,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,167,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,168,SL SH SF,3,14555,6,8,1,20,
+defects4j,Closure,169,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,170,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,171,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,172,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,173,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,174,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,175,BF,,,,,,,Out of limited tokens. 
+defects4j,Closure,176,SF,0,1094174,,0,452,452,

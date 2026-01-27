@@ -1,0 +1,33 @@
+diff --git a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+index 0cc8226d8..3b504b533 100644
+--- a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
++++ b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+@@ -24,7 +24,12 @@ public class ConstructorInstantiator implements Instantiator {
+             Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass());
+             return c.newInstance(outerClassInstance);
+         } catch (Exception e) {
+-            throw paramsException(cls, e);
++            try {
++                Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass().getSuperclass());
++                return c.newInstance(outerClassInstance);
++            } catch (Exception e2) {
++                throw paramsException(cls, e2);
++            }
+         }
+     }
+ 
+@@ -33,7 +38,6 @@ public class ConstructorInstantiator implements Instantiator {
+                 + cls.getSimpleName() + "'.\nPlease ensure that the outer instance has correct type and that the target class has parameter-less constructor.", e);
+     }
+ 
+-
+     private static <T> T noArgConstructor(Class<T> cls) {
+         try {
+             return cls.newInstance();
+@@ -42,4 +46,4 @@ public class ConstructorInstantiator implements Instantiator {
+                     + cls.getSimpleName() + "'.\nPlease ensure it has parameter-less constructor.", e);
+         }
+     }
+-}
++}
+\ No newline at end of file

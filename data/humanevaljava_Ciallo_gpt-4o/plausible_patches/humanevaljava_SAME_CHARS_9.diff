@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/SAME_CHARS.java b/src/main/java/humaneval/buggy/SAME_CHARS.java
+index 9367e85..233d01f 100644
+--- a/src/main/java/humaneval/buggy/SAME_CHARS.java
++++ b/src/main/java/humaneval/buggy/SAME_CHARS.java
+@@ -1,6 +1,7 @@
+ package humaneval.buggy;
+ 
+ import java.util.*;
++import java.util.stream.Collectors;
+ 
+ /* Check if two words have the same characters.
+ >>> same_chars('eabcdzzzz', 'dddzzzzzzzddeddabc')
+@@ -18,15 +19,11 @@ False */
+ 
+ public class SAME_CHARS {
+     public static boolean same_chars(String s0, String s1) {
+-        ArrayList<Character> set0 = new ArrayList<Character>();
+-        ArrayList<Character> set1 = new ArrayList<Character>();
++        // Convert each string to a set of its unique characters
++        Set<Character> set0 = s0.chars().mapToObj(e -> (char) e).collect(Collectors.toSet());
++        Set<Character> set1 = s1.chars().mapToObj(e -> (char) e).collect(Collectors.toSet());
+ 
+-        for (char c0 : s0.toCharArray()) {
+-            set0.add(c0);
+-        }
+-        for (char c1 : s1.toCharArray()) {
+-            set1.add(c1);
+-        }
++        // Check if both sets are equal
+         return set0.equals(set1);
+     }
+-}
++}
+\ No newline at end of file

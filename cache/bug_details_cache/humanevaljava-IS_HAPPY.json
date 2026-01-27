@@ -1,0 +1,16 @@
+{
+    "bug_id": "IS_HAPPY",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_IS_HAPPY.test_7:63 expected:<true> but was:<false>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_7() throws java.lang.Exception {\n        boolean result = humaneval.buggy.IS_HAPPY.is_happy(\"iopaxioi\");\n        org.junit.Assert.assertEquals(\n            result, false\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_7",
+    "test_suite": "TEST_IS_HAPPY"
+}

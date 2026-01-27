@@ -1,0 +1,53 @@
+diff --git a/src/main/java/humaneval/buggy/REVERSE_DELETE.java b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+old mode 100644
+new mode 100755
+index 93117a1..39630fc
+--- a/src/main/java/humaneval/buggy/REVERSE_DELETE.java
++++ b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+@@ -1,6 +1,8 @@
+ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
++import java.util.HashSet;
++import java.util.Set;
+ 
+ /*
+  * We are given two strings s and c, you have to deleted all the characters in s that are equal to any character in c
+@@ -15,19 +17,25 @@ import java.util.ArrayList;
+ 
+ public class REVERSE_DELETE {
+     public static ArrayList<Object> reverse_delete(String s, String c) {
+-        String new_s = "";
+-        for(int i = 0; i < s.length(); i++) {
+-            if(c.indexOf(s.charAt(i)) != -1) {
+-                new_s += s.charAt(i);
+-            }
++        Set<Character> toRemove = new HashSet<>();
++        for (int i = 0; i < c.length(); i++) {
++            toRemove.add(c.charAt(i));
+         }
+-        String reverse_s = "";
+-        for(int i = new_s.length() - 1; i >= 0; i--) {
+-            reverse_s += new_s.charAt(i);
++        
++        StringBuilder new_s = new StringBuilder();
++        for (int i = 0; i < s.length(); i++) {
++            char ch = s.charAt(i);
++            if (!toRemove.contains(ch)) {
++                new_s.append(ch);
++            }
+         }
++        
++        String resultString = new_s.toString();
++        boolean isPalindrome = resultString.equals(new_s.reverse().toString());
++        
+         ArrayList<Object> res = new ArrayList<>();
+-        res.add(new_s);
+-        res.add(reverse_s.equals(new_s));
++        res.add(resultString);
++        res.add(isPalindrome);
+         return res;
+     }
+-}
++}
+\ No newline at end of file

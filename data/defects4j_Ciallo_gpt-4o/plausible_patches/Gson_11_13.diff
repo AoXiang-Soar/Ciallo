@@ -1,0 +1,46 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java b/gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java
+index 6a51c64e..4f37ed28 100644
+--- a/gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java
++++ b/gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java
+@@ -361,18 +361,34 @@ public final class TypeAdapters {
+ 
+   public static final TypeAdapter<Number> NUMBER = new TypeAdapter<Number>() {
+     @Override
+-    public Number read(JsonReader in) throws IOException {
+-      JsonToken jsonToken = in.peek();
+-      switch (jsonToken) {
+-      case NULL:
++public Number read(JsonReader in) throws IOException {
++    JsonToken jsonToken = in.peek();
++    switch (jsonToken) {
++    case NULL:
+         in.nextNull();
+         return null;
+-      case NUMBER:
++    case NUMBER:
+         return new LazilyParsedNumber(in.nextString());
+-      default:
++    case STRING:
++        String numberString = in.nextString();
++        if (isValidNumberString(numberString)) {
++            return new LazilyParsedNumber(numberString);
++        } else {
++            throw new JsonSyntaxException("Expecting number, got invalid string: " + numberString);
++        }
++    default:
+         throw new JsonSyntaxException("Expecting number, got: " + jsonToken);
+-      }
+     }
++}
++
++private boolean isValidNumberString(String str) {
++    try {
++        Double.parseDouble(str);
++        return true;
++    } catch (NumberFormatException e) {
++        return false;
++    }
++}
+     @Override
+     public void write(JsonWriter out, Number value) throws IOException {
+       out.value(value);

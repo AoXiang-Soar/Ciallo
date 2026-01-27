@@ -1,0 +1,59 @@
+diff --git a/src/com/google/javascript/rhino/jstype/NamedType.java b/src/com/google/javascript/rhino/jstype/NamedType.java
+index 70142c455..29ac7635c 100644
+--- a/src/com/google/javascript/rhino/jstype/NamedType.java
++++ b/src/com/google/javascript/rhino/jstype/NamedType.java
+@@ -181,35 +181,43 @@ class NamedType extends ProxyObjectType {
+    * Resolve the referenced type within the enclosing scope.
+    */
+   @Override
+-  JSType resolveInternal(ErrorReporter t, StaticScope<JSType> enclosing) {
++JSType resolveInternal(ErrorReporter t, StaticScope<JSType> enclosing) {
+     // TODO(user): Investigate whether it is really necessary to keep two
+     // different mechanisms for resolving named types, and if so, which order
+     // makes more sense. Now, resolution via registry is first in order to
+     // avoid triggering the warnings built into the resolution via properties.
+     boolean resolved = resolveViaRegistry(t, enclosing);
+-    if (detectImplicitPrototypeCycle()) {
+-      handleTypeCycle(t);
++    boolean hasCycle = detectImplicitPrototypeCycle();
++    if (!hasCycle) {
++        hasCycle = detectInheritanceCycle();
++    }
++    if (hasCycle) {
++        handleTypeCycle(t);
+     }
+ 
+     if (resolved) {
+-      super.resolveInternal(t, enclosing);
+-      finishPropertyContinuations();
+-      return registry.isLastGeneration() ?
+-          getReferencedType() : this;
++        super.resolveInternal(t, enclosing);
++        finishPropertyContinuations();
++        return registry.isLastGeneration() ?
++            getReferencedType() : this;
+     }
+ 
+     resolveViaProperties(t, enclosing);
+-    if (detectImplicitPrototypeCycle()) {
+-      handleTypeCycle(t);
++    hasCycle = detectImplicitPrototypeCycle();
++    if (!hasCycle) {
++        hasCycle = detectInheritanceCycle();
++    }
++    if (hasCycle) {
++        handleTypeCycle(t);
+     }
+ 
+     super.resolveInternal(t, enclosing);
+     if (isResolved()) {
+-      finishPropertyContinuations();
++        finishPropertyContinuations();
+     }
+     return registry.isLastGeneration() ?
+         getReferencedType() : this;
+-  }
++}
+ 
+   /**
+    * Resolves a named type by looking it up in the registry.

@@ -1,0 +1,27 @@
+diff --git a/src/org/mockito/internal/creation/DelegatingMethod.java b/src/org/mockito/internal/creation/DelegatingMethod.java
+index 349719bd0..a661a84ec 100644
+--- a/src/org/mockito/internal/creation/DelegatingMethod.java
++++ b/src/org/mockito/internal/creation/DelegatingMethod.java
+@@ -46,13 +46,18 @@ public class DelegatingMethod implements MockitoMethod {
+         return (method.getModifiers() & Modifier.ABSTRACT) != 0;
+     }
+ 
+-    /**
+-     * @return True if the input object is a DelegatingMethod which has an internal Method which is equal to the internal Method of this DelegatingMethod,
+-     * or if the input object is a Method which is equal to the internal Method of this DelegatingMethod.
+-     */
+     @Override
+     public boolean equals(Object o) {
++        if (this == o) {
++            return true;
++        }
++        if (o instanceof DelegatingMethod) {
++            return method.equals(((DelegatingMethod) o).method);
++        }
++        if (o instanceof Method) {
+             return method.equals(o);
++        }
++        return false;
+     }
+ 
+     @Override

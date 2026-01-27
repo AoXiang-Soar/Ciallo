@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/SAME_CHARS.java b/src/main/java/humaneval/buggy/SAME_CHARS.java
+index 9367e85..f0bce37 100644
+--- a/src/main/java/humaneval/buggy/SAME_CHARS.java
++++ b/src/main/java/humaneval/buggy/SAME_CHARS.java
+@@ -2,31 +2,18 @@ package humaneval.buggy;
+ 
+ import java.util.*;
+ 
+-/* Check if two words have the same characters.
+->>> same_chars('eabcdzzzz', 'dddzzzzzzzddeddabc')
+-True
+->>> same_chars('abcd', 'dddddddabc')
+-True
+->>> same_chars('dddddddabc', 'abcd')
+-True
+->>> same_chars('eabcd', 'dddddddabc')
+-False
+->>> same_chars('abcd', 'dddddddabce')
+-False
+->>> same_chars('eabcdzzzz', 'dddzzzzzzzddddabc')
+-False */
+-
+ public class SAME_CHARS {
+     public static boolean same_chars(String s0, String s1) {
+-        ArrayList<Character> set0 = new ArrayList<Character>();
+-        ArrayList<Character> set1 = new ArrayList<Character>();
++        Map<Character, Boolean> map0 = new HashMap<Character, Boolean>();
++        Map<Character, Boolean> map1 = new HashMap<Character, Boolean>();
+ 
+         for (char c0 : s0.toCharArray()) {
+-            set0.add(c0);
++            map0.put(c0, true);
+         }
+         for (char c1 : s1.toCharArray()) {
+-            set1.add(c1);
++            map1.put(c1, true);
+         }
+-        return set0.equals(set1);
++
++        return map0.keySet().equals(map1.keySet());
+     }
+-}
++}
+\ No newline at end of file

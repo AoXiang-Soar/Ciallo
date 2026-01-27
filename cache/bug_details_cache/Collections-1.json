@@ -1,0 +1,16 @@
+{
+    "bug_id": 1,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "        public Object setValue(Object value) {\n            if (canRemove == false) {\n                throw new IllegalStateException(AbstractHashedMap.SETVALUE_INVALID);\n            }\n            Object old = getValue();\n            switch (nextIndex) {\n                case 3: \n                    parent.value3 = value;\n                case 2:\n                    parent.value2 = value;\n                case 1:\n                    parent.value1 = value;\n            }\n            return old;\n        }",
+    "fixed_code": "        public Object setValue(Object value) {\n            if (canRemove == false) {\n                throw new IllegalStateException(AbstractHashedMap.SETVALUE_INVALID);\n            }\n            Object old = getValue();\n            switch (nextIndex) {\n                case 3: \n                    parent.value3 = value;\n                    break;\n                case 2:\n                    parent.value2 = value;\n                    break;\n                case 1:\n                    parent.value1 = value;\n                    break;\n            }\n            return old;\n        }",
+    "fixed_lines": "                    break;\n                    break;\n                    break;",
+    "masked_code": "        public Object setValue(Object value) {\n            if (canRemove == false) {\n                throw new IllegalStateException(AbstractHashedMap.SETVALUE_INVALID);\n            }\n            Object old = getValue();\n            switch (nextIndex) {\n                case 3: \n                    parent.value3 = value;\n                case 2:\n                    parent.value2 = value;\n                case 1:\n                    parent.value1 = value;\n>>> [ INFILL ] <<<\n            }\n            return old;\n        }",
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<10> but was:<NewValue>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testMapIteratorSetValue3() throws Exception {\n        Flat3Map map = new Flat3Map();\n        map.put(ONE, TEN);\n        map.put(TWO, TWENTY);\n        map.put(THREE, THIRTY);\n        \n        MapIterator it = map.mapIterator();\n        it.next();\n        it.next();\n        it.next();\n        it.setValue(\"NewValue\");\n        assertEquals(3, map.size());\n        assertEquals(true, map.containsKey(ONE));\n        assertEquals(true, map.containsKey(TWO));\n        assertEquals(true, map.containsKey(THREE));\n        assertEquals(TEN, map.get(ONE));\n        assertEquals(TWENTY, map.get(TWO));\n        assertEquals(\"NewValue\", map.get(THREE));\n    }",
+    "test_line": "        assertEquals(TEN, map.get(ONE));",
+    "test_name": "testMapIteratorSetValue3",
+    "test_suite": "org.apache.commons.collections.map.TestFlat3Map"
+}

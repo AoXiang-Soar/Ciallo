@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/DO_ALGEBRA.java b/src/main/java/humaneval/buggy/DO_ALGEBRA.java
+index 08aedcb..2e8e64e 100644
+--- a/src/main/java/humaneval/buggy/DO_ALGEBRA.java
++++ b/src/main/java/humaneval/buggy/DO_ALGEBRA.java
+@@ -31,9 +31,10 @@ public class DO_ALGEBRA {
+         ScriptEngineManager mgr = new ScriptEngineManager();
+         ScriptEngine engine = mgr.getEngineByName("JavaScript");
+         String expression = "";
+-        for (int i = 0; i < operand.length; i += 1) {
+-            expression += operator[i] + operand[i];
++        expression += operand[0];
++        for (int i = 0; i < operator.length; i += 1) {
++            expression += operator[i] + operand[i + 1];
+         }
+         return Double.parseDouble(engine.eval(expression).toString());
+     }
+-}
++}
+\ No newline at end of file

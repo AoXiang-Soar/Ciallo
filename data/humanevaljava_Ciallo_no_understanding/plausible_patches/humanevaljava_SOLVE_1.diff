@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/SOLVE.java b/src/main/java/humaneval/buggy/SOLVE.java
+old mode 100644
+new mode 100755
+index e3592e3..b1ed048
+--- a/src/main/java/humaneval/buggy/SOLVE.java
++++ b/src/main/java/humaneval/buggy/SOLVE.java
+@@ -16,9 +16,10 @@ Output:
+ public class SOLVE {
+     public static String solve(int N) {
+         int sum = 0;
+-        for (int i = 0; i < (N + "").length(); i += 1){
+-            sum += Integer.parseInt((N + "").substring(i + 1));
++        String numStr = N + "";
++        for (int i = 0; i < numStr.length(); i += 1){
++            sum += Character.getNumericValue(numStr.charAt(i));
+         }
+         return Integer.toBinaryString(sum);
+     }
+-}
++}
+\ No newline at end of file

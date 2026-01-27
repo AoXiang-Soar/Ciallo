@@ -1,0 +1,47 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+index 10fddc4d6..99a1761c0 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+@@ -1432,15 +1432,35 @@ public class ObjectReader
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.
+      */
+-    public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
+-        throws IOException, JsonProcessingException
+-    {
+-        if (_dataFormatReaders != null) {
+-            return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
++public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
++    throws IOException, JsonProcessingException
++{
++    if (_dataFormatReaders != null) {
++        // Attempt to find an appropriate data format match
++        DataFormatReaders.Match match = _dataFormatReaders.findFormat(src, offset, length);
++        if (match.hasMatch()) {
++            return _detectBindAndReadValues(match, false);
+         }
+-        return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-                true));
++        // Handle case when there's no match found and a subsequent parsing attempt will be done
++        throw new JsonProcessingException("No matching data format found") {
++            private static final long serialVersionUID = 1L;
++        };
+     }
++    
++    JsonParser parser;
++    try {
++        // Attempt to create parser directly from byte array
++        parser = _parserFactory.createParser(src, offset, length);
++    } catch (CharConversionException e) {
++        // Handle parsing error due to invalid character encoding
++        throw new JsonProcessingException("Input data could not be read due to a character conversion issue", e) {
++            private static final long serialVersionUID = 1L;
++        };
++    }
++
++    // Proceed with binding and reading values if no Exception is thrown
++    return _bindAndReadValues(_considerFilter(parser, true));
++}
+ 
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.

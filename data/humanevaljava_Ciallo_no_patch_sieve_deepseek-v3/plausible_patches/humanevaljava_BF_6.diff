@@ -1,0 +1,46 @@
+diff --git a/src/main/java/humaneval/buggy/BF.java b/src/main/java/humaneval/buggy/BF.java
+index dd3c22b..eb37fc4 100644
+--- a/src/main/java/humaneval/buggy/BF.java
++++ b/src/main/java/humaneval/buggy/BF.java
+@@ -2,20 +2,7 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ import java.util.Arrays;
+-
+-/* There are eight planets in our solar system: the closerst to the Sun 
+-is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, 
+-Uranus, Neptune.
+-Write a function that takes two planet names as strings planet1 and planet2. 
+-The function should return a tuple containing all planets whose orbits are 
+-located between the orbit of planet1 and the orbit of planet2, sorted by 
+-the proximity to the sun. 
+-The function should return an empty tuple if planet1 or planet2
+-are not correct planet names. 
+-Examples
+-bf("Jupiter", "Neptune") ==> ("Saturn", "Uranus")
+-bf("Earth", "Mercury") ==> ("Venus")
+-bf("Mercury", "Uranus") ==> ("Venus", "Earth", "Mars", "Jupiter", "Saturn") */
++import java.util.Collections;
+ 
+ public class BF {
+     public static ArrayList<String> bf(String planet1, String planet2) {
+@@ -26,10 +13,16 @@ public class BF {
+         ArrayList<String> result = new ArrayList<String>();
+         if ((! planet_names.contains(planet1)) || (! planet_names.contains(planet2)))
+             return result;
++        
+         int planet1_index = planet_names.indexOf(planet1);
+         int planet2_index = planet_names.indexOf(planet2);
+-        for (int i = planet1_index; i < planet2_index; i += 1)
++        
++        int start = Math.min(planet1_index, planet2_index) + 1;
++        int end = Math.max(planet1_index, planet2_index);
++        
++        for (int i = start; i < end; i++) {
+             result.add(planet_names.get(i));
++        }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

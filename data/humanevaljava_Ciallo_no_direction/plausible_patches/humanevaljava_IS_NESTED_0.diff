@@ -1,0 +1,50 @@
+diff --git a/src/main/java/humaneval/buggy/IS_NESTED.java b/src/main/java/humaneval/buggy/IS_NESTED.java
+index 28b9704..b41fa73 100644
+--- a/src/main/java/humaneval/buggy/IS_NESTED.java
++++ b/src/main/java/humaneval/buggy/IS_NESTED.java
+@@ -1,7 +1,6 @@
+ package humaneval.buggy;
+ 
+-import java.util.ArrayList;
+-import java.util.Collections;
++import java.util.Stack;
+ 
+ /*
+  * Create a function that takes a string as input which contains only square brackets.
+@@ -19,20 +18,22 @@ import java.util.Collections;
+ 
+ public class IS_NESTED {
+     public static boolean is_nested(String brackets) {
+-        ArrayList<Integer> opening_brackets = new ArrayList<>();
+-        ArrayList<Integer> closing_brackets = new ArrayList<>();
++        Stack<Integer> stack = new Stack<>();
++        boolean hasNested = false;
++        
+         for(int i = 0; i < brackets.length(); i++) {
+-            if(brackets.charAt(i) == '[') opening_brackets.add(i);
+-            else closing_brackets.add(i);
+-        }
+-        Collections.reverse(opening_brackets);
+-        int cnt = 0, i = 0, l = opening_brackets.size();
+-        for(int idx : closing_brackets) {
+-            if(i < l || idx >= opening_brackets.get(i)) {
+-                i++;
+-                cnt++;
++            char c = brackets.charAt(i);
++            if(c == '[') {
++                stack.push(i);
++            } else {
++                if(!stack.isEmpty()) {
++                    int openPos = stack.pop();
++                    if(i - openPos > 1) {
++                        hasNested = true;
++                    }
++                }
+             }
+         }
+-        return cnt >= 2;
++        return hasNested;
+     }
+-}
++}
+\ No newline at end of file

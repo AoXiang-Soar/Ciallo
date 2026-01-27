@@ -1,0 +1,16 @@
+{
+    "bug_id": 68,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.JsonMappingException: Can not construct instance of com.fasterxml.jackson.databind.struct.SingleValueAsArrayTest$Messages: no suitable constructor found, can not deserialize from Object value (missing default constructor or creator, or perhaps need to add/enable type information?)\n",
+    "test_framework": "defects4j",
+    "test_function": "    public void testSuccessfulDeserializationOfObjectWithChainedArrayCreators() throws IOException\n    {\n        MAPPER.readValue(JSON, Bean1421A.class);\n    }",
+    "test_line": "        MAPPER.readValue(JSON, Bean1421A.class);",
+    "test_name": "testSuccessfulDeserializationOfObjectWithChainedArrayCreators",
+    "test_suite": "com.fasterxml.jackson.databind.struct.SingleValueAsArrayTest"
+}

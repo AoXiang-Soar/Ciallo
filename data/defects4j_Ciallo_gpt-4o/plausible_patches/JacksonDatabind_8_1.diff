@@ -1,0 +1,76 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/impl/CreatorCollector.java b/src/main/java/com/fasterxml/jackson/databind/deser/impl/CreatorCollector.java
+index 39514f63f..c7baaf0af 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/impl/CreatorCollector.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/impl/CreatorCollector.java
+@@ -273,40 +273,43 @@ public class CreatorCollector
+         return member;
+     }
+ 
+-    protected void verifyNonDup(AnnotatedWithParams newOne, int typeIndex, boolean explicit)
+-    {
+-        final int mask = (1 << typeIndex);
+-        _hasNonDefaultCreator = true;
+-        AnnotatedWithParams oldOne = _creators[typeIndex];
+-        // already had an explicitly marked one?
+-        if (oldOne != null) {
+-
+-            if ((_explicitCreators & mask) != 0) { // already had explicitly annotated, leave as-is
+-                // but skip, if new one not annotated
+-                if (!explicit) {
+-                    return;
++protected void verifyNonDup(AnnotatedWithParams newOne, int typeIndex, boolean explicit) {
++    final int mask = (1 << typeIndex);
++    _hasNonDefaultCreator = true;
++    AnnotatedWithParams oldOne = _creators[typeIndex];
++
++    if (oldOne != null) {
++        boolean oldExplicit = (_explicitCreators & mask) != 0;
++        if (oldExplicit) {
++            if (explicit) {
++                // Both are explicit. Ensure they are not the same class; if so, throw an error.
++                if (oldOne.getClass() == newOne.getClass()) {
++                    throw new IllegalArgumentException("Conflicting " + TYPE_DESCS[typeIndex]
++                            + " creators: already had explicitly marked " + oldOne + ", encountered " + newOne);
+                 }
+-                // both explicit: verify
+-                // otherwise only verify if neither explicitly annotated.
++                // If they are different classes, we can decide to keep one based on specificity or other logic.
++                // For this scenario, we choose to log or notify, but allow the override by default
++            } else {
++                // Existing creator is explicit, and new one is not: do not override
++                return;
+             }
+-
+-            // one more thing: ok to override in sub-class
+-            if (oldOne.getClass() == newOne.getClass()) {
+-                // [databind#667]: avoid one particular class of bogus problems
+-
+-                    throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
+-                            +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
+-                // otherwise, which one to choose?
+-                    // new type more generic, use old
+-                // new type more specific, use it
++        } else {
++            // Existing one is not explicit, allow new explicit to replace it
++            if (!explicit) {
++                // If neither is explicit, retain the prior one
++                return;
+             }
+         }
+-        if (explicit) {
+-            _explicitCreators |= mask;
+-        }
+-        _creators[typeIndex] = _fixAccess(newOne);
+     }
+ 
++    // Update the explicit creators mask if the new one is explicit
++    if (explicit) {
++        _explicitCreators |= mask;
++    }
++    // Use the new creator
++    _creators[typeIndex] = _fixAccess(newOne);
++}
++
+     /*
+     /**********************************************************
+     /* Helper class(es)

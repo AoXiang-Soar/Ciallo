@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/MAX_ELEMENT.java b/src/main/java/humaneval/buggy/MAX_ELEMENT.java
+old mode 100644
+new mode 100755
+index e510a0a..60140f2
+--- a/src/main/java/humaneval/buggy/MAX_ELEMENT.java
++++ b/src/main/java/humaneval/buggy/MAX_ELEMENT.java
+@@ -4,12 +4,12 @@ import java.util.List;
+ 
+ public class MAX_ELEMENT {
+     public static int max_element(List<Integer> l) {
+-        int m = 0;
++        int m = Integer.MIN_VALUE;
+         for (Integer e : l) {
+             if (e > m){
+                 m = e;
+             }
+         }
+-        return m;
++        return l.isEmpty() ? 0 : m;
+     }
+-}
++}
+\ No newline at end of file

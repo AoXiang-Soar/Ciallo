@@ -1,0 +1,32 @@
+diff --git a/src/main/java/humaneval/buggy/PAIRS_SUM_TO_ZERO.java b/src/main/java/humaneval/buggy/PAIRS_SUM_TO_ZERO.java
+index 7e806b9..26021e1 100644
+--- a/src/main/java/humaneval/buggy/PAIRS_SUM_TO_ZERO.java
++++ b/src/main/java/humaneval/buggy/PAIRS_SUM_TO_ZERO.java
+@@ -1,6 +1,7 @@
+ package humaneval.buggy;
+ 
+ import java.util.List;
++import java.util.HashSet;
+ 
+ /* pairs_sum_to_zero takes a list of integers as an input.
+ it returns True if there are two distinct elements in the list that
+@@ -8,12 +9,13 @@ sum to zero, and False otherwise. */
+ 
+ public class PAIRS_SUM_TO_ZERO {
+     public static boolean pairs_sum_to_zero(List<Integer> l) {
+-        for (int i = 0; i < l.size(); i += 1) {
+-            for (int j = 0; j < l.size(); j += 1){
+-                if (l.get(i) + l.get(j) == 0)
+-                    return true;
++        HashSet<Integer> seen = new HashSet<>();
++        for (int num : l) {
++            if (seen.contains(-num)) {
++                return true;
+             }
++            seen.add(num);
+         }
+         return false;
+     }
+-}
++}
+\ No newline at end of file

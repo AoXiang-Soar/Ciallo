@@ -1,0 +1,45 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/util/JsonParserSequence.java b/src/main/java/com/fasterxml/jackson/core/util/JsonParserSequence.java
+index 9dadc51f..b4c37fb0 100644
+--- a/src/main/java/com/fasterxml/jackson/core/util/JsonParserSequence.java
++++ b/src/main/java/com/fasterxml/jackson/core/util/JsonParserSequence.java
+@@ -27,12 +27,10 @@ public class JsonParserSequence extends JsonParserDelegate
+     protected int _nextParser;
+ 
+     /**
+-     * Flag used to indicate that `JsonParser.nextToken()` should not be called,
+-     * due to parser already pointing to a token.
+-     *
+-     * @since 2.8
++     * The current token of the initial parser, to maintain its state.
+      */
+-    
++    protected JsonToken _currentToken;
++
+     /*
+      *******************************************************
+      * Construction
+@@ -44,6 +42,7 @@ public class JsonParserSequence extends JsonParserDelegate
+         super(parsers[0]);
+         _parsers = parsers;
+         _nextParser = 1;
++        _currentToken = delegate.getCurrentToken();
+     }
+ 
+     /**
+@@ -103,7 +102,8 @@ public class JsonParserSequence extends JsonParserDelegate
+     @Override
+     public JsonToken nextToken() throws IOException, JsonParseException
+     {
+-        JsonToken t = delegate.nextToken();
++        JsonToken t = (_currentToken != null) ? _currentToken : delegate.nextToken();
++        _currentToken = null;
+         if (t != null) return t;
+         while (switchToNext()) {
+             t = delegate.nextToken();
+@@ -149,4 +149,4 @@ public class JsonParserSequence extends JsonParserDelegate
+         delegate = _parsers[_nextParser++];
+         return true;
+     }
+-}
++}
+\ No newline at end of file

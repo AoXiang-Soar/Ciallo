@@ -1,0 +1,16 @@
+{
+    "bug_id": "SMALLEST_CHANGE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SMALLEST_CHANGE.test_0:6 \u00bb ArrayIndexOutOfBounds Index 8 out of bounds fo...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        int result = humaneval.buggy.SMALLEST_CHANGE.smallest_change(new int[] {1, 2, 3, 5, 4, 7, 9, 6});\n        org.junit.Assert.assertEquals(\n            result, 4\n        );\n    }",
+    "test_line": "        int result = humaneval.buggy.SMALLEST_CHANGE.smallest_change(new int[] {1, 2, 3, 5, 4, 7, 9, 6});",
+    "test_name": "test_0",
+    "test_suite": "TEST_SMALLEST_CHANGE"
+}

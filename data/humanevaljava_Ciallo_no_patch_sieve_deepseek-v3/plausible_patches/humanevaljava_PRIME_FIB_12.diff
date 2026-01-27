@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/PRIME_FIB.java b/src/main/java/humaneval/buggy/PRIME_FIB.java
+index 68ba00e..e554d35 100644
+--- a/src/main/java/humaneval/buggy/PRIME_FIB.java
++++ b/src/main/java/humaneval/buggy/PRIME_FIB.java
+@@ -18,13 +18,19 @@ public class PRIME_FIB {
+         fib.add(0);
+         fib.add(1);
+ 
++        int count = 0;
+         while (true) {
+             int len = fib.size();
+-            fib.add(fib.get(len - 1) + fib.get(len));
+-            if (is_prime(fib.get(len - 1)))
+-                n -= 1;
+-            if (n == 0)
+-                return fib.get(fib.size() - 1);
++            int next = fib.get(len - 1) + fib.get(len - 2);
++            fib.add(next);
++            
++            // Check the newly added number (last in array)
++            if (is_prime(fib.get(fib.size() - 1))) {
++                count += 1;
++                if (count == n) {
++                    return fib.get(fib.size() - 1);
++                }
++            }
+         }
+     }
+-}
++}
+\ No newline at end of file

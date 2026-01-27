@@ -1,0 +1,16 @@
+{
+    "bug_id": 139,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testNormalizeFunctionDeclarations() throws Exception {\n    testSame(\"function f() {}\");\n    testSame(\"var f = function () {}\");\n    test(\"var f = function f() {}\",\n         \"var f = function f$$1() {}\");\n    testSame(\"var f = function g() {}\");\n    test(\"a:function g() {}\",\n         \"a:{ var g = function () {} }\");\n    test(\"{function g() {}}\",\n         \"{var g = function () {}}\");\n    testSame(\"if (function g() {}) {}\");\n    test(\"if (true) {function g() {}}\",\n         \"if (true) {var g = function () {}}\");\n    test(\"if (true) {} else {function g() {}}\",\n         \"if (true) {} else {var g = function () {}}\");\n    testSame(\"switch (function g() {}) {}\");\n    test(\"switch (1) { case 1: function g() {}}\",\n         \"switch (1) { case 1: var g = function () {}}\");\n\n\n    testSameInFunction(\"function f() {}\");\n    testInFunction(\"f(); a:function g() {}\",\n                   \"f(); a:{ var g = function () {} }\");\n    testInFunction(\"f(); {function g() {}}\",\n                   \"f(); {var g = function () {}}\");\n    testInFunction(\"f(); if (true) {function g() {}}\",\n                   \"f(); if (true) {var g = function () {}}\");\n    testInFunction(\"if (true) {} else {function g() {}}\",\n                   \"if (true) {} else {var g = function () {}}\");\n  }",
+    "test_line": "    test(\"a:function g() {}\",",
+    "test_name": "testNormalizeFunctionDeclarations",
+    "test_suite": "com.google.javascript.jscomp.NormalizeTest"
+}

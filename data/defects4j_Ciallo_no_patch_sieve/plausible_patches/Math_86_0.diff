@@ -1,0 +1,51 @@
+diff --git a/src/java/org/apache/commons/math/linear/CholeskyDecompositionImpl.java b/src/java/org/apache/commons/math/linear/CholeskyDecompositionImpl.java
+index acd9222f6..5fb6d179b 100644
+--- a/src/java/org/apache/commons/math/linear/CholeskyDecompositionImpl.java
++++ b/src/java/org/apache/commons/math/linear/CholeskyDecompositionImpl.java
+@@ -111,9 +111,6 @@ public class CholeskyDecompositionImpl implements CholeskyDecomposition {
+ 
+             final double[] lI = lTData[i];
+ 
+-            if (lTData[i][i] < absolutePositivityThreshold) {
+-                throw new NotPositiveDefiniteMatrixException();
+-            }
+             // check off-diagonal elements (and reset them to 0)
+             for (int j = i + 1; j < order; ++j) {
+                 final double[] lJ = lTData[j];
+@@ -125,15 +122,18 @@ public class CholeskyDecompositionImpl implements CholeskyDecomposition {
+                     throw new NotSymmetricMatrixException();
+                 }
+                 lJ[i] = 0;
+-           }
++            }
+         }
+ 
+-        // transform the matrix
++        // transform the matrix and check principal minors
+         for (int i = 0; i < order; ++i) {
+ 
+             final double[] ltI = lTData[i];
+ 
+             // check diagonal element
++            if (ltI[i] <= absolutePositivityThreshold) {
++                throw new NotPositiveDefiniteMatrixException();
++            }
+ 
+             ltI[i] = Math.sqrt(ltI[i]);
+             final double inverse = 1.0 / ltI[i];
+@@ -143,11 +143,13 @@ public class CholeskyDecompositionImpl implements CholeskyDecomposition {
+                 final double[] ltQ = lTData[q];
+                 for (int p = q; p < order; ++p) {
+                     ltQ[p] -= ltI[q] * ltI[p];
++                    // Check principal minors during decomposition
++                    if (p == q && ltQ[p] <= absolutePositivityThreshold) {
++                        throw new NotPositiveDefiniteMatrixException();
++                    }
+                 }
+             }
+-
+         }
+-
+     }
+ 
+     /** {@inheritDoc} */

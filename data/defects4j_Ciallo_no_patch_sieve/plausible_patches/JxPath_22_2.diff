@@ -1,0 +1,74 @@
+diff --git a/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java b/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java
+index f8e3b1a..a696924 100644
+--- a/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java
++++ b/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java
+@@ -669,33 +669,49 @@ public class DOMNodePointer extends NodePointer {
+      * @param node Node to check
+      * @return String ns uri
+      */
+-    public static String getNamespaceURI(Node node) {
+-        if (node instanceof Document) {
+-            node = ((Document) node).getDocumentElement();
++public static String getNamespaceURI(Node node) {
++    if (node == null) {
++        return null;
++    }
++
++    // Handle Document node by getting its document element
++    if (node instanceof Document) {
++        node = ((Document) node).getDocumentElement();
++        if (node == null) {
++            return null;
+         }
++    }
+ 
+-        Element element = (Element) node;
++    // Only proceed with Element nodes
++    if (node.getNodeType() != Node.ELEMENT_NODE) {
++        return null;
++    }
+ 
+-        String uri = element.getNamespaceURI();
+-        if (uri == null) {
+-            String prefix = getPrefix(node);
+-            String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
++    Element element = (Element) node;
++    String uri = element.getNamespaceURI();
+     
+-            Node aNode = node;
+-            while (aNode != null) {
+-                if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+-                    Attr attr = ((Element) aNode).getAttributeNode(qname);
+-                    if (attr != null) {
+-                        return attr.getValue();
+-                    }
+-                }
+-                aNode = aNode.getParentNode();
+-            }
+-            return null;
+-        }
++    // If namespace URI is directly available, return it
++    if (uri != null && !uri.isEmpty()) {
+         return uri;
+     }
+ 
++    // Otherwise look for xmlns declaration in the hierarchy
++    String prefix = getPrefix(node);
++    String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
++
++    Node current = node;
++    while (current != null && current.getNodeType() == Node.ELEMENT_NODE) {
++        Attr attr = ((Element) current).getAttributeNode(qname);
++        if (attr != null) {
++            String value = attr.getValue();
++            return (value == null || value.isEmpty()) ? null : value;
++        }
++        current = current.getParentNode();
++    }
++    
++    return null;
++}
++
+     public Object getValue() {
+         if (node.getNodeType() == Node.COMMENT_NODE) {
+             String text = ((Comment) node).getData();

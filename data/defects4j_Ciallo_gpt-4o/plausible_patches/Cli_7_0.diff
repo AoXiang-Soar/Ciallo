@@ -1,0 +1,65 @@
+diff --git a/src/java/org/apache/commons/cli2/builder/PatternBuilder.java b/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
+index 6910017..efbdc38 100644
+--- a/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
++++ b/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
+@@ -1,23 +1,8 @@
+-/**
+- * Licensed to the Apache Software Foundation (ASF) under one or more
+- * contributor license agreements.  See the NOTICE file distributed with
+- * this work for additional information regarding copyright ownership.
+- * The ASF licenses this file to You under the Apache License, Version 2.0
+- * (the "License"); you may not use this file except in compliance with
+- * the License.  You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+ package org.apache.commons.cli2.builder;
+ 
+ import java.util.HashSet;
+ import java.util.Iterator;
++import java.util.LinkedHashSet;
+ import java.util.Set;
+ 
+ import org.apache.commons.cli2.Argument;
+@@ -64,7 +49,7 @@ public class PatternBuilder {
+         this.abuilder = abuilder;
+     }
+ 
+-    private final Set options = new HashSet();
++    private final Set options = new LinkedHashSet();
+ 
+     /**
+      * Creates a new Option instance.
+@@ -75,8 +60,7 @@ public class PatternBuilder {
+ 
+         if (options.size() == 1) {
+             option = (Option)options.iterator().next();
+-        }
+-        else {
++        } else {
+             gbuilder.reset();
+             for (final Iterator i = options.iterator(); i.hasNext();) {
+                 gbuilder.withOption((Option)i.next());
+@@ -112,8 +96,7 @@ public class PatternBuilder {
+                 abuilder.withMaximum(1);
+             }
+             argument = abuilder.create();
+-        }
+-        else {
++        } else {
+             argument = null;
+         }
+ 
+@@ -199,4 +182,4 @@ public class PatternBuilder {
+                 return null;
+         }
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,45 @@
+diff --git a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+index 0cc8226d8..519b4ffb8 100644
+--- a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
++++ b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+@@ -19,12 +19,22 @@ public class ConstructorInstantiator implements Instantiator {
+ 
+     private <T> T withOuterClass(Class<T> cls) {
+         try {
+-            //this is kind of overengineered because we don't need to support more params
+-            //however, I know we will be needing it :)
++            // Try constructor with exact type first
+             Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass());
+             return c.newInstance(outerClassInstance);
+         } catch (Exception e) {
+-            throw paramsException(cls, e);
++            try {
++                // If that fails, try constructor with superclass type
++                for (Constructor<?> constructor : cls.getDeclaredConstructors()) {
++                    Class<?>[] paramTypes = constructor.getParameterTypes();
++                    if (paramTypes.length == 1 && paramTypes[0].isAssignableFrom(outerClassInstance.getClass())) {
++                        return (T) constructor.newInstance(outerClassInstance);
++                    }
++                }
++                throw paramsException(cls, e);
++            } catch (Exception ex) {
++                throw paramsException(cls, ex);
++            }
+         }
+     }
+ 
+@@ -33,7 +43,6 @@ public class ConstructorInstantiator implements Instantiator {
+                 + cls.getSimpleName() + "'.\nPlease ensure that the outer instance has correct type and that the target class has parameter-less constructor.", e);
+     }
+ 
+-
+     private static <T> T noArgConstructor(Class<T> cls) {
+         try {
+             return cls.newInstance();
+@@ -42,4 +51,4 @@ public class ConstructorInstantiator implements Instantiator {
+                     + cls.getSimpleName() + "'.\nPlease ensure it has parameter-less constructor.", e);
+         }
+     }
+-}
++}
+\ No newline at end of file

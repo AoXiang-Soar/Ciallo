@@ -1,0 +1,49 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_EVEN.java b/src/main/java/humaneval/buggy/SORT_EVEN.java
+index cce3d2a..a69be26 100644
+--- a/src/main/java/humaneval/buggy/SORT_EVEN.java
++++ b/src/main/java/humaneval/buggy/SORT_EVEN.java
+@@ -1,23 +1,33 @@
+ package humaneval.buggy;
+ 
+ import java.util.Arrays;
++import java.util.ArrayList;
++import java.util.Collections;
+ 
+ public class SORT_EVEN {
+     public static int[] sort_even(int[] l) {
+-        int[] result = new int[l.length];
+-
+-        int[] evens = new int[1 + (int) (l.length / 2.)];
++        if (l.length < 2) return l.clone();
++        
++        // Collect even positioned elements
++        ArrayList<Integer> evenElements = new ArrayList<>();
+         for (int i = 0; i < l.length; i += 2) {
+-            evens[(int) i / 2] = l[i];
++            evenElements.add(l[i]);
+         }
+-        Arrays.sort(evens);
+-        for (int i = 0; i < l.length; i += 1) {
+-            if (i % 2 == 0){
+-                result[i] = evens[(int) i / 2];
+-            } else{
++        
++        // Sort even elements
++        Collections.sort(evenElements);
++        
++        // Rebuild the array with sorted even elements and original odd elements
++        int[] result = new int[l.length];
++        int evenIndex = 0;
++        for (int i = 0; i < l.length; i++) {
++            if (i % 2 == 0) {
++                result[i] = evenElements.get(evenIndex++);
++            } else {
+                 result[i] = l[i];
+             }
+         }
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

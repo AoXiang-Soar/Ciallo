@@ -1,0 +1,39 @@
+diff --git a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+old mode 100644
+new mode 100755
+index da0fd0a..829cf41
+--- a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
++++ b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+@@ -1,15 +1,21 @@
+ package humaneval.buggy;
+ 
+-// Given the lengths of the three sides of a triangle. Return True if the three
+-// sides form a right-angled triangle, False otherwise.
+-// A right-angled triangle is a triangle in which one angle is right angle or 
+-// 90 degree.
+-// Example:
+-// right_angle_triangle(3, 4, 5) == True
+-// right_angle_triangle(1, 2, 3) == False
+-
+ public class RIGHT_ANGLE_TRIANGLE {
+     public static boolean right_angle_triangle(int a, int b, int c) {
+-        return a*a + b*b == c*c;
++        // First check if it's a valid triangle
++        if (a <= 0 || b <= 0 || c <= 0) return false;
++        if (!(a + b > c && a + c > b && b + c > a)) return false;
++        
++        // Find the hypotenuse (longest side)
++        int maxSide = Math.max(a, Math.max(b, c));
++        
++        // Check Pythagorean theorem based on which side is hypotenuse
++        if (maxSide == a) {
++            return b*b + c*c == a*a;
++        } else if (maxSide == b) {
++            return a*a + c*c == b*b;
++        } else {
++            return a*a + b*b == c*c;
++        }
+     }
+-}
++}
+\ No newline at end of file

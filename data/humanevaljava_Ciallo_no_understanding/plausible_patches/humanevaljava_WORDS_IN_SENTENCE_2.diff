@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_IN_SENTENCE.java b/src/main/java/humaneval/buggy/WORDS_IN_SENTENCE.java
+old mode 100644
+new mode 100755
+index 2907f3f..deacd6e
+--- a/src/main/java/humaneval/buggy/WORDS_IN_SENTENCE.java
++++ b/src/main/java/humaneval/buggy/WORDS_IN_SENTENCE.java
+@@ -23,13 +23,14 @@ public class WORDS_IN_SENTENCE {
+         String result = "";
+ 
+         for (String word : sentence.split(" ")) {
+-            int flag = 0;
++            if (word.length() == 1) continue;
++            int flag = 1;
+             for (int i = 2; i < word.length(); i += 1){
+-                if (word.length() % i == 0) flag = 1;
++                if (word.length() % i == 0) flag = 0;
+             }
+-            if (flag == 0 || word.length() == 2)
++            if (flag == 1 || word.length() == 2)
+                 result += word + " ";
+         }
+         return result.trim();
+     }
+-}
++}
+\ No newline at end of file

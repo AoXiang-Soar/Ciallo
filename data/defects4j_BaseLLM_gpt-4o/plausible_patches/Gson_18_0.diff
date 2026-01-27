@@ -1,0 +1,33 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+index f86ad36f..7c9db224 100644
+--- a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
++++ b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+@@ -274,12 +274,23 @@ public final class $Gson$Types {
+    *
+    * @param supertype a superclass of, or interface implemented by, this.
+    */
+-  static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
+-      // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead
++static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
++    // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead
+     checkArgument(supertype.isAssignableFrom(contextRawType));
+-    return resolve(context, contextRawType,
+-        $Gson$Types.getGenericSupertype(context, contextRawType, supertype));
+-  }
++    Type resolvedType = $Gson$Types.resolve(context, contextRawType, $Gson$Types.getGenericSupertype(context, contextRawType, supertype));
++    if (resolvedType instanceof ParameterizedType) {
++        ParameterizedType parameterizedType = (ParameterizedType) resolvedType;
++        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
++        for (int i = 0; i < actualTypeArguments.length; i++) {
++            Type actualType = actualTypeArguments[i];
++            if (actualType instanceof WildcardType) {
++                actualTypeArguments[i] = ((WildcardType) actualType).getUpperBounds()[0];
++            }
++        }
++        resolvedType = new $Gson$Types.ParameterizedTypeImpl(parameterizedType.getOwnerType(), parameterizedType.getRawType(), actualTypeArguments);
++    }
++    return resolvedType;
++}
+ 
+   /**
+    * Returns the component type of this array type.

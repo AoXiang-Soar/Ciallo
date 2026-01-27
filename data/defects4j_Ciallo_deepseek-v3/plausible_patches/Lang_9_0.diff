@@ -1,0 +1,77 @@
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+index 8df302f9c..f3ace0ab8 100644
+--- a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
++++ b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+@@ -112,42 +112,45 @@ public class FastDateParser implements DateParser, Serializable {
+      * Initialize derived fields from defining fields.
+      * This is called from constructor and from readObject (de-serialization)
+      */
+-    private void init() {
+-        thisYear= Calendar.getInstance(timeZone, locale).get(Calendar.YEAR);
++private void init() {
++    thisYear = Calendar.getInstance(timeZone, locale).get(Calendar.YEAR);
+ 
+-        nameValues= new ConcurrentHashMap<Integer, KeyValue[]>();
++    nameValues = new ConcurrentHashMap<Integer, KeyValue[]>();
+ 
+-        StringBuilder regex= new StringBuilder();
+-        List<Strategy> collector = new ArrayList<Strategy>();
++    StringBuilder regex = new StringBuilder();
++    List<Strategy> collector = new ArrayList<Strategy>();
+ 
+-        Matcher patternMatcher= formatPattern.matcher(pattern);
+-        if(!patternMatcher.lookingAt()) {
+-            throw new IllegalArgumentException("Invalid pattern");
+-        }
++    Matcher patternMatcher = formatPattern.matcher(pattern);
++    if(!patternMatcher.lookingAt()) {
++        throw new IllegalArgumentException("Invalid pattern");
++    }
+ 
+-        currentFormatField= patternMatcher.group();
+-        Strategy currentStrategy= getStrategy(currentFormatField);
+-        for(;;) {
+-            patternMatcher.region(patternMatcher.end(), patternMatcher.regionEnd());
+-            if(!patternMatcher.lookingAt()) {
+-                nextStrategy = null;
+-                break;
+-            }
+-            String nextFormatField= patternMatcher.group();
+-            nextStrategy = getStrategy(nextFormatField);
+-            if(currentStrategy.addRegex(this, regex)) {
+-                collector.add(currentStrategy);
+-            }
+-            currentFormatField= nextFormatField;
+-            currentStrategy= nextStrategy;
++    currentFormatField = patternMatcher.group();
++    Strategy currentStrategy = getStrategy(currentFormatField);
++    for(;;) {
++        patternMatcher.region(patternMatcher.end(), patternMatcher.regionEnd());
++        if(!patternMatcher.lookingAt()) {
++            nextStrategy = null;
++            break;
+         }
++        String nextFormatField = patternMatcher.group();
++        nextStrategy = getStrategy(nextFormatField);
+         if(currentStrategy.addRegex(this, regex)) {
+             collector.add(currentStrategy);
+         }
+-        currentFormatField= null;
+-        strategies= collector.toArray(new Strategy[collector.size()]);
+-        parsePattern= Pattern.compile(regex.toString());
++        currentFormatField = nextFormatField;
++        currentStrategy = nextStrategy;
++    }
++    if (patternMatcher.regionStart() != patternMatcher.regionEnd()) {
++        throw new IllegalArgumentException("Failed to parse entire pattern");
+     }
++    if(currentStrategy != null && currentStrategy.addRegex(this, regex)) {
++        collector.add(currentStrategy);
++    }
++    currentFormatField = null;
++    strategies = collector.toArray(new Strategy[collector.size()]);
++    parsePattern = Pattern.compile(regex.toString());
++}
+ 
+     // Accessors
+     //-----------------------------------------------------------------------

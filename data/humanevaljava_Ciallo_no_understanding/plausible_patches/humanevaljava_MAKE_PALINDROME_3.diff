@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+old mode 100644
+new mode 100755
+index 05f44d8..dee66c0
+--- a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+@@ -19,7 +19,9 @@ public class MAKE_PALINDROME {
+         }
+         
+         String result = str;
+-        result += str.substring(0, beginning_of_suffix);
++        String prefix = str.substring(0, beginning_of_suffix);
++        StringBuilder reversed = new StringBuilder(prefix).reverse();
++        result += reversed.toString();
+         return result;
+     }
+-}
++}
+\ No newline at end of file

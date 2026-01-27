@@ -1,0 +1,55 @@
+diff --git a/src/main/java/humaneval/buggy/FIB4.java b/src/main/java/humaneval/buggy/FIB4.java
+index e4ae6f3..d330126 100644
+--- a/src/main/java/humaneval/buggy/FIB4.java
++++ b/src/main/java/humaneval/buggy/FIB4.java
+@@ -1,7 +1,5 @@
+ package humaneval.buggy;
+ 
+-import java.util.ArrayList;
+-
+ /* The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:
+ fib4(0) -> 0
+ fib4(1) -> 0
+@@ -18,19 +16,28 @@ Please write a function to efficiently compute the n-th element of the fib4 numb
+ 
+ public class FIB4 {
+     public static int fib4(int n) {
+-        ArrayList<Integer> result = new ArrayList<Integer>(); 
+-        result.add(0);
+-        result.add(0);
+-        result.add(2);
+-        result.add(0);
++        // Initial values for fib4 sequence
++        int[] initialValues = {0, 0, 2, 0};
+ 
+-        if (n < 4)
+-            return result.get(n);
+-        for (int i = 4; i < n + 1; i += 1) {
+-            result.add(
+-                result.get(0) + result.get(1) + result.get(2) + result.get(3)
+-            );
++        // If n is less than 4, return the pre-defined initial values directly
++        if (n < 4) {
++            return initialValues[n];
+         }
+-        return result.get(result.size() - 1);
++
++        // Array to store values as they are computed
++        int[] currentValues = initialValues.clone();
++
++        for (int i = 4; i <= n; i++) {
++            // Calculate the next value using the sum of the last four values
++            int nextValue = currentValues[0] + currentValues[1] + currentValues[2] + currentValues[3];
++            // Shift values in the array to make room for nextValue
++            currentValues[0] = currentValues[1];
++            currentValues[1] = currentValues[2];
++            currentValues[2] = currentValues[3];
++            currentValues[3] = nextValue;
++        }
++
++        // Return the nth value, which is the last computed one
++        return currentValues[3];
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/PROD_SIGNS.java b/src/main/java/humaneval/buggy/PROD_SIGNS.java
+index 2d0aaa0..cac80ba 100644
+--- a/src/main/java/humaneval/buggy/PROD_SIGNS.java
++++ b/src/main/java/humaneval/buggy/PROD_SIGNS.java
+@@ -15,15 +15,21 @@ package humaneval.buggy;
+ public class PROD_SIGNS {
+     public static int prod_signs(int[] arr) {
+         if(arr.length == 0) return -10;
+-        int prod = 1;
+-        for(int i = 0; i < arr.length; i++) {
+-            if(arr[i] == 0) prod = 0;
+-            else if(arr[i] > 0) prod *= 1;
+-        }
+-        int sum = 0;
++        
++        int prod = 1; // Variable to track the product of signs
++        int sum = 0;  // Variable to track the sum of magnitudes
++
+         for(int i = 0; i < arr.length; i++) {
+-            sum += Math.abs(arr[i]);
++            int num = arr[i];
++            sum += Math.abs(num); // Add the absolute value of the current number to sum
++
++            if(num == 0) {
++                return 0; // If any number is zero, the result is zero
++            } else if(num < 0) {
++                prod *= -1; // Multiply the product by -1 for a negative number
++            } // No action needed for positive numbers as their sign is +1
+         }
++
+         return prod * sum;
+     }
+-}
++}
+\ No newline at end of file

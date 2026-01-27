@@ -1,0 +1,16 @@
+{
+    "bug_id": "TOTAL_MATCH",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_TOTAL_MATCH.test_2:35 expected:<[hi, hi, admin, project]> but was:<[hi, admin]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_2() throws java.lang.Exception {\n        List<String> result = humaneval.buggy.TOTAL_MATCH.total_match(\n            new ArrayList<String>(Arrays.asList(\"hi\", \"admin\")), \n            new ArrayList<String>(Arrays.asList(\"hi\", \"hi\", \"admin\", \"project\"))\n        );\n        org.junit.Assert.assertEquals(\n            result, new ArrayList<String>(Arrays.asList(\"hi\", \"admin\"))\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_2",
+    "test_suite": "TEST_TOTAL_MATCH"
+}

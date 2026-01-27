@@ -1,0 +1,17 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Csv,1,SL SH SF,0,71277,,5,8,108,
+defects4j,Csv,2,SF,2,3751,1,0,0,2,
+defects4j,Csv,3,SF,0,81028,,0,44,22,
+defects4j,Csv,4,SL SH SF,2,2300,1,0,0,2,
+defects4j,Csv,5,SF,2,2458,1,0,0,2,
+defects4j,Csv,6,SF,0,36013,,0,8,4,
+defects4j,Csv,7,BF,,,,,,,Out of limited tokens. 
+defects4j,Csv,8,BF,,,,,,,Out of limited tokens. 
+defects4j,Csv,9,SH SF,6,3924,1,0,1,6,
+defects4j,Csv,10,SH SF,1,6979,4,0,6,3,
+defects4j,Csv,11,SL SH SF,2,4299,1,0,0,2,
+defects4j,Csv,12,BF,,,,,,,Out of limited tokens. 
+defects4j,Csv,13,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Csv,14,SL SH SF,4,6648,1,0,0,4,
+defects4j,Csv,15,SH SF,4,20273,3,0,4,5,
+defects4j,Csv,16,BF,,,,,,,Out of limited tokens. 

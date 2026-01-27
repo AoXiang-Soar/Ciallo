@@ -1,0 +1,16 @@
+{
+    "bug_id": 55,
+    "bug_type": "SH SF",
+    "buggy_lines": "    return NodeUtil.isFunctionExpression(n);",
+    "code": "  private static boolean isReduceableFunctionExpression(Node n) {\n    return NodeUtil.isFunctionExpression(n);\n  }",
+    "fixed_code": "  private static boolean isReduceableFunctionExpression(Node n) {\n    return NodeUtil.isFunctionExpression(n)\n        && !NodeUtil.isGetOrSetKey(n.getParent());\n  }",
+    "fixed_lines": "    return NodeUtil.isFunctionExpression(n)\n        && !NodeUtil.isGetOrSetKey(n.getParent());",
+    "masked_code": "  private static boolean isReduceableFunctionExpression(Node n) {\n>>> [ INFILL ] <<<\n  }",
+    "project": "Closure",
+    "test_error_message": "java.lang.IllegalStateException: Expected function but was call Reference node CALL 4 [free_call: 1] [source_file: testcode]",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIssue538() {\n    checkCompilesToSame(      \"/** @constructor */\\n\" +\n        \"WebInspector.Setting = function() {}\\n\" +\n        \"WebInspector.Setting.prototype = {\\n\" +\n        \"    get name0(){return this._name;},\\n\" +\n        \"    get name1(){return this._name;},\\n\" +\n        \"    get name2(){return this._name;},\\n\" +\n        \"    get name3(){return this._name;},\\n\" +\n        \"    get name4(){return this._name;},\\n\" +\n        \"    get name5(){return this._name;},\\n\" +\n        \"    get name6(){return this._name;},\\n\" +\n        \"    get name7(){return this._name;},\\n\" +\n        \"    get name8(){return this._name;},\\n\" +\n        \"    get name9(){return this._name;},\\n\" +\n        \"}\", 1);\n  }",
+    "test_line": "    test(srcBuffer.toString(), expectedBuffer.toString());",
+    "test_name": "testIssue538",
+    "test_suite": "com.google.javascript.jscomp.FunctionRewriterTest"
+}

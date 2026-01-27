@@ -1,0 +1,64 @@
+diff --git a/src/main/java/org/jsoup/parser/TokenQueue.java b/src/main/java/org/jsoup/parser/TokenQueue.java
+index 269a7554..9340e519 100644
+--- a/src/main/java/org/jsoup/parser/TokenQueue.java
++++ b/src/main/java/org/jsoup/parser/TokenQueue.java
+@@ -257,15 +257,28 @@ public class TokenQueue {
+      * @param close closer
+      * @return data matched from the queue
+      */
+-    public String chompBalanced(char open, char close) {
+-        int start = -1;
+-        int end = -1;
+-        int depth = 0;
+-        char last = 0;
+-
+-        do {
+-            if (isEmpty()) break;
+-            Character c = consume();
++public String chompBalanced(char open, char close) {
++    int start = -1;
++    int end = -1;
++    int depth = 0;
++    char last = 0;
++    char quoteChar = 0;
++
++    do {
++        if (isEmpty()) break;
++        Character c = consume();
++        
++        // Handle quoted strings
++        if (quoteChar != 0) {
++            if (c == quoteChar && last != ESC) {
++                quoteChar = 0;
++            }
++        } else if ((c == '\'' || c == '"') && last != ESC) {
++            quoteChar = c;
++        }
++        
++        // Only count brackets if not in a quoted string
++        if (quoteChar == 0) {
+             if (last == 0 || last != ESC) {
+                 if (c.equals(open)) {
+                     depth++;
+@@ -275,13 +288,15 @@ public class TokenQueue {
+                 else if (c.equals(close))
+                     depth--;
+             }
++        }
+ 
+-            if (depth > 0 && last != 0)
+-                end = pos; // don't include the outer match pair in the return
+-            last = c;
+-        } while (depth > 0);
+-        return (end >= 0) ? queue.substring(start, end) : "";
+-    }
++        if (depth > 0 && last != 0)
++            end = pos; // don't include the outer match pair in the return
++        last = c;
++    } while (depth > 0 || quoteChar != 0);
++    
++    return (end >= 0) ? queue.substring(start, end) : "";
++}
+     
+     /**
+      * Unescaped a \ escaped string.

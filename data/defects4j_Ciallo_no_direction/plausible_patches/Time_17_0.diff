@@ -1,0 +1,51 @@
+diff --git a/src/main/java/org/joda/time/DateTimeZone.java b/src/main/java/org/joda/time/DateTimeZone.java
+index 74a3802a..82950a9d 100644
+--- a/src/main/java/org/joda/time/DateTimeZone.java
++++ b/src/main/java/org/joda/time/DateTimeZone.java
+@@ -1160,24 +1160,29 @@ public abstract class DateTimeZone implements Serializable {
+      * @param earlierOrLater  false for earlier, true for later
+      * @return the adjusted instant millis
+      */
+-    public long adjustOffset(long instant, boolean earlierOrLater) {
+-        // a bit messy, but will work in all non-pathological cases
+-        
+-        // evaluate 3 hours before and after to work out if anything is happening
+-        long instantBefore = convertUTCToLocal(instant - 3 * DateTimeConstants.MILLIS_PER_HOUR);
+-        long instantAfter = convertUTCToLocal(instant + 3 * DateTimeConstants.MILLIS_PER_HOUR);
+-        if (instantBefore == instantAfter) {
+-            return instant;  // not an overlap (less than is a gap, equal is normal case)
+-        }
+-        
+-        // work out range of instants that have duplicate local times
+-        long local = convertUTCToLocal(instant);
+-        return convertLocalToUTC(local, false, earlierOrLater ? instantAfter : instantBefore);
+-        
+-        // calculate result
+-          // currently in later offset
+-          // currently in earlier offset
++public long adjustOffset(long instant, boolean earlierOrLater) {
++    // Check if we're in an overlap (by checking if nearby offsets differ)
++    long instantBefore = instant - 3 * DateTimeConstants.MILLIS_PER_HOUR;
++    long instantAfter = instant + 3 * DateTimeConstants.MILLIS_PER_HOUR;
++    long offsetBefore = getOffset(instantBefore);
++    long offsetAfter = getOffset(instantAfter);
++    
++    // If no DST transition nearby, return original instant
++    if (offsetBefore == offsetAfter) {
++        return instant;
+     }
++    
++    // Get the local time at the current instant
++    long local = convertUTCToLocal(instant);
++    
++    if (earlierOrLater) {
++        // For "later" offset, we need to convert using a time in the later period
++        return convertLocalToUTC(local, false, instantAfter);
++    } else {
++        // For "earlier" offset, we need to convert using a time in the earlier period
++        return convertLocalToUTC(local, false, instantBefore);
++    }
++}
+ //    System.out.println(new DateTime(transitionStart, DateTimeZone.UTC) + " " + new DateTime(transitionStart, this));
+ 
+     //-----------------------------------------------------------------------

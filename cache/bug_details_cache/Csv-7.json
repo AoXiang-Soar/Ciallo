@@ -1,0 +1,16 @@
+{
+    "bug_id": 7,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Csv",
+    "test_error_message": "junit.framework.AssertionFailedError: Expected exception: java.lang.IllegalStateException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testDuplicateHeaderEntries() throws Exception {\n        CSVParser.parse(\"a,b,a\\n1,2,3\\nx,y,z\", CSVFormat.DEFAULT.withHeader(new String[]{}));\n    }",
+    "test_line": "",
+    "test_name": "testDuplicateHeaderEntries",
+    "test_suite": "org.apache.commons.csv.CSVParserTest"
+}

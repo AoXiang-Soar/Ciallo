@@ -1,0 +1,16 @@
+diff --git a/src/main/java/humaneval/buggy/SIMPLIFY.java b/src/main/java/humaneval/buggy/SIMPLIFY.java
+index a55ee2e..6ca8ebd 100644
+--- a/src/main/java/humaneval/buggy/SIMPLIFY.java
++++ b/src/main/java/humaneval/buggy/SIMPLIFY.java
+@@ -20,8 +20,8 @@ public class SIMPLIFY {
+ 
+         int numerator = a * c;
+         int denom = b * d;
+-        if (numerator / denom == (int) (numerator / denom))
++        if ((double)numerator / denom == numerator / denom)
+             return true;
+         return false;
+     }
+-}
++}
+\ No newline at end of file

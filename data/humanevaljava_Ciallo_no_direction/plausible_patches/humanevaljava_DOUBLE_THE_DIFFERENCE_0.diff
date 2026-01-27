@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/DOUBLE_THE_DIFFERENCE.java b/src/main/java/humaneval/buggy/DOUBLE_THE_DIFFERENCE.java
+index 6f2b5e4..a5a99fa 100644
+--- a/src/main/java/humaneval/buggy/DOUBLE_THE_DIFFERENCE.java
++++ b/src/main/java/humaneval/buggy/DOUBLE_THE_DIFFERENCE.java
+@@ -14,13 +14,13 @@ public class DOUBLE_THE_DIFFERENCE {
+     public static int double_the_difference(double[] lst) {
+         int result = 0;
+         for (Double d : lst) {
+-            if ((int) d.doubleValue() == d) {
++            if ((int) d.doubleValue() == d) { // Check if it's an integer
+                 int d_int = (int) d.doubleValue();
+-                if (d_int % 2 == 1 && d_int >= 0) {
+-                    result += d_int;
++                if (d_int % 2 != 0 && d_int > 0) { // Positive odd numbers only
++                    result += d_int * d_int;       // Square and add
+                 }
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

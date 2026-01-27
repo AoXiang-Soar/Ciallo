@@ -1,0 +1,16 @@
+{
+    "bug_id": "STRONGEST_EXTENSION",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_STRONGEST_EXTENSION.test_1:19 expected:<Boku233.[32145tggg]> but was:<Boku233.[YEs.WeCaNe]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        String result = humaneval.buggy.STRONGEST_EXTENSION.strongest_extension(\n            \"Boku233\", new String[] {\"nani\", \"NazeDa\", \"YEs.WeCaNe\", \"32145tggg\"}\n        );\n        org.junit.Assert.assertEquals(\n            result, \"Boku233.YEs.WeCaNe\"\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_STRONGEST_EXTENSION"
+}

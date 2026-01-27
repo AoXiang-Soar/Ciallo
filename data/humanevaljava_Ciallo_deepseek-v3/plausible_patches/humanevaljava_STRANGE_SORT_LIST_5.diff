@@ -1,0 +1,33 @@
+diff --git a/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java b/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
+index 094f5de..9a71832 100644
+--- a/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
++++ b/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
+@@ -17,14 +17,21 @@ public class STRANGE_SORT_LIST {
+     public static List<Integer> strange_sort_list(List<Integer> lst) {
+         List<Integer> result = new ArrayList<Integer>();
+ 
+-        boolean switched = true;
+-        while (lst.size() > 0) {
+-            if (switched) {
+-                result.add(Collections.min(lst));
++        boolean isMinTurn = true;
++        while (!lst.isEmpty()) {
++            if (isMinTurn) {
++                int minValue = Collections.min(lst);
++                result.add(minValue);
++                int minIndex = lst.indexOf(minValue);
++                lst.remove(minIndex);
+             } else {
+-                result.add(Collections.max(lst));
++                int maxValue = Collections.max(lst);
++                result.add(maxValue);
++                int maxIndex = lst.indexOf(maxValue);
++                lst.remove(maxIndex);
+             }
++            isMinTurn = !isMinTurn; // Toggle the boolean to alternate between min and max
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

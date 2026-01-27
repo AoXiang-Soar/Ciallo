@@ -1,0 +1,16 @@
+{
+    "bug_id": 112,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: unexpected warnings(s):",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIssue1058() throws Exception {\n    testTypes(\n        \"/**\\n\" +\n        \"  * @constructor\\n\" +\n        \"  * @template CLASS\\n\" +\n        \"  */\\n\" +\n        \"var Class = function() {};\\n\" +\n        \"\\n\" +\n        \"/**\\n\" +\n        \"  * @param {function(CLASS):CLASS} a\\n\" +\n        \"  * @template T\\n\" +\n        \"  */\\n\" +\n        \"Class.prototype.foo = function(a) {\\n\" +\n        \"  return 'string';\\n\" +\n        \"};\\n\" +\n        \"\\n\" +\n        \"/** @param {number} a\\n\" +\n        \"  * @return {string} */\\n\" +\n        \"var a = function(a) { return '' };\\n\" +\n        \"\\n\" +\n        \"new Class().foo(a);\");\n  }",
+    "test_line": "      fail(\"unexpected warnings(s):\\n\" + Joiner.on(\"\\n\").join(warnings));",
+    "test_name": "testIssue1058",
+    "test_suite": "com.google.javascript.jscomp.TypeCheckTest"
+}

@@ -1,0 +1,16 @@
+{
+    "bug_id": 9,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Time",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testForOffsetHoursMinutes_int_int() {\n        assertEquals(DateTimeZone.UTC, DateTimeZone.forOffsetHoursMinutes(0, 0));\n        assertEquals(DateTimeZone.forID(\"+23:59\"), DateTimeZone.forOffsetHoursMinutes(23, 59));\n        assertEquals(DateTimeZone.forID(\"+03:15\"), DateTimeZone.forOffsetHoursMinutes(3, 15));\n        assertEquals(DateTimeZone.forID(\"-02:00\"), DateTimeZone.forOffsetHoursMinutes(-2, 0));\n        assertEquals(DateTimeZone.forID(\"-02:30\"), DateTimeZone.forOffsetHoursMinutes(-2, 30));\n        assertEquals(DateTimeZone.forID(\"-23:59\"), DateTimeZone.forOffsetHoursMinutes(-23, 59));\n        try {\n            DateTimeZone.forOffsetHoursMinutes(2, 60);\n            fail();\n        } catch (IllegalArgumentException ex) {}\n        try {\n            DateTimeZone.forOffsetHoursMinutes(-2, 60);\n            fail();\n        } catch (IllegalArgumentException ex) {}\n        try {\n            DateTimeZone.forOffsetHoursMinutes(2, -1);\n            fail();\n        } catch (IllegalArgumentException ex) {}\n        try {\n            DateTimeZone.forOffsetHoursMinutes(-2, -1);\n            fail();\n        } catch (IllegalArgumentException ex) {}\n        try {\n            DateTimeZone.forOffsetHoursMinutes(24, 0);\n            fail();\n        } catch (IllegalArgumentException ex) {}\n        try {\n            DateTimeZone.forOffsetHoursMinutes(-24, 0);\n            fail();\n        } catch (IllegalArgumentException ex) {}\n    }        ",
+    "test_line": "        try {\n            DateTimeZone.forOffsetHoursMinutes(24, 0);\n            fail();\n        } catch (IllegalArgumentException ex) {}",
+    "test_name": "testForOffsetHoursMinutes_int_int",
+    "test_suite": "org.joda.time.TestDateTimeZone"
+}

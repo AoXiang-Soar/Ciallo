@@ -1,0 +1,56 @@
+diff --git a/src/java/org/apache/commons/math/complex/ComplexFormat.java b/src/java/org/apache/commons/math/complex/ComplexFormat.java
+index b404bc415..4cb1756d0 100644
+--- a/src/java/org/apache/commons/math/complex/ComplexFormat.java
++++ b/src/java/org/apache/commons/math/complex/ComplexFormat.java
+@@ -326,9 +326,6 @@ public class ComplexFormat extends Format implements Serializable {
+         // parse real
+         Number re = parseNumber(source, getRealFormat(), pos);
+         if (re == null) {
+-            // invalid real number
+-            // set index back to initial, error index should already be set
+-            // character examined.
+             pos.setIndex(initialIndex);
+             return null;
+         }
+@@ -339,8 +336,6 @@ public class ComplexFormat extends Format implements Serializable {
+         int sign = 0;
+         switch (c) {
+         case 0 :
+-            // no sign
+-            // return real only complex number
+             return new Complex(re.doubleValue(), 0.0);
+         case '-' :
+             sign = -1;
+@@ -349,9 +344,6 @@ public class ComplexFormat extends Format implements Serializable {
+             sign = 1;
+             break;
+         default :
+-            // invalid sign
+-            // set index back to initial, error index should be the last
+-            // character examined.
+             pos.setIndex(initialIndex);
+             pos.setErrorIndex(startIndex);
+             return null;
+@@ -363,9 +355,6 @@ public class ComplexFormat extends Format implements Serializable {
+         // parse imaginary
+         Number im = parseNumber(source, getRealFormat(), pos);
+         if (im == null) {
+-            // invalid imaginary number
+-            // set index back to initial, error index should already be set
+-            // character examined.
+             pos.setIndex(initialIndex);
+             return null;
+         }
+@@ -374,11 +363,9 @@ public class ComplexFormat extends Format implements Serializable {
+         int n = getImaginaryCharacter().length();
+         startIndex = pos.getIndex();
+         int endIndex = startIndex + n;
+-        if (
++        if (endIndex > source.length() ||
+             source.substring(startIndex, endIndex).compareTo(
+             getImaginaryCharacter()) != 0) {
+-            // set index back to initial, error index should be the start index
+-            // character examined.
+             pos.setIndex(initialIndex);
+             pos.setErrorIndex(startIndex);
+             return null;

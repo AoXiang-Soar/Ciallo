@@ -1,0 +1,44 @@
+diff --git a/src/main/java/org/jsoup/nodes/Element.java b/src/main/java/org/jsoup/nodes/Element.java
+index faca4c8c..dc4b8f70 100644
+--- a/src/main/java/org/jsoup/nodes/Element.java
++++ b/src/main/java/org/jsoup/nodes/Element.java
+@@ -1084,17 +1084,30 @@ public class Element extends Node {
+             accum.append(" ");
+     }
+ 
+-    static boolean preserveWhitespace(Node node) {
+-        // looks only at this element and five levels up, to prevent recursion & needless stack searches
+-        if (node != null && node instanceof Element) {
+-            Element el = (Element) node;
+-                if (el.tag.preserveWhitespace())
+-                    return true;
+-                else
+-                    return el.parent() != null && el.parent().tag.preserveWhitespace();
+-        }
++static boolean preserveWhitespace(Node node) {
++    if (node == null || !(node instanceof Element)) {
+         return false;
+     }
++    
++    Element el = (Element) node;
++    int depth = 0;
++    final int maxDepth = 5;
++
++    while (el != null && depth < maxDepth) {
++        if (el.tag.preserveWhitespace()) {
++            return true;
++        }
++        Node parent = el.parent();
++        if (parent instanceof Element) {
++            el = (Element) parent;
++        } else {
++            break;
++        }
++        depth++;
++    }
++    
++    return false;
++}
+ 
+     /**
+      * Set the text of this element. Any existing contents (text or elements) will be cleared

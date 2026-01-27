@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/STRING_SEQUENCE.java b/src/main/java/humaneval/buggy/STRING_SEQUENCE.java
+index d745307..678919a 100644
+--- a/src/main/java/humaneval/buggy/STRING_SEQUENCE.java
++++ b/src/main/java/humaneval/buggy/STRING_SEQUENCE.java
+@@ -4,8 +4,11 @@ public class STRING_SEQUENCE {
+     public static String string_sequence(int n) {
+         String result = "";
+         for (int i = 0; i <= n; i += 1){
+-            result += i + " ";
++            result += i;
++            if (i != n) {
++                result += " ";
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

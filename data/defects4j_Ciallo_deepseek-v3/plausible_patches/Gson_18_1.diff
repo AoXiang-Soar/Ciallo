@@ -1,0 +1,46 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+index f86ad36f..313f53a5 100644
+--- a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
++++ b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+@@ -274,12 +274,36 @@ public final class $Gson$Types {
+    *
+    * @param supertype a superclass of, or interface implemented by, this.
+    */
+-  static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
+-      // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead
++static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
+     checkArgument(supertype.isAssignableFrom(contextRawType));
+-    return resolve(context, contextRawType,
+-        $Gson$Types.getGenericSupertype(context, contextRawType, supertype));
+-  }
++    Type genericSupertype = $Gson$Types.getGenericSupertype(context, contextRawType, supertype);
++    
++    // Handle wildcard types by resolving them to their upper bounds
++    if (genericSupertype instanceof ParameterizedType) {
++        ParameterizedType parameterizedType = (ParameterizedType) genericSupertype;
++        Type[] typeArgs = parameterizedType.getActualTypeArguments();
++        Type[] resolvedTypeArgs = new Type[typeArgs.length];
++        
++        for (int i = 0; i < typeArgs.length; i++) {
++            Type typeArg = typeArgs[i];
++            if (typeArg instanceof WildcardType) {
++                WildcardType wildcard = (WildcardType) typeArg;
++                // Use the first upper bound (consistent with Java's type inference)
++                resolvedTypeArgs[i] = wildcard.getUpperBounds()[0];
++            } else {
++                resolvedTypeArgs[i] = typeArg;
++            }
++        }
++        
++        return resolve(context, contextRawType,
++            $Gson$Types.newParameterizedTypeWithOwner(
++                parameterizedType.getOwnerType(),
++                parameterizedType.getRawType(),
++                resolvedTypeArgs));
++    }
++    
++    return resolve(context, contextRawType, genericSupertype);
++}
+ 
+   /**
+    * Returns the component type of this array type.

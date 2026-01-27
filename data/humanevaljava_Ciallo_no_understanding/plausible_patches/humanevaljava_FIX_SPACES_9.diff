@@ -1,0 +1,77 @@
+diff --git a/src/main/java/humaneval/buggy/FIX_SPACES.java b/src/main/java/humaneval/buggy/FIX_SPACES.java
+old mode 100644
+new mode 100755
+index 2f27898..8ced98b
+--- a/src/main/java/humaneval/buggy/FIX_SPACES.java
++++ b/src/main/java/humaneval/buggy/FIX_SPACES.java
+@@ -1,38 +1,40 @@
+ package humaneval.buggy;
+ 
+-/* Given a string text, replace all spaces in it with underscores, 
+-and if a string has more than 2 consecutive spaces, 
+-then replace all consecutive spaces with - 
+-
+-fix_spaces("Example") == "Example"
+-fix_spaces("Example 1") == "Example_1"
+-fix_spaces(" Example 2") == "_Example_2"
+-fix_spaces(" Example   3") == "_Example-3" */
+-
+ public class FIX_SPACES {
+     public static String fix_spaces(String text) {
+-        String new_text = "";
+-        int i = 0;
+-        int start = 0;
+-        int end = 0;
+-        while (i < text.length()) {
+-            if (text.charAt(i) == ' ') end += 1;
+-            else {
+-                if (end - start > 2) new_text += "-" + text.substring(i, i + 1);
+-                else if (end - start > 0) {
+-                    for (int j = start; j < end; j += 1) {
+-                        new_text += "_";
++        StringBuilder new_text = new StringBuilder();
++        int consecutiveSpaces = 0;
++        
++        for (int i = 0; i < text.length(); i++) {
++            char c = text.charAt(i);
++            if (c == ' ') {
++                consecutiveSpaces++;
++            } else {
++                if (consecutiveSpaces > 0) {
++                    if (consecutiveSpaces > 2) {
++                        new_text.append('-');
++                    } else {
++                        while (consecutiveSpaces-- > 0) {
++                            new_text.append('_');
++                        }
+                     }
+-                    new_text += text.substring(i, i + 1);
+-                } else {
+-                    new_text += text.substring(i, i + 1);
++                    consecutiveSpaces = 0;
+                 }
+-                start = i + 1;
+-                end = i + 1;
++                new_text.append(c);
+             }
+-            i += 1;
+         }
+-
+-        return new_text;
++        
++        // Handle trailing spaces
++        if (consecutiveSpaces > 0) {
++            if (consecutiveSpaces > 2) {
++                new_text.append('-');
++            } else {
++                while (consecutiveSpaces-- > 0) {
++                    new_text.append('_');
++                }
++            }
++        }
++        
++        return new_text.toString();
+     }
+-}
++}
+\ No newline at end of file

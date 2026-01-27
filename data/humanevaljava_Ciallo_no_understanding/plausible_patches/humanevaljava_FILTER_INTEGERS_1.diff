@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/FILTER_INTEGERS.java b/src/main/java/humaneval/buggy/FILTER_INTEGERS.java
+old mode 100644
+new mode 100755
+index 6037fe4..cd4db40
+--- a/src/main/java/humaneval/buggy/FILTER_INTEGERS.java
++++ b/src/main/java/humaneval/buggy/FILTER_INTEGERS.java
+@@ -8,8 +8,12 @@ public class FILTER_INTEGERS {
+         List<Integer> result = new ArrayList<Integer>();
+ 
+         for (Object value : values){
+-            result.add((Integer) value);
++            try {
++                result.add((Integer) value);
++            } catch (ClassCastException e) {
++                continue;
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

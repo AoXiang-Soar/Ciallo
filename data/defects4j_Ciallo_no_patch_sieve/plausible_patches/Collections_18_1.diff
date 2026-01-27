@@ -1,0 +1,51 @@
+diff --git a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+index ce6926fa..168667f7 100644
+--- a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
++++ b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+@@ -225,22 +225,37 @@ public class ListOrderedSet<E>
+     }
+ 
+     @Override
+-    public boolean retainAll(Collection<?> coll) {
+-        boolean result = collection.retainAll(coll);
+-        if (result == false) {
+-            return false;
++public boolean retainAll(Collection<?> coll) {
++    // First create a set of elements to retain for O(1) lookups
++    Set<Object> retainSet = new HashSet<Object>(coll.size());
++    retainSet.addAll(coll);
++    
++    // Remove elements not in retainSet from both collections
++    boolean modified = false;
++    Iterator<E> it = collection.iterator();
++    while (it.hasNext()) {
++        if (!retainSet.contains(it.next())) {
++            it.remove();
++            modified = true;
+         }
+-        if (collection.size() == 0) {
++    }
++    
++    // Now sync the ordered collection
++    if (modified) {
++        if (collection.isEmpty()) {
+             setOrder.clear();
+         } else {
+-            for (Iterator<E> it = setOrder.iterator(); it.hasNext();) {
+-                if (!collection.contains(it.next())) {
+-                    it.remove();
++            Iterator<E> orderIt = setOrder.iterator();
++            while (orderIt.hasNext()) {
++                if (!collection.contains(orderIt.next())) {
++                    orderIt.remove();
+                 }
+             }
+         }
+-        return result;
+     }
++    
++    return modified;
++}
+ 
+     @Override
+     public Object[] toArray() {

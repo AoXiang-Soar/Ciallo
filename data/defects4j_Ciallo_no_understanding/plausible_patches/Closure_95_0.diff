@@ -1,0 +1,128 @@
+diff --git a/src/com/google/javascript/jscomp/TypedScopeCreator.java b/src/com/google/javascript/jscomp/TypedScopeCreator.java
+index 4bd6bfb43..f1350a192 100644
+--- a/src/com/google/javascript/jscomp/TypedScopeCreator.java
++++ b/src/com/google/javascript/jscomp/TypedScopeCreator.java
+@@ -869,12 +869,12 @@ final class TypedScopeCreator implements ScopeCreator {
+      * @param type the variable's type. It may be {@code null} if
+      *     {@code inferred} is {@code true}.
+      */
+-    void defineSlot(Node n, Node parent, JSType type, boolean inferred) {
+-      Preconditions.checkArgument(inferred || type != null);
++void defineSlot(Node n, Node parent, JSType type, boolean inferred) {
++    Preconditions.checkArgument(inferred || type != null);
+ 
+-      // Only allow declarations of NAMEs and qualfied names.
+-      boolean shouldDeclareOnGlobalThis = false;
+-      if (n.getType() == Token.NAME) {
++    // Only allow declarations of NAMEs and qualified names.
++    boolean shouldDeclareOnGlobalThis = false;
++    if (n.getType() == Token.NAME) {
+         Preconditions.checkArgument(
+             parent.getType() == Token.FUNCTION ||
+             parent.getType() == Token.VAR ||
+@@ -883,66 +883,65 @@ final class TypedScopeCreator implements ScopeCreator {
+         shouldDeclareOnGlobalThis = scope.isGlobal() &&
+             (parent.getType() == Token.VAR ||
+              parent.getType() == Token.FUNCTION);
+-      } else {
++    } else {
+         Preconditions.checkArgument(
+             n.getType() == Token.GETPROP &&
+             (parent.getType() == Token.ASSIGN ||
+              parent.getType() == Token.EXPR_RESULT));
+-      }
+-      String variableName = n.getQualifiedName();
+-      Preconditions.checkArgument(!variableName.isEmpty());
+-
+-      // If n is a property, then we should really declare it in the
+-      // scope where the root object appears. This helps out people
+-      // who declare "global" names in an anonymous namespace.
+-      Scope scopeToDeclareIn = scope;
++    }
++    String variableName = n.getQualifiedName();
++    Preconditions.checkArgument(!variableName.isEmpty());
+ 
+-        // don't try to declare in the global scope if there's
+-        // already a symbol there with this name.
++    // For GETPROP, we should declare in the scope where the root object appears
++    Scope scopeToDeclareIn = scope;
++    if (n.getType() == Token.GETPROP) {
++        Scope globalScope = scope.getGlobalScope();
++        if (!globalScope.isDeclared(variableName, false)) {
++            scopeToDeclareIn = globalScope;
++        }
++    }
+ 
+-      // declared in closest scope?
+-      if (scopeToDeclareIn.isDeclared(variableName, false)) {
++    // declared in closest scope?
++    if (scopeToDeclareIn.isDeclared(variableName, false)) {
+         Var oldVar = scopeToDeclareIn.getVar(variableName);
+         validator.expectUndeclaredVariable(
+             sourceName, n, parent, oldVar, variableName, type);
+-      } else {
++    } else {
+         if (!inferred) {
+-          setDeferredType(n, type);
++            setDeferredType(n, type);
+         }
+         CompilerInput input = compiler.getInput(sourceName);
+         scopeToDeclareIn.declare(variableName, n, type, input, inferred);
+ 
+         if (shouldDeclareOnGlobalThis) {
+-          ObjectType globalThis =
+-              typeRegistry.getNativeObjectType(JSTypeNative.GLOBAL_THIS);
+-          boolean isExtern = input.isExtern();
+-          if (inferred) {
+-            globalThis.defineInferredProperty(variableName,
+-                type == null ?
+-                    getNativeType(JSTypeNative.NO_TYPE) :
+-                    type,
+-                isExtern);
+-          } else {
+-            globalThis.defineDeclaredProperty(variableName, type, isExtern);
+-          }
++            ObjectType globalThis =
++                typeRegistry.getNativeObjectType(JSTypeNative.GLOBAL_THIS);
++            boolean isExtern = input.isExtern();
++            if (inferred) {
++                globalThis.defineInferredProperty(variableName,
++                    type == null ?
++                        getNativeType(JSTypeNative.NO_TYPE) :
++                        type,
++                    isExtern);
++            } else {
++                globalThis.defineDeclaredProperty(variableName, type, isExtern);
++            }
+         }
+ 
+-        // If we're in the global scope, also declare var.prototype
+-        // in the scope chain.
++        // Handle prototype declaration for function types
+         if (scopeToDeclareIn.isGlobal() && type instanceof FunctionType) {
+-          FunctionType fnType = (FunctionType) type;
+-          if (fnType.isConstructor() || fnType.isInterface()) {
+-            FunctionType superClassCtor = fnType.getSuperClassConstructor();
+-            scopeToDeclareIn.declare(variableName + ".prototype", n,
+-                fnType.getPrototype(), compiler.getInput(sourceName),
+-                /* declared iff there's an explicit supertype */
+-                superClassCtor == null ||
+-                superClassCtor.getInstanceType().equals(
+-                    getNativeType(OBJECT_TYPE)));
+-          }
++            FunctionType fnType = (FunctionType) type;
++            if (fnType.isConstructor() || fnType.isInterface()) {
++                FunctionType superClassCtor = fnType.getSuperClassConstructor();
++                scopeToDeclareIn.declare(variableName + ".prototype", n,
++                    fnType.getPrototype(), compiler.getInput(sourceName),
++                    superClassCtor == null ||
++                    superClassCtor.getInstanceType().equals(
++                        getNativeType(OBJECT_TYPE)));
++            }
+         }
+-      }
+     }
++}
+ 
+     /**
+      * Check if the given node is a property of a name in the global scope.

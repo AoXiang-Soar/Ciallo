@@ -1,0 +1,42 @@
+diff --git a/src/main/java/humaneval/buggy/SPLIT_WORDS.java b/src/main/java/humaneval/buggy/SPLIT_WORDS.java
+index 780a4b4..ac78e02 100644
+--- a/src/main/java/humaneval/buggy/SPLIT_WORDS.java
++++ b/src/main/java/humaneval/buggy/SPLIT_WORDS.java
+@@ -2,7 +2,7 @@ package humaneval.buggy;
+ 
+ /*
+  * Given a string of words, return a list of words split on whitespace, if no whitespaces exists in the text you
+-    should split on commas ',' if no commas exists you should return the number of lower-case letters with odd order in the
++    should split on commas ',' if no commas exist you should return the number of lower-case letters with odd order in the
+     alphabet, ord('a') = 0, ord('b') = 1, ... ord('z') = 25
+     Examples
+     split_words("Hello world!") ➞ ["Hello", "world!"]
+@@ -12,18 +12,20 @@ package humaneval.buggy;
+ 
+ public class SPLIT_WORDS {
+     public static String[] split_words(String txt) {
+-        if(txt.contains(" ")) {
++        if (txt.contains(" ")) {
+             return txt.split(" ");
+-        } else if(txt.contains(",")) {
++        } else if (txt.contains(",")) {
+             return txt.split(",");
+         } else {
+             int count = 0;
+-            for(int i = 0; i < txt.length(); i++) {
++            for (int i = 0; i < txt.length(); i++) {
+                 char curr = txt.charAt(i);
+-                if(Character.isUpperCase(curr) && ((curr - 'a') % 2) == 0) count++;
++                // Check for lowercase characters and if their position is odd
++                if (Character.isLowerCase(curr) && ((curr - 'a') % 2) == 1) {
++                    count++;
++                }
+             }
+-            String[] result = {Integer.toString(count)};
+-            return result;
++            return new String[]{Integer.toString(count)};
+         }
+     }
+-}
++}
+\ No newline at end of file

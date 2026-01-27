@@ -1,0 +1,42 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+index 10fddc4d6..2fae9a61c 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+@@ -1432,15 +1432,29 @@ public class ObjectReader
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.
+      */
+-    public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
+-        throws IOException, JsonProcessingException
+-    {
+-        if (_dataFormatReaders != null) {
+-            return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
+-        }
+-        return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-                true));
++public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
++    throws IOException, JsonProcessingException
++{
++    // Validate input parameters
++    if (src == null) {
++        throw new IllegalArgumentException("Source byte array cannot be null");
+     }
++    if (offset < 0 || length < 0 || offset + length > src.length) {
++        throw new IllegalArgumentException("Invalid offset or length");
++    }
++
++    // Create an InputStream with the specified offset and length
++    InputStream inputStream = new ByteArrayInputStream(src, offset, length);
++
++    if (_dataFormatReaders != null) {
++        byte[] subArray = new byte[length];
++        System.arraycopy(src, offset, subArray, 0, length);
++        return _detectBindAndReadValues(_dataFormatReaders.findFormat(subArray), false);
++    }
++    // Use InputStream while creating parser to respect offset and length
++    JsonParser parser = _parserFactory.createParser(inputStream);
++    return _bindAndReadValues(_considerFilter(parser, true));
++}
+ 
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.

@@ -1,0 +1,16 @@
+{
+    "bug_id": 84,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "  public void testDestructuringAssignForbidden4() {\n    parseError(\"[x, y] = foo();\",\n        \"destructuring assignment forbidden\",\n        \"invalid assignment target\");\n  }",
+    "test_line": "",
+    "test_name": "testDestructuringAssignForbidden4",
+    "test_suite": "com.google.javascript.jscomp.parsing.ParserTest"
+}

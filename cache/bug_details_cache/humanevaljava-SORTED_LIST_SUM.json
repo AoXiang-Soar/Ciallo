@@ -1,0 +1,16 @@
+{
+    "bug_id": "SORTED_LIST_SUM",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SORTED_LIST_SUM.test_3:42 expected:<[dcba, abcd]> but was:<[abcd, dcba]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_3() throws java.lang.Exception {\n        ArrayList<String> result = humaneval.buggy.SORTED_LIST_SUM.sorted_list_sum(\n            new ArrayList<String>(Arrays.asList(\"d\", \"dcba\", \"abcd\", \"a\"))\n        );\n        org.junit.Assert.assertEquals(\n            result, new ArrayList<String>(Arrays.asList(\"abcd\", \"dcba\"))\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_3",
+    "test_suite": "TEST_SORTED_LIST_SUM"
+}

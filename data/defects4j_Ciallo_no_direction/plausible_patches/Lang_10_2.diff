@@ -1,0 +1,72 @@
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+index a01159bdb..d2f5b556b 100644
+--- a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
++++ b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+@@ -300,27 +300,35 @@ public class FastDateParser implements DateParser, Serializable {
+      * @param unquote If true, replace two success quotes ('') with single quote (')
+      * @return The <code>StringBuilder</code>
+      */
+-    private static StringBuilder escapeRegex(StringBuilder regex, String value, boolean unquote) {
+-        boolean wasWhite= false;
+-        for(int i= 0; i<value.length(); ++i) {
+-            char c= value.charAt(i);
+-            if(Character.isWhitespace(c)) {
+-                if(!wasWhite) {
+-                    wasWhite= true;
+-                    regex.append("\\s*+");
+-                }
+-                continue;
++private static StringBuilder escapeRegex(StringBuilder regex, String value, boolean unquote) {
++    boolean wasWhite = false;
++    for(int i = 0; i < value.length(); ++i) {
++        char c = value.charAt(i);
++        if(Character.isWhitespace(c)) {
++            if(!wasWhite) {
++                wasWhite = true;
++                regex.append("\\s");
+             }
+-            wasWhite= false;
+-            switch(c) {
++            continue;
++        }
++        wasWhite = false;
++        
++        switch(c) {
+             case '\'':
+                 if(unquote) {
+-                    if(++i==value.length()) {
++                    if(++i >= value.length()) {
+                         return regex;
+                     }
+-                    c= value.charAt(i);
++                    c = value.charAt(i);
++                } else {
++                    regex.append('\\');
+                 }
+                 break;
++            case '!':
++            case '<':
++            case '>':
++            case ':':
++            case '=':
+             case '?':
+             case '[':
+             case ']':
+@@ -335,12 +343,14 @@ public class FastDateParser implements DateParser, Serializable {
+             case '^':
+             case '$':
+             case '.':
++            case '-':
+                 regex.append('\\');
+-            }
+-            regex.append(c);
++                break;
+         }
+-        return regex;
++        regex.append(c);
+     }
++    return regex;
++}
+ 
+     /**
+      * A class to store Key / Value pairs

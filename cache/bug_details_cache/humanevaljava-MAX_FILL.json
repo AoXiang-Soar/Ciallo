@@ -1,0 +1,16 @@
+{
+    "bug_id": "MAX_FILL",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MAX_FILL.test_0:7 \u00bb ArrayIndexOutOfBounds Index 3 out of bounds for lengt...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        int[][] input = {{0,0,1,0}, {0,1,0,0}, {1,1,1,1}};\n        int result = humaneval.buggy.MAX_FILL.max_fill(input, 1);\n        org.junit.Assert.assertEquals(6, result);\n    }",
+    "test_line": "        int result = humaneval.buggy.MAX_FILL.max_fill(input, 1);",
+    "test_name": "test_0",
+    "test_suite": "TEST_MAX_FILL"
+}

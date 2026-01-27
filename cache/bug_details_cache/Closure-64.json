@@ -1,0 +1,16 @@
+{
+    "bug_id": 64,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<17> but was:<-1>",
+    "test_framework": "defects4j",
+    "test_function": "  public void testES5StrictUseStrictMultipleInputs() {\n    args.add(\"--language_in=ECMASCRIPT5_STRICT\");\n    Compiler compiler = compile(new String[] {\"var x = f.function\",\n        \"var y = f.function\", \"var z = f.function\"});\n    String outputSource = compiler.toSource();\n    assertEquals(\"'use strict'\", outputSource.substring(0, 12));\n    assertEquals(outputSource.substring(13).indexOf(\"'use strict'\"), -1);\n  }",
+    "test_line": "    assertEquals(outputSource.substring(13).indexOf(\"'use strict'\"), -1);",
+    "test_name": "testES5StrictUseStrictMultipleInputs",
+    "test_suite": "com.google.javascript.jscomp.CommandLineRunnerTest"
+}

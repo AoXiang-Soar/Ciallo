@@ -1,0 +1,41 @@
+diff --git a/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java b/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java
+index 4d166c224..ca9fc508b 100644
+--- a/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java
++++ b/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java
+@@ -26,8 +26,9 @@ import org.apache.commons.math3.util.FastMath;
+  * @since 2.0
+  */
+ public abstract class BitsStreamGenerator
+-    implements RandomGenerator {
++    implements RandomGenerator, java.io.Serializable {
+     /** Serializable version identifier */
++    private static final long serialVersionUID = 20130104L;
+     /** Next gaussian. */
+     private double nextGaussian;
+ 
+@@ -96,7 +97,6 @@ public abstract class BitsStreamGenerator
+ 
+     /** {@inheritDoc} */
+     public double nextGaussian() {
+-
+         final double random;
+         if (Double.isNaN(nextGaussian)) {
+             // generate a new pair of gaussian numbers
+@@ -111,9 +111,7 @@ public abstract class BitsStreamGenerator
+             random = nextGaussian;
+             nextGaussian = Double.NaN;
+         }
+-
+         return random;
+-
+     }
+ 
+     /** {@inheritDoc} */
+@@ -166,5 +164,4 @@ public abstract class BitsStreamGenerator
+     public void clear() {
+         nextGaussian = Double.NaN;
+     }
+-
+-}
++}
+\ No newline at end of file

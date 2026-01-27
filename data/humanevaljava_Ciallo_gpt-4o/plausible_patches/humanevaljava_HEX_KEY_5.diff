@@ -1,0 +1,30 @@
+diff --git a/src/main/java/humaneval/buggy/HEX_KEY.java b/src/main/java/humaneval/buggy/HEX_KEY.java
+index ef6638b..f6b8575 100644
+--- a/src/main/java/humaneval/buggy/HEX_KEY.java
++++ b/src/main/java/humaneval/buggy/HEX_KEY.java
+@@ -10,20 +10,16 @@ package humaneval.buggy;
+ // B (=decimal 11), D (=decimal 13).
+ // Note: you may assume the input is always correct or empty string, 
+ // and symbols A,B,C,D,E,F are always uppercase.
+-// Examples:
+-// For num = "AB" the output should be 1.
+-// For num = "1077E" the output should be 2.
+-// For num = "ABED1A33" the output should be 4.
+-// For num = "123456789ABCDEF0" the output should be 6.
+-// For num = "2020" the output should be 2
+ 
+ public class HEX_KEY {
+     public static int hex_key(String num) {
+         int result = 0;
+         for (char c : num.toCharArray()) {
+-            if (c == '2' || c == '3' || c == '5' || c == '7')
++            // Check if the character is one of the prime hexadecimal digits
++            if (c == '2' || c == '3' || c == '5' || c == '7' || c == 'B' || c == 'D') {
+                 result += 1;
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

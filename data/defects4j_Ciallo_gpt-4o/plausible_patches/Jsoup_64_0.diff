@@ -1,0 +1,27 @@
+diff --git a/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java b/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java
+index f4b56f77..e00aec11 100644
+--- a/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java
++++ b/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java
+@@ -1485,12 +1485,20 @@ enum HtmlTreeBuilderState {
+         tb.insert(startTag);
+     }
+ 
+-    private static void handleRawtext(Token.StartTag startTag, HtmlTreeBuilder tb) {
+-        tb.insert(startTag);
++private static void handleRawtext(Token.StartTag startTag, HtmlTreeBuilder tb) {
++    // This function assumes that the provided token is valid rawtext tag
++    tb.insert(startTag);
++    
++    // Adjust transition to check for empty tag case
++    if (startTag.isSelfClosing()) {
++        tb.tokeniser.transition(TokeniserState.Data); // Revert to normal data as there is no RAWTEXT content
++        tb.pop(); // Remove the inserted element as it's self-closing
++    } else {
+         tb.tokeniser.transition(TokeniserState.Rawtext);
+         tb.markInsertionMode();
+         tb.transition(Text);
+     }
++}
+ 
+     // lists of tags to search through. A little harder to read here, but causes less GC than dynamic varargs.
+     // was contributing around 10% of parse GC load.

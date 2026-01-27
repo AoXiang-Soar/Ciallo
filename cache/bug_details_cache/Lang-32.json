@@ -1,0 +1,16 @@
+{
+    "bug_id": 32,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Lang",
+    "test_error_message": "junit.framework.AssertionFailedError: Expected: <null> but was: []",
+    "test_framework": "defects4j",
+    "test_function": "    public void testReflectionObjectCycle() {\n        ReflectionTestCycleA a = new ReflectionTestCycleA();\n        ReflectionTestCycleB b = new ReflectionTestCycleB();\n        a.b = b;\n        b.a = a;\n        \n        // Used to caused:\n        // java.lang.StackOverflowError\n        // at java.lang.ClassLoader.getCallerClassLoader(Native Method)\n        // at java.lang.Class.getDeclaredFields(Class.java:992)\n        // at org.apache.commons.lang.builder.HashCodeBuilder.reflectionAppend(HashCodeBuilder.java:373)\n        // at org.apache.commons.lang.builder.HashCodeBuilder.reflectionHashCode(HashCodeBuilder.java:349)\n        // at org.apache.commons.lang.builder.HashCodeBuilder.reflectionHashCode(HashCodeBuilder.java:155)\n        // at\n        // org.apache.commons.lang.builder.HashCodeBuilderTest$ReflectionTestCycleB.hashCode(HashCodeBuilderTest.java:53)\n        // at org.apache.commons.lang.builder.HashCodeBuilder.append(HashCodeBuilder.java:422)\n        // at org.apache.commons.lang.builder.HashCodeBuilder.reflectionAppend(HashCodeBuilder.java:383)\n        // at org.apache.commons.lang.builder.HashCodeBuilder.reflectionHashCode(HashCodeBuilder.java:349)\n        // at org.apache.commons.lang.builder.HashCodeBuilder.reflectionHashCode(HashCodeBuilder.java:155)\n        // at\n        // org.apache.commons.lang.builder.HashCodeBuilderTest$ReflectionTestCycleA.hashCode(HashCodeBuilderTest.java:42)\n        // at org.apache.commons.lang.builder.HashCodeBuilder.append(HashCodeBuilder.java:422)\n\n        a.hashCode();\n        assertNull(HashCodeBuilder.getRegistry());\n        b.hashCode();\n        assertNull(HashCodeBuilder.getRegistry());\n    }",
+    "test_line": "        assertNull(HashCodeBuilder.getRegistry());",
+    "test_name": "testReflectionObjectCycle",
+    "test_suite": "org.apache.commons.lang3.builder.HashCodeBuilderTest"
+}

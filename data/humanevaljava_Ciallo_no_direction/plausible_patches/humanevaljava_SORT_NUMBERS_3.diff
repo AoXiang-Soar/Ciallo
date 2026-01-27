@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_NUMBERS.java b/src/main/java/humaneval/buggy/SORT_NUMBERS.java
+index 7063e12..9a51c4d 100644
+--- a/src/main/java/humaneval/buggy/SORT_NUMBERS.java
++++ b/src/main/java/humaneval/buggy/SORT_NUMBERS.java
+@@ -1,6 +1,7 @@
+ package humaneval.buggy;
+ 
+ import java.util.*;
++import java.util.stream.*;
+ 
+ public class SORT_NUMBERS {
+     public static String sort_numbers(String numbers) {
+@@ -16,13 +17,8 @@ public class SORT_NUMBERS {
+         value_map.put("eight", 8);
+         value_map.put("nine", 9);
+ 
+-        ArrayList<String> number_array = new ArrayList<String>(Arrays.asList(numbers.split(" ")));
+-        Collections.sort(number_array);
+-        
+-        String result = "";
+-        for (String number : number_array){
+-            result += number + " ";
+-        }
+-        return result.trim();
++        return Arrays.stream(numbers.split(" "))
++            .sorted(Comparator.comparingInt(num -> value_map.get(num)))
++            .collect(Collectors.joining(" "));
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,71 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/json/JsonGeneratorImpl.java b/src/main/java/com/fasterxml/jackson/core/json/JsonGeneratorImpl.java
+index fb8f21cd..d54e516f 100644
+--- a/src/main/java/com/fasterxml/jackson/core/json/JsonGeneratorImpl.java
++++ b/src/main/java/com/fasterxml/jackson/core/json/JsonGeneratorImpl.java
+@@ -1,7 +1,6 @@
+ package com.fasterxml.jackson.core.json;
+ 
+ import java.io.IOException;
+-
+ import com.fasterxml.jackson.core.*;
+ import com.fasterxml.jackson.core.base.GeneratorBase;
+ import com.fasterxml.jackson.core.io.CharTypes;
+@@ -16,8 +15,8 @@ import com.fasterxml.jackson.core.util.VersionUtil;
+  * 
+  * @since 2.1
+  */
+-public abstract class JsonGeneratorImpl extends GeneratorBase
+-{
++public abstract class JsonGeneratorImpl extends GeneratorBase {
++
+     /*
+     /**********************************************************
+     /* Constants
+@@ -98,8 +97,7 @@ public abstract class JsonGeneratorImpl extends GeneratorBase
+     /**********************************************************
+      */
+ 
+-    public JsonGeneratorImpl(IOContext ctxt, int features, ObjectCodec codec)
+-    {
++    public JsonGeneratorImpl(IOContext ctxt, int features, ObjectCodec codec) {
+         super(features, codec);
+         _ioContext = ctxt;
+         if (Feature.ESCAPE_NON_ASCII.enabledIn(features)) {
+@@ -124,6 +122,14 @@ public abstract class JsonGeneratorImpl extends GeneratorBase
+         return this;
+     }
+ 
++    @Override
++    public JsonGenerator disable(Feature f) {
++        super.disable(f);
++        if (f == Feature.QUOTE_FIELD_NAMES) {
++            _cfgUnqNames = true;
++        }
++        return this;
++    }
+ 
+     @Override
+     protected void _checkStdFeatureChanges(int newFeatureFlags, int changedFeatures) {
+@@ -143,8 +149,7 @@ public abstract class JsonGeneratorImpl extends GeneratorBase
+     }
+ 
+     @Override
+-    public JsonGenerator setCharacterEscapes(CharacterEscapes esc)
+-    {
++    public JsonGenerator setCharacterEscapes(CharacterEscapes esc) {
+         _characterEscapes = esc;
+         if (esc == null) { // revert to standard escapes
+             _outputEscapes = sOutputEscapes;
+@@ -189,9 +194,8 @@ public abstract class JsonGeneratorImpl extends GeneratorBase
+     // // Overrides just to make things final, to possibly help with inlining
+     
+     @Override
+-    public final void writeStringField(String fieldName, String value) throws IOException
+-    {
++    public final void writeStringField(String fieldName, String value) throws IOException {
+         writeFieldName(fieldName);
+         writeString(value);
+     }
+-}
++}
+\ No newline at end of file

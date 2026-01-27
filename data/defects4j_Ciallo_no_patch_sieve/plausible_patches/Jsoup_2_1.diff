@@ -1,0 +1,111 @@
+diff --git a/src/main/java/org/jsoup/parser/Parser.java b/src/main/java/org/jsoup/parser/Parser.java
+index da4bdcea..9cee6825 100644
+--- a/src/main/java/org/jsoup/parser/Parser.java
++++ b/src/main/java/org/jsoup/parser/Parser.java
+@@ -113,56 +113,65 @@ public class Parser {
+         }
+     }
+ 
+-    private void parseStartTag() {
+-        tq.consume("<");
+-        String tagName = tq.consumeWord();
+-
+-        if (tagName.length() == 0) { // doesn't look like a start tag after all; put < back on stack and handle as text
+-            tq.addFirst("&lt;");
+-            parseTextNode();
+-            return;
+-        }
++private void parseStartTag() {
++    tq.consume("<");
++    String tagName = tq.consumeWord();
++
++    if (tagName.length() == 0) {
++        tq.addFirst("&lt;");
++        parseTextNode();
++        return;
++    }
+ 
+-        Attributes attributes = new Attributes();
+-        while (!tq.matchesAny("<", "/>", ">") && !tq.isEmpty()) {
+-            Attribute attribute = parseAttribute();
+-            if (attribute != null)
+-                attributes.put(attribute);
+-        }
++    Attributes attributes = new Attributes();
++    while (!tq.matchesAny("<", "/>", ">") && !tq.isEmpty()) {
++        Attribute attribute = parseAttribute();
++        if (attribute != null)
++            attributes.put(attribute);
++    }
+ 
+-        Tag tag = Tag.valueOf(tagName);
+-        Element child = new Element(tag, baseUri, attributes);
++    Tag tag = Tag.valueOf(tagName);
++    Element child = new Element(tag, baseUri, attributes);
+ 
+-        boolean isEmptyElement = tag.isEmpty(); // empty element if empty tag (e.g. img) or self-closed el (<div/>
+-        if (tq.matchChomp("/>")) { // close empty element or tag
+-            isEmptyElement = true;
+-        } else {
+-            tq.matchChomp(">");
+-        }
+-        addChildToParent(child, isEmptyElement);
++    boolean isEmptyElement = tag.isEmpty();
++    if (tq.matchChomp("/>")) {
++        isEmptyElement = true;
++    } else {
++        tq.matchChomp(">");
++    }
++    addChildToParent(child, isEmptyElement);
+ 
+-        // pc data only tags (textarea, script): chomp to end tag, add content as text node
+-        if (tag.isData()) {
+-            String data = tq.chompTo("</" + tagName);
+-            tq.chompTo(">");
++    if (tag.isData()) {
++        StringBuilder data = new StringBuilder();
++        while (!tq.matches("</" + tagName) && !tq.isEmpty()) {
++            data.append(tq.consumeTo("<"));
+             
+-            Node dataNode;
+-            if (tag.equals(titleTag) || tag.equals(textareaTag)) // want to show as text, but not contain inside tags (so not a data tag?)
+-                dataNode = TextNode.createFromEncoded(data, baseUri);
+-            else
+-                dataNode = new DataNode(data, baseUri); // data not encoded but raw (for " in script)
+-            child.appendChild(dataNode);   
++            // If we hit EOF before closing tag, break
++            if (tq.isEmpty()) break;
++            
++            // If the next thing is our closing tag, stop
++            if (tq.matches("</" + tagName)) break;
++            
++            // Otherwise include the < we stopped at
++            data.append(tq.consume());
+         }
++        
++        Node dataNode;
++        if (tag.equals(titleTag) || tag.equals(textareaTag))
++            dataNode = TextNode.createFromEncoded(data.toString(), baseUri);
++        else
++            dataNode = new DataNode(data.toString(), baseUri);
++        child.appendChild(dataNode);
++    }
+ 
+-        // <base href>: update the base uri
+-        if (child.tagName().equals("base")) {
+-            String href = child.absUrl("href");
+-            if (href.length() != 0) { // ignore <base target> etc
+-                baseUri = href;
+-                doc.setBaseUri(href); // set on the doc so doc.createElement(Tag) will get updated base
+-            }
++    if (child.tagName().equals("base")) {
++        String href = child.absUrl("href");
++        if (href.length() != 0) {
++            baseUri = href;
++            doc.setBaseUri(href);
+         }
+     }
++}
+ 
+     private Attribute parseAttribute() {
+         tq.consumeWhitespace();

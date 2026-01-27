@@ -1,0 +1,16 @@
+{
+    "bug_id": 16,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCollections307() {\n        List list = new ArrayList();\n        List uniqueList = SetUniqueList.decorate(list);\n\n        String hello = \"Hello\";\n        String world = \"World\";\n        uniqueList.add(hello);\n        uniqueList.add(world);\n\n        List subList = list.subList(0, 0);\n        List subUniqueList = uniqueList.subList(0, 0);\n\n        assertFalse(subList.contains(world)); // passes\n        assertFalse(subUniqueList.contains(world)); // fails\n\n        List worldList = new ArrayList();\n        worldList.add(world);\n        assertFalse(subList.contains(\"World\")); // passes\n        assertFalse(subUniqueList.contains(\"World\")); // fails\n\n        // repeat the test with a different class than HashSet; \n        // which means subclassing SetUniqueList below\n        list = new ArrayList();\n        uniqueList = new SetUniqueList307(list, new java.util.TreeSet());\n\n        uniqueList.add(hello);\n        uniqueList.add(world);\n\n        subList = list.subList(0, 0);\n        subUniqueList = uniqueList.subList(0, 0);\n\n        assertFalse(subList.contains(world)); // passes\n        assertFalse(subUniqueList.contains(world)); // fails\n\n        worldList = new ArrayList();\n        worldList.add(world);\n        assertFalse(subList.contains(\"World\")); // passes\n        assertFalse(subUniqueList.contains(\"World\")); // fails\n    }",
+    "test_line": "        assertFalse(subUniqueList.contains(world)); // fails",
+    "test_name": "testCollections307",
+    "test_suite": "org.apache.commons.collections.list.TestSetUniqueList"
+}

@@ -1,0 +1,16 @@
+{
+    "bug_id": 11,
+    "bug_type": "SH SF",
+    "buggy_lines": "    } else if (n.getJSType() != null && parent.isAssign()) {\n      return;",
+    "code": "  private void visitGetProp(NodeTraversal t, Node n, Node parent) {\n    // obj.prop or obj.method()\n    // Lots of types can appear on the left, a call to a void function can\n    // never be on the left. getPropertyType will decide what is acceptable\n    // and what isn't.\n    Node property = n.getLastChild();\n    Node objNode = n.getFirstChild();\n    JSType childType = getJSType(objNode);\n\n    if (childType.isDict()) {\n      report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, \"'.'\", \"dict\");\n    } else if (n.getJSType() != null && parent.isAssign()) {\n      return;\n    } else if (validator.expectNotNullOrUndefined(t, n, childType,\n        \"No properties on this expression\", getNativeType(OBJECT_TYPE))) {\n      checkPropertyAccess(childType, property.getString(), t, n);\n    }\n    ensureTyped(t, n);\n  }",
+    "fixed_code": "  private void visitGetProp(NodeTraversal t, Node n, Node parent) {\n    // obj.prop or obj.method()\n    // Lots of types can appear on the left, a call to a void function can\n    // never be on the left. getPropertyType will decide what is acceptable\n    // and what isn't.\n    Node property = n.getLastChild();\n    Node objNode = n.getFirstChild();\n    JSType childType = getJSType(objNode);\n\n    if (childType.isDict()) {\n      report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, \"'.'\", \"dict\");\n    } else if (validator.expectNotNullOrUndefined(t, n, childType,\n        \"No properties on this expression\", getNativeType(OBJECT_TYPE))) {\n      checkPropertyAccess(childType, property.getString(), t, n);\n    }\n    ensureTyped(t, n);\n  }",
+    "fixed_lines": "",
+    "masked_code": "  private void visitGetProp(NodeTraversal t, Node n, Node parent) {\n    // obj.prop or obj.method()\n    // Lots of types can appear on the left, a call to a void function can\n    // never be on the left. getPropertyType will decide what is acceptable\n    // and what isn't.\n    Node property = n.getLastChild();\n    Node objNode = n.getFirstChild();\n    JSType childType = getJSType(objNode);\n\n    if (childType.isDict()) {\n      report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, \"'.'\", \"dict\");\n>>> [ INFILL ] <<<\n    } else if (validator.expectNotNullOrUndefined(t, n, childType,\n        \"No properties on this expression\", getNativeType(OBJECT_TYPE))) {\n      checkPropertyAccess(childType, property.getString(), t, n);\n    }\n    ensureTyped(t, n);\n  }",
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: expected a warning",
+    "test_framework": "defects4j",
+    "test_function": "  public void testGetprop4() throws Exception {\n    testTypes(\"var x = null; x.prop = 3;\",\n        \"No properties on this expression\\n\" +\n        \"found   : null\\n\" +\n        \"required: Object\");\n  }",
+    "test_line": "      assertTrue(\"expected a warning\", warnings.length > 0);",
+    "test_name": "testGetprop4",
+    "test_suite": "com.google.javascript.jscomp.TypeCheckTest"
+}

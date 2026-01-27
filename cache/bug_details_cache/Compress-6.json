@@ -1,0 +1,16 @@
+{
+    "bug_id": 6,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Compress",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testNotEquals() {\n        ZipArchiveEntry entry1 = new ZipArchiveEntry(\"foo\");\n        ZipArchiveEntry entry2 = new ZipArchiveEntry(\"bar\");\n        assertFalse(entry1.equals(entry2));\n    }",
+    "test_line": "        assertFalse(entry1.equals(entry2));",
+    "test_name": "testNotEquals",
+    "test_suite": "org.apache.commons.compress.archivers.zip.ZipArchiveEntryTest"
+}

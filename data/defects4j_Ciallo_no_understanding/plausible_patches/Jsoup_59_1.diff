@@ -1,0 +1,29 @@
+diff --git a/src/main/java/org/jsoup/parser/Token.java b/src/main/java/org/jsoup/parser/Token.java
+index 7dcfa2ba..f4c58e02 100644
+--- a/src/main/java/org/jsoup/parser/Token.java
++++ b/src/main/java/org/jsoup/parser/Token.java
+@@ -102,17 +102,19 @@ abstract class Token {
+                 attributes = new Attributes();
+ 
+             if (pendingAttributeName != null) {
+-                // the tokeniser has skipped whitespace control chars, but trimming could collapse to empty for other control codes, so verify here
+-                pendingAttributeName = pendingAttributeName.trim();
++                // the tokeniser has skipped whitespace control chars, but we want to preserve non-space control codes
++                String attributeName = pendingAttributeName.trim();
++                if (attributeName.length() > 0) {
+                     Attribute attribute;
+                     if (hasPendingAttributeValue)
+-                        attribute = new Attribute(pendingAttributeName,
++                        attribute = new Attribute(attributeName,
+                             pendingAttributeValue.length() > 0 ? pendingAttributeValue.toString() : pendingAttributeValueS);
+                     else if (hasEmptyAttributeValue)
+-                        attribute = new Attribute(pendingAttributeName, "");
++                        attribute = new Attribute(attributeName, "");
+                     else
+-                        attribute = new BooleanAttribute(pendingAttributeName);
++                        attribute = new BooleanAttribute(attributeName);
+                     attributes.put(attribute);
++                }
+             }
+             pendingAttributeName = null;
+             hasEmptyAttributeValue = false;

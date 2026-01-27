@@ -1,0 +1,16 @@
+{
+    "bug_id": 5,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "    public void println() throws IOException {\n        final String recordSeparator = format.getRecordSeparator();\n            out.append(recordSeparator);\n        newRecord = true;\n    }",
+    "fixed_code": "    public void println() throws IOException {\n        final String recordSeparator = format.getRecordSeparator();\n        if (recordSeparator != null) {\n            out.append(recordSeparator);\n        }\n        newRecord = true;\n    }",
+    "fixed_lines": "        if (recordSeparator != null) {\n        }",
+    "masked_code": "    public void println() throws IOException {\n        final String recordSeparator = format.getRecordSeparator();\n            out.append(recordSeparator);\n>>> [ INFILL ] <<<\n        newRecord = true;\n    }",
+    "project": "Csv",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testNullRecordSeparatorCsv106() {\n        final CSVFormat format = CSVFormat.newFormat(';').withSkipHeaderRecord(true).withHeader(\"H1\", \"H2\");\n        final String formatStr = format.format(\"A\", \"B\");\n        assertNotNull(formatStr);\n        assertFalse(formatStr.endsWith(\"null\"));\n    }",
+    "test_line": "        assertFalse(formatStr.endsWith(\"null\"));",
+    "test_name": "testNullRecordSeparatorCsv106",
+    "test_suite": "org.apache.commons.csv.CSVFormatTest"
+}

@@ -1,0 +1,29 @@
+diff --git a/src/main/java/humaneval/buggy/CIRCULAR_SHIFT.java b/src/main/java/humaneval/buggy/CIRCULAR_SHIFT.java
+index 9131a1c..02fe0e6 100644
+--- a/src/main/java/humaneval/buggy/CIRCULAR_SHIFT.java
++++ b/src/main/java/humaneval/buggy/CIRCULAR_SHIFT.java
+@@ -1,13 +1,5 @@
+ package humaneval.buggy;
+ 
+-/* Circular shift the digits of the integer x, shift the digits right by shift
+-and return the result as a string.
+-If shift > number of digits, return digits reversed.
+->>> circular_shift(12, 1)
+-"21"
+->>> circular_shift(12, 2)
+-"12" */
+-
+ public class CIRCULAR_SHIFT {
+     public static String circular_shift(int x, int shift) {
+         String s = x + "";
+@@ -18,7 +10,7 @@ public class CIRCULAR_SHIFT {
+                 sb.append(s.charAt(i));
+             return sb.toString();
+         } else {
+-            return s.substring(s.length() - shift + 1) + s.substring(0, s.length() - shift - 1);
++            return s.substring(s.length() - shift) + s.substring(0, s.length() - shift);
+         }
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,25 @@
+diff --git a/src/main/java/org/jsoup/parser/TreeBuilder.java b/src/main/java/org/jsoup/parser/TreeBuilder.java
+index 3984e87c..63ca0a5c 100644
+--- a/src/main/java/org/jsoup/parser/TreeBuilder.java
++++ b/src/main/java/org/jsoup/parser/TreeBuilder.java
+@@ -68,12 +68,17 @@ abstract class TreeBuilder {
+     }
+ 
+     protected boolean processEndTag(String name) {
++        if (name.equals("table")) {
++            // Flush any pending content before closing table
++            while (currentElement() != null && !currentElement().nodeName().equals("table")) {
++                processEndTag(currentElement().nodeName());
++            }
++        }
+         return process(end.reset().name(name));
+     }
+ 
+-
+     protected Element currentElement() {
+         int size = stack.size();
+         return size > 0 ? stack.get(size-1) : null;
+     }
+-}
++}
+\ No newline at end of file

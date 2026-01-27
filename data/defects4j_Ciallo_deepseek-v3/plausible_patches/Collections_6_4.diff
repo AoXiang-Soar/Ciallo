@@ -1,0 +1,287 @@
+diff --git a/src/java/org/apache/commons/collections/map/Flat3Map.java b/src/java/org/apache/commons/collections/map/Flat3Map.java
+index 23ff969f..09b2bdc4 100644
+--- a/src/java/org/apache/commons/collections/map/Flat3Map.java
++++ b/src/java/org/apache/commons/collections/map/Flat3Map.java
+@@ -397,149 +397,145 @@ public class Flat3Map implements IterableMap, Serializable, Cloneable {
+      * @param key  the mapping to remove
+      * @return the value mapped to the removed key, null if key not in map
+      */
+-    public Object remove(Object key) {
+-        if (delegateMap != null) {
+-            return delegateMap.remove(key);
++public Object remove(Object key) {
++    if (delegateMap != null) {
++        return delegateMap.remove(key);
++    }
++    if (size == 0) {
++        return null;
++    }
++    
++    if (key == null) {
++        switch (size) {
++            case 3:
++                if (key3 == null) {
++                    Object old = value3;
++                    removeEntry(3);
++                    return old;
++                }
++                if (key2 == null) {
++                    Object old = value2;
++                    moveEntry(3, 2);
++                    removeEntry(3);
++                    return old;
++                }
++                if (key1 == null) {
++                    Object old = value1;
++                    moveEntry(3, 1);
++                    removeEntry(3);
++                    return old;
++                }
++                break;
++            case 2:
++                if (key2 == null) {
++                    Object old = value2;
++                    removeEntry(2);
++                    return old;
++                }
++                if (key1 == null) {
++                    Object old = value1;
++                    moveEntry(2, 1);
++                    removeEntry(2);
++                    return old;
++                }
++                break;
++            case 1:
++                if (key1 == null) {
++                    Object old = value1;
++                    removeEntry(1);
++                    return old;
++                }
+         }
+-        if (size == 0) {
+-            return null;
++    } else {
++        int hashCode = key.hashCode();
++        switch (size) {
++            case 3:
++                if (hash3 == hashCode && key.equals(key3)) {
++                    Object old = value3;
++                    removeEntry(3);
++                    return old;
++                }
++                if (hash2 == hashCode && key.equals(key2)) {
++                    Object old = value2;
++                    moveEntry(3, 2);
++                    removeEntry(3);
++                    return old;
++                }
++                if (hash1 == hashCode && key.equals(key1)) {
++                    Object old = value1;
++                    moveEntry(3, 1);
++                    removeEntry(3);
++                    return old;
++                }
++                break;
++            case 2:
++                if (hash2 == hashCode && key.equals(key2)) {
++                    Object old = value2;
++                    removeEntry(2);
++                    return old;
++                }
++                if (hash1 == hashCode && key.equals(key1)) {
++                    Object old = value1;
++                    moveEntry(2, 1);
++                    removeEntry(2);
++                    return old;
++                }
++                break;
++            case 1:
++                if (hash1 == hashCode && key.equals(key1)) {
++                    Object old = value1;
++                    removeEntry(1);
++                    return old;
++                }
+         }
+-        if (key == null) {
+-            switch (size) {  // drop through
+-                case 3:
+-                    if (key3 == null) {
+-                        Object old = value3;
+-                        hash3 = 0;
+-                        key3 = null;
+-                        value3 = null;
+-                        size = 2;
+-                        return old;
+-                    }
+-                    if (key2 == null) {
+-                        Object old = value3;
+-                        hash2 = hash3;
+-                        key2 = key3;
+-                        value2 = value3;
+-                        hash3 = 0;
+-                        key3 = null;
+-                        value3 = null;
+-                        size = 2;
+-                        return old;
+-                    }
+-                    if (key1 == null) {
+-                        Object old = value3;
+-                        hash1 = hash3;
+-                        key1 = key3;
+-                        value1 = value3;
+-                        hash3 = 0;
+-                        key3 = null;
+-                        value3 = null;
+-                        size = 2;
+-                        return old;
+-                    }
+-                    return null;
++    }
++    return null;
++}
++
++private void removeEntry(int index) {
++    switch (index) {
++        case 1:
++            hash1 = 0;
++            key1 = null;
++            value1 = null;
++            break;
++        case 2:
++            hash2 = 0;
++            key2 = null;
++            value2 = null;
++            break;
++        case 3:
++            hash3 = 0;
++            key3 = null;
++            value3 = null;
++            break;
++    }
++    size--;
++}
++
++private void moveEntry(int from, int to) {
++    switch (from) {
++        case 3:
++            switch (to) {
+                 case 2:
+-                    if (key2 == null) {
+-                        Object old = value2;
+-                        hash2 = 0;
+-                        key2 = null;
+-                        value2 = null;
+-                        size = 1;
+-                        return old;
+-                    }
+-                    if (key1 == null) {
+-                        Object old = value2;
+-                        hash1 = hash2;
+-                        key1 = key2;
+-                        value1 = value2;
+-                        hash2 = 0;
+-                        key2 = null;
+-                        value2 = null;
+-                        size = 1;
+-                        return old;
+-                    }
+-                    return null;
++                    hash2 = hash3;
++                    key2 = key3;
++                    value2 = value3;
++                    break;
+                 case 1:
+-                    if (key1 == null) {
+-                        Object old = value1;
+-                        hash1 = 0;
+-                        key1 = null;
+-                        value1 = null;
+-                        size = 0;
+-                        return old;
+-                    }
+-            }
+-        } else {
+-            if (size > 0) {
+-                int hashCode = key.hashCode();
+-                switch (size) {  // drop through
+-                    case 3:
+-                        if (hash3 == hashCode && key.equals(key3)) {
+-                            Object old = value3;
+-                            hash3 = 0;
+-                            key3 = null;
+-                            value3 = null;
+-                            size = 2;
+-                            return old;
+-                        }
+-                        if (hash2 == hashCode && key.equals(key2)) {
+-                            Object old = value3;
+-                            hash2 = hash3;
+-                            key2 = key3;
+-                            value2 = value3;
+-                            hash3 = 0;
+-                            key3 = null;
+-                            value3 = null;
+-                            size = 2;
+-                            return old;
+-                        }
+-                        if (hash1 == hashCode && key.equals(key1)) {
+-                            Object old = value3;
+-                            hash1 = hash3;
+-                            key1 = key3;
+-                            value1 = value3;
+-                            hash3 = 0;
+-                            key3 = null;
+-                            value3 = null;
+-                            size = 2;
+-                            return old;
+-                        }
+-                        return null;
+-                    case 2:
+-                        if (hash2 == hashCode && key.equals(key2)) {
+-                            Object old = value2;
+-                            hash2 = 0;
+-                            key2 = null;
+-                            value2 = null;
+-                            size = 1;
+-                            return old;
+-                        }
+-                        if (hash1 == hashCode && key.equals(key1)) {
+-                            Object old = value2;
+-                            hash1 = hash2;
+-                            key1 = key2;
+-                            value1 = value2;
+-                            hash2 = 0;
+-                            key2 = null;
+-                            value2 = null;
+-                            size = 1;
+-                            return old;
+-                        }
+-                        return null;
+-                    case 1:
+-                        if (hash1 == hashCode && key.equals(key1)) {
+-                            Object old = value1;
+-                            hash1 = 0;
+-                            key1 = null;
+-                            value1 = null;
+-                            size = 0;
+-                            return old;
+-                        }
+-                }
++                    hash1 = hash3;
++                    key1 = key3;
++                    value1 = value3;
++                    break;
+             }
+-        }
+-        return null;
++            break;
++        case 2:
++            hash1 = hash2;
++            key1 = key2;
++            value1 = value2;
++            break;
+     }
++}
+ 
+     /**
+      * Clears the map, resetting the size to zero and nullifying references

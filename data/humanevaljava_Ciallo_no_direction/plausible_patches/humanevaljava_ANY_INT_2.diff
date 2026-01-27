@@ -1,0 +1,30 @@
+diff --git a/src/main/java/humaneval/buggy/ANY_INT.java b/src/main/java/humaneval/buggy/ANY_INT.java
+index 43f1286..0d90105 100644
+--- a/src/main/java/humaneval/buggy/ANY_INT.java
++++ b/src/main/java/humaneval/buggy/ANY_INT.java
+@@ -15,10 +15,20 @@ any_int(3.6, -2.2, 2) ➞ False */
+ 
+ public class ANY_INT {
+     public static boolean any_int(double x, double y, double z) {
+-        if ((int)x == x && (int)y == y) {
+-            if (x + y == z || x + z == y)
+-                return true;
++        // First check if all numbers are integers
++        boolean xIsInt = x == (int)x;
++        boolean yIsInt = y == (int)y;
++        boolean zIsInt = z == (int)z;
++        
++        if (!xIsInt || !yIsInt || !zIsInt) {
++            return false;
+         }
++        
++        // Then check if any number is the sum of the other two
++        if (x == y + z || y == x + z || z == x + y) {
++            return true;
++        }
++        
+         return false;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 75,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIEString() {\n    testSame(\"!+'\\\\v1'\");\n  }",
+    "test_line": "    testSame(\"!+'\\\\v1'\");",
+    "test_name": "testIEString",
+    "test_suite": "com.google.javascript.jscomp.PeepholeFoldConstantsTest"
+}

@@ -1,0 +1,41 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_ARRAY.java b/src/main/java/humaneval/buggy/SORT_ARRAY.java
+index 04eb5e2..9a47790 100644
+--- a/src/main/java/humaneval/buggy/SORT_ARRAY.java
++++ b/src/main/java/humaneval/buggy/SORT_ARRAY.java
+@@ -17,17 +17,24 @@ Examples:
+ 
+ public class SORT_ARRAY {
+     public static int[] sort_array(int[] array) {
+-        if (array.length == 0)
+-            return array;
+-        Arrays.sort(array);
+-        if ((array[0] + array[array.length - 1]) % 2 == 1)
+-            return array;
+-        else {
+-            for (int i = 0; i < array.length / 2; i += 1){
+-                array[i] = array[array.length - i - 1];
+-                array[array.length - i - 1] = array[i];
++        if (array.length == 0) {
++            return array; // Return the same empty array if it's empty
++        }
++        
++        // Copy the original array into a new array
++        int[] sortedArray = Arrays.copyOf(array, array.length);
++        Arrays.sort(sortedArray);
++
++        // Check sum of first and last elements of the original array
++        if ((array[0] + array[array.length - 1]) % 2 == 1) {
++            return sortedArray; // Return sorted in ascending order if sum is odd
++        } else {
++            // Create a new array to store the reversed result to keep the original sortedArray intact
++            int[] reversedArray = new int[array.length];
++            for (int i = 0; i < sortedArray.length; i++) {
++                reversedArray[i] = sortedArray[sortedArray.length - i - 1];
+             }
+-            return array;
++            return reversedArray; // Return sorted in descending order if sum is even
+         }
+     }
+-}
++}
+\ No newline at end of file

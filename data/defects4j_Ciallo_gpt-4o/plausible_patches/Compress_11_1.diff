@@ -1,0 +1,100 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java b/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
+index a30cd5a8..31e49ea5 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
++++ b/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
+@@ -194,21 +194,23 @@ public class ArchiveStreamFactory {
+      * @throws ArchiveException if the archiver name is not known
+      * @throws IllegalArgumentException if the stream is null or does not support mark
+      */
+-    public ArchiveInputStream createArchiveInputStream(final InputStream in)
+-            throws ArchiveException {
+-        if (in == null) {
+-            throw new IllegalArgumentException("Stream must not be null.");
+-        }
++public ArchiveInputStream createArchiveInputStream(final InputStream in)
++        throws ArchiveException {
++    if (in == null) {
++        throw new IllegalArgumentException("Stream must not be null.");
++    }
+ 
+-        if (!in.markSupported()) {
+-            throw new IllegalArgumentException("Mark is not supported.");
+-        }
++    if (!in.markSupported()) {
++        throw new IllegalArgumentException("Mark is not supported.");
++    }
+ 
++    try {
++        // Check for Zip, Jar, Ar, and Cpio with 12 byte signature
+         final byte[] signature = new byte[12];
+         in.mark(signature.length);
+-        try {
+-            int signatureLength = in.read(signature);
+-            in.reset();
++        int signatureLength = in.read(signature);
++        in.reset();
++        if (signatureLength >= 12) {
+             if (ZipArchiveInputStream.matches(signature, signatureLength)) {
+                 return new ZipArchiveInputStream(in);
+             } else if (JarArchiveInputStream.matches(signature, signatureLength)) {
+@@ -218,38 +220,41 @@ public class ArchiveStreamFactory {
+             } else if (CpioArchiveInputStream.matches(signature, signatureLength)) {
+                 return new CpioArchiveInputStream(in);
+             }
++        }
+ 
+-            // Dump needs a bigger buffer to check the signature;
+-            final byte[] dumpsig = new byte[32];
+-            in.mark(dumpsig.length);
+-            signatureLength = in.read(dumpsig);
+-            in.reset();
++        // Check for Dump with 32 byte signature
++        final byte[] dumpsig = new byte[32];
++        in.mark(dumpsig.length);
++        signatureLength = in.read(dumpsig);
++        in.reset();
++        if (signatureLength >= 32) {
+             if (DumpArchiveInputStream.matches(dumpsig, signatureLength)) {
+                 return new DumpArchiveInputStream(in);
+             }
++        }
+ 
+-            // Tar needs an even bigger buffer to check the signature; read the first block
+-            final byte[] tarheader = new byte[512];
+-            in.mark(tarheader.length);
+-            signatureLength = in.read(tarheader);
+-            in.reset();
++        // Check for Tar with 512 byte signature
++        final byte[] tarheader = new byte[512];
++        in.mark(tarheader.length);
++        signatureLength = in.read(tarheader);
++        in.reset();
++        if (signatureLength >= 512) {
+             if (TarArchiveInputStream.matches(tarheader, signatureLength)) {
+                 return new TarArchiveInputStream(in);
+             }
+-            // COMPRESS-117 - improve auto-recognition
++
++            // Additional tar auto-recognition
+             try {
+                 TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(tarheader));
+                 tais.getNextEntry();
+                 return new TarArchiveInputStream(in);
+-            } catch (Exception e) { // NOPMD
+-                // can generate IllegalArgumentException as well as IOException
+-                // autodetection, simply not a TAR
+-                // ignored
++            } catch (Exception e) { // Ignore exceptions, simply not a TAR
+             }
+-        } catch (IOException e) {
+-            throw new ArchiveException("Could not use reset and mark operations.", e);
+         }
+-
+-        throw new ArchiveException("No Archiver found for the stream signature");
++    } catch (IOException e) {
++        throw new ArchiveException("Could not use reset and mark operations.", e);
+     }
++
++    throw new ArchiveException("No Archiver found for the stream signature");
++}
+ }

@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/SPECIAL_FILTER.java b/src/main/java/humaneval/buggy/SPECIAL_FILTER.java
+index eab06ca..ae2d779 100644
+--- a/src/main/java/humaneval/buggy/SPECIAL_FILTER.java
++++ b/src/main/java/humaneval/buggy/SPECIAL_FILTER.java
+@@ -14,14 +14,22 @@ public class SPECIAL_FILTER {
+     public static int special_filter(int[] nums) {
+         int count = 0;
+         ArrayList<Integer> odd_digits = new ArrayList<Integer>(Arrays.asList(1, 3, 5, 7, 9));
+-        for (Integer num : nums) {
++        
++        for (int num : nums) {
+             if (num > 10) {
+-                String number_as_string = num + "";
+-                if (odd_digits.contains(number_as_string.charAt(0))
+-                        && odd_digits.contains(number_as_string.charAt(number_as_string.length())))
+-                    count += 1;
++                int n = num;
++                int lastDigit = Math.abs(n % 10); // Get the absolute last digit
++
++                while (n >= 10) {
++                    n /= 10;
++                }
++                int firstDigit = n; // Get the absolute first digit
++
++                if (odd_digits.contains(firstDigit) && odd_digits.contains(lastDigit)) {
++                    count++;
++                }
+             }
+         }
+         return count;
+     }
+-}
++}
+\ No newline at end of file

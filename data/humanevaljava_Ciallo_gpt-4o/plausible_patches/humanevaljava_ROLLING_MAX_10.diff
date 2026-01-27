@@ -1,0 +1,29 @@
+diff --git a/src/main/java/humaneval/buggy/ROLLING_MAX.java b/src/main/java/humaneval/buggy/ROLLING_MAX.java
+index d95e9dc..32a75b9 100644
+--- a/src/main/java/humaneval/buggy/ROLLING_MAX.java
++++ b/src/main/java/humaneval/buggy/ROLLING_MAX.java
+@@ -6,12 +6,19 @@ import java.util.List;
+ public class ROLLING_MAX {
+     public static List<Integer> rolling_max(List<Integer> numbers) {
+         List<Integer> result = new ArrayList<Integer>();
+-        Integer running_max = null;
++        
++        if (numbers == null || numbers.isEmpty()) {
++            return result;  // Handle null or empty input list
++        }
++
++        Integer running_max = numbers.get(0);
+ 
+-        for (Integer n : numbers){
+-            running_max = Math.max(running_max, n);
++        for (Integer n : numbers) {
++            if (n > running_max) {
++                running_max = n;
++            }
+             result.add(running_max);
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

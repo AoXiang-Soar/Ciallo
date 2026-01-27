@@ -1,0 +1,64 @@
+diff --git a/src/main/java/org/jsoup/helper/HttpConnection.java b/src/main/java/org/jsoup/helper/HttpConnection.java
+index f8fd9dd7..4219e905 100644
+--- a/src/main/java/org/jsoup/helper/HttpConnection.java
++++ b/src/main/java/org/jsoup/helper/HttpConnection.java
+@@ -750,31 +750,37 @@ public class HttpConnection implements Connection {
+             return headers;
+         }
+ 
+-        void processResponseHeaders(Map<String, List<String>> resHeaders) {
+-            for (Map.Entry<String, List<String>> entry : resHeaders.entrySet()) {
+-                String name = entry.getKey();
+-                if (name == null)
+-                    continue; // http/1.1 line
+-
+-                List<String> values = entry.getValue();
+-                if (name.equalsIgnoreCase("Set-Cookie")) {
+-                    for (String value : values) {
+-                        if (value == null)
+-                            continue;
+-                        TokenQueue cd = new TokenQueue(value);
+-                        String cookieName = cd.chompTo("=").trim();
+-                        String cookieVal = cd.consumeTo(";").trim();
+-                        // ignores path, date, domain, validateTLSCertificates et al. req'd?
+-                        // name not blank, value not null
+-                        if (cookieName.length() > 0)
+-                            cookie(cookieName, cookieVal);
+-                    }
+-                } else { // combine same header names with comma: http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
+-                    if (!values.isEmpty())
+-                        header(name, values.get(0));
++void processResponseHeaders(Map<String, List<String>> resHeaders) {
++    boolean rfcCompliant = true; // configuration flag for RFC compliance
++    for (Map.Entry<String, List<String>> entry : resHeaders.entrySet()) {
++        String name = entry.getKey();
++        if (name == null)
++            continue; // http/1.1 line
++
++        List<String> values = entry.getValue();
++        if (name.equalsIgnoreCase("Set-Cookie")) {
++            for (String value : values) {
++                if (value == null)
++                    continue;
++                TokenQueue cd = new TokenQueue(value);
++                String cookieName = cd.chompTo("=").trim();
++                String cookieVal = cd.consumeTo(";").trim();
++                // ignores path, date, domain, validateTLSCertificates et al. req'd?
++                // name not blank, value not null
++                if (cookieName.length() > 0)
++                    cookie(cookieName, cookieVal);
++            }
++        } else { // combine same header names with comma: http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
++            if (!values.isEmpty()) {
++                if (rfcCompliant) {
++                    header(name, String.join(", ", values));
++                } else {
++                    header(name, values.get(0));
+                 }
+             }
+         }
++    }
++}
+ 
+         private static String setOutputContentType(final Connection.Request req) {
+             // multipart mode, for files. add the header if we see something with an inputstream, and return a non-null boundary

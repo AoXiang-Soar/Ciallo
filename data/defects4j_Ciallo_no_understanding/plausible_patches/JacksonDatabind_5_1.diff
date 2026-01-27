@@ -1,0 +1,64 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/introspect/AnnotatedClass.java b/src/main/java/com/fasterxml/jackson/databind/introspect/AnnotatedClass.java
+index d6e44ab58..650cf01e9 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/introspect/AnnotatedClass.java
++++ b/src/main/java/com/fasterxml/jackson/databind/introspect/AnnotatedClass.java
+@@ -631,35 +631,33 @@ public final class AnnotatedClass
+         }
+     }
+ 
+-    protected void _addMethodMixIns(Class<?> targetClass, AnnotatedMethodMap methods,
+-            Class<?> mixInCls, AnnotatedMethodMap mixIns)
+-    {
+-        List<Class<?>> parents = new ArrayList<Class<?>>();
+-        parents.add(mixInCls);
+-        ClassUtil.findSuperTypes(mixInCls, targetClass, parents);
+-        for (Class<?> mixin : parents) {
+-            for (Method m : mixin.getDeclaredMethods()) {
+-                if (!_isIncludableMemberMethod(m)) {
+-                    continue;
+-                }
+-                AnnotatedMethod am = methods.find(m);
+-                /* Do we already have a method to augment (from sub-class
+-                 * that will mask this mixIn)? If so, add if visible
+-                 * without masking (no such annotation)
+-                 */
+-                if (am != null) {
+-                    _addMixUnders(m, am);
+-                    /* Otherwise will have precedence, but must wait
+-                     * until we find the real method (mixIn methods are
+-                     * just placeholder, can't be called)
+-                     */
+-                } else {
+-                    // Well, or, as per [Issue#515], multi-level merge within mixins...
+-                        mixIns.add(_constructMethod(m));
+-                }
++protected void _addMethodMixIns(Class<?> targetClass, AnnotatedMethodMap methods,
++        Class<?> mixInCls, AnnotatedMethodMap mixIns)
++{
++    List<Class<?>> parents = new ArrayList<Class<?>>();
++    parents.add(mixInCls);
++    ClassUtil.findSuperTypes(mixInCls, targetClass, parents);
++    for (Class<?> mixin : parents) {
++        for (Method m : mixin.getDeclaredMethods()) {
++            if (!_isIncludableMemberMethod(m)) {
++                continue;
++            }
++            // First try to find existing method with annotations in mix-ins
++            AnnotatedMethod am = mixIns.find(m);
++            // If not found in mix-ins, check regular methods
++            if (am == null) {
++                am = methods.find(m);
++            }
++            // If we found a method (either in mixIns or methods), merge annotations
++            if (am != null) {
++                _addMixUnders(m, am);
++            } else {
++                // If not found anywhere, add as new mix-in method
++                mixIns.add(_constructMethod(m));
+             }
+         }
+     }
++}
+ 
+     /*
+     /**********************************************************

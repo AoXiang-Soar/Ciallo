@@ -1,0 +1,35 @@
+diff --git a/src/java/org/apache/commons/cli/Util.java b/src/java/org/apache/commons/cli/Util.java
+index 40f66f1..8834b30 100644
+--- a/src/java/org/apache/commons/cli/Util.java
++++ b/src/java/org/apache/commons/cli/Util.java
+@@ -60,18 +60,18 @@ class Util
+      *
+      * @return The string without the leading and trailing quotes.
+      */
+-    static String stripLeadingAndTrailingQuotes(String str)
+-    {
+-        if (str.startsWith("\""))
+-        {
+-            str = str.substring(1, str.length());
+-        }
+-        int length = str.length();
+-        if (str.endsWith("\""))
+-        {
+-            str = str.substring(0, length - 1);
++static String stripLeadingAndTrailingQuotes(String str) {
++    // Only strip quotes if both exist and they're the only quotes in the string
++    boolean hasLeadingQuote = str.startsWith("\"");
++    boolean hasTrailingQuote = str.endsWith("\"");
++    
++    if (hasLeadingQuote && hasTrailingQuote && str.length() >= 2) {
++        String middle = str.substring(1, str.length() - 1);
++        // Only remove quotes if there are no other quotes in between
++        if (middle.indexOf('\"') == -1) {
++            return middle;
+         }
+-        
+-        return str;
+     }
++    return str;
++}
+ }

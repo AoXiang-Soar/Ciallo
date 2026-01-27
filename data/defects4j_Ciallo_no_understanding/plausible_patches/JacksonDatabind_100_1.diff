@@ -1,0 +1,60 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java b/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
+index 9d2f74b35..316bdfe18 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
++++ b/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
+@@ -352,29 +352,35 @@ public class TreeTraversingParser extends ParserMinimalBase
+      */
+ 
+     @Override
+-    public byte[] getBinaryValue(Base64Variant b64variant)
+-        throws IOException, JsonParseException
+-    {
+-        // Multiple possibilities...
+-        JsonNode n = currentNode();
+-        if (n != null) {
+-            // [databind#2096]: although `binaryValue()` works for real binary node
+-            // and embedded "POJO" node, coercion from TextNode may require variant, so:
+-            byte[] data = n.binaryValue();
+-            if (data != null) {
+-                return data;
+-            }
+-            if (n.isPojo()) {
+-                Object ob = ((POJONode) n).getPojo();
+-                if (ob instanceof byte[]) {
+-                    return (byte[]) ob;
+-                }
+-            }
+-        }
+-        // otherwise return null to mark we have no binary content
++public byte[] getBinaryValue(Base64Variant b64variant)
++    throws IOException, JsonParseException
++{
++    JsonNode n = currentNode();
++    if (n == null) {
+         return null;
+     }
+ 
++    // Handle different node types explicitly
++    switch (n.getNodeType()) {
++        case BINARY:
++            return n.binaryValue();
++            
++        case POJO:
++            Object ob = ((POJONode) n).getPojo();
++            return (ob instanceof byte[]) ? (byte[]) ob : null;
++            
++        case STRING:
++            try {
++                return b64variant.decode(n.textValue().trim());
++            } catch (IllegalArgumentException e) {
++                return null;
++            }
++            
++        default:
++            return null;
++    }
++}
++
+ 
+     @Override
+     public int readBinaryValue(Base64Variant b64variant, OutputStream out)

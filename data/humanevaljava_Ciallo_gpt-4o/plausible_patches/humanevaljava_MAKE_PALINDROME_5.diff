@@ -1,0 +1,40 @@
+diff --git a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+index 05f44d8..b23fec2 100644
+--- a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+@@ -1,25 +1,25 @@
+ package humaneval.buggy;
+ 
+ public class MAKE_PALINDROME {
+-    public static boolean is_palindrome(String str){
+-        for (int i = 0; i < str.length(); i += 1){
++    public static boolean is_palindrome(String str) {
++        for (int i = 0; i < str.length() / 2; i++) {  // Check only half so we avoid unnecessary checks
+             if (str.charAt(i) != str.charAt(str.length() - 1 - i))
+                 return false;
+         }
+         return true;
+     }
+ 
+-    public static String make_palindrome(String str){
++    public static String make_palindrome(String str) {
+         if (str.length() == 0)
+             return "";
+ 
+         int beginning_of_suffix = 0;
+-        while (! is_palindrome(str.substring(beginning_of_suffix))){
++        while (!is_palindrome(str.substring(beginning_of_suffix))) {
+             beginning_of_suffix += 1;
+         }
+-        
+-        String result = str;
+-        result += str.substring(0, beginning_of_suffix);
+-        return result;
++
++        // To form the correct palindrome, append the reverse of the non-palindrome prefix
++        StringBuilder suffixBuilder = new StringBuilder(str.substring(0, beginning_of_suffix)).reverse();
++        return str + suffixBuilder.toString();
+     }
+-}
++}
+\ No newline at end of file

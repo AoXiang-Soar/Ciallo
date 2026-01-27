@@ -1,0 +1,61 @@
+diff --git a/src/main/java/humaneval/buggy/DO_ALGEBRA.java b/src/main/java/humaneval/buggy/DO_ALGEBRA.java
+index 08aedcb..88f89e6 100644
+--- a/src/main/java/humaneval/buggy/DO_ALGEBRA.java
++++ b/src/main/java/humaneval/buggy/DO_ALGEBRA.java
+@@ -5,19 +5,18 @@ import javax.script.ScriptEngine;
+ import javax.script.ScriptException;
+ 
+ // Given two lists operator, and operand. The first list has basic algebra operations, and 
+-// the second list is a list of integers. Use the two given lists to build the algebric 
++// the second list is a list of integers. Use the two given lists to build the algebraic 
+ // expression and return the evaluation of this expression.
+ 
+ // The basic algebra operations:
+ // Addition ( + ) 
+ // Subtraction ( - ) 
+ // Multiplication ( * ) 
+-// Floor division ( / ) 
+-// Exponentiation ( ** ), deprecated in Java
++// Floor division ( / )
+ 
+ // Example:
+ // operator['+', '*', '-']
+-// array = [2, 3, 4, 5]
++// operand = [2, 3, 4, 5]
+ // result = 2 + 3 * 4 - 5
+ // => result = 9
+ 
+@@ -28,12 +27,27 @@ import javax.script.ScriptException;
+ 
+ public class DO_ALGEBRA {
+     public static double do_algebra(String[] operator, int[] operand) throws NumberFormatException, ScriptException {
++        // Set up the script engine to evaluate the expression
+         ScriptEngineManager mgr = new ScriptEngineManager();
+         ScriptEngine engine = mgr.getEngineByName("JavaScript");
+-        String expression = "";
+-        for (int i = 0; i < operand.length; i += 1) {
+-            expression += operator[i] + operand[i];
++        StringBuilder expressionBuilder = new StringBuilder();
++        
++        // Initialize expression with the first operand
++        expressionBuilder.append(operand[0]);
++        
++        // Iterate over the operators and operands to build the full expression
++        for (int i = 0; i < operator.length; i++) {
++            expressionBuilder.append(" "); // Add space for clearer expression
++            expressionBuilder.append(operator[i]); // Add the operator
++            expressionBuilder.append(" "); // Add space for clearer expression
++            expressionBuilder.append(operand[i + 1]); // Add the next operand
+         }
+-        return Double.parseDouble(engine.eval(expression).toString());
++        
++        // Evaluate the expression
++        String expression = expressionBuilder.toString();
++        Object result = engine.eval(expression);
++        
++        // Return the result as a double
++        return Double.parseDouble(result.toString());
+     }
+-}
++}
+\ No newline at end of file

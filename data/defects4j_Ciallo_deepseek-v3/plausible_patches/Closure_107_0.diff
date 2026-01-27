@@ -1,0 +1,85 @@
+diff --git a/src/com/google/javascript/jscomp/CommandLineRunner.java b/src/com/google/javascript/jscomp/CommandLineRunner.java
+index 93b354757..86c823334 100644
+--- a/src/com/google/javascript/jscomp/CommandLineRunner.java
++++ b/src/com/google/javascript/jscomp/CommandLineRunner.java
+@@ -803,12 +803,12 @@ public class CommandLineRunner extends
+   }
+ 
+   @Override
+-  protected CompilerOptions createOptions() {
++protected CompilerOptions createOptions() {
+     CompilerOptions options = new CompilerOptions();
+     if (flags.processJqueryPrimitives) {
+-      options.setCodingConvention(new JqueryCodingConvention());
++        options.setCodingConvention(new JqueryCodingConvention());
+     } else {
+-      options.setCodingConvention(new ClosureCodingConvention());
++        options.setCodingConvention(new ClosureCodingConvention());
+     }
+ 
+     options.setExtraAnnotationNames(flags.extraAnnotationName);
+@@ -817,21 +817,21 @@ public class CommandLineRunner extends
+     level.setOptionsForCompilationLevel(options);
+ 
+     if (flags.debug) {
+-      level.setDebugOptionsForCompilationLevel(options);
++        level.setDebugOptionsForCompilationLevel(options);
+     }
+ 
+     if (flags.useTypesForOptimization) {
+-      level.setTypeBasedOptimizationOptions(options);
++        level.setTypeBasedOptimizationOptions(options);
+     }
+ 
+     if (flags.generateExports) {
+-      options.setGenerateExports(flags.generateExports);
++        options.setGenerateExports(flags.generateExports);
+     }
+ 
+     WarningLevel wLevel = flags.warningLevel;
+     wLevel.setOptionsForWarningLevel(options);
+     for (FormattingOption formattingOption : flags.formatting) {
+-      formattingOption.applyToOptions(options);
++        formattingOption.applyToOptions(options);
+     }
+ 
+     options.closurePass = flags.processClosurePrimitives;
+@@ -842,27 +842,21 @@ public class CommandLineRunner extends
+     options.angularPass = flags.angularPass;
+ 
+     if (!flags.translationsFile.isEmpty()) {
+-      try {
+-        options.messageBundle = new XtbMessageBundle(
+-            new FileInputStream(flags.translationsFile),
+-            flags.translationsProject);
+-      } catch (IOException e) {
+-        throw new RuntimeException("Reading XTB file", e);
+-      }
++        try {
++            options.messageBundle = new XtbMessageBundle(
++                new FileInputStream(flags.translationsFile),
++                flags.translationsProject);
++        } catch (IOException e) {
++            throw new RuntimeException("Reading XTB file", e);
++        }
+     } else if (CompilationLevel.ADVANCED_OPTIMIZATIONS == level) {
+-      // In SIMPLE or WHITESPACE mode, if the user hasn't specified a
+-      // translations file, they might reasonably try to write their own
+-      // implementation of goog.getMsg that makes the substitution at
+-      // run-time.
+-      //
+-      // In ADVANCED mode, goog.getMsg is going to be renamed anyway,
+-      // so we might as well inline it. But shut off the i18n warnings,
+-      // because the user didn't really ask for i18n.
+-      options.messageBundle = new EmptyMessageBundle();
++        // In ADVANCED mode with no translations file, don't set any message bundle
++        // to avoid warnings about missing translations
++        options.messageBundle = null;
+     }
+ 
+     return options;
+-  }
++}
+ 
+   @Override
+   protected Compiler createCompiler() {

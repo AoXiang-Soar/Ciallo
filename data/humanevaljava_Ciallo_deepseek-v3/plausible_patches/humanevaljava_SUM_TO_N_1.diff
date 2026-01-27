@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/SUM_TO_N.java b/src/main/java/humaneval/buggy/SUM_TO_N.java
+index 319b248..166f786 100644
+--- a/src/main/java/humaneval/buggy/SUM_TO_N.java
++++ b/src/main/java/humaneval/buggy/SUM_TO_N.java
+@@ -1,19 +1,11 @@
+ package humaneval.buggy;
+ 
+-/* sum_to_n is a function that sums numbers from 1 to n.
+->>> sum_to_n(30)
+-465
+->>> sum_to_n(100)
+-5050
+->>> sum_to_n(5)
+-15
+->>> sum_to_n(10)
+-55
+->>> sum_to_n(1)
+-1 */
+-
+ public class SUM_TO_N {
+     public static int sum_to_n(int n) {
+-        return (n + 1) * (n / 2);
++        int sum = 0;        // Declare sum variable to accumulate the total.
++        for (int i = 1; i <= n; i++) { // Loop from 1 to n
++            sum += i;       // Add each integer from 1 to n to sum.
++        }
++        return sum;         // Return the accumulated result.
+     }
+-}
++}
+\ No newline at end of file

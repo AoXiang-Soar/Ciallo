@@ -1,0 +1,49 @@
+diff --git a/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java b/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java
+index 72388af..430cdf7 100644
+--- a/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java
++++ b/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java
+@@ -3,23 +3,32 @@ package humaneval.buggy;
+ public class FIND_CLOSEST_ELEMENTS {
+     public static double[] find_closest_elements(double[] numbers) {
+         double[] result = new double[2];
++        
++        if (numbers == null || numbers.length < 2) {
++            return result;  // Handling cases with insufficient number of elements
++        }
+ 
+         double distance = Double.MAX_VALUE;
+-        for (int i = 0; i < numbers.length; i += 1){
+-            for (int j = 0; j < numbers.length; j += 1){
++        int n = numbers.length;
++        
++        for (int i = 0; i < n - 1; i++) {
++            for (int j = i + 1; j < n; j++) {  // Notice j starts at i + 1
+                 double new_distance = Math.abs(numbers[i] - numbers[j]);
+-                if (new_distance < distance){
++                if (new_distance < distance) {
+                     distance = new_distance;
+-                    if (numbers[i] < numbers[j]){
+-                        result[0] = numbers[i];
+-                        result[1] = numbers[j];
+-                    } else{
+-                        result[0] = numbers[j];
+-                        result[1] = numbers[i];
+-                    }
++                    result[0] = numbers[i];
++                    result[1] = numbers[j];
+                 }
+             }
+         }
++
++        // Ensure result[0] is less than result[1] for consistency
++        if (result[0] > result[1]) {
++            double temp = result[0];
++            result[0] = result[1];
++            result[1] = temp;
++        }
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

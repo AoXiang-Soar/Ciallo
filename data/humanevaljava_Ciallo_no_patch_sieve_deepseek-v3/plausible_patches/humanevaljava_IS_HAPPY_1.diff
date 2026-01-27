@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/IS_HAPPY.java b/src/main/java/humaneval/buggy/IS_HAPPY.java
+old mode 100644
+new mode 100755
+index 4c6720d..e48bd0a
+--- a/src/main/java/humaneval/buggy/IS_HAPPY.java
++++ b/src/main/java/humaneval/buggy/IS_HAPPY.java
+@@ -16,9 +16,12 @@ public class IS_HAPPY {
+         if (s.length() < 3)
+             return false;
+         for (int i = 0; i < s.length() - 2; i += 1) {
+-            if (s.charAt(i) == s.charAt(i + 1) || s.charAt(i + 1) == s.charAt(i + 2))
++            char a = s.charAt(i);
++            char b = s.charAt(i + 1);
++            char c = s.charAt(i + 2);
++            if (a == b || b == c || a == c)
+                 return false;
+         }
+         return true;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/BF.java b/src/main/java/humaneval/buggy/BF.java
+index dd3c22b..f9f7ec9 100644
+--- a/src/main/java/humaneval/buggy/BF.java
++++ b/src/main/java/humaneval/buggy/BF.java
+@@ -28,8 +28,13 @@ public class BF {
+             return result;
+         int planet1_index = planet_names.indexOf(planet1);
+         int planet2_index = planet_names.indexOf(planet2);
+-        for (int i = planet1_index; i < planet2_index; i += 1)
++        if (planet1_index > planet2_index) {
++            int temp = planet1_index;
++            planet1_index = planet2_index;
++            planet2_index = temp;
++        }
++        for (int i = planet1_index + 1; i < planet2_index; i += 1)
+             result.add(planet_names.get(i));
+         return result;
+     }
+-}
++}
+\ No newline at end of file

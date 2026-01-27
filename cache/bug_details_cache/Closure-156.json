@@ -1,0 +1,16 @@
+{
+    "bug_id": 156,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testAliasedTopLevelEnum() {\n    test(\n        \"function alias() {}\" +\n        \"var dojo = {};\" +\n        \"dojo.gfx = {};\" +\n        \"dojo.declare = function() {};\" +\n        \"/** @enum {number} */\" +\n        \"dojo.gfx.Shape = {SQUARE: 2};\" +\n        \"dojo.gfx.Shape = dojo.declare('dojo.gfx.Shape');\" +\n        \"alias(dojo);\" +\n        \"alias(dojo.gfx.Shape.SQUARE);\",\n        \"function alias() {}\" +\n        \"var dojo = {};\" +\n        \"dojo.gfx = {};\" +\n        \"dojo.declare = function() {};\" +\n        \"/** @constructor */\" +\n        \"var dojo$gfx$Shape = {SQUARE: 2};\" +\n        \"dojo$gfx$Shape = dojo.declare('dojo.gfx.Shape');\" +\n        \"alias(dojo);\" +\n        \"alias(dojo$gfx$Shape.SQUARE);\",\n        null,\n        CollapseProperties.UNSAFE_NAMESPACE_WARNING);\n  }",
+    "test_line": "    test(",
+    "test_name": "testAliasedTopLevelEnum",
+    "test_suite": "com.google.javascript.jscomp.CollapsePropertiesTest"
+}

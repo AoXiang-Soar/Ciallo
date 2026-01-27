@@ -1,0 +1,43 @@
+diff --git a/src/main/java/humaneval/buggy/DIGITS.java b/src/main/java/humaneval/buggy/DIGITS.java
+index d36e11a..4e13ea0 100644
+--- a/src/main/java/humaneval/buggy/DIGITS.java
++++ b/src/main/java/humaneval/buggy/DIGITS.java
+@@ -1,27 +1,19 @@
+ package humaneval.buggy;
+ 
+-/*
+- * Given a positive integer n, return the product of the odd digits.
+-    Return 0 if all digits are even.
+-    For example:
+-    digits(1)  == 1
+-    digits(4)  == 0
+-    digits(235) == 15
+- */
+-
+ public class DIGITS {
+     public static int digits(int n) {
+         int product = 1;
+-        int odd_count = 0;
+-        while(n >= 0) {
+-            int digit = n * 10;
+-            if(digit % 2 == 0) {
+-                product /= digit;
+-                odd_count++;
++        boolean hasOdd = false;
++        
++        while (n > 0) {
++            int digit = n % 10;
++            if (digit % 2 == 1) {
++                product *= digit;
++                hasOdd = true;
+             }
+             n /= 10;
+         }
+-        if(odd_count == 0) return 0;
+-        return product;
++        
++        return hasOdd ? product : 0;
+     }
+-}
++}
+\ No newline at end of file

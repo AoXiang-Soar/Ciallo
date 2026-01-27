@@ -1,0 +1,41 @@
+diff --git a/src/main/java/humaneval/buggy/COMMON.java b/src/main/java/humaneval/buggy/COMMON.java
+index f818c29..e4e3ee0 100644
+--- a/src/main/java/humaneval/buggy/COMMON.java
++++ b/src/main/java/humaneval/buggy/COMMON.java
+@@ -10,21 +10,29 @@ import java.util.*;
+ 
+ public class COMMON {
+     public static int[] common(int[] l1, int[] l2) {
+-        ArrayList<Integer> common = new ArrayList<Integer>();
++        List<Integer> temp = new ArrayList<Integer>();
++        Set<Integer> commonSet = new HashSet<Integer>();
+         
++        // First find all common elements (including duplicates)
+         for (int i = 0; i < l1.length; i += 1){
+             for (int j = 0; j < l2.length; j += 1){
+-                if (l1[i] == l2[j])
+-                    common.add(l1[i]);
++                if (l1[i] == l2[j]) {
++                    temp.add(l1[i]);
++                }
+             }
+         }
+-        int[] result = new int[common.size()];
++        
++        // Remove duplicates by adding to a Set
++        commonSet.addAll(temp);
++        
++        // Convert to array and sort
++        int[] result = new int[commonSet.size()];
+         int index = 0;
+-        for (Integer c : common) {
++        for (Integer c : commonSet) {
+             result[index] = c;
+             index += 1;
+         }
+         Arrays.sort(result);
+         return result;
+     }
+-}
++}
+\ No newline at end of file

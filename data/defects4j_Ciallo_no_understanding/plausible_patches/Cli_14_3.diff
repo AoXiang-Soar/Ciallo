@@ -1,0 +1,101 @@
+diff --git a/src/java/org/apache/commons/cli2/option/GroupImpl.java b/src/java/org/apache/commons/cli2/option/GroupImpl.java
+index 781d0b6..5dfd2ec 100644
+--- a/src/java/org/apache/commons/cli2/option/GroupImpl.java
++++ b/src/java/org/apache/commons/cli2/option/GroupImpl.java
+@@ -234,52 +234,66 @@ public class GroupImpl
+         } // [END process each command line token
+     }
+ 
+-    public void validate(final WriteableCommandLine commandLine)
+-        throws OptionException {
+-        // number of options found
+-        int present = 0;
++public void validate(final WriteableCommandLine commandLine)
++    throws OptionException {
++    // number of options found
++    int present = 0;
+ 
+-        // reference to first unexpected option
+-        Option unexpected = null;
++    // reference to first unexpected option
++    Option unexpected = null;
+ 
+-        for (final Iterator i = options.iterator(); i.hasNext();) {
+-            final Option option = (Option) i.next();
++    for (final Iterator i = options.iterator(); i.hasNext();) {
++        final Option option = (Option) i.next();
+ 
+-            // needs validation?
+-            boolean validate = option.isRequired() || option instanceof Group;
+-            if (validate) {
++        // needs validation?
++        boolean validate = option.isRequired() || option instanceof Group;
++        if (validate) {
++            try {
+                 option.validate(commandLine);
++            } catch (ClassCastException e) {
++                // Skip validation if types don't match
++                continue;
+             }
++        }
+ 
+-            // if the child option is present then validate it
+-            if (commandLine.hasOption(option)) {
+-                if (++present > maximum) {
+-                    unexpected = option;
+-
+-                    break;
+-                }
++        // if the child option is present then validate it
++        if (commandLine.hasOption(option)) {
++            if (++present > maximum) {
++                unexpected = option;
++                break;
++            }
+ 
++            try {
+                 option.validate(commandLine);
++            } catch (ClassCastException e) {
++                // Skip validation if types don't match
++                continue;
+             }
+         }
++    }
+ 
+-        // too many options
+-        if (unexpected != null) {
+-            throw new OptionException(this, ResourceConstants.UNEXPECTED_TOKEN,
+-                                      unexpected.getPreferredName());
+-        }
++    // too many options
++    if (unexpected != null) {
++        throw new OptionException(this, ResourceConstants.UNEXPECTED_TOKEN,
++                                  unexpected.getPreferredName());
++    }
+ 
+-        // too few option
+-        if (present < minimum) {
+-            throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+-        }
++    // too few option
++    if (present < minimum) {
++        throw new OptionException(this, ResourceConstants.MISSING_OPTION);
++    }
+ 
+-        // validate each anonymous argument
+-        for (final Iterator i = anonymous.iterator(); i.hasNext();) {
+-            final Option option = (Option) i.next();
++    // validate each anonymous argument
++    for (final Iterator i = anonymous.iterator(); i.hasNext();) {
++        final Option option = (Option) i.next();
++        try {
+             option.validate(commandLine);
++        } catch (ClassCastException e) {
++            // Skip validation if types don't match
++            continue;
+         }
+     }
++}
+ 
+     public String getPreferredName() {
+         return name;

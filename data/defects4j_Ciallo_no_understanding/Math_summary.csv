@@ -1,0 +1,107 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Math,1,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Math,2,SL SH SF,5,6385,8,2,4,13,
+defects4j,Math,3,SF,11,25857,5,2,0,15,
+defects4j,Math,4,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Math,5,SL SH SF,4,6217,5,0,1,4,
+defects4j,Math,6,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Math,7,SF,4,175710,130,35,80,288,
+defects4j,Math,8,BF,5,70994,5,0,11,6,
+defects4j,Math,9,SH SF,0,180240,,63,40,942,
+defects4j,Math,10,SL SH SF,2,43589,22,21,2,45,
+defects4j,Math,11,SL SH SF,4,7434,6,2,0,8,
+defects4j,Math,12,BF,3,45536,6,6,3,16,
+defects4j,Math,13,SF,1,193527,218,53,179,546,
+defects4j,Math,14,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Math,15,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,16,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,17,SF,1,38780,24,9,16,34,
+defects4j,Math,18,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,19,SH SF,16,18570,5,1,0,18,
+defects4j,Math,20,SH SF,1,9328,10,3,6,10,
+defects4j,Math,21,SF,2,134239,49,40,4,124,
+defects4j,Math,22,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Math,23,SF,5,42949,7,5,2,16,
+defects4j,Math,24,SF,3,38402,8,7,2,19,
+defects4j,Math,25,SF,1,22991,7,5,1,12,
+defects4j,Math,26,SF,3,17213,8,8,0,19,
+defects4j,Math,27,SL SH SF,2,4937,5,0,5,3,
+defects4j,Math,28,SF,1,34169,8,6,2,14,
+defects4j,Math,29,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,30,SL SH SF,5,9599,6,2,1,10,
+defects4j,Math,31,SF,3,53001,20,12,6,31,
+defects4j,Math,32,SL SH SF,5,24068,7,1,0,7,
+defects4j,Math,33,SL SH SF,7,10300,5,5,1,17,
+defects4j,Math,34,SL SH SF,1,3101,3,1,2,4,
+defects4j,Math,35,BF,5,24712,4,0,0,5,
+defects4j,Math,36,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,37,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,38,SF,,,,,,,Out of limited tokens. 
+defects4j,Math,39,SH SF,6,22186,6,4,1,15,
+defects4j,Math,40,SF,1,1347175,289,158,47,1440,
+defects4j,Math,41,SL SH SF,1,5773,5,0,1,2,
+defects4j,Math,42,SF,4,20642,12,9,0,22,
+defects4j,Math,43,SF,1,195252,229,119,21,1569,
+defects4j,Math,44,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,45,SH SF,10,7368,6,1,4,14,
+defects4j,Math,46,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,47,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,48,SH SF,3,34926,13,5,4,16,
+defects4j,Math,49,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,50,SH SF,4,14218,6,3,2,12,
+defects4j,Math,51,SF,1,143775,51,29,14,101,
+defects4j,Math,52,SF,0,900966,,79,237,1043,
+defects4j,Math,53,SH SF,9,6013,5,0,0,9,
+defects4j,Math,54,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,55,SF,1,234273,183,126,21,925,
+defects4j,Math,56,SH SF,2,10765,6,4,3,13,
+defects4j,Math,57,SL SH SF,3,13377,4,0,1,3,
+defects4j,Math,58,SL SH SF,4,8776,7,3,3,13,
+defects4j,Math,59,SL SH SF,6,8306,6,0,0,6,
+defects4j,Math,60,SF,10,12991,6,1,2,14,
+defects4j,Math,61,BF,1,151309,27,3,18,20,
+defects4j,Math,62,BF,2,73405,11,7,3,18,
+defects4j,Math,63,SL SH SF,2,7304,7,5,0,12,
+defects4j,Math,64,SF,2,381437,66,31,26,132,
+defects4j,Math,65,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,66,BF,0,2117631,,260,84,3392,
+defects4j,Math,67,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,68,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,69,SL SH SF,3,7566,7,1,0,5,
+defects4j,Math,70,SL SH SF,3,5058,5,1,0,5,
+defects4j,Math,71,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Math,72,SF,1,11101,5,4,1,9,
+defects4j,Math,73,SH SF,12,10802,4,0,0,12,
+defects4j,Math,74,SF,0,1376831,,95,182,1364,
+defects4j,Math,75,SL SH SF,6,8843,5,4,1,15,
+defects4j,Math,76,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,77,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Math,78,SF,2,27571,7,5,3,13,
+defects4j,Math,79,SF,4,14221,16,9,0,27,
+defects4j,Math,80,SL SH SF,1,11959,6,2,0,5,
+defects4j,Math,81,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,82,SL SH SF,2,6328,5,1,2,6,
+defects4j,Math,83,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,84,SF,6,104462,56,32,25,126,
+defects4j,Math,85,SL SH SF,4,12098,7,4,1,13,
+defects4j,Math,86,SF,4,16267,6,5,0,14,
+defects4j,Math,87,SF,7,13949,13,7,0,21,
+defects4j,Math,88,SF,1,10776,6,6,0,13,
+defects4j,Math,89,SF,7,5050,5,2,1,12,
+defects4j,Math,90,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,91,SH SF,5,5960,5,1,1,7,
+defects4j,Math,92,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,93,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,94,SL SH SF,3,9840,5,0,1,4,
+defects4j,Math,95,SF,10,8639,6,5,0,20,
+defects4j,Math,96,SL SH SF,4,10390,8,5,0,14,
+defects4j,Math,97,SF,3,9430,6,1,5,9,
+defects4j,Math,98,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Math,99,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,100,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,101,SH SF,1,8131,6,0,4,4,
+defects4j,Math,102,SF,4,8512,7,6,0,16,
+defects4j,Math,103,SF,6,7889,7,2,3,12,
+defects4j,Math,104,BF,,,,,,,Out of limited tokens. 
+defects4j,Math,105,SL SH SF,4,5560,5,2,0,8,
+defects4j,Math,106,SF,6,18163,6,2,1,11,

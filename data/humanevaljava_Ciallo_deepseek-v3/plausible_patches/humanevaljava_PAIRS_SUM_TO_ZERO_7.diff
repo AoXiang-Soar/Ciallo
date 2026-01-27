@@ -1,0 +1,32 @@
+diff --git a/src/main/java/humaneval/buggy/PAIRS_SUM_TO_ZERO.java b/src/main/java/humaneval/buggy/PAIRS_SUM_TO_ZERO.java
+index 7e806b9..2191ac6 100644
+--- a/src/main/java/humaneval/buggy/PAIRS_SUM_TO_ZERO.java
++++ b/src/main/java/humaneval/buggy/PAIRS_SUM_TO_ZERO.java
+@@ -1,5 +1,6 @@
+ package humaneval.buggy;
+ 
++import java.util.HashSet;
+ import java.util.List;
+ 
+ /* pairs_sum_to_zero takes a list of integers as an input.
+@@ -8,12 +9,14 @@ sum to zero, and False otherwise. */
+ 
+ public class PAIRS_SUM_TO_ZERO {
+     public static boolean pairs_sum_to_zero(List<Integer> l) {
+-        for (int i = 0; i < l.size(); i += 1) {
+-            for (int j = 0; j < l.size(); j += 1){
+-                if (l.get(i) + l.get(j) == 0)
+-                    return true;
++        HashSet<Integer> seen = new HashSet<>();
++        
++        for (int num : l) {
++            if (seen.contains(-num)) {  // Check if the negation is already in the set
++                return true;
+             }
++            seen.add(num);  // Add the current number to the set
+         }
+         return false;
+     }
+-}
++}
+\ No newline at end of file

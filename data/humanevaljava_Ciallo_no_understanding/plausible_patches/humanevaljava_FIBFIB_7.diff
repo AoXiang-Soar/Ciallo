@@ -1,0 +1,32 @@
+diff --git a/src/main/java/humaneval/buggy/FIBFIB.java b/src/main/java/humaneval/buggy/FIBFIB.java
+old mode 100644
+new mode 100755
+index 5e10ebb..e208f50
+--- a/src/main/java/humaneval/buggy/FIBFIB.java
++++ b/src/main/java/humaneval/buggy/FIBFIB.java
+@@ -15,10 +15,18 @@ Please write a function to efficiently compute the n-th element of the fibfib nu
+ 
+ public class FIBFIB {
+     public static int fibfib(int n) {
+-        if (n == 0)
+-            return 0;
+-        if (n == 1)
+-            return 0;
+-        return fibfib(n - 1) + fibfib(n - 2) + fibfib(n - 3);
++        if (n == 0 || n == 1) return 0;
++        if (n == 2) return 1;
++        
++        int[] fibs = new int[n + 1];
++        fibs[0] = 0;
++        fibs[1] = 0;
++        fibs[2] = 1;
++        
++        for (int i = 3; i <= n; i++) {
++            fibs[i] = fibs[i - 1] + fibs[i - 2] + fibs[i - 3];
++        }
++        
++        return fibs[n];
+     }
+-}
++}
+\ No newline at end of file

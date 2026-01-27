@@ -1,0 +1,35 @@
+diff --git a/src/org/mockito/internal/invocation/InvocationMatcher.java b/src/org/mockito/internal/invocation/InvocationMatcher.java
+index 7b877b1e2..ec5175c15 100644
+--- a/src/org/mockito/internal/invocation/InvocationMatcher.java
++++ b/src/org/mockito/internal/invocation/InvocationMatcher.java
+@@ -120,7 +120,29 @@ public class InvocationMatcher implements DescribedInvocation, CapturesArgumensF
+     public void captureArgumentsFrom(Invocation invocation) {
+         if (invocation.getMethod().isVarArgs()) {
+             int indexOfVararg = invocation.getRawArguments().length - 1;
+-            throw new UnsupportedOperationException();
++            Object[] args = invocation.getRawArguments();
++            Object varargArray = args[indexOfVararg];
++            
++            // Handle regular arguments before varargs
++            for (int position = 0; position < indexOfVararg; position++) {
++                if (position < matchers.size()) {
++                    Matcher m = matchers.get(position);
++                    if (m instanceof CapturesArguments) {
++                        ((CapturesArguments) m).captureFrom(args[position]);
++                    }
++                }
++            }
++            
++            // Handle varargs if there are matching matchers
++            if (indexOfVararg < matchers.size()) {
++                Matcher m = matchers.get(indexOfVararg);
++                if (m instanceof CapturesArguments && varargArray != null) {
++                    int length = Array.getLength(varargArray);
++                    for (int i = 0; i < length; i++) {
++                        ((CapturesArguments) m).captureFrom(Array.get(varargArray, i));
++                    }
++                }
++            }
+ 
+         } else {
+             for (int position = 0; position < matchers.size(); position++) {

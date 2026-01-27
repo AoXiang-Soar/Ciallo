@@ -1,0 +1,94 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Jsoup,1,SH SF,2,14121,16,5,7,16,
+defects4j,Jsoup,2,SL SH SF,2,424991,297,137,61,1435,
+defects4j,Jsoup,3,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,4,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,5,SH SF,7,12544,7,2,3,12,
+defects4j,Jsoup,6,SF,3,18003,11,14,0,31,
+defects4j,Jsoup,7,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,8,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,9,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,10,SH SF,7,13127,7,5,2,18,
+defects4j,Jsoup,11,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,12,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,13,SH SF,1,19476,29,18,4,54,
+defects4j,Jsoup,14,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,15,SL SH SF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,16,BF,3,30473,12,12,0,27,
+defects4j,Jsoup,17,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,18,BF,3,200691,55,36,22,136,
+defects4j,Jsoup,19,SH SF,4,7574,8,1,5,11,
+defects4j,Jsoup,20,SH SF,7,11389,5,0,0,7,
+defects4j,Jsoup,21,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,22,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,23,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,24,SL SH SF,4,24113,24,11,11,29,
+defects4j,Jsoup,25,SL SH SF,3,12734,5,0,0,3,
+defects4j,Jsoup,26,SL SH SF,3,4708,5,0,3,5,
+defects4j,Jsoup,27,SF,0,116323,,52,23,687,
+defects4j,Jsoup,28,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,29,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,30,BF,8,34157,4,1,2,10,
+defects4j,Jsoup,31,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,32,SL SH SF,2,3869,4,4,0,10,
+defects4j,Jsoup,33,SL SH SF,1,101355,79,20,42,95,
+defects4j,Jsoup,34,SL SH SF,4,6537,5,0,0,4,
+defects4j,Jsoup,35,SL SH SF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,36,BF,0,957102,,98,114,1340,
+defects4j,Jsoup,37,SL SH SF,3,36594,58,16,7,81,
+defects4j,Jsoup,38,SF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,39,SL SH SF,4,11461,5,0,0,4,
+defects4j,Jsoup,40,SL SH SF,5,6847,7,1,2,8,
+defects4j,Jsoup,41,SL SH SF,16,11118,5,0,1,16,
+defects4j,Jsoup,42,SF,3,15782,7,8,0,19,
+defects4j,Jsoup,43,SL SH SF,3,5672,5,1,0,5,
+defects4j,Jsoup,44,BF,1,56315,25,12,8,37,
+defects4j,Jsoup,45,SL SH SF,9,11539,5,0,1,10,
+defects4j,Jsoup,46,SL SH SF,4,12902,5,0,0,4,
+defects4j,Jsoup,47,SL SH SF,5,15191,5,1,0,7,
+defects4j,Jsoup,48,SF,12,15848,5,0,3,13,
+defects4j,Jsoup,49,SF,1,22301,25,15,7,39,
+defects4j,Jsoup,50,SF,1,57997,24,12,4,33,
+defects4j,Jsoup,51,SL SH SF,0,788763,,0,158,89,
+defects4j,Jsoup,52,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,53,SF,4,9023,7,6,0,16,
+defects4j,Jsoup,54,SL SH SF,8,7211,6,1,2,12,
+defects4j,Jsoup,55,SL SH SF,3,4900,5,1,1,6,
+defects4j,Jsoup,56,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,57,SL SH SF,2,3894,4,0,3,2,
+defects4j,Jsoup,58,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,59,SF,10,11969,5,1,0,12,
+defects4j,Jsoup,60,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,61,SL SH SF,1,6852,5,2,4,5,
+defects4j,Jsoup,62,SL SH SF,1,3917,4,0,4,3,
+defects4j,Jsoup,63,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,64,SF,1,6022,6,6,1,14,
+defects4j,Jsoup,65,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,66,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,67,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,68,SH SF,14,35070,26,9,7,36,
+defects4j,Jsoup,69,BF,2,19626,4,2,2,8,
+defects4j,Jsoup,70,SF,12,9040,6,3,0,18,
+defects4j,Jsoup,71,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,72,SH SF,5,7297,5,5,0,15,
+defects4j,Jsoup,73,BF,1,39032,6,4,3,10,
+defects4j,Jsoup,74,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,75,SH SF,3,20133,20,13,1,29,
+defects4j,Jsoup,76,SL SH SF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,77,SL SH SF,4,6036,5,2,1,8,
+defects4j,Jsoup,78,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,79,BF,5,16359,4,0,4,7,
+defects4j,Jsoup,80,SF,7,11600,7,4,0,15,
+defects4j,Jsoup,81,BF,,,,,,,Out of limited tokens. 
+defects4j,Jsoup,82,SF,1,52682,15,7,11,18,
+defects4j,Jsoup,83,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,84,SH SF,1,80323,58,43,7,113,
+defects4j,Jsoup,85,SF,7,4787,5,2,1,12,
+defects4j,Jsoup,86,SL SH SF,3,20007,22,11,7,27,
+defects4j,Jsoup,87,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,88,SL SH SF,5,3343,4,0,1,6,
+defects4j,Jsoup,89,SF,9,7457,5,2,0,13,
+defects4j,Jsoup,90,SH SF,4,6444,5,0,0,4,
+defects4j,Jsoup,91,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,92,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Jsoup,93,SL SH SF,1,8036,5,1,0,3,

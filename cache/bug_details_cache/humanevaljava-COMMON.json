@@ -1,0 +1,16 @@
+{
+    "bug_id": "COMMON",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_COMMON.test_0:9 array lengths differed, expected.length=4 actual.length=3; arrays first differed at element [2]; expected:<5> but was:<653>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        int[] result = humaneval.buggy.COMMON.common(\n            new int[] {1, 4, 3, 34, 653, 2, 5}, new int[] {5, 7, 1, 5, 9, 653, 121}\n        );\n        org.junit.Assert.assertArrayEquals(\n            result, new int[] {1, 5, 653}\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertArrayEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_COMMON"
+}

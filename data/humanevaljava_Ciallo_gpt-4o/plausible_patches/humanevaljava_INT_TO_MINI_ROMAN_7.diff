@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java b/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
+index 0f3c881..e56515c 100644
+--- a/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
++++ b/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
+@@ -17,12 +17,15 @@ public class INT_TO_MINI_ROMAN {
+         };
+ 
+         int i = 12;
+-        String result = "";
++        StringBuilder result = new StringBuilder(); // Use StringBuilder for efficient string concatenation
+         while (number > 0) {
+-            result += sym[i];
+-            number %= num[i];
+-            i -= 1;
++            if (number >= num[i]) {  // Check if the number is greater than or equal to the current value
++                result.append(sym[i]); // Append the corresponding symbol
++                number -= num[i]; // Subtract the corresponding value from the number
++            } else {
++                i -= 1; // Move to the next lower unit
++            }
+         }
+-        return result.toLowerCase();
++        return result.toString().toLowerCase(); // Convert result to lowercase and return 
+     }
+-}
++}
+\ No newline at end of file

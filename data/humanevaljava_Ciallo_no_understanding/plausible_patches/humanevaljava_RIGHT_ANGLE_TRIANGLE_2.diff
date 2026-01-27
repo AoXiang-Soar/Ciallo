@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+old mode 100644
+new mode 100755
+index da0fd0a..aa3707e
+--- a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
++++ b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+@@ -10,6 +10,9 @@ package humaneval.buggy;
+ 
+ public class RIGHT_ANGLE_TRIANGLE {
+     public static boolean right_angle_triangle(int a, int b, int c) {
+-        return a*a + b*b == c*c;
++        if (a + b <= c || a + c <= b || b + c <= a) {
++            return false;
++        }
++        return a*a + b*b == c*c || a*a + c*c == b*b || b*b + c*c == a*a;
+     }
+-}
++}
+\ No newline at end of file

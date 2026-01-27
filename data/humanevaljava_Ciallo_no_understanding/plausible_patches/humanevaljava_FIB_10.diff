@@ -1,0 +1,29 @@
+diff --git a/src/main/java/humaneval/buggy/FIB.java b/src/main/java/humaneval/buggy/FIB.java
+old mode 100644
+new mode 100755
+index fdc9c32..a6efa5d
+--- a/src/main/java/humaneval/buggy/FIB.java
++++ b/src/main/java/humaneval/buggy/FIB.java
+@@ -10,6 +10,19 @@ package humaneval.buggy;
+ 
+ public class FIB {
+     public static int fib(int n) {
+-        return fib(n - 1) + fib(n - 2);
++        if (n < 0) {
++            throw new IllegalArgumentException("Input must be non-negative");
++        }
++        if (n <= 1) {
++            return n;
++        }
++        
++        int a = 0, b = 1;
++        for (int i = 2; i <= n; i++) {
++            int c = a + b;
++            a = b;
++            b = c;
++        }
++        return b;
+     }
+-}
++}
+\ No newline at end of file

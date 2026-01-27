@@ -1,0 +1,29 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Collections,1,SF,0,178316,,60,3,843,
+defects4j,Collections,2,BF,,,,,,,Out of limited tokens. 
+defects4j,Collections,3,SL SH SF,2,9197,9,2,4,8,
+defects4j,Collections,4,BF,,,,,,,Out of limited tokens. 
+defects4j,Collections,5,SF,2,11615,5,9,0,20,
+defects4j,Collections,6,SF,12,46028,5,1,1,14,
+defects4j,Collections,7,BF,,,,,,,Out of limited tokens. 
+defects4j,Collections,8,BF,,,,,,,Out of limited tokens. 
+defects4j,Collections,9,SL SH SF,4,16938,15,6,3,19,
+defects4j,Collections,10,BF,,,,,,,Out of limited tokens. 
+defects4j,Collections,11,SH SF,1,351900,283,17,262,287,
+defects4j,Collections,12,SH SF,1,15609,15,11,3,24,
+defects4j,Collections,13,SH SF,1,7177,5,5,0,11,
+defects4j,Collections,14,SH SF,1,143026,113,1,48,37,
+defects4j,Collections,15,SF,3,23286,18,17,0,48,
+defects4j,Collections,16,BF,,,,,,,Out of limited tokens. 
+defects4j,Collections,17,BF,2,188015,65,23,25,127,
+defects4j,Collections,18,SF,5,23249,18,3,13,17,
+defects4j,Collections,19,SF,2,8326,5,6,0,14,
+defects4j,Collections,20,SF,4,173121,157,139,14,1040,
+defects4j,Collections,21,BF,,,,,,,Out of limited tokens. 
+defects4j,Collections,22,SF,2,10403,5,4,0,10,
+defects4j,Collections,23,BF,7,50689,4,0,7,8,
+defects4j,Collections,24,BF,0,827914,,122,58,1674,
+defects4j,Collections,25,BF,,,,,,,Out of limited tokens. 
+defects4j,Collections,26,BF,,,,,,,Out of limited tokens. 
+defects4j,Collections,27,BF,,,,,,,Out of limited tokens. 
+defects4j,Collections,28,BF,,,,,,,Out of limited tokens. 

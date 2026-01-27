@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/LONGEST.java b/src/main/java/humaneval/buggy/LONGEST.java
+old mode 100644
+new mode 100755
+index d9e04ae..d7d2ef4
+--- a/src/main/java/humaneval/buggy/LONGEST.java
++++ b/src/main/java/humaneval/buggy/LONGEST.java
+@@ -4,17 +4,14 @@ import java.util.List;
+ 
+ public class LONGEST {
+     public static String longest(List<String> strings){
++        String longestStr = null;
+         int maxlen = 0;
+         for (String string : strings){
+-            if (strings.size() > string.length()){
+-                maxlen = strings.size();
++            if (string.length() > maxlen){
++                maxlen = string.length();
++                longestStr = string;
+             }
+         }
+-        for (String string : strings){
+-            if (string.length() == maxlen){
+-                return string;
+-            }
+-        }
+-        return null;
++        return longestStr;
+     }
+-}
++}
+\ No newline at end of file

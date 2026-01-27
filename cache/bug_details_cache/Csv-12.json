@@ -1,0 +1,16 @@
+{
+    "bug_id": 12,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Csv",
+    "test_error_message": "java.lang.IllegalArgumentException: The header contains a duplicate name: \"\" in [A, B, C, , ]",
+    "test_framework": "defects4j",
+    "test_function": "    public void testExcelHeaderCountLessThanData() throws Exception {\n        final String code = \"A,B,C,,\\r\\na,b,c,d,e\\r\\n\";\n        final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL.withHeader());\n        try {\n            for (CSVRecord record : parser.getRecords()) {\n                Assert.assertEquals(\"a\", record.get(\"A\"));\n                Assert.assertEquals(\"b\", record.get(\"B\"));\n                Assert.assertEquals(\"c\", record.get(\"C\"));\n            }\n        } finally {\n            parser.close();\n        }\n    }",
+    "test_line": "        final CSVParser parser = CSVParser.parse(code, CSVFormat.EXCEL.withHeader());",
+    "test_name": "testExcelHeaderCountLessThanData",
+    "test_suite": "org.apache.commons.csv.CSVParserTest"
+}

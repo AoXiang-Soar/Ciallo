@@ -1,0 +1,42 @@
+diff --git a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+index 05f44d8..3f2d8c8 100644
+--- a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+@@ -1,25 +1,29 @@
+ package humaneval.buggy;
+ 
+ public class MAKE_PALINDROME {
+-    public static boolean is_palindrome(String str){
+-        for (int i = 0; i < str.length(); i += 1){
++    public static boolean is_palindrome(String str) {
++        for (int i = 0; i < str.length(); i += 1) {
+             if (str.charAt(i) != str.charAt(str.length() - 1 - i))
+                 return false;
+         }
+         return true;
+     }
+ 
+-    public static String make_palindrome(String str){
++    public static String make_palindrome(String str) {
+         if (str.length() == 0)
+             return "";
+ 
++        // Find the longest prefix that can be appended in reverse to make a palindrome
+         int beginning_of_suffix = 0;
+-        while (! is_palindrome(str.substring(beginning_of_suffix))){
++        while (!is_palindrome(str.substring(beginning_of_suffix))) {
+             beginning_of_suffix += 1;
+         }
+-        
++
+         String result = str;
+-        result += str.substring(0, beginning_of_suffix);
++        // Use a StringBuilder to efficiently construct the reverse suffix
++        StringBuilder reverseSuffix = new StringBuilder(str.substring(0, beginning_of_suffix));
++        result += reverseSuffix.reverse().toString();
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

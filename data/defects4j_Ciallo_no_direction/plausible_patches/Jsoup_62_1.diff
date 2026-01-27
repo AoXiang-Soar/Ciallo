@@ -1,0 +1,16 @@
+diff --git a/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java b/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java
+index c515462c..04713c1c 100644
+--- a/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java
++++ b/src/main/java/org/jsoup/parser/HtmlTreeBuilderState.java
+@@ -759,10 +759,7 @@ enum HtmlTreeBuilderState {
+             }
+             return true;
+         }
+-
+-        boolean anyOtherEndTag(Token t, HtmlTreeBuilder tb) {
+-            String name = t.asEndTag().normalName();
+-            ArrayList<Element> stack = tb.getStack();
++        boolean anyOtherEndTag(Token t, HtmlTreeBuilder tb) {            String name = t.asEndTag().toString().substring(2, t.asEndTag().toString().length()-1);            ArrayList<Element> stack = tb.getStack();
+             for (int pos = stack.size() -1; pos >= 0; pos--) {
+                 Element node = stack.get(pos);
+                 if (node.nodeName().equals(name)) {

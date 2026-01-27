@@ -1,0 +1,16 @@
+{
+    "bug_id": 11,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Codec",
+    "test_error_message": "org.apache.commons.codec.DecoderException: Invalid URL encoding: not a valid digit (radix 16): 13",
+    "test_framework": "defects4j",
+    "test_function": "    public void testSkipNotEncodedCRLF() throws Exception {\n        String qpdata = \"CRLF in an\\n encoded text should be=20=\\r\\n\\rskipped in the\\r decoding.\";\n        String expected = \"CRLF in an encoded text should be skipped in the decoding.\";\n\n        QuotedPrintableCodec qpcodec = new QuotedPrintableCodec();\n        assertEquals(expected, qpcodec.decode(qpdata));\n\n        String encoded = qpcodec.encode(expected);\n        assertEquals(expected, qpcodec.decode(encoded));\n    }",
+    "test_line": "        assertEquals(expected, qpcodec.decode(qpdata));",
+    "test_name": "testSkipNotEncodedCRLF",
+    "test_suite": "org.apache.commons.codec.net.QuotedPrintableCodecTest"
+}

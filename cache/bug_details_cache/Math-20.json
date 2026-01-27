@@ -1,0 +1,16 @@
+{
+    "bug_id": 20,
+    "bug_type": "SH SF",
+    "buggy_lines": "            return",
+    "code": "        public double[] repairAndDecode(final double[] x) {\n            return\n                decode(x);\n        }",
+    "fixed_code": "        public double[] repairAndDecode(final double[] x) {\n            return boundaries != null && isRepairMode ?\n                decode(repair(x)) :\n                decode(x);\n        }",
+    "fixed_lines": "            return boundaries != null && isRepairMode ?\n                decode(repair(x)) :",
+    "masked_code": "        public double[] repairAndDecode(final double[] x) {\n>>> [ INFILL ] <<<\n                decode(x);\n        }",
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: Out of bounds (0.8419682617532089 > 0.5)",
+    "test_framework": "defects4j",
+    "test_function": "    public void testMath864() {\n        final CMAESOptimizer optimizer = new CMAESOptimizer();\n        final MultivariateFunction fitnessFunction = new MultivariateFunction() {\n                @Override\n                public double value(double[] parameters) {\n                    final double target = 1;\n                    final double error = target - parameters[0];\n                    return error * error;\n                }\n            };\n\n        final double[] start = { 0 };\n        final double[] lower = { -1e6 };\n        final double[] upper = { 0.5 };\n        final double[] result = optimizer.optimize(10000, fitnessFunction, GoalType.MINIMIZE,\n                                                   start, lower, upper).getPoint();\n        Assert.assertTrue(\"Out of bounds (\" + result[0] + \" > \" + upper[0] + \")\",\n                          result[0] <= upper[0]);\n    }",
+    "test_line": "        Assert.assertTrue(\"Out of bounds (\" + result[0] + \" > \" + upper[0] + \")\",",
+    "test_name": "testMath864",
+    "test_suite": "org.apache.commons.math3.optimization.direct.CMAESOptimizerTest"
+}

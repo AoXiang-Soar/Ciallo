@@ -1,0 +1,65 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index d60c4de3..34406d92 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -590,26 +590,41 @@ public class TarUtils {
+      * @see <a href="https://issues.apache.org/jira/browse/COMPRESS-191">COMPRESS-191</a>
+      * @since 1.5
+      */
+-    public static boolean verifyCheckSum(byte[] header) {
+-        long storedSum = 0;
+-        long unsignedSum = 0;
+-        long signedSum = 0;
+-
+-        int digits = 0;
+-        for (int i = 0; i < header.length; i++) {
+-            byte b = header[i];
+-            if (CHKSUM_OFFSET  <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {
+-                if ('0' <= b && b <= '7' && digits++ < 6) {
+-                    storedSum = storedSum * 8 + b - '0';
+-                } else if (digits > 0) {
+-                    digits = 6;
+-                }
+-                b = ' ';
+-            }
+-            unsignedSum += 0xff & b;
+-            signedSum += b;
++public static boolean verifyCheckSum(byte[] header) {
++    if (header == null || header.length < CHKSUM_OFFSET + CHKSUMLEN) {
++        return false;
++    }
++
++    long storedSum = 0;
++    long unsignedSum = 0;
++    long signedSum = 0;
++    
++    // First pass: read the stored checksum value
++    for (int i = CHKSUM_OFFSET; i < CHKSUM_OFFSET + CHKSUMLEN; i++) {
++        byte b = header[i];
++        if ('0' <= b && b <= '7') {
++            storedSum = (storedSum << 3) | (b - '0');  // Octal conversion using bit operations
++        } else if (b != ' ') {
++            break;  // Stop at first non-octal, non-space character
+         }
+-        return storedSum == unsignedSum || storedSum == signedSum;
+     }
+ 
++    // Second pass: calculate checksums
++    for (int i = 0; i < header.length; i++) {
++        byte b = header[i];
++        if (CHKSUM_OFFSET <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {
++            b = ' ';  // Treat checksum field as spaces for verification
++        }
++        unsignedSum += 0xff & b;
++        signedSum += b;
++        
++        // Prevent overflow by keeping sums within 16 bits
++        unsignedSum &= 0xFFFF;
++        signedSum &= 0xFFFF;
++    }
++
++    // Compare with both signed and unsigned sums (masked to 16 bits)
++    return (storedSum & 0xFFFF) == unsignedSum || (storedSum & 0xFFFF) == signedSum;
++}
++
+ }

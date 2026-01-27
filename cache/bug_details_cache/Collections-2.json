@@ -1,0 +1,16 @@
+{
+    "bug_id": 2,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<i[nclude]> but was:<i[mport]>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testInclude() {\n        ExtendedProperties a = new ExtendedProperties();\n        ExtendedProperties b = new ExtendedProperties();\n        \n        assertEquals(\"include\", a.getInclude());\n        assertEquals(\"include\", b.getInclude());\n        \n        a.setInclude(\"import\");\n        assertEquals(\"import\", a.getInclude());\n        assertEquals(\"include\", b.getInclude());\n        \n        a.setInclude(\"\");\n        assertEquals(null, a.getInclude());\n        assertEquals(\"include\", b.getInclude());\n        \n        a.setInclude(\"hi\");\n        assertEquals(\"hi\", a.getInclude());\n        assertEquals(\"include\", b.getInclude());\n        \n        a.setInclude(null);\n        assertEquals(null, a.getInclude());\n        assertEquals(\"include\", b.getInclude());\n    }",
+    "test_line": "        assertEquals(\"include\", b.getInclude());",
+    "test_name": "testInclude",
+    "test_suite": "org.apache.commons.collections.TestExtendedProperties"
+}

@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/LARGEST_SMALLEST_INTEGERS.java b/src/main/java/humaneval/buggy/LARGEST_SMALLEST_INTEGERS.java
+index 0f5a219..e3152bb 100644
+--- a/src/main/java/humaneval/buggy/LARGEST_SMALLEST_INTEGERS.java
++++ b/src/main/java/humaneval/buggy/LARGEST_SMALLEST_INTEGERS.java
+@@ -14,20 +14,20 @@ package humaneval.buggy;
+ 
+ public class LARGEST_SMALLEST_INTEGERS {
+     public static int[] largest_smallest_integers(int[] lst) {
+-        boolean negative = true, positive = true;
+-        int max_negative = Integer.MAX_VALUE, min_positive = Integer.MIN_VALUE; 
+-        for(int i = 1; i < lst.length; i++) {
++        boolean found_negative = false, found_positive = false;
++        int max_negative = Integer.MIN_VALUE, min_positive = Integer.MAX_VALUE; 
++        for(int i = 0; i < lst.length; i++) { // Start loop from 0 to include all elements
+             if(lst[i] < 0) {
+-                negative = false;
+-                max_negative = Math.min(max_negative, lst[i]);
++                found_negative = true;
++                max_negative = Math.max(max_negative, lst[i]); // Use Math.max for max_negative
+             } else if(lst[i] > 0) {
+-                positive = true;
++                found_positive = true; // Correctly mark positive as found
+                 min_positive = Math.min(min_positive, lst[i]);
+             }
+         }
+-        if(!negative) max_negative = 0;
+-        if(!positive) min_positive = 0;
++        if(!found_negative) max_negative = 0; // Set to 0 if no negative number was found
++        if(!found_positive) min_positive = 0; // Set to 0 if no positive number was found
+         int[] result = {max_negative, min_positive};
+         return result;
+     }
+-}
++}
+\ No newline at end of file

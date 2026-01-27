@@ -1,0 +1,48 @@
+diff --git a/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java b/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java
+index 04adadf..5f38e3a 100644
+--- a/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java
++++ b/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java
+@@ -17,7 +17,6 @@
+ package org.apache.commons.jxpath.ri.axes;
+ 
+ import java.util.ArrayList;
+-
+ import org.apache.commons.jxpath.BasicNodeSet;
+ import org.apache.commons.jxpath.ri.EvalContext;
+ import org.apache.commons.jxpath.ri.model.NodePointer;
+@@ -48,18 +47,30 @@ public class UnionContext extends NodeSetContext {
+             BasicNodeSet nodeSet = (BasicNodeSet) getNodeSet();
+             ArrayList pointers = new ArrayList();
+             for (int i = 0; i < contexts.length; i++) {
+-                EvalContext ctx = (EvalContext) contexts[i];
++                EvalContext ctx = contexts[i];
+                 while (ctx.nextSet()) {
+                     while (ctx.nextNode()) {
+                         NodePointer ptr = ctx.getCurrentNodePointer();
+                         if (!pointers.contains(ptr)) {
+-                            nodeSet.add(ptr);
+-                            pointers.add(ptr);
++                            // Insert in document order
++                            int insertPos = 0;
++                            while (insertPos < pointers.size()) {
++                                NodePointer existing = (NodePointer) pointers.get(insertPos);
++                                if (ptr.compareTo(existing) < 0) {
++                                    break;
++                                }
++                                insertPos++;
++                            }
++                            pointers.add(insertPos, ptr);
+                         }
+                     }
+                 }
+             }
++            // Add to nodeSet in the correct order
++            for (int i = 0; i < pointers.size(); i++) {
++                nodeSet.add((NodePointer) pointers.get(i));
++            }
+         }
+         return super.setPosition(position);
+     }
+-}
++}
+\ No newline at end of file

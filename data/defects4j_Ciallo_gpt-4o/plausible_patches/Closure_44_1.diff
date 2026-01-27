@@ -1,0 +1,48 @@
+diff --git a/src/com/google/javascript/jscomp/CodeConsumer.java b/src/com/google/javascript/jscomp/CodeConsumer.java
+index 475566526..e84ca7274 100644
+--- a/src/com/google/javascript/jscomp/CodeConsumer.java
++++ b/src/com/google/javascript/jscomp/CodeConsumer.java
+@@ -178,28 +178,30 @@ abstract class CodeConsumer {
+   void endCaseBody() {
+   }
+ 
+-  void add(String newcode) {
++void add(String newcode) {
+     maybeEndStatement();
+ 
+     if (newcode.length() == 0) {
+-      return;
++        return;
+     }
+ 
+     char c = newcode.charAt(0);
+-    if ((isWordChar(c) || c == '\\') &&
+-        isWordChar(getLastChar())) {
+-      // need space to separate. This is not pretty printing.
+-      // For example: "return foo;"
+-      append(" ");
+-      // Do not allow a forward slash to appear after a DIV.
+-      // For example,
+-      // REGEXP DIV REGEXP
+-      // is valid and should print like
+-      // / // / /
++
++    // Check for the need of space between non-escaped word characters
++    if ((isWordChar(c) || c == '\\') && isWordChar(getLastChar())) {
++        append(" ");
++    }
++
++    // Correctly handle consecutive forward slashes while avoiding double space for escaped sequences.
++    if (getLastChar() == '/' && c == '/') {
++        // Ensure space is added unless the previous character was an escape sequence
++        if (!newcode.startsWith("/*") && !newcode.startsWith("//")) { // Avoid adding space next to comment initiators
++            append(" ");
++        }
+     }
+ 
+     append(newcode);
+-  }
++}
+ 
+   void appendOp(String op, boolean binOp) {
+     append(op);

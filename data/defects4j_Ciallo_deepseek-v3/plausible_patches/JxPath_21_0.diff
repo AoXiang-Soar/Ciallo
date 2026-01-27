@@ -1,0 +1,17 @@
+diff --git a/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java b/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java
+index 52aa39a..29146b3 100644
+--- a/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java
++++ b/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java
+@@ -148,9 +148,9 @@ public abstract class PropertyPointer extends NodePointer {
+      * collection, otherwise - 1.
+      * @return int length
+      */
+-    public int getLength() {
+-        return ValueUtils.getLength(getBaseValue());
+-    }
++public int getLength() {
++    return ValueUtils.getLength(getBaseValue() != null ? getBaseValue() : new Object());
++}
+ 
+     /**
+      * Returns a NodePointer that can be used to access the currently

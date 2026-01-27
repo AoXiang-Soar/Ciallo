@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/IS_PALINDROME.java b/src/main/java/humaneval/buggy/IS_PALINDROME.java
+index 9b34adb..807c950 100644
+--- a/src/main/java/humaneval/buggy/IS_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/IS_PALINDROME.java
+@@ -12,10 +12,12 @@ False */
+ 
+ public class IS_PALINDROME {
+     public static boolean is_palindrome(String text) {
+-        for (int i = 0; i < text.length(); i += 1){
+-            if (text.charAt(i) == text.charAt(text.length() - i))
+-                return true;
++        int n = text.length();
++        for (int i = 0; i < n / 2; i++) {
++            if (text.charAt(i) != text.charAt(n - i - 1)) {
++                return false;
++            }
+         }
+-        return false;
++        return true;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": "IS_SIMPLE_POWER",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_IS_SIMPLE_POWER.test_10:86 \u00bb TestTimedOut test timed out after 3000 milli...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_10() throws java.lang.Exception {\n        boolean result = humaneval.buggy.IS_SIMPLE_POWER.is_simple_power(7, 1);\n        org.junit.Assert.assertEquals(\n            result, false\n        );\n    }",
+    "test_line": "        boolean result = humaneval.buggy.IS_SIMPLE_POWER.is_simple_power(7, 1);",
+    "test_name": "test_10",
+    "test_suite": "TEST_IS_SIMPLE_POWER"
+}

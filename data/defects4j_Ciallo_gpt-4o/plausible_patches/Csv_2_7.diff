@@ -1,0 +1,37 @@
+diff --git a/src/main/java/org/apache/commons/csv/CSVRecord.java b/src/main/java/org/apache/commons/csv/CSVRecord.java
+index dc52017c..ff8d2114 100644
+--- a/src/main/java/org/apache/commons/csv/CSVRecord.java
++++ b/src/main/java/org/apache/commons/csv/CSVRecord.java
+@@ -76,15 +76,25 @@ public class CSVRecord implements Serializable, Iterable<String> {
+      *             if the record is inconsistent
+      * @see #isConsistent()
+      */
+-    public String get(final String name) {
+-        if (mapping == null) {
+-            throw new IllegalStateException(
+-                    "No header mapping was specified, the record values can't be accessed by name");
+-        }
+-        final Integer index = mapping.get(name);
+-            return index != null ? values[index.intValue()] : null;
++public String get(final String name) {
++    if (mapping == null) {
++        throw new IllegalStateException(
++                "No header mapping was specified, the record values can't be accessed by name");
+     }
+ 
++    final Integer index = mapping.get(name);
++
++    if (index == null) {
++        throw new IllegalArgumentException("No mapping found for key: " + name);
++    }
++
++    try {
++        return values[index.intValue()];
++    } catch (ArrayIndexOutOfBoundsException e) {
++        throw new IllegalArgumentException("Array index out of bounds for key: " + name);
++    }
++}
++
+     /**
+      * Returns true if this record is consistent, false if not. Currently, the only check is matching the record size to
+      * the header size. Some programs can export files that fails this test but still produce parsable files.

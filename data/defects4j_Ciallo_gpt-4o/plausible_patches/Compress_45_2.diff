@@ -1,0 +1,53 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index 39ce5c1a..c2dcaf73 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -471,26 +471,34 @@ public static int formatLongOctalBytes(final long value, final byte[] buf, final
+      * will not fit in the buffer.
+      * @since 1.4
+      */
+-    public static int formatLongOctalOrBinaryBytes(
+-        final long value, final byte[] buf, final int offset, final int length) {
++public static int formatLongOctalOrBinaryBytes(
++    final long value, final byte[] buf, final int offset, final int length) {
+ 
+-        // Check whether we are dealing with UID/GID or SIZE field
+-        final long maxAsOctalChar = length == TarConstants.UIDLEN ? TarConstants.MAXID : TarConstants.MAXSIZE;
++    final long maxAsOctalChar = length == TarConstants.UIDLEN ? TarConstants.MAXID : TarConstants.MAXSIZE;
++    final boolean negative = value < 0;
+ 
+-        final boolean negative = value < 0;
+-        if (!negative && value <= maxAsOctalChar) { // OK to store as octal chars
+-            return formatLongOctalBytes(value, buf, offset, length);
+-        }
++    if (!negative && value <= maxAsOctalChar) { // OK to store as octal chars
++        return formatLongOctalBytes(value, buf, offset, length);
++    }
+ 
+-        if (length < 9) {
+-            formatLongBinary(value, buf, offset, length, negative);
+-        }
+-        formatBigIntegerBinary(value, buf, offset, length, negative);
++    // We need to determine if we can store the value in binary format
++    final long maxBinaryValue = (1L << (length * 8 - 1));
++    final long minBinaryValue = -(1L << (length * 8 - 1));
+ 
+-        buf[offset] = (byte) (negative ? 0xff : 0x80);
+-        return offset + length;
++    // Check if the value can be stored in the specified byte length
++    if (length >= 9 || (value < maxBinaryValue && value >= minBinaryValue)) {
++        formatBigIntegerBinary(value, buf, offset, length, negative);
++    } else {
++        // If the length is less than 9, we might be using a specialized binary format
++        // for smaller negative numbers
++        formatLongBinary(value, buf, offset, length, negative);
+     }
+ 
++    // Set the first byte correctly based on the sign of the value
++    buf[offset] = (byte) (negative ? 0xff : 0x80);
++    return offset + length;
++}
++
+     private static void formatLongBinary(final long value, final byte[] buf,
+                                          final int offset, final int length,
+                                          final boolean negative) {

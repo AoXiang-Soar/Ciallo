@@ -1,0 +1,14 @@
+diff --git a/src/main/java/org/jsoup/helper/HttpConnection.java b/src/main/java/org/jsoup/helper/HttpConnection.java
+index a941e483..fd2e8565 100644
+--- a/src/main/java/org/jsoup/helper/HttpConnection.java
++++ b/src/main/java/org/jsoup/helper/HttpConnection.java
+@@ -421,6 +421,9 @@ public class HttpConnection implements Connection {
+                     return false;
+                 }
+ 
++                if (end >= j) {
++                    return false;
++                }
+ 
+                 while (i < end) {
+                     i++;

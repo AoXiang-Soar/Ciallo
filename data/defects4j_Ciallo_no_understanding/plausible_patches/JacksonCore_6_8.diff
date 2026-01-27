@@ -1,0 +1,21 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/JsonPointer.java b/src/main/java/com/fasterxml/jackson/core/JsonPointer.java
+index ab37c3b5..bef3d152 100644
+--- a/src/main/java/com/fasterxml/jackson/core/JsonPointer.java
++++ b/src/main/java/com/fasterxml/jackson/core/JsonPointer.java
+@@ -190,8 +190,16 @@ public class JsonPointer
+             return -1;
+         }
+         // [core#176]: no leading zeroes allowed
++        // Reject empty string or "0" when len == 1 is allowed
++        if (len == 1 && str.charAt(0) == '0') {
++            return 0;
++        }
+         for (int i = 0; i < len; ++i) {
+             char c = str.charAt(i);
++            // Reject leading zero for numbers with length > 1
++            if (i == 0 && c == '0') {
++                return -1;
++            }
+             if (c > '9' || c < '0') {
+                 return -1;
+             }

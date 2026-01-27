@@ -1,0 +1,48 @@
+diff --git a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+index 7791efd..ebe9820 100644
+--- a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
++++ b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+@@ -4,23 +4,31 @@ import java.util.*;
+ 
+ /* You are given a list of integers.
+ Write a function next_smallest() that returns the 2nd smallest element of the list.
+-Return None if there is no such element.
++Return null if there is no such element.
+ 
+ next_smallest([1, 2, 3, 4, 5]) == 2
+ next_smallest([5, 1, 4, 3, 2]) == 2
+-next_smallest([]) == None
+-next_smallest([1, 1]) == None */
++next_smallest([]) == null
++next_smallest([1, 1]) == null */
+ 
+ public class NEXT_SMALLEST {
+     public static Integer next_smallest(int[] lst) {
+-        List<Integer> numbers = new ArrayList<Integer>();
+-        for (Integer n : lst)
+-            numbers.add(n);
+-        Integer[] no_duplicate = numbers.toArray(new Integer[] {});
+-        Arrays.sort(no_duplicate);
++        // Use a HashSet to automatically remove duplicates
++        Set<Integer> uniqueNumbers = new HashSet<>();
++        for (int n : lst) {
++            uniqueNumbers.add(n);
++        }
+ 
+-        if (no_duplicate.length < 2)
++        // If there are less than 2 unique numbers, return null
++        if (uniqueNumbers.size() < 2) {
+             return null;
+-        return no_duplicate[1];
++        }
++
++        // Convert the set to a list for sorting
++        List<Integer> sortedList = new ArrayList<>(uniqueNumbers);
++        Collections.sort(sortedList);
++
++        // Return the second smallest element
++        return sortedList.get(1);
+     }
+-}
++}
+\ No newline at end of file

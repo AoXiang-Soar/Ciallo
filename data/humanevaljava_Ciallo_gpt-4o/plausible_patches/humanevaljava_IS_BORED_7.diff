@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/IS_BORED.java b/src/main/java/humaneval/buggy/IS_BORED.java
+index 56b1db3..bb23b09 100644
+--- a/src/main/java/humaneval/buggy/IS_BORED.java
++++ b/src/main/java/humaneval/buggy/IS_BORED.java
+@@ -12,12 +12,17 @@ For example:
+ 
+ public class IS_BORED {
+     public static int is_bored(String S) {
+-        String[] sentences = S.split("\\.|\\?|!");
++        // Split based on the delimiters: ., ?, or ! with optional spaces afterwards
++        String[] sentences = S.split("\\s*[.?!]\\s*");
+         int result = 0;
+         for (String sentence : sentences) {
+-            if (sentence.length() >= 2 && sentence.subSequence(0, 2).equals("I "))
++            // Trim each sentence to remove leading and trailing whitespace
++            sentence = sentence.trim();
++            // Check if the sentence starts with "I " or is exactly "I"
++            if (sentence.equals("I") || sentence.startsWith("I ")) {
+                 result += 1;
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

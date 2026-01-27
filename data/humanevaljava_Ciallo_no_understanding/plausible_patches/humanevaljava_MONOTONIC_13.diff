@@ -1,0 +1,49 @@
+diff --git a/src/main/java/humaneval/buggy/MONOTONIC.java b/src/main/java/humaneval/buggy/MONOTONIC.java
+old mode 100644
+new mode 100755
+index f56e3bd..3832d0e
+--- a/src/main/java/humaneval/buggy/MONOTONIC.java
++++ b/src/main/java/humaneval/buggy/MONOTONIC.java
+@@ -12,18 +12,31 @@ import java.util.Arrays;
+ 
+ public class MONOTONIC {
+     public static boolean monotonic(int[] l) {
+-        int[] sorted = new int[l.length];
+-        int[] reverse_sorted = new int[l.length];
+-
+-        sorted = l;
++        if (l.length <= 1) {
++            return true;
++        }
+         
++        // Make copies of the original array instead of direct assignment
++        int[] sorted = Arrays.copyOf(l, l.length);
+         Arrays.sort(sorted);
+         
+-        for (int i = 0; i < l.length; i += 1)
+-            reverse_sorted[i] = sorted[l.length - i - 1]; 
++        // Check if original matches sorted or reverse sorted
++        boolean increasing = true;
++        boolean decreasing = true;
+         
+-        if (Arrays.equals(l, sorted) || Arrays.equals(l, reverse_sorted))
+-            return true;
+-        return false;
++        for (int i = 0; i < l.length; i++) {
++            if (l[i] != sorted[i]) {
++                increasing = false;
++            }
++            if (l[i] != sorted[l.length - 1 - i]) {
++                decreasing = false;
++            }
++            // Early exit if neither trend is maintained
++            if (!increasing && !decreasing) {
++                return false;
++            }
++        }
++        
++        return true;
+     }
+-}
++}
+\ No newline at end of file

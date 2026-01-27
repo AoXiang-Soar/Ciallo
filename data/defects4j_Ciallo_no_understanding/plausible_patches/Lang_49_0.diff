@@ -1,0 +1,29 @@
+diff --git a/src/java/org/apache/commons/lang/math/Fraction.java b/src/java/org/apache/commons/lang/math/Fraction.java
+index 5f8e5655b..126b1b6a8 100644
+--- a/src/java/org/apache/commons/lang/math/Fraction.java
++++ b/src/java/org/apache/commons/lang/math/Fraction.java
+@@ -462,13 +462,18 @@ public final class Fraction extends Number implements Comparable {
+      *
+      * @return a new reduced fraction instance, or this if no simplification possible
+      */
+-    public Fraction reduce() {
+-        int gcd = greatestCommonDivisor(Math.abs(numerator), denominator);
+-        if (gcd == 1) {
+-            return this;
+-        }
+-        return Fraction.getFraction(numerator / gcd, denominator / gcd);
++public Fraction reduce() {
++    if (numerator == 0) {
++        // Return this instance if already 0/1, otherwise return canonical 0/1
++        return denominator == 1 ? this : Fraction.ZERO;
+     }
++    
++    int gcd = greatestCommonDivisor(Math.abs(numerator), Math.abs(denominator));
++    if (gcd == 1) {
++        return this;
++    }
++    return Fraction.getFraction(numerator / gcd, denominator / gcd);
++}
+ 
+     /**
+      * <p>Gets a fraction that is the inverse (1/fraction) of this one.</p>

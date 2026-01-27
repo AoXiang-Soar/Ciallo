@@ -1,0 +1,16 @@
+{
+    "bug_id": 39,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Compress",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<...23456789012345678901[...]> but was:<...23456789012345678901[234567890123456789012345678901234567890123456789]>",
+    "test_framework": "defects4j",
+    "test_function": "    public void sanitizeShortensString() {\n        String input = \"012345678901234567890123456789012345678901234567890123456789\"\n            + \"012345678901234567890123456789012345678901234567890123456789\"\n            + \"012345678901234567890123456789012345678901234567890123456789\"\n            + \"012345678901234567890123456789012345678901234567890123456789\"\n            + \"012345678901234567890123456789012345678901234567890123456789\";\n        String expected = \"012345678901234567890123456789012345678901234567890123456789\"\n            + \"012345678901234567890123456789012345678901234567890123456789\"\n            + \"012345678901234567890123456789012345678901234567890123456789\"\n            + \"012345678901234567890123456789012345678901234567890123456789\"\n            + \"012345678901...\";\n        assertEquals(expected, ArchiveUtils.sanitize(input));\n    }",
+    "test_line": "        assertEquals(expected, ArchiveUtils.sanitize(input));",
+    "test_name": "sanitizeShortensString",
+    "test_suite": "org.apache.commons.compress.ArchiveUtilsTest"
+}

@@ -1,0 +1,44 @@
+diff --git a/src/org/mockito/internal/matchers/Equality.java b/src/org/mockito/internal/matchers/Equality.java
+index 43e11fca9..a4eefc931 100644
+--- a/src/org/mockito/internal/matchers/Equality.java
++++ b/src/org/mockito/internal/matchers/Equality.java
+@@ -9,15 +9,23 @@ import java.lang.reflect.Array;
+ //stolen from hamcrest because I didn't want to have more dependency than Matcher class 
+ public class Equality {
+ 
+-    public static boolean areEqual(Object o1, Object o2) {
+-        if (o1 == null || o2 == null) {
+-            return o1 == null && o2 == null;
+-        } else if (isArray(o1)) {
+-            return isArray(o2) && areArraysEqual(o1, o2);
+-        } else {
+-            return o1.equals(o2);
+-        }
+-    }
++
++public static boolean areEqual(Object o1, Object o2) {
++    if (o1 == o2) {
++        // This covers the case where both references are the same or both are null
++        return true;
++    }
++    if (o1 == null || o2 == null) {
++        // One is null and the other isn't
++        return false;
++    }
++    if (isArray(o1) && isArray(o2)) {
++        // Both are arrays, compare accordingly
++        return areArraysEqual(o1, o2);
++    }
++    // Use equals if o1 is not null, o1.equals should handle proper type checks
++    return o1.equals(o2);
++}
+ 
+     static boolean areArraysEqual(Object o1, Object o2) {
+         return areArrayLengthsEqual(o1, o2)
+@@ -38,4 +46,4 @@ public class Equality {
+     static boolean isArray(Object o) {
+         return o.getClass().isArray();
+     }
+-}
+\ No newline at end of file
++}

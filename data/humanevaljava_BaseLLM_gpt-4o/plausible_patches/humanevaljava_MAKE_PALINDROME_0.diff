@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+index 05f44d8..7918d1d 100644
+--- a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+@@ -2,7 +2,7 @@ package humaneval.buggy;
+ 
+ public class MAKE_PALINDROME {
+     public static boolean is_palindrome(String str){
+-        for (int i = 0; i < str.length(); i += 1){
++        for (int i = 0; i < str.length() / 2; i += 1){
+             if (str.charAt(i) != str.charAt(str.length() - 1 - i))
+                 return false;
+         }
+@@ -19,7 +19,7 @@ public class MAKE_PALINDROME {
+         }
+         
+         String result = str;
+-        result += str.substring(0, beginning_of_suffix);
++        result += new StringBuilder(str.substring(0, beginning_of_suffix)).reverse().toString();
+         return result;
+     }
+-}
++}
+\ No newline at end of file

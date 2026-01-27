@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/SKJKASDKD.java b/src/main/java/humaneval/buggy/SKJKASDKD.java
+index 4fd1548..f811350 100644
+--- a/src/main/java/humaneval/buggy/SKJKASDKD.java
++++ b/src/main/java/humaneval/buggy/SKJKASDKD.java
+@@ -28,9 +28,10 @@ public class SKJKASDKD {
+             i += 1;
+         }
+         int result = 0;
+-        for (char c : (max + "").toCharArray()) {
+-            result += (int) c;
++        while (max > 0) {
++            result += max % 10;
++            max /= 10;
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

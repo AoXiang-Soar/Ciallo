@@ -1,0 +1,61 @@
+diff --git a/src/org/mockito/internal/verification/VerificationOverTimeImpl.java b/src/org/mockito/internal/verification/VerificationOverTimeImpl.java
+index c5a66c501..3414e4371 100644
+--- a/src/org/mockito/internal/verification/VerificationOverTimeImpl.java
++++ b/src/org/mockito/internal/verification/VerificationOverTimeImpl.java
+@@ -72,32 +72,36 @@ public class VerificationOverTimeImpl implements VerificationMode {
+      *
+      * @throws MockitoAssertionError if the delegate verification mode does not succeed before the timeout
+      */
+-    public void verify(VerificationData data) {
+-        AssertionError error = null;
++public void verify(VerificationData data) {
++    AssertionError error = null;
++    boolean success = false;
+ 
+-        timer.start();
+-        while (timer.isCounting()) {
+-            try {
+-                delegate.verify(data);
+-
+-                if (returnOnSuccess) {
+-                    return;
+-                } else {
+-                    error = null;
+-                }
+-            } catch (MockitoAssertionError e) {
+-                error = handleVerifyException(e);
+-            }
+-            catch (org.mockito.exceptions.verification.junit.ArgumentsAreDifferent e) {
+-                error = handleVerifyException(e);
++    timer.start();
++    while (timer.isCounting()) {
++        try {
++            delegate.verify(data);
++            success = true;
++            
++            if (returnOnSuccess) {
++                return;
+             }
++            error = null;
++        } catch (AssertionError e) {
++            // Catch any type of AssertionError including MockitoAssertionError and ArgumentsAreDifferent
++            error = handleVerifyException(e);
++            success = false;
+         }
+-
+-        if (error != null) {
+-            throw error;
++        
++        if (!timer.isCounting()) {
++            break;
+         }
+     }
+ 
++    if (!success && error != null) {
++        throw error;
++    }
++}
++
+     private AssertionError handleVerifyException(AssertionError e) {
+         if (canRecoverFromFailure(delegate)) {
+             sleep(pollingPeriodMillis);

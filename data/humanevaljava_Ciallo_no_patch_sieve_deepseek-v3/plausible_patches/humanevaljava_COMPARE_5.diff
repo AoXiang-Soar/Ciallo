@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/COMPARE.java b/src/main/java/humaneval/buggy/COMPARE.java
+index 844eae3..317a103 100644
+--- a/src/main/java/humaneval/buggy/COMPARE.java
++++ b/src/main/java/humaneval/buggy/COMPARE.java
+@@ -10,12 +10,15 @@ the value is 0, and if not, the value is the absolute difference between the gue
+ 
+ public class COMPARE {
+     public static int[] compare(int[] game, int[] guess) {
++        if (game.length != guess.length) {
++            throw new IllegalArgumentException("Arrays must be of equal length");
++        }
+         int[] result = new int[game.length];
+ 
+         for (int i = 0; i < game.length; i += 1) {
+-            result[i] = Math.floorDiv(game[i], guess[i]);
++            result[i] = Math.abs(game[i] - guess[i]);
+         }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

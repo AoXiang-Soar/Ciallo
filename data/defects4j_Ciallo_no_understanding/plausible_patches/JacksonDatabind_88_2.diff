@@ -1,0 +1,25 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/ClassNameIdResolver.java b/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/ClassNameIdResolver.java
+index 142fc3629..006cd3805 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/ClassNameIdResolver.java
++++ b/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/ClassNameIdResolver.java
+@@ -55,7 +55,10 @@ public class ClassNameIdResolver
+             //    compatibility -- needed later anyway, and not doing so may open
+             //    security issues.
+             JavaType t = tf.constructFromCanonical(id);
+-                // Probably cleaner to have a method in `TypeFactory` but can't add in patch
++            if (!t.isTypeOrSubTypeOf(_baseType.getRawClass())) {
++                throw new IllegalArgumentException(String.format(
++                    "Not subtype of [%s]: %s", _baseType.getRawClass().getName(), t));
++            }
+             return t;
+         }
+         Class<?> cls;
+@@ -69,7 +72,7 @@ public class ClassNameIdResolver
+                 // First: we may have problem handlers that can deal with it?
+                 return dctxt.handleUnknownTypeId(_baseType, id, this, "no such class found");
+             }
+-            // ... meaning that we really should never get here.
++            // ... meaning that we should never get here.
+             return null;
+         } catch (Exception e) {
+             throw new IllegalArgumentException("Invalid type id '"+id+"' (for id type 'Id.class'): "+e.getMessage(), e);

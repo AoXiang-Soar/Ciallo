@@ -1,0 +1,45 @@
+diff --git a/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java b/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java
+index 72388af..b2bb804 100644
+--- a/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java
++++ b/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java
+@@ -2,18 +2,24 @@ package humaneval.buggy;
+ 
+ public class FIND_CLOSEST_ELEMENTS {
+     public static double[] find_closest_elements(double[] numbers) {
+-        double[] result = new double[2];
++        if (numbers.length < 2) {
++            return new double[0];
++        }
+ 
+-        double distance = Double.MAX_VALUE;
+-        for (int i = 0; i < numbers.length; i += 1){
+-            for (int j = 0; j < numbers.length; j += 1){
+-                double new_distance = Math.abs(numbers[i] - numbers[j]);
+-                if (new_distance < distance){
+-                    distance = new_distance;
+-                    if (numbers[i] < numbers[j]){
++        double[] result = new double[2];
++        double min_distance = Double.MAX_VALUE;
++        
++        // Compare each pair only once (j starts from i+1)
++        for (int i = 0; i < numbers.length; i++) {
++            for (int j = i + 1; j < numbers.length; j++) {
++                double current_distance = Math.abs(numbers[i] - numbers[j]);
++                if (current_distance < min_distance) {
++                    min_distance = current_distance;
++                    // Always store the smaller number first
++                    if (numbers[i] < numbers[j]) {
+                         result[0] = numbers[i];
+                         result[1] = numbers[j];
+-                    } else{
++                    } else {
+                         result[0] = numbers[j];
+                         result[1] = numbers[i];
+                     }
+@@ -22,4 +28,4 @@ public class FIND_CLOSEST_ELEMENTS {
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

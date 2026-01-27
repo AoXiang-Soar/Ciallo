@@ -1,0 +1,16 @@
+{
+    "bug_id": 81,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Invalid definition for property \"i\" (of type com.fasterxml.jackson.databind.introspect.TypeCoercion1592Test$Bean1592): Can not refine serialization type [simple type, class int] into java.lang.Integer; types not related",
+    "test_framework": "defects4j",
+    "test_function": "    public void testTypeCoercion1592() throws Exception\n    {\n        // first, serialize\n        MAPPER.writeValueAsString(new Bean1592());\n        Bean1592 result = MAPPER.readValue(\"{}\", Bean1592.class);\n        assertNotNull(result);\n    }",
+    "test_line": "",
+    "test_name": "testTypeCoercion1592",
+    "test_suite": "com.fasterxml.jackson.databind.introspect.TypeCoercion1592Test"
+}

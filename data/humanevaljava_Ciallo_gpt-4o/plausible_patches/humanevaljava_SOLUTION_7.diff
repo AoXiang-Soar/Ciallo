@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/SOLUTION.java b/src/main/java/humaneval/buggy/SOLUTION.java
+index dd87893..c58fde6 100644
+--- a/src/main/java/humaneval/buggy/SOLUTION.java
++++ b/src/main/java/humaneval/buggy/SOLUTION.java
+@@ -15,11 +15,11 @@ import java.util.ArrayList;
+ public class SOLUTION {
+     public static int solution(ArrayList<Integer> lst) {
+         int result = 0;
+-        for(int i = 0; i < lst.size(); i++) {
+-            if((i % 2) == 1 && (lst.get(i) % 2) == 0) {
++        for (int i = 0; i < lst.size(); i += 2) { // Iterate only over even indices
++            if (lst.get(i) % 2 != 0) { // Check if the element is odd
+                 result += lst.get(i);
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

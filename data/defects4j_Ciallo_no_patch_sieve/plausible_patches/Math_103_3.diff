@@ -1,0 +1,41 @@
+diff --git a/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java b/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
+index 02810e142..4703cb90b 100644
+--- a/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
++++ b/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
+@@ -105,11 +105,33 @@ public class NormalDistributionImpl extends AbstractContinuousDistribution
+      * x is more than 20 standard deviations from the mean, in which case the
+      * convergence exception is caught and 0 or 1 is returned.
+      */
+-    public double cumulativeProbability(double x) throws MathException {
+-            return 0.5 * (1.0 + Erf.erf((x - mean) /
+-                    (standardDeviation * Math.sqrt(2.0))));
++public double cumulativeProbability(double x) throws MathException {
++    if (standardDeviation <= 0) {
++        throw new MathException("Standard deviation must be positive");
+     }
+     
++    double z = (x - mean) / (standardDeviation * Math.sqrt(2.0));
++    
++    // Handle extreme values to avoid iteration problems
++    if (z < -20) {
++        return 0.0;  // Effectively zero probability for such extreme values
++    }
++    if (z > 20) {
++        return 1.0;  // Effectively certainty for such extreme values
++    }
++    
++    try {
++        return 0.5 * (1.0 + Erf.erf(z));
++    } catch (MaxIterationsExceededException e) {
++        // Fallback approximation for cases where Erf converges too slowly
++        if (z < -6) {
++            return 0.5 * Math.exp(-z * z) / (-z * Math.sqrt(Math.PI));
++        } else {
++            return 1.0 - 0.5 * Math.exp(-z * z) / (z * Math.sqrt(Math.PI));
++        }
++    }
++}
++    
+     /**
+      * For this distribution, X, this method returns the critical point x, such
+      * that P(X &lt; x) = <code>p</code>.

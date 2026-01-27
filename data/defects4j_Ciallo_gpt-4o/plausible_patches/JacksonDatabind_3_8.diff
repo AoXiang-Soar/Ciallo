@@ -1,0 +1,20 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
+index fdfeecb2e..c0d782d6b 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
+@@ -63,7 +63,7 @@ public final class StringArrayDeserializer
+             if (t == JsonToken.VALUE_STRING) {
+                 value = jp.getText();
+             } else if (t == JsonToken.VALUE_NULL) {
+-                value = _elementDeserializer.getNullValue();
++                value = null;  // Fix: Directly assign null when no custom deserializer is set.
+             } else {
+                 value = _parseString(jp, ctxt);
+             }
+@@ -150,4 +150,4 @@ public final class StringArrayDeserializer
+         }
+         return this;
+     }
+-}
++}
+\ No newline at end of file

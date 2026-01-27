@@ -1,0 +1,113 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/SubTypeValidator.java b/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/SubTypeValidator.java
+index 9865b1a20..b612572da 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/SubTypeValidator.java
++++ b/src/main/java/com/fasterxml/jackson/databind/jsontype/impl/SubTypeValidator.java
+@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
+ public class SubTypeValidator
+ {
+     protected final static String PREFIX_SPRING = "org.springframework.";
+-
++    private final static String PREFIX_C3P0 = "com.mchange.v2.c3p0.";
+ 
+     /**
+      * Set of well-known "nasty classes", deserialization of which is considered dangerous
+@@ -28,8 +28,7 @@ public class SubTypeValidator
+     protected final static Set<String> DEFAULT_NO_DESER_CLASS_NAMES;
+     static {
+         Set<String> s = new HashSet<String>();
+-        // Courtesy of [https://github.com/kantega/notsoserial]:
+-        // (and wrt [databind#1599])
++        // Existing blocked classes
+         s.add("org.apache.commons.collections.functors.InvokerTransformer");
+         s.add("org.apache.commons.collections.functors.InstantiateTransformer");
+         s.add("org.apache.commons.collections4.functors.InvokerTransformer");
+@@ -39,21 +38,19 @@ public class SubTypeValidator
+         s.add("org.springframework.beans.factory.ObjectFactory");
+         s.add("com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl");
+         s.add("org.apache.xalan.xsltc.trax.TemplatesImpl");
+-        // [databind#1680]: may or may not be problem, take no chance
+         s.add("com.sun.rowset.JdbcRowSetImpl");
+-        // [databind#1737]; JDK provided
+         s.add("java.util.logging.FileHandler");
+         s.add("java.rmi.server.UnicastRemoteObject");
+-        // [databind#1737]; 3rd party
+-//s.add("org.springframework.aop.support.AbstractBeanFactoryPointcutAdvisor"); // deprecated by [databind#1855]
+         s.add("org.springframework.beans.factory.config.PropertyPathFactoryBean");
+-
+-// s.add("com.mchange.v2.c3p0.JndiRefForwardingDataSource"); // deprecated by [databind#1931]
+-// s.add("com.mchange.v2.c3p0.WrapperConnectionPoolDataSource"); // - "" -
+-        // [databind#1855]: more 3rd party
+         s.add("org.apache.tomcat.dbcp.dbcp2.BasicDataSource");
+         s.add("com.sun.org.apache.bcel.internal.util.ClassLoader");
+ 
++        // Add problematic C3P0 classes to the static set
++        s.add("com.mchange.v2.c3p0.JndiRefForwardingDataSource");
++        s.add("com.mchange.v2.c3p0.WrapperConnectionPoolDataSource");
++        s.add("com.mchange.v2.c3p0.ComboPooledDataSource");
++        s.add("com.mchange.v2.c3p0.debug.AfterCloseLoggingComboPooledDataSource");
++
+         DEFAULT_NO_DESER_CLASS_NAMES = Collections.unmodifiableSet(s);
+     }
+ 
+@@ -70,8 +67,6 @@ public class SubTypeValidator
+ 
+     public void validateSubType(DeserializationContext ctxt, JavaType type) throws JsonMappingException
+     {
+-        // There are certain nasty classes that could cause problems, mostly
+-        // via default typing -- catch them here.
+         final Class<?> raw = type.getRawClass();
+         String full = raw.getName();
+ 
+@@ -81,32 +76,35 @@ public class SubTypeValidator
+                 break;
+             }
+ 
+-            // 18-Dec-2017, tatu: As per [databind#1855], need bit more sophisticated handling
+-            //    for some Spring framework types
+-            // 05-Jan-2017, tatu: ... also, only applies to classes, not interfaces
+             if (raw.isInterface()) {
+-                ;
+-            } else if (full.startsWith(PREFIX_SPRING)) {
++                return;
++            }
++
++            if (full.startsWith(PREFIX_SPRING)) {
+                 for (Class<?> cls = raw; (cls != null) && (cls != Object.class); cls = cls.getSuperclass()){
+                     String name = cls.getSimpleName();
+-                    // looking for "AbstractBeanFactoryPointcutAdvisor" but no point to allow any is there?
+-                    if ("AbstractPointcutAdvisor".equals(name)
+-                            // ditto  for "FileSystemXmlApplicationContext": block all ApplicationContexts
+-                            || "AbstractApplicationContext".equals(name)) {
++                    if ("AbstractPointcutAdvisor".equals(name) || "AbstractApplicationContext".equals(name)) {
+                         break main_check;
+                     }
+-                // [databind#1737]; more 3rd party
+-                // s.add("com.mchange.v2.c3p0.JndiRefForwardingDataSource");
+-                // s.add("com.mchange.v2.c3p0.WrapperConnectionPoolDataSource");
+-                // [databind#1931]; more 3rd party
+-                // com.mchange.v2.c3p0.ComboPooledDataSource
+-                // com.mchange.v2.c3p0.debug.AfterCloseLoggingComboPooledDataSource 
+                 }
+             }
++
++            if (full.startsWith(PREFIX_C3P0)) {
++                for (Class<?> cls = raw; (cls != null) && (cls != Object.class); cls = cls.getSuperclass()){
++                    String name = cls.getSimpleName();
++                    if ("JndiRefForwardingDataSource".equals(name)
++                            || "WrapperConnectionPoolDataSource".equals(name)
++                            || "ComboPooledDataSource".equals(name)
++                            || "AfterCloseLoggingComboPooledDataSource".equals(name)) {
++                        break main_check;
++                    }
++                }
++            }
++
+             return;
+         } while (false);
+ 
+         throw JsonMappingException.from(ctxt,
+                 String.format("Illegal type (%s) to deserialize: prevented for security reasons", full));
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,56 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index d60c4de3..65a38a3b 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -590,26 +590,32 @@ public class TarUtils {
+      * @see <a href="https://issues.apache.org/jira/browse/COMPRESS-191">COMPRESS-191</a>
+      * @since 1.5
+      */
+-    public static boolean verifyCheckSum(byte[] header) {
+-        long storedSum = 0;
+-        long unsignedSum = 0;
+-        long signedSum = 0;
+-
+-        int digits = 0;
+-        for (int i = 0; i < header.length; i++) {
+-            byte b = header[i];
+-            if (CHKSUM_OFFSET  <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {
+-                if ('0' <= b && b <= '7' && digits++ < 6) {
+-                    storedSum = storedSum * 8 + b - '0';
+-                } else if (digits > 0) {
+-                    digits = 6;
+-                }
+-                b = ' ';
+-            }
+-            unsignedSum += 0xff & b;
+-            signedSum += b;
++public static boolean verifyCheckSum(byte[] header) {
++    long storedSum = 0;
++    long computedSum = 0;
++
++    final int CHKSUM_OFFSET = 148;
++    final int CHKSUMLEN = 8;
++
++    // Calculate stored checksum in the header using octal interpretation.
++    for (int i = CHKSUM_OFFSET; i < CHKSUM_OFFSET + CHKSUMLEN - 1; i++) { // Exclude trailing space
++        byte b = header[i];
++        if ('0' <= b && b <= '7') {
++            storedSum = storedSum * 8 + (b - '0');
++        }
++    }
++
++    // Compute checksum for the header, replacing the checksum field with spaces.
++    for (int i = 0; i < header.length; i++) {
++        byte b = header[i];
++        if (i >= CHKSUM_OFFSET && i < CHKSUM_OFFSET + CHKSUMLEN) {
++            computedSum += ' '; // Use space (ASCII 32) for checksum area
++        } else {
++            computedSum += b & 0xFF; // Ensure unsigned addition for byte
+         }
+-        return storedSum == unsignedSum || storedSum == signedSum;
+     }
+ 
++    return storedSum == computedSum;
++}
++
+ }

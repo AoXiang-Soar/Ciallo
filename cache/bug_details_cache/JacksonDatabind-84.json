@@ -1,0 +1,16 @@
+{
+    "bug_id": 84,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<{\"[base\":1,\"]sub\":2}> but was:<{\"[]sub\":2}>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testBasePropertiesIncludedWhenSerializingSubWhenSubTypeLoadedAfterBaseType() throws IOException {\n        TypeFactory tf = TypeFactory.defaultInstance();\n        tf.constructType(Base.class);\n        tf.constructType(Sub.class);\n        Sub sub = new Sub();\n        String serialized = objectMapper().writeValueAsString(sub);\n        assertEquals(\"{\\\"base\\\":1,\\\"sub\\\":2}\", serialized);\n    }",
+    "test_line": "        assertEquals(\"{\\\"base\\\":1,\\\"sub\\\":2}\", serialized);",
+    "test_name": "testBasePropertiesIncludedWhenSerializingSubWhenSubTypeLoadedAfterBaseType",
+    "test_suite": "com.fasterxml.jackson.databind.type.TestTypeFactoryWithRecursiveTypes"
+}

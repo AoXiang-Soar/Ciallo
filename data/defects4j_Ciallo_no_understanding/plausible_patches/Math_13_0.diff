@@ -1,0 +1,33 @@
+diff --git a/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java b/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java
+index 99d86e92a..289aa8dec 100644
+--- a/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java
++++ b/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java
+@@ -559,7 +559,26 @@ public abstract class AbstractLeastSquaresOptimizer
+      * @return the square-root of the weight matrix.
+      */
+     private RealMatrix squareRoot(RealMatrix m) {
+-            final EigenDecomposition dec = new EigenDecomposition(m);
+-            return dec.getSquareRoot();
++        // Check for identity or diagonal matrix
++        boolean isDiagonal = true;
++        for (int i = 0; i < m.getRowDimension(); i++) {
++            for (int j = 0; j < m.getColumnDimension(); j++) {
++                if (i == j) {
++                    if (m.getEntry(i, j) != 1.0) {
++                        isDiagonal = false;
++                        break;
++                    }
++                } else if (m.getEntry(i, j) != 0.0) {
++                    isDiagonal = false;
++                    break;
++                }
++            }
++            if (!isDiagonal) break;
++        }
++        if (isDiagonal) {
++            return m;
++        }
++        final EigenDecomposition dec = new EigenDecomposition(m);
++        return dec.getSquareRoot();
+     }
+ }

@@ -1,0 +1,45 @@
+diff --git a/src/main/java/humaneval/buggy/REMOVE_VOWELS.java b/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
+index a51c513..cf05b9e 100644
+--- a/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
++++ b/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
+@@ -1,27 +1,22 @@
+ package humaneval.buggy;
+ 
+-/* remove_vowels is a function that takes string and returns string without vowels.
+->>> remove_vowels('')
+-''
+->>> remove_vowels("abcdef\nghijklm")
+-'bcdf\nghjklm'
+->>> remove_vowels('abcdef')
+-'bcdf'
+->>> remove_vowels('aaaaa')
+-''
+->>> remove_vowels('aaBAA')
+-'B'
+->>> remove_vowels('zbcd')
+-'zbcd' */
++import java.util.HashSet;
++import java.util.Set;
+ 
+ public class REMOVE_VOWELS {
+     public static String remove_vowels(String string) {
+         StringBuilder sb = new StringBuilder();
++        Set<Character> vowels = new HashSet<>();
++        // Add both uppercase and lowercase vowels to the set
++        for (char c : "aeiouAEIOU".toCharArray()) {
++            vowels.add(c);
++        }
++        
+         for (char c : string.toCharArray()) {
+-            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+-                continue;
+-            sb.append(c);
++            if (!vowels.contains(c)) {
++                sb.append(c);
++            }
+         }
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

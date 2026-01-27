@@ -1,0 +1,23 @@
+diff --git a/src/main/java/org/jsoup/helper/DataUtil.java b/src/main/java/org/jsoup/helper/DataUtil.java
+index dc12cb35..11ce237f 100644
+--- a/src/main/java/org/jsoup/helper/DataUtil.java
++++ b/src/main/java/org/jsoup/helper/DataUtil.java
+@@ -167,8 +167,17 @@ public final class DataUtil {
+                 throw e.ioException();
+             }
+             Charset charset = Charset.forName(charsetName);
++            if (!charset.canEncode()) { // flip to UTF-8 if can't encode
++                charset = Charset.forName("UTF-8");
++            }
+             doc.outputSettings().charset(charset);
+-                // some charsets can read but not encode; switch to an encodable charset and update the meta el
++            // Update the meta tag if we flipped the charset
++            if (!charsetName.equalsIgnoreCase(charset.name())) {
++                Element metaCharset = doc.select("meta[charset]").first();
++                if (metaCharset != null) {
++                    metaCharset.attr("charset", charset.name());
++                }
++            }
+         }
+         input.close();
+         return doc;

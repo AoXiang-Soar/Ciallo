@@ -1,0 +1,51 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_STRINGS.java b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+index e98a5f0..f2134d5 100644
+--- a/src/main/java/humaneval/buggy/WORDS_STRINGS.java
++++ b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+@@ -12,20 +12,28 @@ import java.util.ArrayList;
+  */
+ 
+ public class WORDS_STRINGS {
+-	public static ArrayList<String> words_strings(String s) {
+-		ArrayList<String> result = new ArrayList<String>();
+-		String s_list = "";
+-		for(char c : s.toCharArray()) {
+-			if(c == ',') {
+-				s_list += ' ';
+-			} else {
+-				s_list += c;
+-			}
+-		}
+-		String[] result_array = s_list.trim().split("\\s+");
+-		for(String r : result_array) {
+-			result.add(r);
+-		}
+-		return result;
+-	}
+-}
++    public static ArrayList<String> words_strings(String s) {
++        ArrayList<String> result = new ArrayList<String>();
++        
++        // Trim the input string to remove any leading or trailing whitespace
++        s = s.trim();
++        
++        // Check for an empty string after trimming
++        if (s.isEmpty()) {
++            return result; // Return the empty ArrayList directly
++        }
++        
++        // Replace commas with spaces to handle comma-separated words
++        s = s.replace(',', ' ');
++        
++        // Use split to divide the string into words using whitespace
++        String[] result_array = s.split("\\s+");
++        
++        // Add each word to the result list
++        for (String r : result_array) {
++            result.add(r);
++        }
++        
++        return result;
++    }
++}
+\ No newline at end of file

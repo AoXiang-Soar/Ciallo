@@ -1,0 +1,35 @@
+diff --git a/src/main/java/org/jsoup/helper/HttpConnection.java b/src/main/java/org/jsoup/helper/HttpConnection.java
+index a941e483..2c35f313 100644
+--- a/src/main/java/org/jsoup/helper/HttpConnection.java
++++ b/src/main/java/org/jsoup/helper/HttpConnection.java
+@@ -421,6 +421,30 @@ public class HttpConnection implements Connection {
+                     return false;
+                 }
+ 
++                if (end >= input.length) {
++                    return false; // Avoid going out of bounds
++                }
++
++                i++; // Move to the next byte
++                if (i >= input.length) {
++                    return false; // Check boundary condition
++                }
++                
++                o = input[i];
++                if ((o & 0xC0) != 0x80) {
++                    return false;
++                }
++
++                while (i < end) {
++                    i++;
++                    if (i >= input.length) {
++                        return false; // Check boundary condition
++                    }
++                    o = input[i];
++                    if ((o & 0xC0) != 0x80) {
++                        return false;
++                    }
++                }
+ 
+                 while (i < end) {
+                     i++;

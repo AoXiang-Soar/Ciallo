@@ -1,0 +1,64 @@
+diff --git a/src/main/java/humaneval/buggy/FILE_NAME_CHECK.java b/src/main/java/humaneval/buggy/FILE_NAME_CHECK.java
+index fe9a279..acccf2a 100644
+--- a/src/main/java/humaneval/buggy/FILE_NAME_CHECK.java
++++ b/src/main/java/humaneval/buggy/FILE_NAME_CHECK.java
+@@ -1,36 +1,35 @@
+ package humaneval.buggy;
+ 
+-/* Create a function which takes a string representing a file's name, and returns
+-'Yes' if the the file's name is valid, and returns 'No' otherwise.
+-A file's name is considered to be valid if and only if all the following conditions 
+-are met:
+-- There should not be more than three digits ('0'-'9') in the file's name.
+-- The file's name contains exactly one dot '.'
+-- The substring before the dot should not be empty, and it starts with a letter from 
+-the latin alphapet ('a'-'z' and 'A'-'Z').
+-- The substring after the dot should be one of these: ['txt', 'exe', 'dll']
+-Examples:
+-file_name_check("example.txt") # => 'Yes'
+-file_name_check("1example.dll") # => 'No' (the name should start with a latin alphapet letter) */
+-
+ public class FILE_NAME_CHECK {
+     public static String file_name_check(String file_name) {
++        // Split the file name into parts using the dot '.'
+         String[] lst = file_name.split("\\.");
+ 
++        // Check that there is exactly one dot in the file name
+         if (lst.length != 2)
+             return "No";
+-        if (! (lst[1].equals("txt") || lst[1].equals("exe") || lst[1].equals("dll")))
+-            return "No";
+-        if (lst[0].length() == 0)
++
++        // Ensure the substring after the dot is one of the allowed file extensions
++        String extension = lst[1];
++        if (!(extension.equals("txt") || extension.equals("exe") || extension.equals("dll")))
+             return "No";
+-        if ('a' > lst[0].charAt(0) && lst[0].charAt(0) > 'z' || 'A' > lst[0].charAt(0) && lst[0].charAt(0) > 'Z')
++
++        // Check that the substring before the dot is not empty and starts with a letter
++        String beforeDot = lst[0];
++        if (beforeDot.isEmpty() || !Character.isLetter(beforeDot.charAt(0)))
+             return "No";
+-        int digit_cnt = 0;
+-        for (char c : file_name.toCharArray()){
+-            if ('0' <= c && c <= '9')
+-                digit_cnt += 1;
++
++        // Count the number of digits in the part before the dot
++        int digitCount = 0;
++        for (char c : beforeDot.toCharArray()) {
++            if (Character.isDigit(c))
++                digitCount++;
+         }
+-        if (digit_cnt > 3)  return "No";
++
++        // Ensure there are no more than 3 digits in the file name
++        if (digitCount > 3)
++            return "No";
++        
+         return "Yes";
+     }
+-}
++}
+\ No newline at end of file

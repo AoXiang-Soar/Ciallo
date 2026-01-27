@@ -1,0 +1,29 @@
+diff --git a/src/main/java/humaneval/buggy/TOTAL_MATCH.java b/src/main/java/humaneval/buggy/TOTAL_MATCH.java
+index c7d8677..8da91dd 100644
+--- a/src/main/java/humaneval/buggy/TOTAL_MATCH.java
++++ b/src/main/java/humaneval/buggy/TOTAL_MATCH.java
+@@ -9,7 +9,7 @@ import java.util.List;
+ 
+ // Examples
+ // total_match([], []) ➞ []
+-// total_match(['hi', 'admin'], ['hI', 'Hi']) ➞ ['hI', 'Hi']
++// total_match(['hi', 'admin'], ['hI', 'Hi']) ➞ ['hi', 'admin']
+ // total_match(['hi', 'admin'], ['hi', 'hi', 'admin', 'project']) ➞ ['hi', 'admin']
+ // total_match(['hi', 'admin'], ['hI', 'hi', 'hi']) ➞ ['hI', 'hi', 'hi']
+ // total_match(['4'], ['1', '2', '3', '4', '5']) ➞ ['4']
+@@ -20,11 +20,11 @@ public class TOTAL_MATCH {
+         for (String st : lst1)
+             l1 += st.length();
+         int l2 = 0;
+-        for (String st : lst1)
+-            l2 = st.length();
++        for (String st : lst2)
++            l2 += st.length();
+         
+         if (l1 <= l2)
+             return lst1;
+         return lst2;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,34 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java b/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java
+index dc0b05f48..524d4ae63 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java
+@@ -4,6 +4,7 @@ import java.io.IOException;
+ import java.lang.annotation.Annotation;
+ 
+ import com.fasterxml.jackson.core.JsonParser;
++import com.fasterxml.jackson.core.JsonToken;  // Import for JsonToken
+ import com.fasterxml.jackson.databind.*;
+ import com.fasterxml.jackson.databind.deser.*;
+ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+@@ -73,8 +74,13 @@ public final class ObjectIdValueProperty
+ 
+     @Override
+     public Object deserializeSetAndReturn(JsonParser p,
+-    		DeserializationContext ctxt, Object instance) throws IOException
++            DeserializationContext ctxt, Object instance) throws IOException
+     {
++        if (p.getCurrentToken() == JsonToken.VALUE_NULL) {
++            // Handle null values gracefully
++            return instance;
++        }
++        
+         Object id = _valueDeserializer.deserialize(p, ctxt);
+         /* 02-Apr-2015, tatu: Actually, as per [databind#742], let it be;
+          *  missing or null id is needed for some cases, such as cases where id
+@@ -110,4 +116,4 @@ public final class ObjectIdValueProperty
+         }
+         return idProp.setAndReturn(instance, value);
+     }
+-}
++}
+\ No newline at end of file

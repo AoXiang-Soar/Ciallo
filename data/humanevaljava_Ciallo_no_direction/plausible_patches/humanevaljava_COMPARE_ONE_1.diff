@@ -1,0 +1,46 @@
+diff --git a/src/main/java/humaneval/buggy/COMPARE_ONE.java b/src/main/java/humaneval/buggy/COMPARE_ONE.java
+index cdf822c..98b6c5d 100644
+--- a/src/main/java/humaneval/buggy/COMPARE_ONE.java
++++ b/src/main/java/humaneval/buggy/COMPARE_ONE.java
+@@ -15,23 +15,22 @@ package humaneval.buggy;
+ 
+ public class COMPARE_ONE {
+     public static Object compare_one(Object a, Object b) {
+-        double temp_a = 0, temp_b = 0;
+-        if(a instanceof String) {
+-            String temp_a_string = a.toString();
+-            temp_a_string = temp_a_string.replace(',', '.');
+-            temp_a = Double.parseDouble(temp_a_string);
+-        }
+-        if(b instanceof String) {
+-            String temp_b_string = b.toString();
+-            temp_b_string = temp_b_string.replace(',', '.');
+-            temp_b = Double.parseDouble(temp_b_string);
+-        }
+-        if(a instanceof Double) temp_a = ((Integer) b).doubleValue();
+-        if(b instanceof Double) temp_b = ((Integer) a).doubleValue();
+-        if(a instanceof Integer) temp_a = (Double) a;
+-        if(b instanceof Integer) temp_b = (Double) b;
++        double temp_a = toDouble(a);
++        double temp_b = toDouble(b);
++        
+         if(temp_a == temp_b) return null;
+-        if(temp_a > temp_b) return a;
+-        else return b;
++        return temp_a > temp_b ? a : b;
++    }
++    
++    private static double toDouble(Object o) {
++        if(o instanceof String) {
++            String s = o.toString().replace(',', '.');
++            return Double.parseDouble(s);
++        } else if(o instanceof Integer) {
++            return ((Integer) o).doubleValue();
++        } else if(o instanceof Double) {
++            return (Double) o;
++        }
++        throw new IllegalArgumentException("Unsupported type");
+     }
+-}
++}
+\ No newline at end of file

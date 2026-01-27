@@ -1,0 +1,16 @@
+{
+    "bug_id": 80,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testBaseTypeId1616() throws Exception\n    {\n        ObjectMapper mapper = new ObjectMapper();\n        Collection<NamedType> subtypes = new StdSubtypeResolver().collectAndResolveSubtypesByTypeId(\n                mapper.getDeserializationConfig(),\n                // note: `null` is fine here as `AnnotatedMember`:\n                null,\n                mapper.constructType(Base1616.class));\n        assertEquals(2, subtypes.size());\n        Set<String> ok = new HashSet<>(Arrays.asList(\"A\", \"B\"));\n        for (NamedType type : subtypes) {\n            String id = type.getName();\n            if (!ok.contains(id)) {\n                fail(\"Unexpected id '\"+id+\"' (mapping to: \"+type.getType()+\"), should be one of: \"+ok);\n            }\n        }\n    }",
+    "test_line": "        Collection<NamedType> subtypes = new StdSubtypeResolver().collectAndResolveSubtypesByTypeId(\n                mapper.getDeserializationConfig(),\n                // note: `null` is fine here as `AnnotatedMember`:\n                null,\n                mapper.constructType(Base1616.class));",
+    "test_name": "testBaseTypeId1616",
+    "test_suite": "com.fasterxml.jackson.databind.jsontype.TestTypeNames"
+}

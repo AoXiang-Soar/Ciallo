@@ -1,0 +1,16 @@
+{
+    "bug_id": 21,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<[\"[b\",\"a]\"]> but was:<[\"[B\",\"A]\"]>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEnumWithJsonPropertyRename() throws Exception\n    {\n        String json = MAPPER.writeValueAsString(new EnumWithPropertyAnno[] {\n                EnumWithPropertyAnno.B, EnumWithPropertyAnno.A\n        });\n        assertEquals(\"[\\\"b\\\",\\\"a\\\"]\", json);\n\n        // and while not really proper place, let's also verify deser while we're at it\n        EnumWithPropertyAnno[] result = MAPPER.readValue(json, EnumWithPropertyAnno[].class);\n        assertNotNull(result);\n        assertEquals(2, result.length);\n        assertSame(EnumWithPropertyAnno.B, result[0]);\n        assertSame(EnumWithPropertyAnno.A, result[1]);\n    }",
+    "test_line": "        assertEquals(\"[\\\"b\\\",\\\"a\\\"]\", json);",
+    "test_name": "testEnumWithJsonPropertyRename",
+    "test_suite": "com.fasterxml.jackson.databind.deser.TestEnumDeserialization"
+}

@@ -1,0 +1,57 @@
+diff --git a/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java b/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java
+index 794cf2e..e8b465e 100644
+--- a/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java
++++ b/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java
+@@ -1,16 +1,14 @@
+ package humaneval.buggy;
+ 
+-// Return the largest prime factor of n. Assume n > 1 and is not a prime.
+-// >>> largest_prime_factor(13195)
+-// 29
+-// >>> largest_prime_factor(2048)
+-// 2
+-
+ public class LARGEST_PRIME_FACTOR {
+     public static boolean is_prime(int k) {
+         if (k < 2)
+             return false;
+-        for (int i = 2; i < k; i += 1){
++        if (k == 2)
++            return true;
++        if (k % 2 == 0)
++            return false;
++        for (int i = 3; i <= Math.sqrt(k); i += 2) {
+             if (k % i == 0)
+                 return false;
+         }
+@@ -19,11 +17,25 @@ public class LARGEST_PRIME_FACTOR {
+ 
+     public static int largest_prime_factor(int n) {
+         int largest = 1;
+-        for (int j = 2; j < n; j += 1) {
+-            if (is_prime(j)){
+-                largest = n % j;
++
++        // Check for the smallest prime factor first and divide it out
++        while (n % 2 == 0) {
++            largest = 2;
++            n /= 2;
++        }
++
++        // Check for odd factors from 3 upwards
++        for (int j = 3; j <= Math.sqrt(n); j += 2) {
++            while (n % j == 0) {
++                largest = j;
++                n /= j;
+             }
+         }
++
++        // If n becomes a prime number greater than 2, then it itself is the largest factor
++        if (n > 2)
++            largest = n;
++        
+         return largest;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_ARRAY.java b/src/main/java/humaneval/buggy/SORT_ARRAY.java
+index 04eb5e2..6f88567 100644
+--- a/src/main/java/humaneval/buggy/SORT_ARRAY.java
++++ b/src/main/java/humaneval/buggy/SORT_ARRAY.java
+@@ -24,10 +24,11 @@ public class SORT_ARRAY {
+             return array;
+         else {
+             for (int i = 0; i < array.length / 2; i += 1){
++                int temp = array[i];
+                 array[i] = array[array.length - i - 1];
+-                array[array.length - i - 1] = array[i];
++                array[array.length - i - 1] = temp;
+             }
+             return array;
+         }
+     }
+-}
++}
+\ No newline at end of file

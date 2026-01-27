@@ -1,0 +1,54 @@
+diff --git a/src/com/google/javascript/jscomp/CollapseProperties.java b/src/com/google/javascript/jscomp/CollapseProperties.java
+index ab2d2c7cf..d0942718d 100644
+--- a/src/com/google/javascript/jscomp/CollapseProperties.java
++++ b/src/com/google/javascript/jscomp/CollapseProperties.java
+@@ -158,14 +158,14 @@ class CollapseProperties implements CompilerPass {
+    *    inlineable.
+    * @see InlineVariables
+    */
+-  private void inlineAliases(GlobalNamespace namespace) {
++private void inlineAliases(GlobalNamespace namespace) {
+     // Invariant: All the names in the worklist meet condition (a).
+     Deque<Name> workList = new ArrayDeque<Name>(namespace.getNameForest());
+     while (!workList.isEmpty()) {
+       Name name = workList.pop();
+ 
+-      // Don't attempt to inline a getter or setter property as a variable.
+-      if (name.type == Name.Type.GET || name.type == Name.Type.SET) {
++      // Skip names that shouldn't be inlined
++      if (shouldSkipNameForInlining(name)) {
+         continue;
+       }
+ 
+@@ -186,7 +186,7 @@ class CollapseProperties implements CompilerPass {
+ 
+       // Check if {@code name} has any aliases left after the
+       // local-alias-inlining above.
+-      if ((name.type == Name.Type.OBJECTLIT ||
++      if ((name.type ==	Name.Type.OBJECTLIT ||
+            name.type == Name.Type.FUNCTION) &&
+           name.aliasingGets == 0 && name.props != null) {
+         // All of {@code name}'s children meet condition (a), so they can be
+@@ -194,7 +194,21 @@ class CollapseProperties implements CompilerPass {
+         workList.addAll(name.props);
+       }
+     }
+-  }
++}
++
++private boolean shouldSkipNameForInlining(Name name) {
++    // Don't attempt to inline a getter or setter property as a variable.
++    if (name.type == Name.Type.GET || name.type == Name.Type.SET) {
++        return true;
++    }
++    
++    // Don't inline the special "arguments" object
++    if ("arguments".equals(name.getFullName())) {
++        return true;
++    }
++    
++    return false;
++}
+ 
+   private boolean inlineAliasIfPossible(Ref alias, GlobalNamespace namespace) {
+     // Ensure that the alias is assigned to a local variable at that

@@ -1,0 +1,16 @@
+{
+    "bug_id": 31,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Mockito",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<... unstubbed withArgs([oompa, lumpa]) method on mock> but was:<... unstubbed withArgs([]) method on mock>",
+    "test_framework": "defects4j",
+    "test_function": "    public void shouldPrintTheParametersWhenCallingAMethodWithArgs() throws Throwable {\n    \tAnswer<Object> answer = new ReturnsSmartNulls();\n\n    \tFoo smartNull = (Foo) answer.answer(invocationOf(Foo.class, \"withArgs\", \"oompa\", \"lumpa\"));\n\n    \tassertEquals(\"SmartNull returned by unstubbed withArgs(oompa, lumpa) method on mock\", smartNull + \"\");\n    }",
+    "test_line": "    \tassertEquals(\"SmartNull returned by unstubbed withArgs(oompa, lumpa) method on mock\", smartNull + \"\");",
+    "test_name": "shouldPrintTheParametersWhenCallingAMethodWithArgs",
+    "test_suite": "org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNullsTest"
+}

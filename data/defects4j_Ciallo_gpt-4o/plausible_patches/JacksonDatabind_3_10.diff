@@ -1,0 +1,35 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
+index fdfeecb2e..dc9b7c67a 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
+@@ -58,12 +58,12 @@ public final class StringArrayDeserializer
+         JsonToken t;
+         
+         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
+-            // Ok: no need to convert Strings, but must recognize nulls
++            // Check whether the current token is null
+             String value;
+             if (t == JsonToken.VALUE_STRING) {
+                 value = jp.getText();
+             } else if (t == JsonToken.VALUE_NULL) {
+-                value = _elementDeserializer.getNullValue();
++                value = null;  // Handle nulls directly here
+             } else {
+                 value = _parseString(jp, ctxt);
+             }
+@@ -91,7 +91,7 @@ public final class StringArrayDeserializer
+         JsonToken t;
+         
+         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
+-            // Ok: no need to convert Strings, but must recognize nulls
++            // Handle nulls, assume custom deserializer should handle non-nulls
+             String value = (t == JsonToken.VALUE_NULL) ? null : deser.deserialize(jp, ctxt);
+             if (ix >= chunk.length) {
+                 chunk = buffer.appendCompletedChunk(chunk);
+@@ -150,4 +150,4 @@ public final class StringArrayDeserializer
+         }
+         return this;
+     }
+-}
++}
+\ No newline at end of file

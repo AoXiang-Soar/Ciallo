@@ -1,0 +1,16 @@
+{
+    "bug_id": 56,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<en_US> but was:<en-us>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testLocale() throws IOException\n    {\n        assertEquals(new Locale(\"en\"), MAPPER.readValue(quote(\"en\"), Locale.class));\n        assertEquals(new Locale(\"es\", \"ES\"), MAPPER.readValue(quote(\"es_ES\"), Locale.class));\n        assertEquals(new Locale(\"FI\", \"fi\", \"savo\"),\n                MAPPER.readValue(quote(\"fi_FI_savo\"), Locale.class));\n        assertEquals(new Locale(\"en\", \"US\"),\n                MAPPER.readValue(quote(\"en-US\"), Locale.class));\n\n        // [databind#1123]\n        Locale loc = MAPPER.readValue(quote(\"\"), Locale.class);\n        assertSame(Locale.ROOT, loc);\n    }",
+    "test_line": "            String str = MAPPER.convertValue(uuid, String.class);",
+    "test_name": "testLocale",
+    "test_suite": "com.fasterxml.jackson.databind.deser.TestJdkTypes"
+}

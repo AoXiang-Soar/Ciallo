@@ -1,0 +1,27 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Chart,1,SL SH SF,4,7180,4,0,2,5,
+defects4j,Chart,2,BF,,,,,,,Out of limited tokens. 
+defects4j,Chart,3,SH SF,1,9129,8,2,2,7,
+defects4j,Chart,4,SF,8,27653,5,0,4,8,
+defects4j,Chart,5,SF,4,14547,6,6,1,16,
+defects4j,Chart,6,SH SF,3,11111,12,6,6,19,
+defects4j,Chart,7,SF,3,14766,5,0,0,3,
+defects4j,Chart,8,SL SH SF,2,7515,6,1,2,5,
+defects4j,Chart,9,SL SH SF,4,9260,5,0,0,4,
+defects4j,Chart,10,SL SH SF,1,4235,5,0,2,3,
+defects4j,Chart,11,SL SH SF,3,12297,5,0,1,3,
+defects4j,Chart,12,SL SH SF,1,4501,4,2,1,5,
+defects4j,Chart,13,SL SH SF,3,37427,6,0,0,3,
+defects4j,Chart,14,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Chart,15,BF,,,,,,,Out of limited tokens. 
+defects4j,Chart,16,BF,,,,,,,Out of limited tokens. 
+defects4j,Chart,17,SH SF,3,6719,5,2,4,8,
+defects4j,Chart,18,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Chart,19,BF,,,,,,,Out of limited tokens. 
+defects4j,Chart,20,SL SH SF,1,4755,5,0,1,1,
+defects4j,Chart,21,BF,,,,,,,Out of limited tokens. 
+defects4j,Chart,22,BF,,,,,,,Out of limited tokens. 
+defects4j,Chart,23,SH SF,0,361468,,5,258,195,
+defects4j,Chart,24,SL SH SF,16,15979,14,0,6,19,
+defects4j,Chart,25,BF,,,,,,,Out of limited tokens. 
+defects4j,Chart,26,SF,6,40580,5,1,4,9,

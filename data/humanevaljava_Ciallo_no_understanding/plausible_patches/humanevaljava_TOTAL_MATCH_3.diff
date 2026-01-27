@@ -1,0 +1,29 @@
+diff --git a/src/main/java/humaneval/buggy/TOTAL_MATCH.java b/src/main/java/humaneval/buggy/TOTAL_MATCH.java
+old mode 100644
+new mode 100755
+index c7d8677..39d78cc
+--- a/src/main/java/humaneval/buggy/TOTAL_MATCH.java
++++ b/src/main/java/humaneval/buggy/TOTAL_MATCH.java
+@@ -16,15 +16,18 @@ import java.util.List;
+ 
+ public class TOTAL_MATCH {
+     public static List<String> total_match(List<String> lst1, List<String> lst2) {
++        if (lst1 == null) return lst2;
++        if (lst2 == null) return lst1;
++        
+         int l1 = 0;
+         for (String st : lst1)
+             l1 += st.length();
+         int l2 = 0;
+-        for (String st : lst1)
+-            l2 = st.length();
++        for (String st : lst2)
++            l2 += st.length();
+         
+         if (l1 <= l2)
+             return lst1;
+         return lst2;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,98 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java b/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
+index 2bd24051f..8fcbbc7fa 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
+@@ -108,7 +108,6 @@ public class PropertyBuilder
+              *    revisited if this causes problems.
+              */
+             if (serializationType == null) {
+-//                serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+                 serializationType = declaredType;
+             }
+             JavaType ct = serializationType.getContentType();
+@@ -124,38 +123,21 @@ public class PropertyBuilder
+         Object valueToSuppress = null;
+         boolean suppressNulls = false;
+ 
+-        // 12-Jul-2016, tatu: [databind#1256] Need to make sure we consider type refinement
+         JavaType actualType = (serializationType == null) ? declaredType : serializationType;
+         
+-        // 17-Aug-2016, tatu: Default inclusion covers global default (for all types), as well
+-        //   as type-default for enclosing POJO. What we need, then, is per-type default (if any)
+-        //   for declared property type... and finally property annotation overrides
+         JsonInclude.Value inclV = _config.getDefaultPropertyInclusion(actualType.getRawClass(),
+                 _defaultInclusion);
+ 
+-        // property annotation override
+-        
+         inclV = inclV.withOverrides(propDef.findInclusion());
+         JsonInclude.Include inclusion = inclV.getValueInclusion();
+ 
+-        if (inclusion == JsonInclude.Include.USE_DEFAULTS) { // should not occur but...
++        if (inclusion == JsonInclude.Include.USE_DEFAULTS) {
+             inclusion = JsonInclude.Include.ALWAYS;
+         }
+         
+         switch (inclusion) {
+         case NON_DEFAULT:
+-            // 11-Nov-2015, tatu: This is tricky because semantics differ between cases,
+-            //    so that if enclosing class has this, we may need to access values of property,
+-            //    whereas for global defaults OR per-property overrides, we have more
+-            //    static definition. Sigh.
+-            // First: case of class/type specifying it; try to find POJO property defaults
+-
+-            // 16-Oct-2016, tatu: Note: if we can not for some reason create "default instance",
+-            //    revert logic to the case of general/per-property handling, so both
+-            //    type-default AND null are to be excluded.
+-            //    (as per [databind#1417]
+             if (_useRealPropertyDefaults) {
+-                // 07-Sep-2016, tatu: may also need to front-load access forcing now
+                 if (prov.isEnabled(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)) {
+                     am.fixAccess(_config.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
+                 }
+@@ -171,27 +153,24 @@ public class PropertyBuilder
+                     valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);
+                 }
+             }
++            // Explicit null checking added here
++            suppressNulls = true;
+             break;
+-        case NON_ABSENT: // new with 2.6, to support Guava/JDK8 Optionals
+-            // always suppress nulls
++        case NON_ABSENT:
+             suppressNulls = true;
+-            // and for referential types, also "empty", which in their case means "absent"
+             if (actualType.isReferenceType()) {
+                 valueToSuppress = BeanPropertyWriter.MARKER_FOR_EMPTY;
+             }
+             break;
+         case NON_EMPTY:
+-            // always suppress nulls
+             suppressNulls = true;
+-            // but possibly also 'empty' values:
+             valueToSuppress = BeanPropertyWriter.MARKER_FOR_EMPTY;
+             break;
+         case NON_NULL:
+             suppressNulls = true;
+-            // fall through
+-        case ALWAYS: // default
++            break;
++        case ALWAYS:
+         default:
+-            // we may still want to suppress empty collections, as per [JACKSON-254]:
+             if (actualType.isContainerType()
+                     && !_config.isEnabled(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)) {
+                 valueToSuppress = BeanPropertyWriter.MARKER_FOR_EMPTY;
+@@ -202,12 +181,10 @@ public class PropertyBuilder
+                 am, _beanDesc.getClassAnnotations(), declaredType,
+                 ser, typeSer, serializationType, suppressNulls, valueToSuppress);
+ 
+-        // How about custom null serializer?
+         Object serDef = _annotationIntrospector.findNullSerializer(am);
+         if (serDef != null) {
+             bpw.assignNullSerializer(prov.serializerInstance(am, serDef));
+         }
+-        // And then, handling of unwrapping
+         NameTransformer unwrapper = _annotationIntrospector.findUnwrappingNameTransformer(am);
+         if (unwrapper != null) {
+             bpw = bpw.unwrappingWriter(unwrapper);

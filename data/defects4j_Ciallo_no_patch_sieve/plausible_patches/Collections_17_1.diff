@@ -1,0 +1,66 @@
+diff --git a/src/main/java/org/apache/commons/collections/functors/EqualPredicate.java b/src/main/java/org/apache/commons/collections/functors/EqualPredicate.java
+index 03588b74..2424bf09 100644
+--- a/src/main/java/org/apache/commons/collections/functors/EqualPredicate.java
++++ b/src/main/java/org/apache/commons/collections/functors/EqualPredicate.java
+@@ -37,7 +37,10 @@ public final class EqualPredicate<T> implements Predicate<T>, Serializable {
+     /** The value to compare to */
+     private final T iValue;
+     
+-    /** The equator to use for comparison */
++    /**
++     * @deprecated Use {@link #equalPredicate(Object)} instead
++     */
++    @Deprecated
+     private final Equator<T> equator;
+ 
+     /**
+@@ -64,7 +67,9 @@ public final class EqualPredicate<T> implements Predicate<T>, Serializable {
+      * @return the predicate
+      * @throws IllegalArgumentException if the predicate is null
+      * @since 4.0
++     * @deprecated Use {@link #equalPredicate(Object)} instead
+      */
++    @Deprecated
+     public static <T> Predicate<T> equalPredicate(T object, Equator<T> equator) {
+         if (object == null) {
+             return nullPredicate();
+@@ -79,9 +84,7 @@ public final class EqualPredicate<T> implements Predicate<T>, Serializable {
+      * @param object  the object to compare to
+      */
+     public EqualPredicate(T object) {
+-        // do not use the DefaultEquator to keep backwards compatibility
+-        // the DefaultEquator returns also true if the two object references are equal
+-        this(object, new DefaultEquator<T>());
++        this(object, null);
+     }
+ 
+     /**
+@@ -91,7 +94,9 @@ public final class EqualPredicate<T> implements Predicate<T>, Serializable {
+      * @param object  the object to compare to
+      * @param equator  the equator to use for comparison
+      * @since 4.0
++     * @deprecated Use {@link #EqualPredicate(Object)} instead
+      */
++    @Deprecated
+     public EqualPredicate(T object, Equator<T> equator) {
+         super();
+         iValue = object;
+@@ -105,7 +110,10 @@ public final class EqualPredicate<T> implements Predicate<T>, Serializable {
+      * @return true if input object equals stored value
+      */
+     public boolean evaluate(T object) {
++        if (equator != null) {
+             return equator.equate(iValue, object);
++        }
++        return iValue.equals(object);
+     }
+ 
+     /**
+@@ -117,5 +125,4 @@ public final class EqualPredicate<T> implements Predicate<T>, Serializable {
+     public Object getValue() {
+         return iValue;
+     }
+-
+-}
++}
+\ No newline at end of file

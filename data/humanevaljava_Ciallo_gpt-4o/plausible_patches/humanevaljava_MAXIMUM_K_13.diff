@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/MAXIMUM_K.java b/src/main/java/humaneval/buggy/MAXIMUM_K.java
+index 4f3e095..382071f 100644
+--- a/src/main/java/humaneval/buggy/MAXIMUM_K.java
++++ b/src/main/java/humaneval/buggy/MAXIMUM_K.java
+@@ -4,7 +4,7 @@ import java.util.ArrayList;
+ import java.util.Collections;
+ 
+ /*
+- * Given an array arr of integers and a positive integer k, return a sorted list 
++ * Given an array arr of integers and a positive integer k, return a sorted list
+     of length k with the maximum k numbers in arr.
+ 
+     Example 1:
+@@ -32,9 +32,10 @@ public class MAXIMUM_K {
+     public static ArrayList<Integer> maximum_k(ArrayList<Integer> arr, int k) {
+         Collections.sort(arr);
+         ArrayList<Integer> result = new ArrayList<>();
+-        for(int i = arr.size() - 1; i >= arr.size() - k; i--) {
++        for (int i = arr.size() - k; i < arr.size(); i++) {
+             result.add(arr.get(i));
+         }
++        Collections.sort(result);
+         return result;
+     }
+-}
++}
+\ No newline at end of file

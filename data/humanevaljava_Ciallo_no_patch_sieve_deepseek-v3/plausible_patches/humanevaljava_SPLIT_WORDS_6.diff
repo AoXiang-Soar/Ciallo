@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/SPLIT_WORDS.java b/src/main/java/humaneval/buggy/SPLIT_WORDS.java
+index 780a4b4..ce42e0e 100644
+--- a/src/main/java/humaneval/buggy/SPLIT_WORDS.java
++++ b/src/main/java/humaneval/buggy/SPLIT_WORDS.java
+@@ -18,12 +18,12 @@ public class SPLIT_WORDS {
+             return txt.split(",");
+         } else {
+             int count = 0;
+-            for(int i = 0; i < txt.length(); i++) {
+-                char curr = txt.charAt(i);
+-                if(Character.isUpperCase(curr) && ((curr - 'a') % 2) == 0) count++;
++            for(char c : txt.toCharArray()) {
++                if('a' <= c && c <= 'z' && (c - 'a') % 2 == 1) {
++                    count++;
++                }
+             }
+-            String[] result = {Integer.toString(count)};
+-            return result;
++            return new String[] {String.valueOf(count)};
+         }
+     }
+-}
++}
+\ No newline at end of file

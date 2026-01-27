@@ -1,0 +1,16 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index 4cf32d6f..9cf192ab 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -130,7 +130,11 @@ public class TarUtils {
+             end--;
+             trailer = buffer[end - 1];
+         }
++        // Handle case where string is all spaces
+         if (start == end) {
++            if (trailer == ' ') {
++                return 0L;
++            }
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, trailer));
+         }

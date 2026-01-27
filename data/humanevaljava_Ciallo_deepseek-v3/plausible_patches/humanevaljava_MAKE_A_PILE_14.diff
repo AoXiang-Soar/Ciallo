@@ -1,0 +1,43 @@
+diff --git a/src/main/java/humaneval/buggy/MAKE_A_PILE.java b/src/main/java/humaneval/buggy/MAKE_A_PILE.java
+index f77ee2a..7957419 100644
+--- a/src/main/java/humaneval/buggy/MAKE_A_PILE.java
++++ b/src/main/java/humaneval/buggy/MAKE_A_PILE.java
+@@ -3,25 +3,18 @@ package humaneval.buggy;
+ import java.util.ArrayList;
+ 
+ /*
+- * Given a positive integer n, you have to make a pile of n levels of stones.
+- * The first level has n stones.
+- * The number of stones in the next level is:
+- * - the next odd number if n is odd.
+- * - the next even number if n is even.
+- * Return the number of stones in each level in a list, where element at index
+- * i represents the number of stones in the level (i+1).
+- *
+- * Examples:
+- * >>> make_a_pile(3)
+- * [3, 5, 7]
++ * Given a positive integer n, create a pile of n levels based on the
++ * rules specified in the problem description.
+  */
+ 
+ public class MAKE_A_PILE {
+-	public static ArrayList<Integer> make_a_pile(int n) {
+-		ArrayList<Integer> pile = new ArrayList<Integer>();
+-		for(int i = 0; i < n; i++) {
+-			pile.add(n - 2 * i);
+-		}
+-		return pile;
+-	}
+-}
++    public static ArrayList<Integer> make_a_pile(int n) {
++        ArrayList<Integer> pile = new ArrayList<>();
++        int currentStones = n;  // Start with n stones in the first level
++        for (int i = 0; i < n; i++) {
++            pile.add(currentStones);
++            currentStones += 2;  // Always increment by 2 regardless of initial n being odd or even.
++        }
++        return pile;
++    }
++}
+\ No newline at end of file

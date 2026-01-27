@@ -1,0 +1,16 @@
+{
+    "bug_id": 16,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Chart",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testGetCategoryIndex() {\n    \t// check an empty dataset\n    \tDefaultIntervalCategoryDataset empty \n    \t        = new DefaultIntervalCategoryDataset(new double[0][0], \n    \t        \t\tnew double[0][0]);\n    \tassertEquals(-1, empty.getCategoryIndex(\"ABC\"));\n    }",
+    "test_line": "    \tassertEquals(-1, empty.getCategoryIndex(\"ABC\"));",
+    "test_name": "testGetCategoryIndex",
+    "test_suite": "org.jfree.data.category.junit.DefaultIntervalCategoryDatasetTests"
+}

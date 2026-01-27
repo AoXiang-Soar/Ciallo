@@ -1,0 +1,47 @@
+diff --git a/src/main/java/humaneval/buggy/VOWELS_COUNT.java b/src/main/java/humaneval/buggy/VOWELS_COUNT.java
+old mode 100644
+new mode 100755
+index 5b0715f..a6295d3
+--- a/src/main/java/humaneval/buggy/VOWELS_COUNT.java
++++ b/src/main/java/humaneval/buggy/VOWELS_COUNT.java
+@@ -1,28 +1,24 @@
+ package humaneval.buggy;
+ 
+-/* Write a function vowels_count which takes a string representing
+-a word as input and returns the number of vowels in the string.
+-Vowels in this case are 'a', 'e', 'i', 'o', 'u'. Here, 'y' is also a
+-vowel, but only when it is at the end of the given word.
+-
+-Example:
+->>> vowels_count("abcde")
+-2
+->>> vowels_count("ACEDY")
+-3 */
+-
+ public class VOWELS_COUNT {
+     public static int vowels_count(String str) {
+         int result = 0;
++        if (str.isEmpty()) {
++            return 0;
++        }
++        
+         char[] str_chars = str.toCharArray();
++        boolean endsWithY = Character.toLowerCase(str_chars[str_chars.length - 1]) == 'y';
+ 
+         for (char c : str_chars) {
+-            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'A' || c == 'E' || c == 'I' || c == 'O'
+-                    || c == 'U')
++            char lowerC = Character.toLowerCase(c);
++            if (lowerC == 'a' || lowerC == 'e' || lowerC == 'i' || lowerC == 'o' || lowerC == 'u') {
+                 result += 1;
++            }
+         }
+-        if (str_chars[str_chars.length - 1] == 'y')
++        if (endsWithY) {
+             result += 1;
++        }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

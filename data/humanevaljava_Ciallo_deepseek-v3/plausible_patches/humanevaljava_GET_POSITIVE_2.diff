@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/GET_POSITIVE.java b/src/main/java/humaneval/buggy/GET_POSITIVE.java
+index 1c07524..825c951 100644
+--- a/src/main/java/humaneval/buggy/GET_POSITIVE.java
++++ b/src/main/java/humaneval/buggy/GET_POSITIVE.java
+@@ -2,14 +2,19 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
++import java.util.Iterator;
+ 
+ public class GET_POSITIVE {
+     public static List<Integer> get_positive(List<Integer> numbers) {
+         List<Integer> result = new ArrayList<Integer>();
+ 
+-        for (Integer number : numbers) {
+-            result.add(number);
++        Iterator<Integer> iterator = numbers.iterator();
++        while (iterator.hasNext()) {
++            Integer number = iterator.next();
++            if (number > 0) {
++                result.add(number);
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

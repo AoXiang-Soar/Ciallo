@@ -1,0 +1,16 @@
+{
+    "bug_id": "GET_ROW",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_GET_ROW.test_0:18 expected:<[humaneval.buggy.GET_ROW$Tuple@c2b8c21, humaneval.buggy.GET_ROW$Tuple@57f264a1, humaneval.buggy.GET_ROW$Tuple@4166dbb4, humaneval.buggy.GET_ROW$Tuple@4735a099, humaneval.buggy.GET_ROW$Tuple@172f66da, humaneval.buggy.GET_ROW$Tuple@53bcdff2]> but was:<[humaneval.buggy.GET_ROW$Tuple@24f0154a, humaneval.buggy.GET_ROW$Tuple@4e2b5825, humaneval.buggy.GET_ROW$Tuple@225efe8c, humaneval.buggy.GET_ROW$Tuple@17a8f67a, humaneval.buggy.GET_ROW$Tuple@33d6fb80]>\nTEST_GET_ROW.test_2:57 \u00bb IndexOutOfBounds Index 6 out of bounds for length 6",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        ArrayList<humaneval.buggy.GET_ROW.Tuple> result = humaneval.buggy.GET_ROW.get_row(\n            new ArrayList<ArrayList<Integer>>(\n                Arrays.asList(\n                    new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6)),\n                    new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 1, 6)),\n                    new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 1))\n                )\n            ), 1\n        );\n        org.junit.Assert.assertEquals(\n            result, new ArrayList<humaneval.buggy.GET_ROW.Tuple>(Arrays.asList(\n                new humaneval.buggy.GET_ROW().new Tuple(0, 0),\n                new humaneval.buggy.GET_ROW().new Tuple(1, 4),\n                new humaneval.buggy.GET_ROW().new Tuple(1, 0),\n                new humaneval.buggy.GET_ROW().new Tuple(2, 5),\n                new humaneval.buggy.GET_ROW().new Tuple(2, 0)\n            ))\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_GET_ROW"
+}

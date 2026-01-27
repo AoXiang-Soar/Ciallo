@@ -1,0 +1,63 @@
+diff --git a/src/java/org/apache/commons/cli/OptionBuilder.java b/src/java/org/apache/commons/cli/OptionBuilder.java
+index 4d21b8b..a6dc929 100644
+--- a/src/java/org/apache/commons/cli/OptionBuilder.java
++++ b/src/java/org/apache/commons/cli/OptionBuilder.java
+@@ -343,23 +343,40 @@ public final class OptionBuilder
+      * @throws IllegalArgumentException if <code>opt</code> is not
+      * a valid character.  See Option.
+      */
+-    public static Option create(String opt) throws IllegalArgumentException
+-    {
+-            // create the option
+-        Option option = new Option(opt, description);
+-
+-            // set the option properties
+-            option.setLongOpt(longopt);
+-            option.setRequired(required);
+-            option.setOptionalArg(optionalArg);
+-            option.setArgs(numberOfArgs);
+-            option.setType(type);
+-            option.setValueSeparator(valuesep);
+-            option.setArgName(argName);
+-            // reset the OptionBuilder properties
+-            OptionBuilder.reset();
+-
+-        // return the Option instance
+-        return option;
++public static Option create(String opt) throws IllegalArgumentException {
++    // Make local copies of properties before resetting
++    final String localDesc = description;
++    final String localLongOpt = longopt;
++    final boolean localRequired = required;
++    final boolean localOptionalArg = optionalArg;
++    final int localNumberOfArgs = numberOfArgs;
++    final Object localType = type;
++    final char localValuesep = valuesep;
++    final String localArgName = argName;
++
++    // Reset properties immediately
++    OptionBuilder.reset();
++
++    // Create the option with the captured description (which might be null)
++    Option option = new Option(opt, localDesc);
++
++    // Set properties using the local copies
++    if (localLongOpt != null) {
++        option.setLongOpt(localLongOpt);
++    }
++    option.setRequired(localRequired);
++    option.setOptionalArg(localOptionalArg);
++    option.setArgs(localNumberOfArgs);
++    if (localType != null) {
++        option.setType(localType);
+     }
++    if (localValuesep != 0) {
++        option.setValueSeparator(localValuesep);
++    }
++    if (localArgName != null) {
++        option.setArgName(localArgName);
++    }
++
++    return option;
++}
+ }

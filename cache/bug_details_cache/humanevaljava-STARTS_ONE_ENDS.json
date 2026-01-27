@@ -1,0 +1,16 @@
+{
+    "bug_id": "STARTS_ONE_ENDS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_STARTS_ONE_ENDS.test_1:15 expected:<19> but was:<18>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        int result = humaneval.buggy.STARTS_ONE_ENDS.starts_one_ends(2);\n        org.junit.Assert.assertEquals(\n            result, 18\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_STARTS_ONE_ENDS"
+}

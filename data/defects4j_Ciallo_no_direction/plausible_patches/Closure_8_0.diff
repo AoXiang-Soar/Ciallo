@@ -1,0 +1,35 @@
+diff --git a/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java b/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
+index f2d36f54f..35b916561 100644
+--- a/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
++++ b/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
+@@ -199,13 +199,19 @@ class CollapseVariableDeclarations implements CompilerPass {
+       }
+ 
+       Var var = s.getVar(lhs.getString());
+-      return var != null
+-          && var.getScope() == s
+-          && !blacklistedVars.contains(var);
++      if (var == null) {
++        return false;
++      }
++
++      // Don't redeclare function parameters
++      if (var.getNameNode().getParent().isParamList()) {
++        return false;
++      }
++
++      return var.getScope() == s && !blacklistedVars.contains(var);
+     }
+   }
+ 
+-
+   private void applyCollapses() {
+     for (Collapse collapse : collapses) {
+ 
+@@ -243,4 +249,4 @@ class CollapseVariableDeclarations implements CompilerPass {
+       }
+     }
+   }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 11,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Time",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testDateTimeZoneBuilder() throws Exception {\n        // test multithreading, issue #18\n        getTestDataTimeZoneBuilder().toDateTimeZone(\"TestDTZ1\", true);\n        final DateTimeZone[] zone = new DateTimeZone[1];\n        Thread t = new Thread(new Runnable() {\n            public void run() {\n                zone[0] = getTestDataTimeZoneBuilder().toDateTimeZone(\"TestDTZ2\", true);\n            }\n        });\n        t.start();\n        t.join();\n        assertNotNull(zone[0]);\n    }",
+    "test_line": "        assertNotNull(zone[0]);",
+    "test_name": "testDateTimeZoneBuilder",
+    "test_suite": "org.joda.time.tz.TestCompiler"
+}

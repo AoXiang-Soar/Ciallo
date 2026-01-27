@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java b/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java
+index 23630cd..59b8e62 100644
+--- a/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java
++++ b/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java
+@@ -18,19 +18,12 @@ package humaneval.buggy;
+ 
+ public class CLOSEST_INTEGER {
+     public static int closest_integer(String value) {
+-        if (value.indexOf('.') >= 0) {
+-            while (value.charAt(value.length() - 1) == '0')
+-                value = value.substring(0, value.length() - 1);
+-        }
+-
+         double num = Double.parseDouble(value);
+-        int result = 0;
+-        if (value.substring(value.length() - 2).equals(".5")) {
+-            result = num > 0 ? (int)Math.floor(num) : (int)Math.ceil(num);
+-        } else if (value.length() > 0){
+-            result = (int)Math.round(num);
++        
++        if (num - Math.floor(num) == 0.5) {
++            return (int)(num > 0 ? Math.ceil(num) : Math.floor(num));
++        } else {
++            return (int)Math.round(num);
+         }
+-
+-        return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,41 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_STRINGS.java b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+index e98a5f0..219773b 100644
+--- a/src/main/java/humaneval/buggy/WORDS_STRINGS.java
++++ b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+@@ -12,20 +12,18 @@ import java.util.ArrayList;
+  */
+ 
+ public class WORDS_STRINGS {
+-	public static ArrayList<String> words_strings(String s) {
+-		ArrayList<String> result = new ArrayList<String>();
+-		String s_list = "";
+-		for(char c : s.toCharArray()) {
+-			if(c == ',') {
+-				s_list += ' ';
+-			} else {
+-				s_list += c;
+-			}
+-		}
+-		String[] result_array = s_list.trim().split("\\s+");
+-		for(String r : result_array) {
+-			result.add(r);
+-		}
+-		return result;
+-	}
+-}
++    public static ArrayList<String> words_strings(String s) {
++        ArrayList<String> result = new ArrayList<String>();
++        if (s.trim().isEmpty()) {
++            return result;
++        }
++        String normalized = s.replaceAll(",", " ");
++        String[] result_array = normalized.trim().split("\\s+");
++        for (String r : result_array) {
++            if (!r.isEmpty()) {
++                result.add(r);
++            }
++        }
++        return result;
++    }
++}
+\ No newline at end of file

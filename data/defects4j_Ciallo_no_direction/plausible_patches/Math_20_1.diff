@@ -1,0 +1,30 @@
+diff --git a/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java b/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
+index 4b7dbf6bb..bb28cb3ba 100644
+--- a/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
++++ b/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
+@@ -917,10 +917,22 @@ public class CMAESOptimizer
+          * @param x Normalized objective variables.
+          * @return the original objective variables, possibly repaired.
+          */
+-        public double[] repairAndDecode(final double[] x) {
+-            return
+-                decode(x);
++public double[] repairAndDecode(final double[] x) {
++    // Create a copy of the input array to avoid modifying the original
++    double[] repaired = x.clone();
++    
++    // Iterate through each value and ensure it's within [0,1] bounds
++    for (int i = 0; i < repaired.length; i++) {
++        if (repaired[i] < 0) {
++            repaired[i] = 0;
++        } else if (repaired[i] > 1) {
++            repaired[i] = 1;
+         }
++    }
++    
++    // Decode the repaired values
++    return decode(repaired);
++}
+ 
+         /**
+          * @param x Normalized objective variables.

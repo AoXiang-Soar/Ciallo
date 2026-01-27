@@ -1,0 +1,16 @@
+{
+    "bug_id": 4,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Mockito",
+    "test_error_message": "java.lang.Exception: Unexpected exception, expected<org.mockito.exceptions.verification.VerificationInOrderFailure> but was<java.lang.ClassCastException>",
+    "test_framework": "defects4j",
+    "test_function": "    @Test(expected = VerificationInOrderFailure.class)\n    public void can_use_print_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_no_more_interaction_wanted_in_order() throws Exception {\n        Invocation invocation_with_bogus_default_answer = new InvocationBuilder().mock(mock(IMethods.class, new Returns(false))).toInvocation();\n        new Reporter().noMoreInteractionsWantedInOrder(invocation_with_bogus_default_answer);\n    }",
+    "test_line": "        new Reporter().noMoreInteractionsWantedInOrder(invocation_with_bogus_default_answer);",
+    "test_name": "can_use_print_mock_name_even_when_mock_bogus_default_answer_and_when_reporting_no_more_interaction_wanted_in_order",
+    "test_suite": "org.mockito.exceptions.ReporterTest"
+}

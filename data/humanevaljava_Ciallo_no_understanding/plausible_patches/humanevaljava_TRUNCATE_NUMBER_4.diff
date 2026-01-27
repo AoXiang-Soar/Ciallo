@@ -1,0 +1,17 @@
+diff --git a/src/main/java/humaneval/buggy/TRUNCATE_NUMBER.java b/src/main/java/humaneval/buggy/TRUNCATE_NUMBER.java
+old mode 100644
+new mode 100755
+index f2dc7eb..8e7cd70
+--- a/src/main/java/humaneval/buggy/TRUNCATE_NUMBER.java
++++ b/src/main/java/humaneval/buggy/TRUNCATE_NUMBER.java
+@@ -2,6 +2,7 @@ package humaneval.buggy;
+ 
+ public class TRUNCATE_NUMBER {
+     public static double truncate_number(double number) {
+-        return number / 1.0;
++        String[] parts = String.valueOf(number).split("\\.");
++        return Double.parseDouble("0." + parts[1]);
+     }
+-}
++}
+\ No newline at end of file

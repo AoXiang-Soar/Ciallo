@@ -1,0 +1,16 @@
+{
+    "bug_id": 69,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.JsonMappingException: Could not find creator property with name 'stringField' (in class com.fasterxml.jackson.databind.creators.Creator1476Test$SimplePojo)",
+    "test_framework": "defects4j",
+    "test_function": "    public void testConstructorChoice() throws Exception {\n        ObjectMapper mapper = new ObjectMapper();\n        SimplePojo pojo = mapper.readValue(\"{ \\\"intField\\\": 1, \\\"stringField\\\": \\\"foo\\\" }\", SimplePojo.class);\n\n        assertEquals(1, pojo.getIntField());\n        assertEquals(\"foo\", pojo.getStringField());\n    }",
+    "test_line": "",
+    "test_name": "testConstructorChoice",
+    "test_suite": "com.fasterxml.jackson.databind.creators.Creator1476Test"
+}

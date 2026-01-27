@@ -1,0 +1,32 @@
+diff --git a/src/main/java/org/jsoup/safety/Cleaner.java b/src/main/java/org/jsoup/safety/Cleaner.java
+index 7d7f3166..129ffc6f 100644
+--- a/src/main/java/org/jsoup/safety/Cleaner.java
++++ b/src/main/java/org/jsoup/safety/Cleaner.java
+@@ -36,15 +36,20 @@ public class Cleaner {
+      @param dirtyDocument Untrusted base document to clean.
+      @return cleaned document.
+      */
+-    public Document clean(Document dirtyDocument) {
+-        Validate.notNull(dirtyDocument);
+-
+-        Document clean = Document.createShell(dirtyDocument.baseUri());
+-            copySafeNodes(dirtyDocument.body(), clean.body());
+-
+-        return clean;
++public Document clean(Document dirtyDocument) {
++    Validate.notNull(dirtyDocument);
++
++    Document clean = Document.createShell(dirtyDocument.baseUri());
++    Element dirtyBody = dirtyDocument.body();
++    Element cleanBody = clean.body();
++    
++    if (dirtyBody != null && cleanBody != null) {
++        copySafeNodes(dirtyBody, cleanBody);
+     }
+ 
++    return clean;
++}
++
+     /**
+      Determines if the input document is valid, against the whitelist. It is considered valid if all the tags and attributes
+      in the input HTML are allowed by the whitelist.

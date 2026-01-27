@@ -1,0 +1,29 @@
+diff --git a/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java b/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
+index 7926089..3ffdf15 100644
+--- a/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
++++ b/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
+@@ -1,16 +1,12 @@
+ package humaneval.buggy;
+ 
+-/*
+- * Evaluate whether the given number n can be written as the sum of exactly 4 positive even numbers
+-    Example
+-    is_equal_to_sum_even(4) == False
+-    is_equal_to_sum_even(6) == False
+-    is_equal_to_sum_even(8) == True
+-
+- */
+-
+ public class IS_EQUAL_TO_SUM_EVEN {
+     public static boolean is_equal_to_sum_even(int n) {
+-        return ((n * 2 == 1) ^ (n < 8));
++        // A number can be expressed as a sum of exactly four positive even numbers
++        // if it is equal to or greater than the smallest possible sum of four even numbers, 
++        // which is 2 + 2 + 2 + 2 = 8.
++        
++        // Verify that n is at least 8 and is an even number
++        return (n >= 8) && (n % 2 == 0);
+     }
+-}
++}
+\ No newline at end of file

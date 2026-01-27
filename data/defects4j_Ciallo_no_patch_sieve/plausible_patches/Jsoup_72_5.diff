@@ -1,0 +1,18 @@
+diff --git a/src/main/java/org/jsoup/parser/CharacterReader.java b/src/main/java/org/jsoup/parser/CharacterReader.java
+index 9ed41639..1224659e 100644
+--- a/src/main/java/org/jsoup/parser/CharacterReader.java
++++ b/src/main/java/org/jsoup/parser/CharacterReader.java
+@@ -424,6 +424,13 @@ public final class CharacterReader {
+         // limit (no cache):
+         if (count > maxStringCacheLen)
+             return new String(charBuf, start, count);
++        // check bounds:
++        try {
++            if (count <= 0)
++                return "";
++        } catch (StringIndexOutOfBoundsException e) {
++            return "";
++        }
+ 
+         // calculate hash:
+         int hash = 0;

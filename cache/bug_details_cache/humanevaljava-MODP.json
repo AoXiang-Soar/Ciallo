@@ -1,0 +1,16 @@
+{
+    "bug_id": "MODP",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MODP.test_1:15 expected:<0> but was:<2>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        int result = humaneval.buggy.MODP.modp(1101, 101);\n        org.junit.Assert.assertEquals(\n            result, 2\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_MODP"
+}

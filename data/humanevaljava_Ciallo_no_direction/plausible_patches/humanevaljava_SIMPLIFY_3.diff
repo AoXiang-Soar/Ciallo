@@ -1,0 +1,30 @@
+diff --git a/src/main/java/humaneval/buggy/SIMPLIFY.java b/src/main/java/humaneval/buggy/SIMPLIFY.java
+index a55ee2e..c12a8f5 100644
+--- a/src/main/java/humaneval/buggy/SIMPLIFY.java
++++ b/src/main/java/humaneval/buggy/SIMPLIFY.java
+@@ -20,8 +20,20 @@ public class SIMPLIFY {
+ 
+         int numerator = a * c;
+         int denom = b * d;
+-        if (numerator / denom == (int) (numerator / denom))
+-            return true;
+-        return false;
++        
++        // Calculate greatest common divisor
++        int gcd = gcd(numerator, denom);
++        
++        // Simplify the fraction by dividing by gcd
++        return (denom / gcd) == 1;
+     }
+-}
++    
++    private static int gcd(int a, int b) {
++        while (b != 0) {
++            int temp = b;
++            b = a % b;
++            a = temp;
++        }
++        return a;
++    }
++}
+\ No newline at end of file

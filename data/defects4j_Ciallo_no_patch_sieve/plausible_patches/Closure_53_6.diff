@@ -1,0 +1,140 @@
+diff --git a/src/com/google/javascript/jscomp/InlineObjectLiterals.java b/src/com/google/javascript/jscomp/InlineObjectLiterals.java
+index 9061925db..a55272cfc 100644
+--- a/src/com/google/javascript/jscomp/InlineObjectLiterals.java
++++ b/src/com/google/javascript/jscomp/InlineObjectLiterals.java
+@@ -300,64 +300,80 @@ class InlineObjectLiterals implements CompilerPass {
+      * Note that the resulting expression will always evaluate to
+      * true, as would the x = {...} expression.
+      */
+-    private void replaceAssignmentExpression(Var v, Reference ref,
+-                                             Map<String, String> varmap) {
+-      // Compute all of the assignments necessary
+-      List<Node> nodes = Lists.newArrayList();
+-      Node val = ref.getAssignedValue();
+-      blacklistVarReferencesInTree(val, v.scope);
+-      Preconditions.checkState(val.getType() == Token.OBJECTLIT);
+-      Set<String> all = Sets.newLinkedHashSet(varmap.keySet());
+-      for (Node key = val.getFirstChild(); key != null;
+-           key = key.getNext()) {
+-        String var = key.getString();
+-        Node value = key.removeFirstChild();
+-        // TODO(user): Copy type information.
+-        nodes.add(
+-          new Node(Token.ASSIGN,
+-                   Node.newString(Token.NAME, varmap.get(var)), value));
+-        all.remove(var);
+-      }
+-
+-      // TODO(user): Better source information.
+-      for (String var : all) {
+-        nodes.add(
+-          new Node(Token.ASSIGN,
+-                   Node.newString(Token.NAME, varmap.get(var)),
+-                   NodeUtil.newUndefinedNode(null)));
+-      }
++private void replaceAssignmentExpression(Var v, Reference ref,
++                                         Map<String, String> varmap) {
++  // Compute all of the assignments necessary
++  List<Node> nodes = Lists.newArrayList();
++  Node val = ref.getAssignedValue();
++  blacklistVarReferencesInTree(val, v.scope);
++  Preconditions.checkState(val.getType() == Token.OBJECTLIT);
++  Set<String> all = Sets.newLinkedHashSet(varmap.keySet());
++  for (Node key = val.getFirstChild(); key != null;
++       key = key.getNext()) {
++    String var = key.getString();
++    Node value = key.removeFirstChild();
++    // TODO(user): Copy type information.
++    nodes.add(
++      new Node(Token.ASSIGN,
++               Node.newString(Token.NAME, varmap.get(var)), value));
++    all.remove(var);
++  }
+ 
+-      Node replacement;
+-        // All assignments evaluate to true, so make sure that the
+-        // expr statement evaluates to true in case it matters.
+-        nodes.add(new Node(Token.TRUE));
+-
+-        // Join these using COMMA.  A COMMA node must have 2 children, so we
+-        // create a tree. In the tree the first child be the COMMA to match
+-        // the parser, otherwise tree equality tests fail.
+-        nodes = Lists.reverse(nodes);
+-        replacement = new Node(Token.COMMA);
+-        Node cur = replacement;
+-        int i;
+-        for (i = 0; i < nodes.size() - 2; i++) {
+-          cur.addChildToFront(nodes.get(i));
+-          Node t = new Node(Token.COMMA);
+-          cur.addChildToFront(t);
+-          cur = t;
+-        }
+-        cur.addChildToFront(nodes.get(i));
+-        cur.addChildToFront(nodes.get(i + 1));
++  // TODO(user): Better source information.
++  for (String var : all) {
++    nodes.add(
++      new Node(Token.ASSIGN,
++               Node.newString(Token.NAME, varmap.get(var)),
++               NodeUtil.newUndefinedNode(null)));
++  }
+ 
+-      Node replace = ref.getParent();
+-      replacement.copyInformationFromForTree(replace);
++  Node replacement;
++  // All assignments evaluate to true, so make sure that the
++  // expr statement evaluates to true in case it matters.
++  nodes.add(new Node(Token.TRUE));
++
++  // Join these using COMMA.  A COMMA node must have 2 children, so we
++  // create a tree. In the tree the first child be the COMMA to match
++  // the parser, otherwise tree equality tests fail.
++  nodes = Lists.reverse(nodes);
++  replacement = buildCommaTree(nodes);
++
++  Node replace = ref.getParent();
++  replacement.copyInformationFromForTree(replace);
++
++  if (replace.getType() == Token.VAR) {
++    replace.getParent().replaceChild(
++        replace, NodeUtil.newExpr(replacement));
++  } else {
++    replace.getParent().replaceChild(replace, replacement);
++  }
++}
+ 
+-      if (replace.getType() == Token.VAR) {
+-        replace.getParent().replaceChild(
+-            replace, NodeUtil.newExpr(replacement));
+-      } else {
+-        replace.getParent().replaceChild(replace, replacement);
+-      }
+-    }
++private Node buildCommaTree(List<Node> nodes) {
++  if (nodes.isEmpty()) {
++    return NodeUtil.newUndefinedNode(null);
++  }
++  if (nodes.size() == 1) {
++    return nodes.get(0);
++  }
++  
++  Node root = new Node(Token.COMMA);
++  Node current = root;
++  
++  // Add all but the last two nodes
++  for (int i = 0; i < nodes.size() - 2; i++) {
++    current.addChildToFront(nodes.get(i));
++    Node comma = new Node(Token.COMMA);
++    current.addChildToFront(comma);
++    current = comma;
++  }
++  
++  // Add the last two nodes
++  current.addChildToFront(nodes.get(nodes.size() - 2));
++  current.addChildToFront(nodes.get(nodes.size() - 1));
++  
++  return root;
++}
+ 
+     /**
+      * Splits up the object literal into individual variables, and

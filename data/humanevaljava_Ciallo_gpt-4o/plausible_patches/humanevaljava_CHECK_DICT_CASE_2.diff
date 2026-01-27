@@ -1,0 +1,54 @@
+diff --git a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+index ba94200..b8faba2 100644
+--- a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
++++ b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+@@ -2,16 +2,6 @@ package humaneval.buggy;
+ 
+ import java.util.HashMap;
+ 
+-// Given a dictionary, return True if all keys are strings in lower 
+-// case or all keys are strings in upper case, else return False.
+-// The function should return False is the given dictionary is empty.
+-// Examples:
+-// check_dict_case({"a":"apple", "b":"banana"}) should return True.
+-// check_dict_case({"a":"apple", "A":"banana", "B":"banana"}) should return False.
+-// check_dict_case({"a":"apple", 8:"banana", "a":"apple"}) should return False.
+-// check_dict_case({"Name":"John", "Age":"36", "City":"Houston"}) should return False.
+-// check_dict_case({"STATE":"NC", "ZIP":"12345" }) should return True.
+-
+ public class CHECK_DICT_CASE {
+     public static boolean check_dict_case(HashMap<Object, Object> dict) {
+         if (dict.size() == 0)
+@@ -20,8 +10,7 @@ public class CHECK_DICT_CASE {
+             String state = "start";
+             for (Object key : dict.keySet()) {
+                 if (!(key instanceof String)) {
+-                    state = "mixed";
+-                    break;
++                    return false;  // Immediately return false if any key is not a string
+                 }
+                 String str_key = (String) key;
+                 if (state.equals("start")) {
+@@ -30,15 +19,15 @@ public class CHECK_DICT_CASE {
+                     else if (str_key.toLowerCase().equals(str_key))
+                         state = "lower";
+                     else {
+-                        state = "mixed";
+-                        break;
++                        return false;  // Immediately return false if key is neither all lower nor upper case
+                     }
+                 } else if (state.equals("upper") && !str_key.toUpperCase().equals(str_key)) {
+-                    state = "mixed";
+-                    break;
++                    return false;  // Immediately return false if an inconsistency is detected
++                } else if (state.equals("lower") && !str_key.toLowerCase().equals(str_key)) {
++                    return false;  // Immediately return false if an inconsistency is detected
+                 }
+             }
+-            return (state.equals("upper")) || (state.equals("lower"));
++            return true;  // Return true if all keys are consistently the same case
+         }
+     }
+-}
++}
+\ No newline at end of file

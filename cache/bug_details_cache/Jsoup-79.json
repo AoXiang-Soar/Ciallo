@@ -1,0 +1,16 @@
+{
+    "bug_id": 79,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "java.lang.UnsupportedOperationException: Leaf Nodes do not have child nodes.",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void testLeadNodesHaveNoChildren() {\n        Document doc = Jsoup.parse(\"<div>Hello there</div>\");\n        Element div = doc.select(\"div\").first();\n        TextNode tn = (TextNode) div.childNode(0);\n        List<Node> nodes = tn.childNodes();\n        assertEquals(0, nodes.size());\n    }",
+    "test_line": "        List<Node> nodes = tn.childNodes();",
+    "test_name": "testLeadNodesHaveNoChildren",
+    "test_suite": "org.jsoup.nodes.TextNodeTest"
+}

@@ -1,0 +1,18 @@
+diff --git a/src/main/java/humaneval/buggy/WILL_IT_FLY.java b/src/main/java/humaneval/buggy/WILL_IT_FLY.java
+old mode 100644
+new mode 100755
+index 03026a4..9cb689b
+--- a/src/main/java/humaneval/buggy/WILL_IT_FLY.java
++++ b/src/main/java/humaneval/buggy/WILL_IT_FLY.java
+@@ -29,7 +29,9 @@ public class WILL_IT_FLY {
+         int j = q.length - 1;
+         while (i < j) {
+             if (q[i] != q[j])   return false;
++            i++;
++            j--;
+         }
+         return true;
+     }
+-}
++}
+\ No newline at end of file

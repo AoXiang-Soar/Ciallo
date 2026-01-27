@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java b/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java
+index b8a4679..9f234b3 100644
+--- a/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java
++++ b/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java
+@@ -5,8 +5,15 @@ positive integers that start or end with 1. */
+ 
+ public class STARTS_ONE_ENDS {
+     public static int starts_one_ends(int n) {
+-        if (n == 1)
++        if (n == 1) {
+             return 1;
+-        return (int) ((10 + 9) * Math.pow(10, n - 2));
++        }
++        // Count numbers starting with 1: 1 × 10^(n-1)
++        int startsWith1 = (int) Math.pow(10, n - 1);
++        // Count numbers ending with 1: 9 × 10^(n-2)
++        int endsWith1 = 9 * (int) Math.pow(10, n - 2);
++        // Subtract overlap (numbers starting and ending with 1): 1 × 10^(n-2)
++        int overlap = (int) Math.pow(10, n - 2);
++        return startsWith1 + endsWith1 - overlap;
+     }
+-}
++}
+\ No newline at end of file

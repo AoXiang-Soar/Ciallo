@@ -1,0 +1,35 @@
+diff --git a/src/com/google/javascript/jscomp/CollapseProperties.java b/src/com/google/javascript/jscomp/CollapseProperties.java
+index ab2d2c7cf..e17436957 100644
+--- a/src/com/google/javascript/jscomp/CollapseProperties.java
++++ b/src/com/google/javascript/jscomp/CollapseProperties.java
+@@ -158,7 +158,7 @@ class CollapseProperties implements CompilerPass {
+    *    inlineable.
+    * @see InlineVariables
+    */
+-  private void inlineAliases(GlobalNamespace namespace) {
++private void inlineAliases(GlobalNamespace namespace) {
+     // Invariant: All the names in the worklist meet condition (a).
+     Deque<Name> workList = new ArrayDeque<Name>(namespace.getNameForest());
+     while (!workList.isEmpty()) {
+@@ -176,6 +176,10 @@ class CollapseProperties implements CompilerPass {
+         List<Ref> refs = Lists.newArrayList(name.getRefs());
+         for (Ref ref : refs) {
+           if (ref.type == Type.ALIASING_GET && ref.scope.isLocal()) {
++            // Skip inlining if this is a special case that shouldn't be inlined
++            if (shouldSkipInline(ref)) {
++              continue;
++            }
+             // {@code name} meets condition (c). Try to inline it.
+             if (inlineAliasIfPossible(ref, namespace)) {
+               name.removeRef(ref);
+@@ -196,6 +200,10 @@ class CollapseProperties implements CompilerPass {
+     }
+   }
+ 
++  private boolean shouldSkipInline(Ref ref) {
++    return ref.node != null && ref.node.isName() && "arguments".equals(ref.node.getString());
++  }
++
+   private boolean inlineAliasIfPossible(Ref alias, GlobalNamespace namespace) {
+     // Ensure that the alias is assigned to a local variable at that
+     // variable's declaration. If the alias's parent is a NAME,

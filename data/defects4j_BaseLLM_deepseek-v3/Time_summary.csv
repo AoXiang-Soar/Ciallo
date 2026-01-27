@@ -1,0 +1,27 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Time,1,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,2,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,3,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,4,SL SH SF,1,893,1,0,0,1,
+defects4j,Time,5,SF,1,7873,7,1,5,7,
+defects4j,Time,6,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,7,SF,0,22454,,20,2,22,
+defects4j,Time,8,SF,0,25311,,22,0,22,
+defects4j,Time,9,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,10,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,11,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,12,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,13,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,14,SF,0,20534,,12,10,22,
+defects4j,Time,15,SH SF,1,828,1,0,0,1,
+defects4j,Time,16,SL SH SF,1,1623,2,0,1,2,
+defects4j,Time,17,SF,0,18817,,22,0,22,
+defects4j,Time,18,SF,1,2080,2,0,1,2,
+defects4j,Time,19,SL SH SF,0,17426,,22,0,22,
+defects4j,Time,20,SF,1,7814,12,6,5,12,
+defects4j,Time,22,SF,0,14049,,1,21,22,
+defects4j,Time,23,SF,1,1797,1,0,0,1,
+defects4j,Time,24,SH SF,1,21168,21,7,13,21,
+defects4j,Time,25,SH SF,0,17125,,3,19,22,
+defects4j,Time,26,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,27,SF,1,4954,5,4,0,5,

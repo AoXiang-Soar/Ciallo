@@ -1,0 +1,16 @@
+{
+    "bug_id": 46,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testAtanI() {\n        Assert.assertTrue(Complex.I.atan().isNaN());\n    }",
+    "test_line": "        Assert.assertTrue(Complex.I.atan().isNaN());",
+    "test_name": "testAtanI",
+    "test_suite": "org.apache.commons.math.complex.ComplexTest"
+}

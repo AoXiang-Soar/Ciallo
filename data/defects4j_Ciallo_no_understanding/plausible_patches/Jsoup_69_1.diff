@@ -1,0 +1,55 @@
+diff --git a/src/main/java/org/jsoup/nodes/FormElement.java b/src/main/java/org/jsoup/nodes/FormElement.java
+index e498975d..b0b1ee73 100644
+--- a/src/main/java/org/jsoup/nodes/FormElement.java
++++ b/src/main/java/org/jsoup/nodes/FormElement.java
+@@ -33,7 +33,13 @@ public class FormElement extends Element {
+      * @return form controls associated with this element.
+      */
+     public Elements elements() {
+-        return elements;
++        Elements activeElements = new Elements();
++        for (Element el : elements) {
++            if (el.parent() != null) { // only return elements still in the DOM
++                activeElements.add(el);
++            }
++        }
++        return activeElements;
+     }
+ 
+     /**
+@@ -46,7 +52,6 @@ public class FormElement extends Element {
+         return this;
+     }
+ 
+-
+     /**
+      * Prepare to submit this form. A Connection object is created with the request set up from the form values. You
+      * can then set up other options (like user-agent, timeout, cookies), then execute it.
+@@ -74,9 +79,9 @@ public class FormElement extends Element {
+         ArrayList<Connection.KeyVal> data = new ArrayList<>();
+ 
+         // iterate the form control elements and accumulate their values
+-        for (Element el: elements) {
+-            if (!el.tag().isFormSubmittable()) continue; // contents are form listable, superset of submitable
+-            if (el.hasAttr("disabled")) continue; // skip disabled form inputs
++        for (Element el: elements()) { // Use elements() which filters out removed elements
++            if (!el.tag().isFormSubmittable()) continue;
++            if (el.hasAttr("disabled")) continue;
+             String name = el.attr("name");
+             if (name.length() == 0) continue;
+             String type = el.attr("type");
+@@ -94,7 +99,6 @@ public class FormElement extends Element {
+                         data.add(HttpConnection.KeyVal.create(name, option.val()));
+                 }
+             } else if ("checkbox".equalsIgnoreCase(type) || "radio".equalsIgnoreCase(type)) {
+-                // only add checkbox or radio if they have the checked attribute
+                 if (el.hasAttr("checked")) {
+                     final String val = el.val().length() >  0 ? el.val() : "on";
+                     data.add(HttpConnection.KeyVal.create(name, val));
+@@ -105,4 +109,4 @@ public class FormElement extends Element {
+         }
+         return data;
+     }
+-}
++}
+\ No newline at end of file

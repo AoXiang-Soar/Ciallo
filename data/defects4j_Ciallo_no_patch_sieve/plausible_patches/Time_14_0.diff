@@ -1,0 +1,56 @@
+diff --git a/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java b/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java
+index afca44e6..60265bf7 100644
+--- a/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java
++++ b/src/main/java/org/joda/time/chrono/BasicMonthOfYearDateTimeField.java
+@@ -200,24 +200,36 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
+     }
+ 
+     //-----------------------------------------------------------------------
+-    public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+-        // overridden as superclass algorithm can't handle
+-        // 2004-02-29 + 48 months -> 2008-02-29 type dates
+-        if (valueToAdd == 0) {
+-            return values;
++public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
++    if (valueToAdd == 0) {
++        return values;
++    }
++
++    if (DateTimeUtils.isContiguous(partial)) {
++        // Create a temporary instant with a valid year (like 2000 for leap year handling)
++        long instant = iChronology.setYear(0L, 2000);
++        for (int i = 0, isize = partial.size(); i < isize; i++) {
++            instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+         }
+-            // month is largest field and being added to, such as month-day
+-        if (DateTimeUtils.isContiguous(partial)) {
+-            long instant = 0L;
+-            for (int i = 0, isize = partial.size(); i < isize; i++) {
+-                instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+-            }
+-            instant = add(instant, valueToAdd);
+-            return iChronology.get(partial, instant);
+-        } else {
+-            return super.add(partial, fieldIndex, values, valueToAdd);
++
++        // Store the original day
++        int originalDay = values[1];
++        
++        // Add the months
++        instant = iChronology.monthOfYear().add(instant, valueToAdd);
++        
++        // Check if we need to adjust the day
++        int maxDay = iChronology.dayOfMonth().getMaximumValue(instant);
++        if (originalDay > maxDay) {
++            instant = iChronology.dayOfMonth().set(instant, maxDay);
+         }
++
++        // Get the new partial values
++        return iChronology.get(partial, instant);
++    } else {
++        return super.add(partial, fieldIndex, values, valueToAdd);
+     }
++}
+ 
+     //-----------------------------------------------------------------------
+     /**

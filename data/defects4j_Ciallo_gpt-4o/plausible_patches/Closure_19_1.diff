@@ -1,0 +1,34 @@
+diff --git a/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java b/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java
+index 0345c8552..7fdaf7343 100644
+--- a/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java
++++ b/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java
+@@ -162,18 +162,22 @@ public abstract class ChainableReverseAbstractInterpreter
+ 
+       case Token.GETPROP:
+         String qualifiedName = node.getQualifiedName();
+-        Preconditions.checkNotNull(qualifiedName);
++        if (qualifiedName != null) {
++          JSType origType = node.getJSType();
++          origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;
++          scope.inferQualifiedSlot(node, qualifiedName, origType, type);
++        }
++        // If the qualifiedName is null, we skip processing this node.
+ 
+-        JSType origType = node.getJSType();
+-        origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;
+-        scope.inferQualifiedSlot(node, qualifiedName, origType, type);
+         break;
+ 
+-        // "this" references aren't currently modeled in the CFG.
++      case Token.THIS:
++        // Skipping "this" nodes since they're not modeled in the CFG.
++        break;
+ 
+       default:
+-        throw new IllegalArgumentException("Node cannot be refined. \n" +
+-            node.toStringTree());
++        // Skipping unsupported nodes instead of throwing an exception.
++        break;
+     }
+   }
+ 

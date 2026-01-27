@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/SOLVE_STRING.java b/src/main/java/humaneval/buggy/SOLVE_STRING.java
+old mode 100644
+new mode 100755
+index e31e9a2..fc5739f
+--- a/src/main/java/humaneval/buggy/SOLVE_STRING.java
++++ b/src/main/java/humaneval/buggy/SOLVE_STRING.java
+@@ -12,17 +12,28 @@ package humaneval.buggy;
+ 
+ public class SOLVE_STRING {
+     public static String solve_string(String s) {
+-        int flg = 0;
++        boolean hasLetters = false;
+         StringBuilder sb = new StringBuilder();
++        
++        // First pass to check for letters and build transformed string
+         for (char c : s.toCharArray()) {
+-            if (Character.isLowerCase(c)) sb.append(Character.toUpperCase(c));
+-            else sb.append(Character.toLowerCase(c));
+-            flg = 1;
++            if (Character.isLetter(c)) {
++                hasLetters = true;
++                if (Character.isLowerCase(c)) {
++                    sb.append(Character.toUpperCase(c));
++                } else {
++                    sb.append(Character.toLowerCase(c));
++                }
++            } else {
++                sb.append(c);
++            }
+         }
+-        if (flg == 0) {
+-            sb = new StringBuilder();
+-            for (int i = s.length() - 1; i >= 0; i -= 1) sb.append(s.charAt(i));
++        
++        // If no letters found, reverse the original string
++        if (!hasLetters) {
++            return new StringBuilder(s).reverse().toString();
+         }
++        
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

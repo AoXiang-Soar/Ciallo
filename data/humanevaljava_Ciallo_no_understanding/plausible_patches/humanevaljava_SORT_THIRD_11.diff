@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_THIRD.java b/src/main/java/humaneval/buggy/SORT_THIRD.java
+old mode 100644
+new mode 100755
+index e57d2bb..d711451
+--- a/src/main/java/humaneval/buggy/SORT_THIRD.java
++++ b/src/main/java/humaneval/buggy/SORT_THIRD.java
+@@ -6,21 +6,19 @@ import java.util.List;
+ 
+ public class SORT_THIRD {
+     public static List<Integer> sort_third(List<Integer> l) {
+-        List<Integer> result = new ArrayList<Integer>();
++        List<Integer> result = new ArrayList<Integer>(l);
+ 
+         List<Integer> thirds = new ArrayList<Integer>();
+-        for (int i = 0; i < l.size(); i += 3){
++        for (int i = 0; i < l.size(); i += 3) {
+             thirds.add(l.get(i));
+         }
+         Collections.sort(thirds);
+ 
+-        for (int i = 0; i < l.size(); i += 1){
+-            if (i % 3 == 0){
+-                result.add(thirds.get(i));
+-            } else{
+-                result.add(l.get(i));
++        for (int i = 0, j = 0; i < l.size(); i += 3, j++) {
++            if (i < l.size()) {
++                result.set(i, thirds.get(j));
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

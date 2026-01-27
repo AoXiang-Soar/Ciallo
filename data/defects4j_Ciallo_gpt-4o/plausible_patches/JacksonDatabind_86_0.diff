@@ -1,0 +1,110 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java b/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
+index 30807836d..a00d383cf 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
++++ b/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
+@@ -7,8 +7,7 @@ import com.fasterxml.jackson.databind.JavaType;
+  *
+  * @since 2.7
+  */
+-public class ResolvedRecursiveType extends TypeBase
+-{
++public class ResolvedRecursiveType extends TypeBase {
+     private static final long serialVersionUID = 1L;
+ 
+     protected JavaType _referencedType;
+@@ -17,33 +16,40 @@ public class ResolvedRecursiveType extends TypeBase
+         super(erasedType, bindings, null, null, 0, null, null, false);
+     }
+ 
+-    public void setReference(JavaType ref)
+-    {
+-        // sanity check; should not be called multiple times
++    public void setReference(JavaType ref) {
++        // Sanity check; should not be called multiple times
+         if (_referencedType != null) {
+-            throw new IllegalStateException("Trying to re-set self reference; old value = "+_referencedType+", new = "+ref);
++            throw new IllegalStateException(
++                    "Trying to re-set self reference; old value = " + _referencedType + ", new = " + ref);
+         }
+         _referencedType = ref;
+     }
+-   
+ 
+-    public JavaType getSelfReferencedType() { return _referencedType; }
++    public JavaType getSelfReferencedType() {
++        return _referencedType;
++    }
++
++    @Override
++    public JavaType getSuperClass() {
++        // Delegates the call to the referenced type's super class if available
++        return (_referencedType != null) ? _referencedType.getSuperClass() : super.getSuperClass();
++    }
+ 
+     @Override
+     public StringBuilder getGenericSignature(StringBuilder sb) {
+-        return _referencedType.getGenericSignature(sb);
++        return _referencedType != null ? _referencedType.getGenericSignature(sb) : sb.append("[UNRESOLVED]");
+     }
+ 
+     @Override
+     public StringBuilder getErasedSignature(StringBuilder sb) {
+-        return _referencedType.getErasedSignature(sb);
++        return _referencedType != null ? _referencedType.getErasedSignature(sb) : sb.append("[UNRESOLVED]");
+     }
+ 
+     @Override
+     public JavaType withContentType(JavaType contentType) {
+         return this;
+     }
+-    
++
+     @Override
+     public JavaType withTypeHandler(Object h) {
+         return this;
+@@ -76,8 +82,7 @@ public class ResolvedRecursiveType extends TypeBase
+     }
+ 
+     @Override
+-    public JavaType refine(Class<?> rawType, TypeBindings bindings,
+-            JavaType superClass, JavaType[] superInterfaces) {
++    public JavaType refine(Class<?> rawType, TypeBindings bindings, JavaType superClass, JavaType[] superInterfaces) {
+         return null;
+     }
+ 
+@@ -88,27 +93,26 @@ public class ResolvedRecursiveType extends TypeBase
+ 
+     @Override
+     public String toString() {
+-        StringBuilder sb = new StringBuilder(40)
+-                .append("[recursive type; ");
++        StringBuilder sb = new StringBuilder(40).append("[recursive type; ");
+         if (_referencedType == null) {
+             sb.append("UNRESOLVED");
+         } else {
+-            // [databind#1301]: Typically resolves to a loop so short-cut
+-            //   and only include type-erased class
+             sb.append(_referencedType.getRawClass().getName());
+         }
++        sb.append("]");
+         return sb.toString();
+     }
+ 
+     @Override
+     public boolean equals(Object o) {
+-        if (o == this) return true;
+-        if (o == null) return false;
+-        // Do NOT ever match unresolved references
++        if (o == this)
++            return true;
++        if (o == null)
++            return false;
+         if (_referencedType == null) {
+             return false;
+         }
+         return (o.getClass() == getClass()
+                 && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+     }
+-}
++}
+\ No newline at end of file

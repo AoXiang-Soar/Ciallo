@@ -1,0 +1,18 @@
+diff --git a/src/com/google/javascript/jscomp/DisambiguateProperties.java b/src/com/google/javascript/jscomp/DisambiguateProperties.java
+index b34921edd..915acd90d 100644
+--- a/src/com/google/javascript/jscomp/DisambiguateProperties.java
++++ b/src/com/google/javascript/jscomp/DisambiguateProperties.java
+@@ -492,6 +492,13 @@ class DisambiguateProperties<T> implements CompilerPass {
+           child != null;
+           child = child.getNext()) {
+         // Maybe STRING, GET, SET
++        if (child.isStringKey() && !child.isQuotedString()) {
++            // Process string keys that are not quoted
++        } else if (child.isGetterDef() || child.isSetterDef()) {
++            // Process GET and SET nodes
++        } else {
++            continue; // Skip other types of nodes
++        }
+ 
+         // We should never see a mix of numbers and strings.
+         String name = child.getString();

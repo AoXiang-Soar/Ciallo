@@ -1,0 +1,48 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Compress,1,SL SH SF,1,13278,8,2,3,8,
+defects4j,Compress,2,BF,3,78852,16,16,0,35,
+defects4j,Compress,3,BF,,,,,,,Out of limited tokens. 
+defects4j,Compress,4,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,5,SH SF,7,58108,28,9,16,41,
+defects4j,Compress,6,BF,,,,,,,Out of limited tokens. 
+defects4j,Compress,7,SF,9,14317,6,2,4,17,
+defects4j,Compress,8,SF,0,629919,,336,7,4393,
+defects4j,Compress,9,BF,,,,,,,Out of limited tokens. 
+defects4j,Compress,10,SF,2,64858,30,17,17,53,
+defects4j,Compress,11,SF,6,41804,15,11,3,31,
+defects4j,Compress,12,SH SF,6,21029,8,6,2,20,
+defects4j,Compress,13,SH SF,4,14848,10,0,0,4,
+defects4j,Compress,14,SH SF,3,86429,52,45,7,139,
+defects4j,Compress,15,SF,8,16772,5,0,1,9,
+defects4j,Compress,16,SF,1,27394,10,9,3,22,
+defects4j,Compress,17,SF,2,724505,444,429,11,4171,
+defects4j,Compress,18,SF,7,42263,14,12,5,36,
+defects4j,Compress,19,SL SH SF,3,17943,10,0,3,6,
+defects4j,Compress,20,BF,,,,,,,Out of limited tokens. 
+defects4j,Compress,21,SF,9,14117,7,4,0,17,
+defects4j,Compress,22,BF,,,,,,,Out of limited tokens. 
+defects4j,Compress,23,SL SH SF,9,14171,8,0,0,9,
+defects4j,Compress,24,SF,3,27405,7,11,0,25,
+defects4j,Compress,25,SL SH SF,3,16607,10,6,1,16,
+defects4j,Compress,26,SH SF,6,9172,5,0,3,9,
+defects4j,Compress,27,SH SF,4,16625,6,4,0,12,
+defects4j,Compress,28,SF,18,21166,8,3,1,25,
+defects4j,Compress,29,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,30,SH SF,3,11541,5,0,1,4,
+defects4j,Compress,31,SH SF,8,15771,6,4,0,16,
+defects4j,Compress,32,SF,8,32664,8,7,2,24,
+defects4j,Compress,33,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,34,BF,,,,,,,Out of limited tokens. 
+defects4j,Compress,35,SF,1,28481,20,21,1,44,
+defects4j,Compress,36,SH SF,8,19141,13,6,3,23,
+defects4j,Compress,37,SH SF,1,20435,10,5,7,18,
+defects4j,Compress,38,SL SH SF,2,13312,12,9,5,25,
+defects4j,Compress,39,BF,,,,,,,Out of limited tokens. 
+defects4j,Compress,40,SF,0,420328,,134,4,1904,
+defects4j,Compress,41,SF,2,73338,20,16,6,40,
+defects4j,Compress,42,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,43,BF,,,,,,,Out of limited tokens. 
+defects4j,Compress,44,SF,8,7850,5,1,3,13,
+defects4j,Compress,45,SF,4,13911,8,5,1,15,
+defects4j,Compress,46,SH SF,9,27034,7,3,0,15,
+defects4j,Compress,47,BF,,,,,,,Out of limited tokens. 

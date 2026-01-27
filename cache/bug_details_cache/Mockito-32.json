@@ -1,0 +1,16 @@
+{
+    "bug_id": 32,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Mockito",
+    "test_error_message": "junit.framework.AssertionFailedError: <'",
+    "test_framework": "defects4j",
+    "test_function": "    public void shouldPrintNiceName() {\n        //when\n        veryCoolSpy.add(1);\n\n        try {\n            verify(veryCoolSpy).add(2);\n            fail();\n        } catch(AssertionError e) {\n            Assertions.assertThat(e.getMessage()).contains(\"veryCoolSpy\");\n        }\n    }",
+    "test_line": "            verify(veryCoolSpy).add(2);",
+    "test_name": "shouldPrintNiceName",
+    "test_suite": "org.mockitousage.bugs.SpyShouldHaveNiceNameTest"
+}

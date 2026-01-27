@@ -1,0 +1,96 @@
+diff --git a/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java b/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java
+index e258c68c6..c3d8dc231 100644
+--- a/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java
++++ b/src/main/java/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java
+@@ -132,9 +132,7 @@ public abstract class BaseSecantSolver
+         double f0 = computeObjectiveValue(x0);
+         double f1 = computeObjectiveValue(x1);
+ 
+-        // If one of the bounds is the exact root, return it. Since these are
+-        // not under-approximations or over-approximations, we can return them
+-        // regardless of the allowed solutions.
++        // If one of the bounds is the exact root, return it.
+         if (f0 == 0.0) {
+             return x0;
+         }
+@@ -150,27 +148,40 @@ public abstract class BaseSecantSolver
+         final double atol = getAbsoluteAccuracy();
+         final double rtol = getRelativeAccuracy();
+ 
+-        // Keep track of inverted intervals, meaning that the left bound is
+-        // larger than the right bound.
++        // Keep track of inverted intervals.
+         boolean inverted = false;
+ 
++        // Previous approximation to track improvement
++        double prevX = x0;
++        int stagnationCount = 0;
++        final int maxStagnation = 10; // Max allowed stagnation steps
++
+         // Keep finding better approximations.
+         while (true) {
+             // Calculate the next approximation.
+             final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+             final double fx = computeObjectiveValue(x);
+ 
+-            // If the new approximation is the exact root, return it. Since
+-            // this is not an under-approximation or an over-approximation,
+-            // we can return it regardless of the allowed solutions.
++            // If the new approximation is the exact root, return it.
+             if (fx == 0.0) {
+                 return x;
+             }
+ 
++            // Check for stagnation to potentially shrink interval
++            if (FastMath.abs(x - prevX) < atol) {
++                stagnationCount++;
++                if (stagnationCount > maxStagnation) {
++                    x1 = (x0 + x1) / 2.0; // Shrink interval
++                    f1 = computeObjectiveValue(x1);
++                    stagnationCount = 0;
++                }
++            } else {
++                stagnationCount = 0;
++            }
++            prevX = x;
++
+             // Update the bounds with the new approximation.
+             if (f1 * fx < 0) {
+-                // The value of x1 has switched to the other bound, thus inverting
+-                // the interval.
+                 x0 = x1;
+                 f0 = f1;
+                 inverted = !inverted;
+@@ -182,8 +193,6 @@ public abstract class BaseSecantSolver
+                 case PEGASUS:
+                     f0 *= f1 / (f1 + fx);
+                     break;
+-                        // Update formula cannot make any progress: Update the
+-                        // search interval.
+                 default:
+                     // Should never happen.
+                 }
+@@ -192,9 +201,7 @@ public abstract class BaseSecantSolver
+             x1 = x;
+             f1 = fx;
+ 
+-            // If the function value of the last approximation is too small,
+-            // given the function value accuracy, then we can't get closer to
+-            // the root than we already are.
++            // If function value is too small.
+             if (FastMath.abs(f1) <= ftol) {
+                 switch (allowed) {
+                 case ANY_SIDE:
+@@ -224,10 +231,8 @@ public abstract class BaseSecantSolver
+                 }
+             }
+ 
+-            // If the current interval is within the given accuracies, we
+-            // are satisfied with the current approximation.
+-            if (FastMath.abs(x1 - x0) < FastMath.max(rtol * FastMath.abs(x1),
+-                                                     atol)) {
++            // If the current interval is within given accuracies.
++            if (FastMath.abs(x1 - x0) < FastMath.max(rtol * FastMath.abs(x1), atol)) {
+                 switch (allowed) {
+                 case ANY_SIDE:
+                     return x1;

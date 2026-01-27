@@ -1,0 +1,64 @@
+diff --git a/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java b/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
+index 4045209..34f4e42 100644
+--- a/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
++++ b/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
+@@ -4,37 +4,40 @@ import java.util.ArrayList;
+ import java.util.Collections;
+ 
+ /*
+- * Given a list of positive integers x. return a sorted list of all 
+-    elements that hasn't any even digit.
+-
+-    Note: Returned list should be sorted in increasing order.
+-    
+-    For example:
+-    >>> unique_digits([15, 33, 1422, 1])
+-    [1, 15, 33]
+-    >>> unique_digits([152, 323, 1422, 10])
+-    []
++ * Given a list of positive integers x, return a sorted list of all 
++ * elements that hasn't any even digit.
++ *
++ * Note: Returned list should be sorted in increasing order.
++ * 
++ * For example:
++ * >>> unique_digits([15, 33, 1422, 1])
++ * [1, 15, 33]
++ * >>> unique_digits([152, 323, 1422, 10])
++ * []
+  */
+ 
+ public class UNIQUE_DIGITS {
+     public static ArrayList<Integer> unique_digits(ArrayList<Integer> x) {
+         ArrayList<Integer> res = new ArrayList<Integer>();
+-        for(int i : x) {
++        for (int i : x) {
+             int num = i;
+-            boolean all_odd = true;
+-            while(num > 0) {
++            boolean has_even_digit = false;
++            // Iterate over each digit in the number to check for even digits
++            while (num > 0) {
+                 int curr_digit = num % 10;
+-                if((curr_digit % 2) != 0) {
+-                    all_odd = true;
+-                    break;
++                if ((curr_digit % 2) == 0) {
++                    has_even_digit = true;
++                    break; // Break if an even digit is found
+                 }
+                 num /= 10;
+             }
+-            if(all_odd) {
++            // Include the number if it doesn't have any even digits
++            if (!has_even_digit) {
+                 res.add(i);
+             }
+         }
++        // Sort the result list to return it in increasing order
+         Collections.sort(res);
+         return res;
+     }
+-}
++}
+\ No newline at end of file

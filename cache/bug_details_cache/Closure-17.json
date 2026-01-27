@@ -1,0 +1,16 @@
+{
+    "bug_id": 17,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<in[consistent return type",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIssue688() throws Exception {\n    testTypes(\n        \"/** @const */ var SOME_DEFAULT =\\n\" +\n        \"    /** @type {TwoNumbers} */ ({first: 1, second: 2});\\n\" +\n        \"/**\\n\" +\n        \"* Class defining an interface with two numbers.\\n\" +\n        \"* @interface\\n\" +\n        \"*/\\n\" +\n        \"function TwoNumbers() {}\\n\" +\n        \"/** @type number */\\n\" +\n        \"TwoNumbers.prototype.first;\\n\" +\n        \"/** @type number */\\n\" +\n        \"TwoNumbers.prototype.second;\\n\" +\n        \"/** @return {number} */ function f() { return SOME_DEFAULT; }\",\n        \"inconsistent return type\\n\" +\n        \"found   : (TwoNumbers|null)\\n\" +\n        \"required: number\");\n  }",
+    "test_line": "      assertEquals(description, warnings[0].description);",
+    "test_name": "testIssue688",
+    "test_suite": "com.google.javascript.jscomp.TypeCheckTest"
+}

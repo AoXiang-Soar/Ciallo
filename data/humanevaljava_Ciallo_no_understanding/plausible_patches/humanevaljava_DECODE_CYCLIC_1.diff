@@ -1,0 +1,54 @@
+diff --git a/src/main/java/humaneval/buggy/DECODE_CYCLIC.java b/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
+index 9ba739f..08dc3e5 100644
+--- a/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
++++ b/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
+@@ -4,29 +4,26 @@ import java.util.ArrayList;
+ 
+ public class DECODE_CYCLIC {
+     public static String decode_cyclic(String str) {
+-        class Cyclic {
+-            String encode_cyclic(String s) {
+-                ArrayList<String> groups = new ArrayList<String>();
+-
+-                for (int i = 0; i < s.length(); i += 3){
+-                    groups.add(s.substring(i, Math.min(s.length(), i + 3)));
+-                }
+-                int remain = s.length() % 3;
+-                
+-                String result = "";
+-                for (String group : groups){
+-                    result += group.substring(1) + group.substring(0, 1);
+-                }
+-
+-                if (remain > 0){
+-                    result += s.substring(s.length() - remain);
+-                }
+-
+-                return result;
++        // Groups are formed by moving first character to end for each group
++        // To decode, we need to move last character to beginning for each group
++        
++        ArrayList<String> groups = new ArrayList<String>();
++        for (int i = 0; i < str.length(); i += 3) {
++            groups.add(str.substring(i, Math.min(str.length(), i + 3)));
++        }
++        
++        StringBuilder result = new StringBuilder();
++        for (String group : groups) {
++            if (group.length() == 3) {
++                // Move last character to beginning
++                result.append(group.charAt(group.length() - 1))
++                      .append(group.substring(0, group.length() - 1));
++            } else {
++                // Leave groups with less than 3 characters as is
++                result.append(group);
+             }
+         }
+         
+-        final Cyclic cyclic = new Cyclic();
+-        return cyclic.encode_cyclic(cyclic.encode_cyclic(str));
++        return result.toString();
+     }
+-}
++}
+\ No newline at end of file

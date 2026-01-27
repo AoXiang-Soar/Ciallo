@@ -1,0 +1,16 @@
+{
+    "bug_id": 17,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonCore",
+    "test_error_message": "com.fasterxml.jackson.core.JsonGenerationException: Split surrogate on writeRaw() input (last character)",
+    "test_framework": "defects4j",
+    "test_function": "    public void testRawWithSurrogatesString() throws Exception {\n        _testRawWithSurrogatesString(false);\n    }",
+    "test_line": "                g.writeRawValue(text, OFFSET, text.length() - OFFSET);",
+    "test_name": "testRawWithSurrogatesString",
+    "test_suite": "com.fasterxml.jackson.core.json.RawValueWithSurrogatesTest"
+}

@@ -1,0 +1,40 @@
+diff --git a/src/main/java/humaneval/buggy/MAXIMUM_K.java b/src/main/java/humaneval/buggy/MAXIMUM_K.java
+index 4f3e095..7b83079 100644
+--- a/src/main/java/humaneval/buggy/MAXIMUM_K.java
++++ b/src/main/java/humaneval/buggy/MAXIMUM_K.java
+@@ -2,9 +2,10 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ import java.util.Collections;
++import java.util.PriorityQueue;
+ 
+ /*
+- * Given an array arr of integers and a positive integer k, return a sorted list 
++ * Given an array arr of integers and a positive integer k, return a sorted list
+     of length k with the maximum k numbers in arr.
+ 
+     Example 1:
+@@ -30,11 +31,17 @@ import java.util.Collections;
+ 
+ public class MAXIMUM_K {
+     public static ArrayList<Integer> maximum_k(ArrayList<Integer> arr, int k) {
+-        Collections.sort(arr);
+-        ArrayList<Integer> result = new ArrayList<>();
+-        for(int i = arr.size() - 1; i >= arr.size() - k; i--) {
+-            result.add(arr.get(i));
++        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
++
++        for (int num : arr) {
++            minHeap.add(num);
++            if (minHeap.size() > k) {
++                minHeap.poll();
++            }
+         }
++
++        ArrayList<Integer> result = new ArrayList<>(minHeap);
++        Collections.sort(result); // Sort the result in ascending order
+         return result;
+     }
+-}
++}
+\ No newline at end of file

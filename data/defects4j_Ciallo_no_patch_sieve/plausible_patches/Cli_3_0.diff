@@ -1,0 +1,19 @@
+diff --git a/src/java/org/apache/commons/cli/TypeHandler.java b/src/java/org/apache/commons/cli/TypeHandler.java
+index addf90b..f95d125 100644
+--- a/src/java/org/apache/commons/cli/TypeHandler.java
++++ b/src/java/org/apache/commons/cli/TypeHandler.java
+@@ -158,7 +158,13 @@ public class TypeHandler {
+     {
+         try
+         {
+-            return org.apache.commons.lang.math.NumberUtils.createNumber(str);
++            if (str.contains(".") || str.toLowerCase().contains("e")) {
++                return Double.valueOf(str);
++            }
++            if (str.startsWith("0x") || str.startsWith("-0x")) {
++                return Integer.decode(str);
++            }
++            return Long.valueOf(str);
+         }
+         catch (NumberFormatException nfe)
+         {

@@ -1,0 +1,16 @@
+{
+    "bug_id": "SPECIAL_FILTER",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SPECIAL_FILTER.test_1:19 expected:<0> but was:<1>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        int result = humaneval.buggy.SPECIAL_FILTER.special_filter(\n            new int[] {15, -73, 14, -15}\n        );\n        org.junit.Assert.assertEquals(\n            result, 1\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_SPECIAL_FILTER"
+}

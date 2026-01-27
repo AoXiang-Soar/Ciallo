@@ -1,0 +1,31 @@
+diff --git a/src/com/google/javascript/jscomp/Compiler.java b/src/com/google/javascript/jscomp/Compiler.java
+index b3ca246a6..742207079 100644
+--- a/src/com/google/javascript/jscomp/Compiler.java
++++ b/src/com/google/javascript/jscomp/Compiler.java
+@@ -223,7 +223,7 @@ public class Compiler extends AbstractCompiler {
+    * Initialize the compiler options. Only necessary if you're not doing
+    * a normal compile() job.
+    */
+-  public void initOptions(CompilerOptions options) {
++public void initOptions(CompilerOptions options) {
+     this.options = options;
+     if (errorManager == null) {
+       if (outStream == null) {
+@@ -252,10 +252,13 @@ public class Compiler extends AbstractCompiler {
+           CheckLevel.OFF);
+     }
+ 
+-    if (options.checkGlobalThisLevel.isOn()) {
+-      options.setWarningLevel(
+-          DiagnosticGroups.GLOBAL_THIS,
+-          options.checkGlobalThisLevel);
++    // Check if global this checking is explicitly disabled
++    if (!options.disables(DiagnosticGroups.GLOBAL_THIS)) {
++      if (options.checkGlobalThisLevel.isOn()) {
++        options.setWarningLevel(
++            DiagnosticGroups.GLOBAL_THIS,
++            options.checkGlobalThisLevel);
++      }
+     }
+ 
+     if (options.getLanguageIn() == LanguageMode.ECMASCRIPT5_STRICT) {

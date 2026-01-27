@@ -1,0 +1,16 @@
+{
+    "bug_id": "SUM_SQUARES",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SUM_SQUARES.test_5:47 expected:<22> but was:<-126>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_5() throws java.lang.Exception {\n        int result = humaneval.buggy.SUM_SQUARES.sum_squares(new int[] {-1, -5, 2, -1, -5});\n        org.junit.Assert.assertEquals(\n            result, -126\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_5",
+    "test_suite": "TEST_SUM_SQUARES"
+}

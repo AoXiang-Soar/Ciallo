@@ -1,0 +1,16 @@
+{
+    "bug_id": "MEDIAN",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MEDIAN.test_1:19 expected:<20.0> but was:<8.0>\nTEST_MEDIAN.test_3:36 \u00bb ArrayIndexOutOfBounds Index 2 out of bounds for length...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        double result = humaneval.buggy.MEDIAN.median(\n            new int[] {-10, 4, 6, 1000, 10, 20}\n        );\n        org.junit.Assert.assertEquals(\n            result, 8, 1e-6\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_MEDIAN"
+}

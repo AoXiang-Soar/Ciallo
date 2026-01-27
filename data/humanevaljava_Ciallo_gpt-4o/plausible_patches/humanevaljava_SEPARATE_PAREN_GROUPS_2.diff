@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java b/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java
+index 7769d68..dfd9b0d 100644
+--- a/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java
++++ b/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java
+@@ -10,19 +10,24 @@ public class SEPARATE_PAREN_GROUPS {
+         int current_depth = 0;
+ 
+         for (char c : paren_string.toCharArray()) {
+-            if (c == '('){
++            if (c == '(') {
+                 current_depth += 1;
+                 current_string += String.valueOf(c);
+-            } else {
++            } else if (c == ')') {
+                 current_depth -= 1;
+                 current_string += String.valueOf(c);
+ 
+-                if (current_depth == 0){
++                if (current_depth == 0) {
+                     result.add(current_string);
+                     current_string = "";
+                 }
++            } else if (c == ' ' && current_depth == 0) {
++                // If a space is encountered and we are not within any parentheses group, ignore it
++                continue;
++            } else {
++                // Unexpected character handling can go here if needed
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

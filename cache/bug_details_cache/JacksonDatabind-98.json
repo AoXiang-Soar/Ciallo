@@ -1,0 +1,16 @@
+{
+    "bug_id": 98,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `com.fasterxml.jackson.databind.jsontype.ext.ExternalTypeIdWithEnum1328Test$AnimalAndType`, problem: argument type mismatch",
+    "test_framework": "defects4j",
+    "test_function": "    public void testExample() throws Exception {\n        ObjectMapper mapper = new ObjectMapper();\n        \n        String json = mapper.writerWithDefaultPrettyPrinter()\n                .writeValueAsString(Arrays.asList(new AnimalAndType(AnimalType.Dog, new Dog())));\n        List<AnimalAndType> list = mapper.readerFor(new TypeReference<List<AnimalAndType>>() { })\n            .readValue(json);\n        assertNotNull(list);\n    }",
+    "test_line": "            .readValue(json);",
+    "test_name": "testExample",
+    "test_suite": "com.fasterxml.jackson.databind.jsontype.ext.ExternalTypeIdWithEnum1328Test"
+}

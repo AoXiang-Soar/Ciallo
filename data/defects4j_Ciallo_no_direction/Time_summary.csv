@@ -1,0 +1,27 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Time,1,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,2,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,3,BF,,,,,,,Out of limited tokens. 
+defects4j,Time,4,SL SH SF,2,5791,1,0,1,2,
+defects4j,Time,5,SF,1,25503,12,13,0,51,
+defects4j,Time,6,BF,,,,,,,Out of limited tokens. 
+defects4j,Time,7,SF,0,72314,,14,13,185,
+defects4j,Time,8,SF,0,73557,,11,0,166,
+defects4j,Time,9,BF,,,,,,,Out of limited tokens. 
+defects4j,Time,10,BF,,,,,,,Out of limited tokens. 
+defects4j,Time,11,BF,,,,,,,Out of limited tokens. 
+defects4j,Time,12,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,13,BF,,,,,,,Out of limited tokens. 
+defects4j,Time,14,SF,0,68993,,16,21,208,
+defects4j,Time,15,SH SF,4,8340,3,0,1,5,
+defects4j,Time,16,SL SH SF,3,4103,1,0,1,3,
+defects4j,Time,17,SF,1,26720,14,8,1,39,
+defects4j,Time,18,SF,2,12840,4,4,1,11,
+defects4j,Time,19,SL SH SF,3,13300,7,6,1,19,
+defects4j,Time,20,SF,2,11202,6,3,3,11,
+defects4j,Time,22,SF,0,50739,,1,35,18,
+defects4j,Time,23,SF,1,21366,5,5,1,17,
+defects4j,Time,24,SH SF,0,181662,,18,57,220,
+defects4j,Time,25,SH SF,0,135979,,26,27,337,
+defects4j,Time,26,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Time,27,SF,0,69907,,15,4,215,

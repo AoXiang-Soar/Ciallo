@@ -1,0 +1,17 @@
+diff --git a/src/java/org/apache/commons/cli/PosixParser.java b/src/java/org/apache/commons/cli/PosixParser.java
+index 2590de7..7ccde07 100644
+--- a/src/java/org/apache/commons/cli/PosixParser.java
++++ b/src/java/org/apache/commons/cli/PosixParser.java
+@@ -277,6 +277,12 @@ public class PosixParser extends Parser {
+      */
+     protected void burstToken(String token, boolean stopAtNonOption)
+     {
++        if (token.startsWith("-") && token.length() > 2 && !options.hasOption(token.substring(1, 2)))
++        {
++            tokens.add(token);
++            return;
++        }
++
+         int tokenLength = token.length();
+ 
+         for (int i = 1; i < tokenLength; i++)

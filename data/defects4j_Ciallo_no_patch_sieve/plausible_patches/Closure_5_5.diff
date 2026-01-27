@@ -1,0 +1,20 @@
+diff --git a/src/com/google/javascript/jscomp/InlineObjectLiterals.java b/src/com/google/javascript/jscomp/InlineObjectLiterals.java
+index 2b85d84f0..e01e5ecf5 100644
+--- a/src/com/google/javascript/jscomp/InlineObjectLiterals.java
++++ b/src/com/google/javascript/jscomp/InlineObjectLiterals.java
+@@ -173,6 +173,15 @@ class InlineObjectLiterals implements CompilerPass {
+ 
+           // Deleting a property has different semantics from deleting
+           // a variable, so deleted properties should not be inlined.
++          // Handle property deletion cases - don't inline if property is deleted
++          if (gramps.isDelProp()) {
++            Node delTarget = gramps.getFirstChild();
++            if (delTarget == parent) {
++              return false;
++            }
++          } else if (parent.isDelProp()) {
++            return false;
++          }
+ 
+           // NOTE(nicksantos): This pass's object-splitting algorithm has
+           // a blind spot. It assumes that if a property isn't defined on an

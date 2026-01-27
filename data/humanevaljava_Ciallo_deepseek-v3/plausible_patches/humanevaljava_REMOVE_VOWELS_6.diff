@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/REMOVE_VOWELS.java b/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
+index a51c513..97436f4 100644
+--- a/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
++++ b/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
+@@ -1,6 +1,6 @@
+ package humaneval.buggy;
+ 
+-/* remove_vowels is a function that takes string and returns string without vowels.
++/* remove_vowels is a function that takes a string and returns a string without vowels.
+ >>> remove_vowels('')
+ ''
+ >>> remove_vowels("abcdef\nghijklm")
+@@ -18,10 +18,10 @@ public class REMOVE_VOWELS {
+     public static String remove_vowels(String string) {
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+-                continue;
+-            sb.append(c);
++            if ("aeiouAEIOU".indexOf(c) == -1) {
++                sb.append(c);
++            }
+         }
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

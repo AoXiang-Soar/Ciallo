@@ -1,0 +1,61 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_IN_SENTENCE.java b/src/main/java/humaneval/buggy/WORDS_IN_SENTENCE.java
+index 2907f3f..299ee43 100644
+--- a/src/main/java/humaneval/buggy/WORDS_IN_SENTENCE.java
++++ b/src/main/java/humaneval/buggy/WORDS_IN_SENTENCE.java
+@@ -1,35 +1,31 @@
+ package humaneval.buggy;
+ 
+-/* You are given a string representing a sentence,
+-the sentence contains some words separated by a space,
+-and you have to return a string that contains the words from the original sentence,
+-whose lengths are prime numbers,
+-the order of the words in the new string should be the same as the original one.
+-
+-Example 1:
+-    Input: sentence = "This is a test"
+-    Output: "is"
++public class WORDS_IN_SENTENCE {
+ 
+-Example 2:
+-    Input: sentence = "lets go for swimming"
+-    Output: "go for"
++    // Helper method to determine if a number is prime
++    private static boolean isPrime(int number) {
++        if (number < 2) return false;
++        if (number == 2) return true;
++        if (number % 2 == 0) return false; // Exclude even numbers greater than 2
+ 
+-Constraints:
+-    * 1 <= len(sentence) <= 100
+-    * sentence contains only letters */
++        for (int i = 3; i * i <= number; i += 2) {
++            if (number % i == 0) return false;
++        }
++        return true;
++    }
+ 
+-public class WORDS_IN_SENTENCE {
+     public static String words_in_sentence(String sentence) {
+         String result = "";
+-
++        
+         for (String word : sentence.split(" ")) {
+-            int flag = 0;
+-            for (int i = 2; i < word.length(); i += 1){
+-                if (word.length() % i == 0) flag = 1;
++            int length = word.length();
++            if (isPrime(length)) {
++                if (!result.isEmpty()) {
++                    result += " ";
++                }
++                result += word;
+             }
+-            if (flag == 0 || word.length() == 2)
+-                result += word + " ";
+         }
+-        return result.trim();
++        return result;
+     }
+-}
++}
+\ No newline at end of file

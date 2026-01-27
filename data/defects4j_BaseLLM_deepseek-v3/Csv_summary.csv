@@ -1,0 +1,17 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Csv,1,SL SH SF,0,7416,,22,0,22,
+defects4j,Csv,2,SF,1,501,2,1,0,2,
+defects4j,Csv,3,SF,0,16254,,0,22,22,
+defects4j,Csv,4,SL SH SF,1,0,1,0,0,1,
+defects4j,Csv,5,SF,1,0,1,0,0,1,
+defects4j,Csv,6,SF,0,9194,,0,22,22,
+defects4j,Csv,7,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Csv,8,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Csv,9,SH SF,1,573,1,0,0,1,
+defects4j,Csv,10,SH SF,0,10290,,0,22,22,
+defects4j,Csv,11,SL SH SF,1,676,1,0,0,1,
+defects4j,Csv,12,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Csv,13,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Csv,14,SL SH SF,1,2445,2,1,0,2,
+defects4j,Csv,15,SH SF,1,0,1,0,0,1,
+defects4j,Csv,16,BF,,,,,,,"Not SL, SH or SF bug. "

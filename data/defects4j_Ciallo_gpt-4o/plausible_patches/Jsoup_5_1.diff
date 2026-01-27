@@ -1,0 +1,17 @@
+diff --git a/src/main/java/org/jsoup/parser/Parser.java b/src/main/java/org/jsoup/parser/Parser.java
+index e6ea8338..ab4741dd 100644
+--- a/src/main/java/org/jsoup/parser/Parser.java
++++ b/src/main/java/org/jsoup/parser/Parser.java
+@@ -203,7 +203,11 @@ public class Parser {
+         if (key.length() != 0)
+             return Attribute.createFromEncoded(key, value);
+         else {
+-            tq.consume();
++            if (tq.isEmpty() || tq.matchesAny("<", "/>", ">", "=", "\"", "'")) {
++                // do nothing, break is implicit
++            } else {
++                tq.consume();
++            }
+                 
+             return null;
+         }

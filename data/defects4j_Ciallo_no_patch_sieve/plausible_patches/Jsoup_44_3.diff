@@ -1,0 +1,37 @@
+diff --git a/src/main/java/org/jsoup/parser/TreeBuilder.java b/src/main/java/org/jsoup/parser/TreeBuilder.java
+index 3984e87c..47f44397 100644
+--- a/src/main/java/org/jsoup/parser/TreeBuilder.java
++++ b/src/main/java/org/jsoup/parser/TreeBuilder.java
+@@ -68,12 +68,29 @@ abstract class TreeBuilder {
+     }
+ 
+     protected boolean processEndTag(String name) {
++        // Handle table end tag specially to maintain HTML spec compliance
++        if ("table".equals(name) && stack.size() > 0) {
++            Element current = currentElement();
++            if (!"table".equals(current.nodeName())) {
++                // Current element is not a table, but we're trying to close a table
++                // This means we have invalid table structure - implicitly close all elements
++                // up to and including the first table ancestor
++                boolean foundTable = false;
++                while (!foundTable && !stack.isEmpty()) {
++                    Element top = stack.get(stack.size() - 1);
++                    if ("table".equals(top.nodeName())) {
++                        foundTable = true;
++                    }
++                    processEndTag(top.nodeName());
++                }
++                return true;
++            }
++        }
+         return process(end.reset().name(name));
+     }
+ 
+-
+     protected Element currentElement() {
+         int size = stack.size();
+         return size > 0 ? stack.get(size-1) : null;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java b/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java
+old mode 100644
+new mode 100755
+index 312f344..7122196
+--- a/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java
++++ b/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java
+@@ -8,10 +8,10 @@ public class FILTER_BY_PREFIX {
+         List<String> result = new ArrayList<String>();
+ 
+         for (String string : strings){
+-            if (string.startsWith(prefix, 1)){
++            if (string.substring(0, Math.min(prefix.length(), string.length())).equals(prefix)){
+                 result.add(string);
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

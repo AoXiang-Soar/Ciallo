@@ -1,0 +1,21 @@
+diff --git a/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java b/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
+index 13ced27d7..01a72a9c9 100644
+--- a/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
++++ b/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
+@@ -247,6 +247,16 @@ public abstract class EmbeddedRungeKuttaIntegrator
+         }
+ 
+         stepSize = hNew;
++        // constrain step size to avoid overshooting target time
++        final double remainingTime = t - stepStart;
++        if ((forward && stepSize > remainingTime) || (!forward && stepSize < remainingTime)) {
++            stepSize = remainingTime;
++            hNew = stepSize;
++            // if not using FSAL, recompute derivatives at new step boundary
++            if (!fsal) {
++                computeDerivatives(stepStart, y, yDotK[0]);
++            }
++        }
+ 
+         // next stages
+         for (int k = 1; k < stages; ++k) {

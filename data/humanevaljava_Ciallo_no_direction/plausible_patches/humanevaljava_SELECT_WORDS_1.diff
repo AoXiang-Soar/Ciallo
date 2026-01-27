@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/SELECT_WORDS.java b/src/main/java/humaneval/buggy/SELECT_WORDS.java
+index 4c2e032..b38830f 100644
+--- a/src/main/java/humaneval/buggy/SELECT_WORDS.java
++++ b/src/main/java/humaneval/buggy/SELECT_WORDS.java
+@@ -20,21 +20,17 @@ public class SELECT_WORDS {
+     public static ArrayList<String> select_words(String s, int n) {
+         ArrayList<String> result = new ArrayList<>();
+         String[] words = s.split(" ");
+-        for(int i = 0; i < words.length; i++) {
++        for(String word : words) {
+             int num_consonants = 0;
+-            char[] vowels = {'a', 'e', 'i', 'o', 'u'};
+-            for(int j = 0; j < words[i].length(); j++) {
+-                boolean consonant = true;
+-                for(int k = 0; k < vowels.length; k++) {
+-                    if(vowels[k] == words[i].charAt(j)) {
+-                        consonant = false;
+-                        break;
+-                    }
++            String vowels = "aeiou";
++            for(int j = 0; j < word.length(); j++) {
++                char c = Character.toLowerCase(word.charAt(j));
++                if(vowels.indexOf(c) == -1) {
++                    num_consonants++;
+                 }
+-                if(consonant) num_consonants++;
+             }
+-            if(num_consonants == n) result.add(words[i]);
++            if(num_consonants == n) result.add(word);
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

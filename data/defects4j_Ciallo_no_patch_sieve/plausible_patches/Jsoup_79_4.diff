@@ -1,0 +1,27 @@
+diff --git a/src/main/java/org/jsoup/nodes/LeafNode.java b/src/main/java/org/jsoup/nodes/LeafNode.java
+index 0e068b56..c57fabcf 100644
+--- a/src/main/java/org/jsoup/nodes/LeafNode.java
++++ b/src/main/java/org/jsoup/nodes/LeafNode.java
+@@ -3,6 +3,7 @@ package org.jsoup.nodes;
+ import org.jsoup.helper.Validate;
+ 
+ import java.util.List;
++import java.util.Collections;
+ 
+ abstract class LeafNode extends Node {
+ 
+@@ -91,6 +92,11 @@ abstract class LeafNode extends Node {
+ 
+     @Override
+     protected List<Node> ensureChildNodes() {
+-        throw new UnsupportedOperationException("Leaf Nodes do not have child nodes.");
++        return Collections.emptyList();
+     }
+-}
++
++    @Override
++    public List<Node> childNodes() {
++        return Collections.emptyList();
++    }
++}
+\ No newline at end of file

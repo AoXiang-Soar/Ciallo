@@ -1,0 +1,16 @@
+{
+    "bug_id": 9,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<module$[]baz> but was:<module$[foo\\]baz>",
+    "test_framework": "defects4j",
+    "test_function": "  public void testGuessModuleName() {\n    ProcessCommonJSModules pass = new ProcessCommonJSModules(null, \"foo\");\n    assertEquals(\"module$baz\",\n        pass.guessCJSModuleName(\"foo/baz.js\"));\n    assertEquals(\"module$baz\",\n        pass.guessCJSModuleName(\"foo\\\\baz.js\"));\n    assertEquals(\"module$bar$baz\",\n        pass.guessCJSModuleName(\"foo\\\\bar\\\\baz.js\"));\n  }",
+    "test_line": "    assertEquals(\"module$baz\",",
+    "test_name": "testGuessModuleName",
+    "test_suite": "com.google.javascript.jscomp.ProcessCommonJSModulesTest"
+}

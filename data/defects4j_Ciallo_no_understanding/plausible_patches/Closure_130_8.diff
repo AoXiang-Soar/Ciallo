@@ -1,0 +1,98 @@
+diff --git a/src/com/google/javascript/jscomp/CollapseProperties.java b/src/com/google/javascript/jscomp/CollapseProperties.java
+index ab2d2c7cf..fe97d2437 100644
+--- a/src/com/google/javascript/jscomp/CollapseProperties.java
++++ b/src/com/google/javascript/jscomp/CollapseProperties.java
+@@ -158,43 +158,64 @@ class CollapseProperties implements CompilerPass {
+    *    inlineable.
+    * @see InlineVariables
+    */
+-  private void inlineAliases(GlobalNamespace namespace) {
++private void inlineAliases(GlobalNamespace namespace) {
++    if (namespace == null) {
++        return;
++    }
++
+     // Invariant: All the names in the worklist meet condition (a).
+-    Deque<Name> workList = new ArrayDeque<Name>(namespace.getNameForest());
++    Deque<Name> workList = new ArrayDeque<Name>();
++    for (Name name : namespace.getNameForest()) {
++        if (name != null) {
++            workList.add(name);
++        }
++    }
++
+     while (!workList.isEmpty()) {
+-      Name name = workList.pop();
++        Name name = workList.pop();
+ 
+-      // Don't attempt to inline a getter or setter property as a variable.
+-      if (name.type == Name.Type.GET || name.type == Name.Type.SET) {
+-        continue;
+-      }
++        // Skip null names or certain types of names
++        if (name == null || 
++            name.type == Name.Type.GET || 
++            name.type == Name.Type.SET ||
++            "arguments".equals(name.getFullName())) {
++            continue;
++        }
+ 
+-      if (name.globalSets == 1 && name.localSets == 0 &&
+-          name.aliasingGets > 0) {
+-        // {@code name} meets condition (b). Find all of its local aliases
+-        // and try to inline them.
+-        List<Ref> refs = Lists.newArrayList(name.getRefs());
+-        for (Ref ref : refs) {
+-          if (ref.type == Type.ALIASING_GET && ref.scope.isLocal()) {
+-            // {@code name} meets condition (c). Try to inline it.
+-            if (inlineAliasIfPossible(ref, namespace)) {
+-              name.removeRef(ref);
++        if (name.globalSets == 1 && name.localSets == 0 &&
++            name.aliasingGets > 0) {
++            // {@code name} meets condition (b). Find all of its local aliases
++            // and try to inline them.
++            List<Ref> refs = name.getRefs();
++            if (refs != null) {
++                for (Ref ref : Lists.newArrayList(refs)) {
++                    if (ref != null && 
++                        ref.type == Type.ALIASING_GET && 
++                        ref.scope != null && 
++                        ref.scope.isLocal()) {
++                        // {@code name} meets condition (c). Try to inline it.
++                        if (inlineAliasIfPossible(ref, namespace)) {
++                            name.removeRef(ref);
++                        }
++                    }
++                }
+             }
+-          }
+         }
+-      }
+ 
+-      // Check if {@code name} has any aliases left after the
+-      // local-alias-inlining above.
+-      if ((name.type == Name.Type.OBJECTLIT ||
+-           name.type == Name.Type.FUNCTION) &&
+-          name.aliasingGets == 0 && name.props != null) {
+-        // All of {@code name}'s children meet condition (a), so they can be
+-        // added to the worklist.
+-        workList.addAll(name.props);
+-      }
++        // Check if {@code name} has any aliases left
++        if ((name.type == Name.Type.OBJECTLIT ||
++             name.type == Name.Type.FUNCTION) &&
++            name.aliasingGets == 0 && 
++            name.props != null) {
++            // All of {@code name}'s children meet condition (a)
++            for (Name prop : name.props) {
++                if (prop != null) {
++                    workList.add(prop);
++                }
++            }
++        }
+     }
+-  }
++}
+ 
+   private boolean inlineAliasIfPossible(Ref alias, GlobalNamespace namespace) {
+     // Ensure that the alias is assigned to a local variable at that

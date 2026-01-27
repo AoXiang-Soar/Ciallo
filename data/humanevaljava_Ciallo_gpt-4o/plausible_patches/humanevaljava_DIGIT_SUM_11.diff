@@ -1,0 +1,37 @@
+diff --git a/src/main/java/humaneval/buggy/DIGIT_SUM.java b/src/main/java/humaneval/buggy/DIGIT_SUM.java
+index df6658a..ae19d39 100644
+--- a/src/main/java/humaneval/buggy/DIGIT_SUM.java
++++ b/src/main/java/humaneval/buggy/DIGIT_SUM.java
+@@ -1,26 +1,14 @@
+ package humaneval.buggy;
+ 
+-/* Task
+-Write a function that takes a string as input and returns the sum of the upper characters only'
+-ASCII codes.
+-
+-Examples:
+-    digitSum("") => 0
+-    digitSum("abAB") => 131
+-    digitSum("abcCd") => 67
+-    digitSum("helloE") => 69
+-    digitSum("woArBld") => 131
+-    digitSum("aAaaaXa") => 153 */
+-
+ public class DIGIT_SUM {
+     public static int digit_sum(String s) {
+         int result = 0;
+         for (char c : s.toCharArray()) {
+-            if (c == ' ')
+-                break;
+-            if ('A' <= c && c <= 'Z')
+-                result += (int) c;
++            // Check if the character is an uppercase letter by ASCII range.
++            if (c >= 'A' && c <= 'Z') {
++                result += c; // Add ASCII value to the result
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,76 @@
+diff --git a/src/main/java/org/apache/commons/collections4/collection/UnmodifiableBoundedCollection.java b/src/main/java/org/apache/commons/collections4/collection/UnmodifiableBoundedCollection.java
+index 5a9a9a50..e020ca78 100644
+--- a/src/main/java/org/apache/commons/collections4/collection/UnmodifiableBoundedCollection.java
++++ b/src/main/java/org/apache/commons/collections4/collection/UnmodifiableBoundedCollection.java
+@@ -20,6 +20,7 @@ import java.util.Collection;
+ import java.util.Iterator;
+ 
+ import org.apache.commons.collections4.BoundedCollection;
++import org.apache.commons.collections4.Unmodifiable;
+ import org.apache.commons.collections4.iterators.UnmodifiableIterator;
+ 
+ /**
+@@ -40,7 +41,7 @@ import org.apache.commons.collections4.iterators.UnmodifiableIterator;
+  * @version $Id$
+  */
+ public final class UnmodifiableBoundedCollection<E> extends AbstractCollectionDecorator<E>
+-        implements BoundedCollection<E> {
++        implements BoundedCollection<E>, Unmodifiable {
+ 
+     /** Serialization version */
+     private static final long serialVersionUID = -7112672385450340330L;
+@@ -55,6 +56,12 @@ public final class UnmodifiableBoundedCollection<E> extends AbstractCollectionDe
+      * @since 4.0
+      */
+     public static <E> BoundedCollection<E> unmodifiableBoundedCollection(final BoundedCollection<? extends E> coll) {
++        if (coll == null) {
++            throw new IllegalArgumentException("The collection must not be null");
++        }
++        if (coll instanceof Unmodifiable) {
++            return (BoundedCollection<E>) coll;
++        }
+         return new UnmodifiableBoundedCollection<E>(coll);
+     }
+ 
+@@ -77,21 +84,24 @@ public final class UnmodifiableBoundedCollection<E> extends AbstractCollectionDe
+         }
+ 
+         // handle decorators
++        Collection<? extends E> current = coll;
+         for (int i = 0; i < 1000; i++) {  // counter to prevent infinite looping
+-            if (coll instanceof BoundedCollection) {
+-                break;  // normal loop exit
++            if (current instanceof Unmodifiable) {
++                return (BoundedCollection<E>) current;
++            }
++            if (current instanceof BoundedCollection) {
++                return unmodifiableBoundedCollection((BoundedCollection<? extends E>) current);
+             }
+-            if (coll instanceof AbstractCollectionDecorator) {
+-                coll = ((AbstractCollectionDecorator<E>) coll).decorated();
+-            } else if (coll instanceof SynchronizedCollection) {
+-                coll = ((SynchronizedCollection<E>) coll).decorated();
++            if (current instanceof AbstractCollectionDecorator) {
++                current = ((AbstractCollectionDecorator<E>) current).decorated();
++            } else if (current instanceof SynchronizedCollection) {
++                current = ((SynchronizedCollection<E>) current).decorated();
++            } else {
++                break;
+             }
+         }
+ 
+-        if (coll instanceof BoundedCollection == false) {
+-            throw new IllegalArgumentException("The collection is not a bounded collection");
+-        }
+-        return new UnmodifiableBoundedCollection<E>((BoundedCollection<E>) coll);
++        throw new IllegalArgumentException("The collection is not a bounded collection");
+     }
+ 
+     /**
+@@ -154,4 +164,4 @@ public final class UnmodifiableBoundedCollection<E> extends AbstractCollectionDe
+     protected BoundedCollection<E> decorated() {
+         return (BoundedCollection<E>) super.decorated();
+     }
+-}
++}
+\ No newline at end of file

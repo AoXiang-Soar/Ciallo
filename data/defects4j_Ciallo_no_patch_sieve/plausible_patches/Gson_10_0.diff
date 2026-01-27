@@ -1,0 +1,13 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java b/gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java
+index ab1d05a6..f6367b67 100644
+--- a/gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java
++++ b/gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java
+@@ -119,7 +119,7 @@ public final class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
+       @Override void write(JsonWriter writer, Object value)
+           throws IOException, IllegalAccessException {
+         Object fieldValue = field.get(value);
+-        TypeAdapter t =
++        TypeAdapter t = fieldValue instanceof Number ? typeAdapter :
+           new TypeAdapterRuntimeTypeWrapper(context, typeAdapter, fieldType.getType());
+         t.write(writer, fieldValue);
+       }

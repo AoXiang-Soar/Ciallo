@@ -1,0 +1,63 @@
+diff --git a/src/main/java/humaneval/buggy/IS_MULTIPLY_PRIME.java b/src/main/java/humaneval/buggy/IS_MULTIPLY_PRIME.java
+old mode 100644
+new mode 100755
+index 2fe6456..be9c466
+--- a/src/main/java/humaneval/buggy/IS_MULTIPLY_PRIME.java
++++ b/src/main/java/humaneval/buggy/IS_MULTIPLY_PRIME.java
+@@ -1,15 +1,11 @@
+ package humaneval.buggy;
+ 
+-// Write a function that returns true if the given number is the multiplication of 3 prime numbers
+-// and false otherwise.
+-// Knowing that (a) is less then 100. 
+-// Example:
+-// is_multiply_prime(30) == True
+-// 30 = 2 * 3 * 5
+-
+ public class IS_MULTIPLY_PRIME {
+     public static boolean is_prime(int n) {
+-        for (int i = 2; i < n; i += 1) {
++        if (n <= 1) return false;
++        if (n == 2) return true;
++        if (n % 2 == 0) return false;
++        for (int i = 3; i * i <= n; i += 2) {
+             if (n % i == 0)
+                 return false;
+         }
+@@ -17,16 +13,28 @@ public class IS_MULTIPLY_PRIME {
+     }
+ 
+     public static boolean is_multiply_prime(int a) {
+-        for (int i = 2; i < a; i += 1){
+-            if (! is_prime(i)) continue;
+-            for (int j = i; j < a; j += 1) {
+-                for (int k = j; k < a; j += 1) {
+-                    if (! is_prime(k)) continue;
+-                    if (i * j * k == a)
++        java.util.List<Integer> primes = new java.util.ArrayList<>();
++        for (int i = 2; i < a; i++) {
++            if (is_prime(i)) {
++                primes.add(i);
++            }
++        }
++        
++        for (int i = 0; i < primes.size(); i++) {
++            for (int j = i; j < primes.size(); j++) {
++                int product = primes.get(i) * primes.get(j);
++                if (product >= a) break;
++                for (int k = j; k < primes.size(); k++) {
++                    int total = product * primes.get(k);
++                    if (total == a) {
+                         return true;
++                    }
++                    if (total > a) {
++                        break;
++                    }
+                 }
+             }
+         }
+         return false;
+     }
+-}
++}
+\ No newline at end of file

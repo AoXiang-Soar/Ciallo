@@ -1,0 +1,74 @@
+diff --git a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+index ba94200..cd97f16 100644
+--- a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
++++ b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+@@ -4,7 +4,7 @@ import java.util.HashMap;
+ 
+ // Given a dictionary, return True if all keys are strings in lower 
+ // case or all keys are strings in upper case, else return False.
+-// The function should return False is the given dictionary is empty.
++// The function should return False if the given dictionary is empty.
+ // Examples:
+ // check_dict_case({"a":"apple", "b":"banana"}) should return True.
+ // check_dict_case({"a":"apple", "A":"banana", "B":"banana"}) should return False.
+@@ -14,31 +14,35 @@ import java.util.HashMap;
+ 
+ public class CHECK_DICT_CASE {
+     public static boolean check_dict_case(HashMap<Object, Object> dict) {
+-        if (dict.size() == 0)
++        if (dict.isEmpty()) {
+             return false;
+-        else {
+-            String state = "start";
+-            for (Object key : dict.keySet()) {
+-                if (!(key instanceof String)) {
+-                    state = "mixed";
+-                    break;
+-                }
+-                String str_key = (String) key;
+-                if (state.equals("start")) {
+-                    if (str_key.toUpperCase().equals(str_key))
+-                        state = "upper";
+-                    else if (str_key.toLowerCase().equals(str_key))
+-                        state = "lower";
+-                    else {
+-                        state = "mixed";
+-                        break;
+-                    }
+-                } else if (state.equals("upper") && !str_key.toUpperCase().equals(str_key)) {
+-                    state = "mixed";
+-                    break;
+-                }
++        }
++
++        boolean foundLower = false;
++        boolean foundUpper = false;
++
++        for (Object key : dict.keySet()) {
++            if (!(key instanceof String)) {
++                return false;
++            }
++            String strKey = (String) key;
++            boolean isLower = strKey.equals(strKey.toLowerCase());
++            boolean isUpper = strKey.equals(strKey.toUpperCase());
++
++            if (isLower) {
++                foundLower = true;
++            }
++            if (isUpper) {
++                foundUpper = true;
++            }
++
++            if (foundLower && foundUpper) {
++                // If we've found both a lowercase and an uppercase key, return false
++                return false;
+             }
+-            return (state.equals("upper")) || (state.equals("lower"));
+         }
++
++        // Return true if either all keys were lower or all were upper, but not mixed
++        return foundLower || foundUpper;
+     }
+-}
++}
+\ No newline at end of file

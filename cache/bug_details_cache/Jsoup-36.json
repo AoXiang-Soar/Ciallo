@@ -1,0 +1,16 @@
+{
+    "bug_id": 36,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "java.nio.charset.IllegalCharsetNameException: charset=iso-8859-1",
+    "test_framework": "defects4j",
+    "test_function": "    public void shouldCorrectCharsetForDuplicateCharsetString() {\n        assertEquals(\"iso-8859-1\", DataUtil.getCharsetFromContentType(\"text/html; charset=charset=iso-8859-1\"));\n    }",
+    "test_line": "        assertEquals(\"iso-8859-1\", DataUtil.getCharsetFromContentType(\"text/html; charset=charset=iso-8859-1\"));",
+    "test_name": "shouldCorrectCharsetForDuplicateCharsetString",
+    "test_suite": "org.jsoup.helper.DataUtilTest"
+}

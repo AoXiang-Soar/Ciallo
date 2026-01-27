@@ -1,0 +1,58 @@
+diff --git a/src/main/java/humaneval/buggy/SEARCH.java b/src/main/java/humaneval/buggy/SEARCH.java
+index 285deda..30fd464 100644
+--- a/src/main/java/humaneval/buggy/SEARCH.java
++++ b/src/main/java/humaneval/buggy/SEARCH.java
+@@ -1,27 +1,35 @@
+ package humaneval.buggy;
+ 
+-/* You are given a non-empty list of positive integers. Return the greatest integer that is greater than 
+-zero, and has a frequency greater than or equal to the value of the integer itself. 
+-The frequency of an integer is the number of times it appears in the list.
+-If no such a value exist, return -1.
+-Examples:
+-    search([4, 1, 2, 2, 3, 1]) == 2
+-    search([1, 2, 2, 3, 3, 3, 4, 4, 4]) == 3
+-    search([5, 5, 4, 4, 4]) == -1 */
+-
+ public class SEARCH {
+     public static int search(int[] lst) {
++        // Find the maximum value in the list to determine array size
+         int max = -1;
+-        for (Integer i : lst) {
+-            if (i > max)
+-                max = i;
++        for (int num : lst) {
++            if (num > max)
++                max = num;
+         }
+-
++        
++        // Edge case for empty list or all numbers <= 0 (though problem says positive integers)
++        if (max <= 0) return -1;
++        
++        // Initialize frequency array
++        int[] freq = new int[max + 1]; // +1 to accommodate index = max
++        
++        // Count frequencies
++        for (int num : lst) {
++            if (num > 0) { // Only count positive numbers
++                freq[num]++;
++            }
++        }
++        
++        // Find the largest number satisfying frequency >= number
+         int result = -1;
+-        int[] frq = new int[max];
+-        for (int i = 0; i < lst.length; i += 1)  frq[i] += 1;
+-        for (int i = 0; i < frq.length; i += 1) if (frq[i] >= i) result = i;
++        for (int i = freq.length - 1; i >= 1; i--) { // Check from highest to lowest
++            if (freq[i] >= i) {
++                return i; // Return immediately when found since we're checking highest first
++            }
++        }
+         
+         return result;
+     }
+-}
++}
+\ No newline at end of file

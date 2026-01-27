@@ -1,0 +1,31 @@
+diff --git a/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java b/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java
+index 8ed51bc3c..b6b38ddf1 100644
+--- a/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java
++++ b/src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java
+@@ -48,7 +48,8 @@ public class LookupTranslator extends CharSequenceTranslator {
+         int _longest = 0;
+         if (lookup != null) {
+             for (final CharSequence[] seq : lookup) {
+-                this.lookupMap.put(seq[0], seq[1]);
++                CharSequence key = seq[0] instanceof String ? seq[0] : seq[0].toString();
++                this.lookupMap.put(key, seq[1]);
+                 final int sz = seq[0].length();
+                 if (sz < _shortest) {
+                     _shortest = sz;
+@@ -74,7 +75,8 @@ public class LookupTranslator extends CharSequenceTranslator {
+         // descend so as to get a greedy algorithm
+         for (int i = max; i >= shortest; i--) {
+             final CharSequence subSeq = input.subSequence(index, index + i);
+-            final CharSequence result = lookupMap.get(subSeq);
++            CharSequence lookupKey = subSeq instanceof String ? subSeq : subSeq.toString();
++            final CharSequence result = lookupMap.get(lookupKey);
+             if (result != null) {
+                 out.write(result.toString());
+                 return i;
+@@ -82,4 +84,4 @@ public class LookupTranslator extends CharSequenceTranslator {
+         }
+         return 0;
+     }
+-}
++}
+\ No newline at end of file

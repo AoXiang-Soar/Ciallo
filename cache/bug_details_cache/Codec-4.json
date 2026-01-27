@@ -1,0 +1,16 @@
+{
+    "bug_id": 4,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        this(false);",
+    "code": "    public Base64() {\n        this(false);\n    }",
+    "fixed_code": "    public Base64() {\n        this(0);\n    }",
+    "fixed_lines": "        this(0);",
+    "masked_code": "    public Base64() {\n>>> [ INFILL ] <<<\n    }",
+    "project": "Codec",
+    "test_error_message": "junit.framework.AssertionFailedError: Encoder test-1",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEncoder() throws EncoderException {\n        Encoder enc = new Base64();\n        for (int i = 0; i < STRINGS.length; i++) {\n            if (STRINGS[i] != null) {\n                byte[] base64 = utf8(STRINGS[i]);\n                byte[] binary = BYTES[i];\n                boolean b = Arrays.equals(base64, (byte[]) enc.encode(binary));\n                assertTrue(\"Encoder test-\" + i, b);\n            }\n        }\n    }",
+    "test_line": "                assertTrue(\"Encoder test-\" + i, b);",
+    "test_name": "testEncoder",
+    "test_suite": "org.apache.commons.codec.binary.Base64Codec13Test"
+}

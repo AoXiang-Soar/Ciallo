@@ -1,0 +1,41 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_ARRAY.java b/src/main/java/humaneval/buggy/SORT_ARRAY.java
+index 04eb5e2..192847c 100644
+--- a/src/main/java/humaneval/buggy/SORT_ARRAY.java
++++ b/src/main/java/humaneval/buggy/SORT_ARRAY.java
+@@ -17,17 +17,24 @@ Examples:
+ 
+ public class SORT_ARRAY {
+     public static int[] sort_array(int[] array) {
+-        if (array.length == 0)
+-            return array;
+-        Arrays.sort(array);
+-        if ((array[0] + array[array.length - 1]) % 2 == 1)
+-            return array;
+-        else {
+-            for (int i = 0; i < array.length / 2; i += 1){
+-                array[i] = array[array.length - i - 1];
+-                array[array.length - i - 1] = array[i];
++        if (array.length == 0) {
++            return new int[0];
++        }
++        
++        // Create a copy so the original array remains unchanged
++        int[] sortedArray = Arrays.copyOf(array, array.length);
++        Arrays.sort(sortedArray);
++        
++        // Check the condition and decide the order
++        if ((sortedArray[0] + sortedArray[sortedArray.length - 1]) % 2 == 0) {
++            // Reverse the sorted array if the condition requires descending order
++            for (int i = 0; i < sortedArray.length / 2; i++) {
++                int temp = sortedArray[i];
++                sortedArray[i] = sortedArray[sortedArray.length - i - 1];
++                sortedArray[sortedArray.length - i - 1] = temp;
+             }
+-            return array;
+         }
++        
++        return sortedArray;
+     }
+-}
++}
+\ No newline at end of file

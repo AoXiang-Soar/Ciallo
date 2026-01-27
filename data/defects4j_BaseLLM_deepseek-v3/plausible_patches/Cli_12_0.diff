@@ -1,0 +1,16 @@
+diff --git a/src/java/org/apache/commons/cli/GnuParser.java b/src/java/org/apache/commons/cli/GnuParser.java
+index 0de035f..66206ec 100644
+--- a/src/java/org/apache/commons/cli/GnuParser.java
++++ b/src/java/org/apache/commons/cli/GnuParser.java
+@@ -76,6 +76,11 @@ public class GnuParser extends Parser {
+                 {
+                     tokens.add(arg);
+                 }
++                else if (arg.indexOf('=') != -1 && options.hasOption(arg.substring(0, arg.indexOf('='))))
++                {
++                    tokens.add(arg.substring(0, arg.indexOf('='))); // -f
++                    tokens.add(arg.substring(arg.indexOf('=') + 1)); // bar
++                }
+                 else
+                 {
+                     if (options.hasOption(arg.substring(0, 2)))

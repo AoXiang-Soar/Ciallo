@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/FIX_SPACES.java b/src/main/java/humaneval/buggy/FIX_SPACES.java
+old mode 100644
+new mode 100755
+index 2f27898..c47e0d7
+--- a/src/main/java/humaneval/buggy/FIX_SPACES.java
++++ b/src/main/java/humaneval/buggy/FIX_SPACES.java
+@@ -32,7 +32,13 @@ public class FIX_SPACES {
+             }
+             i += 1;
+         }
++        if (end - start > 2) new_text += "-";
++        else if (end - start > 0) {
++            for (int j = start; j < end; j += 1) {
++                new_text += "_";
++            }
++        }
+ 
+         return new_text;
+     }
+-}
++}
+\ No newline at end of file

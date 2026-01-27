@@ -1,0 +1,38 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIZE.java b/src/main/java/humaneval/buggy/FACTORIZE.java
+index 57975b5..64df7b4 100644
+--- a/src/main/java/humaneval/buggy/FACTORIZE.java
++++ b/src/main/java/humaneval/buggy/FACTORIZE.java
+@@ -4,19 +4,26 @@ import java.util.ArrayList;
+ import java.util.List;
+ 
+ public class FACTORIZE {
+-    public static List<Integer> factorize(int n){
++    public static List<Integer> factorize(int n) {
+         List<Integer> result = new ArrayList<Integer>();
+ 
++        // Start with the smallest prime factor
+         int i = 2;
+-        while (i <= (int)(Math.sqrt(n) + 1)){
+-            if (n % i == 0){
++        
++        // Only go up to the square root of n
++        while (i <= Math.sqrt(n)) {
++            while (n % i == 0) { // Check if i is a factor
+                 result.add(i);
+                 n = n / i;
+-            } else{
+-                i += 1;
+             }
++            i++; // Increment to check for the next factor
++        }
++        
++        // If n is still greater than 1, then it's a prime number
++        if (n > 1) {
++            result.add(n);
+         }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

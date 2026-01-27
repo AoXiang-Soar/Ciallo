@@ -1,0 +1,43 @@
+diff --git a/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java b/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java
+index 23630cd..b4349f2 100644
+--- a/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java
++++ b/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java
+@@ -18,19 +18,25 @@ package humaneval.buggy;
+ 
+ public class CLOSEST_INTEGER {
+     public static int closest_integer(String value) {
+-        if (value.indexOf('.') >= 0) {
+-            while (value.charAt(value.length() - 1) == '0')
+-                value = value.substring(0, value.length() - 1);
++        if (value == null || value.isEmpty()) {
++            throw new NumberFormatException("Invalid input");
+         }
+ 
+-        double num = Double.parseDouble(value);
+-        int result = 0;
+-        if (value.substring(value.length() - 2).equals(".5")) {
+-            result = num > 0 ? (int)Math.floor(num) : (int)Math.ceil(num);
+-        } else if (value.length() > 0){
+-            result = (int)Math.round(num);
+-        }
++        try {
++            if (value.indexOf('.') >= 0) {
++                while (value.charAt(value.length() - 1) == '0')
++                    value = value.substring(0, value.length() - 1);
++            }
+ 
+-        return result;
++            double num = Double.parseDouble(value);
++            if (num % 1 == 0.5) {
++                return num > 0 ? (int)Math.ceil(num) : (int)Math.floor(num);
++            } else if (num % 1 == -0.5) {
++                return (int)Math.floor(num);
++            }
++            return (int)Math.round(num);
++        } catch (NumberFormatException e) {
++            throw new NumberFormatException("Invalid number format");
++        }
+     }
+-}
++}
+\ No newline at end of file

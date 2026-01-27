@@ -1,0 +1,51 @@
+diff --git a/src/main/java/org/apache/commons/math3/util/MathArrays.java b/src/main/java/org/apache/commons/math3/util/MathArrays.java
+index 325fd9430..5b1800c74 100644
+--- a/src/main/java/org/apache/commons/math3/util/MathArrays.java
++++ b/src/main/java/org/apache/commons/math3/util/MathArrays.java
+@@ -818,7 +818,7 @@ public class MathArrays {
+             throw new DimensionMismatchException(len, b.length);
+         }
+ 
+-            // Revert to scalar multiplication.
++        // Revert to scalar multiplication.
+ 
+         final double[] prodHigh = new double[len];
+         double prodLowSum = 0;
+@@ -841,20 +841,23 @@ public class MathArrays {
+             prodLowSum += prodLow;
+         }
+ 
+-
+-        final double prodHighCur = prodHigh[0];
+-        double prodHighNext = prodHigh[1];
+-        double sHighPrev = prodHighCur + prodHighNext;
+-        double sPrime = sHighPrev - prodHighNext;
+-        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);
+-
+-        final int lenMinusOne = len - 1;
+-        for (int i = 1; i < lenMinusOne; i++) {
+-            prodHighNext = prodHigh[i + 1];
+-            final double sHighCur = sHighPrev + prodHighNext;
+-            sPrime = sHighCur - prodHighNext;
+-            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);
+-            sHighPrev = sHighCur;
++        double sHighPrev = prodHigh[0];
++        double sLowSum = 0;
++
++        if (len > 1) {
++            double prodHighNext = prodHigh[1];
++            sHighPrev += prodHighNext;
++            double sPrime = sHighPrev - prodHighNext;
++            sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHigh[0] - sPrime);
++
++            final int lenMinusOne = len - 1;
++            for (int i = 1; i < lenMinusOne; i++) {
++                prodHighNext = prodHigh[i + 1];
++                final double sHighCur = sHighPrev + prodHighNext;
++                sPrime = sHighCur - prodHighNext;
++                sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);
++                sHighPrev = sHighCur;
++            }
+         }
+ 
+         double result = sHighPrev + (prodLowSum + sLowSum);

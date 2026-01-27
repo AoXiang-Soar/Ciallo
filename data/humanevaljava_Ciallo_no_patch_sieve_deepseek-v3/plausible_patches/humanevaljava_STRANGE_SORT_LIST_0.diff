@@ -1,0 +1,25 @@
+diff --git a/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java b/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
+index 094f5de..ee13082 100644
+--- a/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
++++ b/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
+@@ -20,11 +20,16 @@ public class STRANGE_SORT_LIST {
+         boolean switched = true;
+         while (lst.size() > 0) {
+             if (switched) {
+-                result.add(Collections.min(lst));
++                Integer min = Collections.min(lst);
++                result.add(min);
++                lst.remove(min);
+             } else {
+-                result.add(Collections.max(lst));
++                Integer max = Collections.max(lst);
++                result.add(max);
++                lst.remove(max);
+             }
++            switched = !switched;
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

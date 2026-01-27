@@ -1,0 +1,16 @@
+{
+    "bug_id": 6,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonXml",
+    "test_error_message": "com.fasterxml.jackson.databind.JsonMappingException: Operation not supported by generator of type com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator (through reference chain: com.fasterxml.jackson.dataformat.xml.ser.TestBinaryStreamToXMLSerialization$TestPojo[\"field\"])",
+    "test_framework": "defects4j",
+    "test_function": "    public void testWith0Bytes() throws Exception \n    {\n        String xml = MAPPER.writeValueAsString(createPojo());\n        assertEquals(\"<TestPojo><field/></TestPojo>\", xml);\n    }",
+    "test_line": "",
+    "test_name": "testWith0Bytes",
+    "test_suite": "com.fasterxml.jackson.dataformat.xml.ser.TestBinaryStreamToXMLSerialization"
+}

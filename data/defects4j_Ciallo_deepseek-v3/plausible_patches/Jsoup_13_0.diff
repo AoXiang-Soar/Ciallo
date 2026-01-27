@@ -1,0 +1,15 @@
+diff --git a/src/main/java/org/jsoup/nodes/Node.java b/src/main/java/org/jsoup/nodes/Node.java
+index 3d0bf2ea..a8320728 100644
+--- a/src/main/java/org/jsoup/nodes/Node.java
++++ b/src/main/java/org/jsoup/nodes/Node.java
+@@ -104,6 +104,10 @@ public abstract class Node implements Cloneable {
+     public boolean hasAttr(String attributeKey) {
+         Validate.notNull(attributeKey);
+ 
++        if (attributes.hasKey(attributeKey))
++            return true;
++        if (attributeKey.startsWith("abs:"))
++            return !absUrl(attributeKey.substring(4)).isEmpty();
+         return attributes.hasKey(attributeKey);
+     }
+ 

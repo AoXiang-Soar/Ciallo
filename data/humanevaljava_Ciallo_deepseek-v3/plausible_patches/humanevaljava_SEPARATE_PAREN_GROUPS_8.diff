@@ -1,0 +1,43 @@
+diff --git a/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java b/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java
+index 7769d68..eefd0bf 100644
+--- a/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java
++++ b/src/main/java/humaneval/buggy/SEPARATE_PAREN_GROUPS.java
+@@ -10,19 +10,25 @@ public class SEPARATE_PAREN_GROUPS {
+         int current_depth = 0;
+ 
+         for (char c : paren_string.toCharArray()) {
+-            if (c == '('){
+-                current_depth += 1;
+-                current_string += String.valueOf(c);
+-            } else {
+-                current_depth -= 1;
+-                current_string += String.valueOf(c);
+-
+-                if (current_depth == 0){
+-                    result.add(current_string);
+-                    current_string = "";
+-                }
++            switch (c) {
++                case '(':
++                    current_depth += 1;
++                    current_string += c;
++                    break;
++                case ')':
++                    current_depth -= 1;
++                    current_string += c;
++                    if (current_depth == 0) {
++                        result.add(current_string);
++                        current_string = "";
++                    }
++                    break;
++                default:
++                    // If there are any other characters, they will be ignored
++                    // Since the task is to handle only '(' and ')'
++                    break;
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

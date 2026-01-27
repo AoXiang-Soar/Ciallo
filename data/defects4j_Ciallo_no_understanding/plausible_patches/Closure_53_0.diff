@@ -1,0 +1,31 @@
+diff --git a/src/com/google/javascript/jscomp/InlineObjectLiterals.java b/src/com/google/javascript/jscomp/InlineObjectLiterals.java
+index 9061925db..dec16e0ab 100644
+--- a/src/com/google/javascript/jscomp/InlineObjectLiterals.java
++++ b/src/com/google/javascript/jscomp/InlineObjectLiterals.java
+@@ -315,7 +315,7 @@ class InlineObjectLiterals implements CompilerPass {
+         // TODO(user): Copy type information.
+         nodes.add(
+           new Node(Token.ASSIGN,
+-                   Node.newString(Token.NAME, varmap.get(var)), value));
++                   Node.newString(Token.NAME, varmap.get(var)),value));
+         all.remove(var);
+       }
+ 
+@@ -328,6 +328,9 @@ class InlineObjectLiterals implements CompilerPass {
+       }
+ 
+       Node replacement;
++      if (nodes.isEmpty()) {
++        replacement = new Node(Token.TRUE);
++      } else {
+         // All assignments evaluate to true, so make sure that the
+         // expr statement evaluates to true in case it matters.
+         nodes.add(new Node(Token.TRUE));
+@@ -347,6 +350,7 @@ class InlineObjectLiterals implements CompilerPass {
+         }
+         cur.addChildToFront(nodes.get(i));
+         cur.addChildToFront(nodes.get(i + 1));
++      }
+ 
+       Node replace = ref.getParent();
+       replacement.copyInformationFromForTree(replace);

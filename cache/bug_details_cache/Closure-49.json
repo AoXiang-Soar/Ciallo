@@ -1,0 +1,16 @@
+{
+    "bug_id": 49,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testInline19b() {\n    helperInlineReferenceToFunction(\n        \"var x = 1; var y = 2;\" +\n        \"function foo(a,b){y = a; x = b;}; \" +\n        \"function bar() { foo(x,y); }\",\n        \"var x = 1; var y = 2;\" +\n        \"function foo(a,b){y = a; x = b;}; \" +\n        \"function bar() {\" +\n           \"{var b$$inline_1=y;\" +\n            \"y = x;\" +\n            \"x = b$$inline_1;}\" +\n        \"}\",\n        \"foo\", INLINE_BLOCK);\n  }",
+    "test_line": "        assertNull(\"\\nExpected: \" + toSource(expectedRoot) +",
+    "test_name": "testInline19b",
+    "test_suite": "com.google.javascript.jscomp.FunctionInjectorTest"
+}

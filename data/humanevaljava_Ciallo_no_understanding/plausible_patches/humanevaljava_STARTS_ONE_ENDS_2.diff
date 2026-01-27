@@ -1,0 +1,16 @@
+diff --git a/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java b/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java
+old mode 100644
+new mode 100755
+index b8a4679..00a66b0
+--- a/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java
++++ b/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java
+@@ -7,6 +7,6 @@ public class STARTS_ONE_ENDS {
+     public static int starts_one_ends(int n) {
+         if (n == 1)
+             return 1;
+-        return (int) ((10 + 9) * Math.pow(10, n - 2));
++        return (int) (Math.pow(10, n - 1) + 9 * Math.pow(10, n - 2) - Math.pow(10, n - 2));
+     }
+-}
++}
+\ No newline at end of file

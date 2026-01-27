@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/SKJKASDKD.java b/src/main/java/humaneval/buggy/SKJKASDKD.java
+old mode 100644
+new mode 100755
+index 4fd1548..423dca1
+--- a/src/main/java/humaneval/buggy/SKJKASDKD.java
++++ b/src/main/java/humaneval/buggy/SKJKASDKD.java
+@@ -13,6 +13,8 @@ package humaneval.buggy;
+ 
+ public class SKJKASDKD {
+     public static boolean is_prime(int n) {
++        if (n == 2) return true;
++        if (n % 2 == 0) return false;
+         for (int i = 2; i < (int)Math.pow(n, 0.5) + 1; i += 1) {
+             if (n % i == 0) return false;
+         }
+@@ -29,8 +31,8 @@ public class SKJKASDKD {
+         }
+         int result = 0;
+         for (char c : (max + "").toCharArray()) {
+-            result += (int) c;
++            result += (int) c - '0';
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

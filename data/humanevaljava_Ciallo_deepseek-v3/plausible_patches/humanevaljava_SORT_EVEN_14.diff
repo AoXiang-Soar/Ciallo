@@ -1,0 +1,45 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_EVEN.java b/src/main/java/humaneval/buggy/SORT_EVEN.java
+index cce3d2a..db96598 100644
+--- a/src/main/java/humaneval/buggy/SORT_EVEN.java
++++ b/src/main/java/humaneval/buggy/SORT_EVEN.java
+@@ -4,20 +4,30 @@ import java.util.Arrays;
+ 
+ public class SORT_EVEN {
+     public static int[] sort_even(int[] l) {
+-        int[] result = new int[l.length];
++        int n = l.length;
++        int[] result = new int[n];
+ 
+-        int[] evens = new int[1 + (int) (l.length / 2.)];
+-        for (int i = 0; i < l.length; i += 2) {
+-            evens[(int) i / 2] = l[i];
++        // Determine the number of elements at even indices
++        int countEvens = (n + 1) / 2;
++        int[] evens = new int[countEvens];
++        
++        // Collect elements at even indices
++        for (int i = 0; i < n; i += 2) {
++            evens[i / 2] = l[i];
+         }
++        
++        // Sort even-index elements
+         Arrays.sort(evens);
+-        for (int i = 0; i < l.length; i += 1) {
+-            if (i % 2 == 0){
+-                result[i] = evens[(int) i / 2];
+-            } else{
++        
++        // Populate the result array
++        for (int i = 0, evenIndex = 0; i < n; i++) {
++            if (i % 2 == 0) {
++                result[i] = evens[evenIndex++];
++            } else {
+                 result[i] = l[i];
+             }
+         }
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

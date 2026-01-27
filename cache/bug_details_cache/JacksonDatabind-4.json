@@ -1,0 +1,16 @@
+{
+    "bug_id": 4,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<1> but was:<0>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testArrayIndexForExceptions() throws Exception\n    {\n        final String OBJECTS_JSON = \"[ \\\"KEY2\\\", false ]\";\n        try {\n            MAPPER.readValue(OBJECTS_JSON, Key[].class);\n            fail(\"Should not pass\");\n        } catch (JsonMappingException e) {\n            verifyException(e, \"Can not deserialize\");\n            List<JsonMappingException.Reference> refs = e.getPath();\n            assertEquals(1, refs.size());\n            assertEquals(1, refs.get(0).getIndex());\n        }\n\n        try {\n            MAPPER.readValue(\"[ \\\"xyz\\\", { } ]\", String[].class);\n            fail(\"Should not pass\");\n        } catch (JsonMappingException e) {\n            verifyException(e, \"Can not deserialize\");\n            List<JsonMappingException.Reference> refs = e.getPath();\n            assertEquals(1, refs.size());\n            assertEquals(1, refs.get(0).getIndex());\n        }\n\n        try {\n            MAPPER.readValue(\"{\\\"keys\\\":\"+OBJECTS_JSON+\"}\", KeyListBean.class);\n            fail(\"Should not pass\");\n        } catch (JsonMappingException e) {\n            verifyException(e, \"Can not deserialize\");\n            List<JsonMappingException.Reference> refs = e.getPath();\n            assertEquals(2, refs.size());\n            // Bean has no index, but has name:\n            assertEquals(-1, refs.get(0).getIndex());\n            assertEquals(\"keys\", refs.get(0).getFieldName());\n\n            // and for List, reverse:\n            assertEquals(1, refs.get(1).getIndex());\n            assertNull(refs.get(1).getFieldName());\n        }\n    }",
+    "test_line": "            assertEquals(1, refs.size());",
+    "test_name": "testArrayIndexForExceptions",
+    "test_suite": "com.fasterxml.jackson.databind.deser.TestCollectionDeserialization"
+}

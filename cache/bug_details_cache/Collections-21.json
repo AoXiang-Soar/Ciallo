@@ -1,0 +1,16 @@
+{
+    "bug_id": 21,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: subList should be unmodifiable",
+    "test_framework": "defects4j",
+    "test_function": "    public void testSubListIsUnmodifiable() {\n        resetFull();\n        List<E> subList = getCollection().subList(1, 3);\n        try {\n            subList.remove(0);\n            fail(\"subList should be unmodifiable\");\n        } catch (UnsupportedOperationException e) {\n            // expected\n        }\n    }",
+    "test_line": "            fail(\"subList should be unmodifiable\");",
+    "test_name": "testSubListIsUnmodifiable",
+    "test_suite": "org.apache.commons.collections4.list.SetUniqueListTest"
+}

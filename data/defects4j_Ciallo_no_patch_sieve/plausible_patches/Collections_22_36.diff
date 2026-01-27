@@ -1,0 +1,21 @@
+diff --git a/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java b/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java
+index 5892910e..82ebfc8e 100644
+--- a/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java
++++ b/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java
+@@ -245,10 +245,12 @@ public class ListOrderedMap<K, V>
+         for (final Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+             final V old = put(index, entry.getKey(), entry.getValue());
+             if (old == null) {
+-            // The return value of put is null if the key did not exist OR the value was null
+-            // so it cannot be used to determine whether the key was added
+-                // if no key was replaced, increment the index
+-                index++;
++                // The return value of put is null if the key did not exist OR the value was null
++                // so it cannot be used to determine whether the key was added
++                // if no key was replaced AND we're within current size bounds, increment the index
++                if (index < size()) {
++                    index++;
++                }
+             } else {
+                 // otherwise put the next item after the currently inserted key
+                 index = indexOf(entry.getKey()) + 1;

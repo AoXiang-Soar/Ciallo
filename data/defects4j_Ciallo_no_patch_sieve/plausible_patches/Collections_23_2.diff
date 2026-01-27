@@ -1,0 +1,23 @@
+diff --git a/src/main/java/org/apache/commons/collections4/trie/UnmodifiableTrie.java b/src/main/java/org/apache/commons/collections4/trie/UnmodifiableTrie.java
+index 3d78550c..6dd16346 100644
+--- a/src/main/java/org/apache/commons/collections4/trie/UnmodifiableTrie.java
++++ b/src/main/java/org/apache/commons/collections4/trie/UnmodifiableTrie.java
+@@ -52,6 +52,11 @@ public class UnmodifiableTrie<K, V> implements Trie<K, V>, Serializable, Unmodif
+      * @throws IllegalArgumentException if trie is null
+      */
+     public static <K, V> UnmodifiableTrie<K, V> unmodifiableTrie(final Trie<K, ? extends V> trie) {
++        if (trie instanceof Unmodifiable) {
++            @SuppressWarnings("unchecked") // safe to cast
++            final UnmodifiableTrie<K, V> tmpTrie = (UnmodifiableTrie<K, V>) trie;
++            return tmpTrie;
++        }
+         return new UnmodifiableTrie<K, V>(trie);
+     }
+ 
+@@ -179,4 +184,4 @@ public class UnmodifiableTrie<K, V> implements Trie<K, V>, Serializable, Unmodif
+         return delegate.toString();
+     }
+ 
+-}
++}
+\ No newline at end of file

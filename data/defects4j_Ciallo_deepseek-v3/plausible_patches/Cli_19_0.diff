@@ -1,0 +1,30 @@
+diff --git a/src/java/org/apache/commons/cli/PosixParser.java b/src/java/org/apache/commons/cli/PosixParser.java
+index 08a9280..a30e44e 100644
+--- a/src/java/org/apache/commons/cli/PosixParser.java
++++ b/src/java/org/apache/commons/cli/PosixParser.java
+@@ -224,19 +224,13 @@ public class PosixParser extends Parser {
+      * @param stopAtNonOption Specifies whether flattening should halt
+      * at the first non option.
+      */
+-    private void processOptionToken(String token, boolean stopAtNonOption)
+-    {
+-        if (options.hasOption(token))
+-        {
+-            currentOption = options.getOption(token);
+-            tokens.add(token);
+-        }
+-        else if (stopAtNonOption)
+-        {
+-            eatTheRest = true;
+-            tokens.add(token);
+-        }
++private void processOptionToken(String token, boolean stopAtNonOption) {
++    if (!options.hasOption(token) && stopAtNonOption) {
++        eatTheRest = true;
+     }
++    tokens.add(token);
++    currentOption = options.hasOption(token) ? options.getOption(token) : null;
++}
+ 
+     /**
+      * <p>Breaks <code>token</code> into its constituent parts

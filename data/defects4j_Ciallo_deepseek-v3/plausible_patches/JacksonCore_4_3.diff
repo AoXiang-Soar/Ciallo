@@ -1,0 +1,41 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/util/TextBuffer.java b/src/main/java/com/fasterxml/jackson/core/util/TextBuffer.java
+index f97a083f..75804a9b 100644
+--- a/src/main/java/com/fasterxml/jackson/core/util/TextBuffer.java
++++ b/src/main/java/com/fasterxml/jackson/core/util/TextBuffer.java
+@@ -577,15 +577,28 @@ public final class TextBuffer
+      * accommodate for more contiguous content. Usually only
+      * used when parsing tokens like names if even then.
+      */
+-    public char[] expandCurrentSegment()
+-    {
+-        final char[] curr = _currentSegment;
+-        // Let's grow by 50% by default
+-        final int len = curr.length;
+-        // but above intended maximum, slow to increase by 25%
+-        int newLen = (len == MAX_SEGMENT_LEN) ? (MAX_SEGMENT_LEN+1) : Math.min(MAX_SEGMENT_LEN, len + (len >> 1));
+-        return (_currentSegment = Arrays.copyOf(curr, newLen));
++public char[] expandCurrentSegment()
++{
++    final char[] curr = _currentSegment;
++    final int len = curr.length;
++    int newLen;
++    
++    if (len >= MAX_SEGMENT_LEN) {
++        // When at or above max, grow by fixed amount (25% of max)
++        newLen = len + (MAX_SEGMENT_LEN >> 2);
++    } else {
++        // Grow by 50% by default, but cap at MAX_SEGMENT_LEN
++        newLen = len + (len >> 1);
++        if (newLen > MAX_SEGMENT_LEN) {
++            newLen = MAX_SEGMENT_LEN;
++        }
++        // Ensure minimum growth of 1 for very small arrays
++        if (newLen <= len) {
++            newLen = len + 1;
++        }
+     }
++    return (_currentSegment = Arrays.copyOf(curr, newLen));
++}
+ 
+     /**
+      * Method called to expand size of the current segment, to

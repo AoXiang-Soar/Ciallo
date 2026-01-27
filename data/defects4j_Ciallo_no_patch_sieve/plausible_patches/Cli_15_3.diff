@@ -1,0 +1,57 @@
+diff --git a/src/java/org/apache/commons/cli2/commandline/WriteableCommandLineImpl.java b/src/java/org/apache/commons/cli2/commandline/WriteableCommandLineImpl.java
+index 3ca952d..bbaf5f1 100644
+--- a/src/java/org/apache/commons/cli2/commandline/WriteableCommandLineImpl.java
++++ b/src/java/org/apache/commons/cli2/commandline/WriteableCommandLineImpl.java
+@@ -108,27 +108,36 @@ public class WriteableCommandLineImpl
+         return (Option) nameToOption.get(trigger);
+     }
+ 
+-    public List getValues(final Option option,
+-                          List defaultValues) {
+-        // initialize the return list
+-        List valueList = (List) values.get(option);
++public List getValues(final Option option,
++                      List defaultValues) {
++    // initialize the return list
++    List valueList = (List) values.get(option);
++
++    // grab the correct default values
++    if ((valueList == null) || valueList.isEmpty()) {
++        valueList = defaultValues;
++    }
+ 
+-        // grab the correct default values
+-        if ((valueList == null) || valueList.isEmpty()) {
+-            valueList = defaultValues;
++    // augment the list with the default values
++    if ((valueList == null) || valueList.isEmpty()) {
++        valueList = (List) this.defaultValues.get(option);
++    }
++    
++    // merge with defaults where user values don't exist
++    List defaults = (List) this.defaultValues.get(option);
++    if (defaults != null && defaults.size() > 0) {
++        if (valueList == null) {
++            valueList = new ArrayList();
+         }
+-
+-        // augment the list with the default values
+-        if ((valueList == null) || valueList.isEmpty()) {
+-            valueList = (List) this.defaultValues.get(option);
++        // Ensure we have enough values matching the defaults size
++        while (valueList.size() < defaults.size()) {
++            valueList.add(defaults.get(valueList.size()));
+         }
+-                // if there are more default values as specified, add them to
+-                // the list.
+-                    // copy the list first
+-        
+-        return valueList == null ? Collections.EMPTY_LIST : valueList;
+     }
+ 
++    return valueList == null ? Collections.EMPTY_LIST : valueList;
++}
++
+     public List getUndefaultedValues(Option option) {
+       // First grab the command line values
+       List valueList = (List) values.get(option);

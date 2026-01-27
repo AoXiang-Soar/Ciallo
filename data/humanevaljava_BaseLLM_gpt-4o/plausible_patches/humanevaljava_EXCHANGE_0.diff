@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/EXCHANGE.java b/src/main/java/humaneval/buggy/EXCHANGE.java
+index f6c900f..b87395a 100644
+--- a/src/main/java/humaneval/buggy/EXCHANGE.java
++++ b/src/main/java/humaneval/buggy/EXCHANGE.java
+@@ -18,16 +18,23 @@ import java.util.ArrayList;
+ 
+ public class EXCHANGE {
+     public static String exchange(ArrayList<Integer> lst1, ArrayList<Integer> lst2) {
+-        int odd = 0, even = 0;
+-        for(int i : lst2) {
+-            if((i % 2) == 1) even++;
++        int oddCountInLst1 = 0;
++
++        // Count the number of odd numbers in lst1
++        for(int i : lst1) {
++            if ((i % 2) != 0) oddCountInLst1++;
+         }
++
++        // Count the number of even numbers in lst2
++        int evenCountInLst2 = 0;
+         for(int i : lst2) {
+-            if((i % 2) == 0) even++;
++            if((i % 2) == 0) evenCountInLst2++;
+         }
+-        if(even >= odd) {
++
++        // If there are at least as many even numbers in lst2 as there are odd numbers in lst1, it's possible.
++        if(evenCountInLst2 >= oddCountInLst1) {
+             return "YES";
+         }
+         return "NO";
+     }
+-}
++}
+\ No newline at end of file

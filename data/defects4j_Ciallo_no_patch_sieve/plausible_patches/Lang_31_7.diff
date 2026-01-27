@@ -1,0 +1,76 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index a90b0673d..934ec5d8e 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -1436,26 +1436,51 @@ public class StringUtils {
+      * @return the <code>true</code> if any of the chars are found,
+      * <code>false</code> if no match or null input
+      * @since 2.4
+-     */
+-	public static boolean containsAny(CharSequence cs, char[] searchChars) {
+-		if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
+-			return false;
+-		}
+-		int csLength = cs.length();
+-		int searchLength = searchChars.length;
+-		for (int i = 0; i < csLength; i++) {
+-			char ch = cs.charAt(i);
+-			for (int j = 0; j < searchLength; j++) {
+-				if (searchChars[j] == ch) {
+-						// ch is a supplementary character
+-						// ch is in the Basic Multilingual Plane
+-						return true;
+-				}
+-			}
+-		}
+-		return false;
+-	}
+-
++     */public static boolean containsAny(CharSequence cs, char[] searchChars) {
++    if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
++        return false;
++    }
++    
++    int csLength = cs.length();
++    int searchLength = searchChars.length;
++    
++    // Convert searchChars to code points
++    int[] searchCodePoints = new int[searchLength];
++    int searchCodePointCount = 0;
++    for (int j = 0; j < searchLength; ) {
++        char c = searchChars[j];
++        if (Character.isHighSurrogate(c) && j + 1 < searchLength && 
++            Character.isLowSurrogate(searchChars[j + 1])) {
++            searchCodePoints[searchCodePointCount++] = Character.toCodePoint(c, searchChars[j + 1]);
++            j += 2;
++        } else {
++            searchCodePoints[searchCodePointCount++] = c;
++            j++;
++        }
++    }
++    
++    // Check each code point in cs against searchCodePoints
++    for (int i = 0; i < csLength; ) {
++        int codePoint;
++        char ch = cs.charAt(i);
++        if (Character.isHighSurrogate(ch) && i + 1 < csLength && 
++            Character.isLowSurrogate(cs.charAt(i + 1))) {
++            codePoint = Character.toCodePoint(ch, cs.charAt(i + 1));
++            i += 2;
++        } else {
++            codePoint = ch;
++            i++;
++        }
++        
++        for (int j = 0; j < searchCodePointCount; j++) {
++            if (codePoint == searchCodePoints[j]) {
++                return true;
++            }
++        }
++    }
++    
++    return false;
++}
+     /**
+      * <p>
+      * Checks if the CharSequence contains any character in the given set of characters.

@@ -1,0 +1,21 @@
+diff --git a/src/com/google/javascript/jscomp/InlineObjectLiterals.java b/src/com/google/javascript/jscomp/InlineObjectLiterals.java
+index 9061925db..bfea6a139 100644
+--- a/src/com/google/javascript/jscomp/InlineObjectLiterals.java
++++ b/src/com/google/javascript/jscomp/InlineObjectLiterals.java
+@@ -307,6 +307,16 @@ class InlineObjectLiterals implements CompilerPass {
+       Node val = ref.getAssignedValue();
+       blacklistVarReferencesInTree(val, v.scope);
+       Preconditions.checkState(val.getType() == Token.OBJECTLIT);
++      
++      // Handle empty object literal case
++      if (val.getFirstChild() == null) {
++        Node replacement = new Node(Token.TRUE);
++        Node replace = ref.getParent();
++        replacement.copyInformationFromForTree(replace);
++        replace.getParent().replaceChild(replace, replacement);
++        return;
++      }
++
+       Set<String> all = Sets.newLinkedHashSet(varmap.keySet());
+       for (Node key = val.getFirstChild(); key != null;
+            key = key.getNext()) {

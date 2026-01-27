@@ -1,0 +1,79 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/json/JsonGeneratorImpl.java b/src/main/java/com/fasterxml/jackson/core/json/JsonGeneratorImpl.java
+index fb8f21cd..2afdec35 100644
+--- a/src/main/java/com/fasterxml/jackson/core/json/JsonGeneratorImpl.java
++++ b/src/main/java/com/fasterxml/jackson/core/json/JsonGeneratorImpl.java
+@@ -103,7 +103,6 @@ public abstract class JsonGeneratorImpl extends GeneratorBase
+         super(features, codec);
+         _ioContext = ctxt;
+         if (Feature.ESCAPE_NON_ASCII.enabledIn(features)) {
+-            // inlined `setHighestNonEscapedChar()`
+             _maximumNonEscapedChar = 127;
+         }
+         _cfgUnqNames = !Feature.QUOTE_FIELD_NAMES.enabledIn(features);
+@@ -124,6 +123,14 @@ public abstract class JsonGeneratorImpl extends GeneratorBase
+         return this;
+     }
+ 
++    @Override
++    public JsonGenerator disable(Feature f) {
++        super.disable(f);
++        if (f == Feature.QUOTE_FIELD_NAMES) {
++            _cfgUnqNames = true;
++        }
++        return this;
++    }
+ 
+     @Override
+     protected void _checkStdFeatureChanges(int newFeatureFlags, int changedFeatures) {
+@@ -146,7 +153,7 @@ public abstract class JsonGeneratorImpl extends GeneratorBase
+     public JsonGenerator setCharacterEscapes(CharacterEscapes esc)
+     {
+         _characterEscapes = esc;
+-        if (esc == null) { // revert to standard escapes
++        if (esc == null) {
+             _outputEscapes = sOutputEscapes;
+         } else {
+             _outputEscapes = esc.getEscapeCodesForAscii();
+@@ -154,10 +161,6 @@ public abstract class JsonGeneratorImpl extends GeneratorBase
+         return this;
+     }
+ 
+-    /**
+-     * Method for accessing custom escapes factory uses for {@link JsonGenerator}s
+-     * it creates.
+-     */
+     @Override
+     public CharacterEscapes getCharacterEscapes() {
+         return _characterEscapes;
+@@ -169,29 +172,15 @@ public abstract class JsonGeneratorImpl extends GeneratorBase
+         return this;
+     }
+     
+-    /*
+-    /**********************************************************
+-    /* Versioned
+-    /**********************************************************
+-     */
+-
+     @Override
+     public Version version() {
+         return VersionUtil.versionFor(getClass());
+     }
+ 
+-    /*
+-    /**********************************************************
+-    /* Partial API
+-    /**********************************************************
+-     */
+-
+-    // // Overrides just to make things final, to possibly help with inlining
+-    
+     @Override
+     public final void writeStringField(String fieldName, String value) throws IOException
+     {
+         writeFieldName(fieldName);
+         writeString(value);
+     }
+-}
++}
+\ No newline at end of file

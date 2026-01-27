@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/FILTER_INTEGERS.java b/src/main/java/humaneval/buggy/FILTER_INTEGERS.java
+index 6037fe4..b72d291 100644
+--- a/src/main/java/humaneval/buggy/FILTER_INTEGERS.java
++++ b/src/main/java/humaneval/buggy/FILTER_INTEGERS.java
+@@ -5,11 +5,13 @@ import java.util.List;
+ 
+ public class FILTER_INTEGERS {
+     public static List<Integer> filter_integers(List<Object> values) {
+-        List<Integer> result = new ArrayList<Integer>();
++        List<Integer> result = new ArrayList<>();
+ 
+-        for (Object value : values){
+-            result.add((Integer) value);
++        for (Object value : values) {
++            if (value instanceof Integer) {
++                result.add((Integer) value);
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

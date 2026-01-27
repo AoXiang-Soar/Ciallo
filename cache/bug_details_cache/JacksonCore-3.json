@@ -1,0 +1,16 @@
+{
+    "bug_id": 3,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "    public UTF8StreamJsonParser(IOContext ctxt, int features, InputStream in,\n            ObjectCodec codec, BytesToNameCanonicalizer sym,\n            byte[] inputBuffer, int start, int end,\n            boolean bufferRecyclable)\n    {\n        super(ctxt, features);\n        _inputStream = in;\n        _objectCodec = codec;\n        _symbols = sym;\n        _inputBuffer = inputBuffer;\n        _inputPtr = start;\n        _inputEnd = end;\n        // If we have offset, need to omit that from byte offset, so:\n        _bufferRecyclable = bufferRecyclable;\n    }",
+    "fixed_code": "    public UTF8StreamJsonParser(IOContext ctxt, int features, InputStream in,\n            ObjectCodec codec, BytesToNameCanonicalizer sym,\n            byte[] inputBuffer, int start, int end,\n            boolean bufferRecyclable)\n    {\n        super(ctxt, features);\n        _inputStream = in;\n        _objectCodec = codec;\n        _symbols = sym;\n        _inputBuffer = inputBuffer;\n        _inputPtr = start;\n        _inputEnd = end;\n        _currInputRowStart = start;\n        // If we have offset, need to omit that from byte offset, so:\n        _currInputProcessed = -start;\n        _bufferRecyclable = bufferRecyclable;\n    }",
+    "fixed_lines": "        _currInputRowStart = start;\n        _currInputProcessed = -start;",
+    "masked_code": "    public UTF8StreamJsonParser(IOContext ctxt, int features, InputStream in,\n            ObjectCodec codec, BytesToNameCanonicalizer sym,\n            byte[] inputBuffer, int start, int end,\n            boolean bufferRecyclable)\n    {\n        super(ctxt, features);\n        _inputStream = in;\n        _objectCodec = codec;\n        _symbols = sym;\n        _inputBuffer = inputBuffer;\n        _inputPtr = start;\n        _inputEnd = end;\n        // If we have offset, need to omit that from byte offset, so:\n>>> [ INFILL ] <<<\n        _bufferRecyclable = bufferRecyclable;\n    }",
+    "project": "JacksonCore",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<0> but was:<3>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testOffsetWithInputOffset() throws Exception\n    {\n        final JsonFactory f = new JsonFactory();\n        JsonLocation loc;\n        JsonParser p;\n        // 3 spaces before, 2 after, just for padding\n        byte[] b = \"   { }  \".getBytes(\"UTF-8\");\n\n        // and then peel them off\n        p = f.createParser(b, 3, b.length-5);\n        assertToken(JsonToken.START_OBJECT, p.nextToken());\n\n        loc = p.getTokenLocation();\n        assertEquals(0L, loc.getByteOffset());\n        assertEquals(-1L, loc.getCharOffset());\n        assertEquals(1, loc.getLineNr());\n        assertEquals(1, loc.getColumnNr());\n        \n        loc = p.getCurrentLocation();\n        assertEquals(1L, loc.getByteOffset());\n        assertEquals(-1L, loc.getCharOffset());\n        assertEquals(1, loc.getLineNr());\n        assertEquals(2, loc.getColumnNr());\n\n        p.close();\n    }",
+    "test_line": "        assertEquals(0L, loc.getByteOffset());",
+    "test_name": "testOffsetWithInputOffset",
+    "test_suite": "com.fasterxml.jackson.core.json.TestLocation"
+}

@@ -1,0 +1,38 @@
+diff --git a/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java b/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java
+index 763802b..acb5caa 100644
+--- a/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java
++++ b/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java
+@@ -1,22 +1,18 @@
+ package humaneval.buggy;
+ 
+-// You are given 2 words. You need to return True if the second word or any of its rotations is a substring in the first word
+-// cycpattern_check("abcd","abd") => False
+-// cycpattern_check("hello","ell") => True
+-// cycpattern_check("whassup","psus") => False
+-// cycpattern_check("abab","baa") => True
+-// cycpattern_check("efef","eeff") => False
+-// cycpattern_check("himenss","simen") => True
+-
+ public class CYCPATTERN_CHECK {
+     public static boolean cycpattern_check(String a, String b) {
+         int l = b.length();
+-        String pat = b;
+-        for (int i = 0; i < a.length(); i += 1) {
+-            for (int j = 0; j < l; j += 1) {
+-                if (a.substring(i, i + l).equals(pat.substring(j, j + l))) return true;
+-            }
++        if (l == 0 || l > a.length()) return false; // Check edge case: b is empty or longer than a
++
++        // Concatenate b with itself to cover all rotations in one string
++        String doubledB = b + b; 
++
++        for (int i = 0; i <= doubledB.length() - l; i += 1) { // Check only l valid rotations
++            String rotation = doubledB.substring(i, i + l);
++            if (a.contains(rotation)) return true; // Check if current rotation is a substring of a
+         }
++        
+         return false;
+     }
+-}
++}
+\ No newline at end of file

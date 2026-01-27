@@ -1,0 +1,52 @@
+diff --git a/src/main/java/org/apache/commons/codec/language/Soundex.java b/src/main/java/org/apache/commons/codec/language/Soundex.java
+index 71d1f07f..4a306659 100644
+--- a/src/main/java/org/apache/commons/codec/language/Soundex.java
++++ b/src/main/java/org/apache/commons/codec/language/Soundex.java
+@@ -180,22 +180,35 @@ public class Soundex implements StringEncoder {
+      * @throws IllegalArgumentException
+      *                  if the character is not mapped
+      */
+-    private char getMappingCode(final String str, final int index) {
+-        // map() throws IllegalArgumentException
+-        final char mappedChar = this.map(str.charAt(index));
+-        // HW rule check
+-        if (index > 1 && mappedChar != '0') {
+-            final char hwChar = str.charAt(index - 1);
+-            if ('H' == hwChar || 'W' == hwChar) {
+-                final char preHWChar = str.charAt(index - 2);
+-                final char firstCode = this.map(preHWChar);
+-                if (firstCode == mappedChar || 'H' == preHWChar || 'W' == preHWChar) {
+-                    return 0;
++private char getMappingCode(final String str, final int index) {
++    final char mappedChar = this.map(str.charAt(index));
++    
++    // HW rule check
++    if (index > 0 && mappedChar != '0') {
++        final char prevChar = str.charAt(index - 1);
++        if ('H' == prevChar || 'W' == prevChar) {
++            // Find the first non-H/W character with non-zero mapping before H/W
++            for (int i = index - 2; i >= 0; i--) {
++                final char preChar = str.charAt(i);
++                if ('H' != preChar && 'W' != preChar) {
++                    final char preMapped = this.map(preChar);
++                    if (preMapped != '0') {
++                        if (preMapped == mappedChar) {
++                            return '0';
++                        }
++                        break;
++                    }
+                 }
+             }
++            // Special case: if H/W is at start of string
++            if (index == 1) {
++                return '0';
++            }
+         }
+-        return mappedChar;
+     }
++    
++    return mappedChar;
++}
+ 
+     /**
+      * Returns the maxLength. Standard Soundex

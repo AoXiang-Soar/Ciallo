@@ -1,0 +1,54 @@
+diff --git a/src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java b/src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java
+index 7b163edf..2d7e37d4 100644
+--- a/src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java
++++ b/src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java
+@@ -616,7 +616,6 @@ public class FromXmlParser
+ 
+         int token = _xmlTokens.next();
+ 
+-        // mostly copied from 'nextToken()'
+         while (token == XmlTokenStream.XML_START_ELEMENT) {
+             if (_mayBeLeaf) {
+                 _nextToken = JsonToken.FIELD_NAME;
+@@ -639,11 +638,9 @@ public class FromXmlParser
+             return null;
+         }
+ 
+-        // Ok; beyond start element, what do we get?
+         switch (token) {
+         case XmlTokenStream.XML_END_ELEMENT:
+             if (_mayBeLeaf) {
+-                // NOTE: this is different from nextToken() -- produce "", NOT null
+                 _mayBeLeaf = false;
+                 _currToken = JsonToken.VALUE_STRING;
+                 return (_currText = "");
+@@ -653,7 +650,6 @@ public class FromXmlParser
+             _namesToWrap = _parsingContext.getNamesToWrap();
+             break;
+         case XmlTokenStream.XML_ATTRIBUTE_NAME:
+-            // If there was a chance of leaf node, no more...
+             if (_mayBeLeaf) {
+                 _mayBeLeaf = false;
+                 _nextToken = JsonToken.FIELD_NAME;
+@@ -668,20 +664,15 @@ public class FromXmlParser
+         case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+             _currText = _xmlTokens.getText();
+             _currToken = JsonToken.VALUE_STRING;
+-            break;
++            return _currText; // Fixed error: Return current text value
+         case XmlTokenStream.XML_TEXT:
+             _currText = _xmlTokens.getText();
+             if (_mayBeLeaf) {
+                 _mayBeLeaf = false;
+-                // Also: must skip following END_ELEMENT
+                 _xmlTokens.skipEndElement();
+-
+-                // NOTE: this is different from nextToken() -- NO work-around
+-                // for otherwise empty List/array
+                 _currToken = JsonToken.VALUE_STRING;
+                 return _currText;
+             }
+-            // If not a leaf, need to transform into property...
+             _parsingContext.setCurrentName(_cfgNameForTextElement);
+             _nextToken = JsonToken.VALUE_STRING;
+             _currToken = JsonToken.FIELD_NAME;

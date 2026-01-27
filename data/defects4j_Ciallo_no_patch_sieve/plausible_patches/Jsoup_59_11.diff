@@ -1,0 +1,62 @@
+diff --git a/src/main/java/org/jsoup/parser/Token.java b/src/main/java/org/jsoup/parser/Token.java
+index 7dcfa2ba..afeb3c71 100644
+--- a/src/main/java/org/jsoup/parser/Token.java
++++ b/src/main/java/org/jsoup/parser/Token.java
+@@ -97,29 +97,36 @@ abstract class Token {
+             return this;
+         }
+ 
+-        final void newAttribute() {
+-            if (attributes == null)
+-                attributes = new Attributes();
++final void newAttribute() {
++    if (attributes == null)
++        attributes = new Attributes();
+ 
+-            if (pendingAttributeName != null) {
+-                // the tokeniser has skipped whitespace control chars, but trimming could collapse to empty for other control codes, so verify here
+-                pendingAttributeName = pendingAttributeName.trim();
+-                    Attribute attribute;
+-                    if (hasPendingAttributeValue)
+-                        attribute = new Attribute(pendingAttributeName,
+-                            pendingAttributeValue.length() > 0 ? pendingAttributeValue.toString() : pendingAttributeValueS);
+-                    else if (hasEmptyAttributeValue)
+-                        attribute = new Attribute(pendingAttributeName, "");
+-                    else
+-                        attribute = new BooleanAttribute(pendingAttributeName);
+-                    attributes.put(attribute);
+-            }
+-            pendingAttributeName = null;
+-            hasEmptyAttributeValue = false;
+-            hasPendingAttributeValue = false;
+-            reset(pendingAttributeValue);
+-            pendingAttributeValueS = null;
++    if (pendingAttributeName != null) {
++        // Remove control characters and trim whitespace
++        String cleanedName = pendingAttributeName.replaceAll("[\u0000-\u001F\u007F-\u009F]", "").trim();
++        
++        // Fallback to empty string if cleaned name is null (shouldn't happen but defensive)
++        cleanedName = cleanedName != null ? cleanedName : "";
++        
++        // Only proceed if we have a valid attribute name after cleaning
++        if (!cleanedName.isEmpty()) {
++            Attribute attribute;
++            if (hasPendingAttributeValue)
++                attribute = new Attribute(cleanedName,
++                    pendingAttributeValue.length() > 0 ? pendingAttributeValue.toString() : pendingAttributeValueS);
++            else if (hasEmptyAttributeValue)
++                attribute = new Attribute(cleanedName, "");
++            else
++                attribute = new BooleanAttribute(cleanedName);
++            attributes.put(attribute);
+         }
++    }
++    pendingAttributeName = null;
++    hasEmptyAttributeValue = false;
++    hasPendingAttributeValue = false;
++    reset(pendingAttributeValue);
++    pendingAttributeValueS = null;
++}
+ 
+         final void finaliseTag() {
+             // finalises for emit

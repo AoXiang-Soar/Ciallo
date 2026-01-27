@@ -1,0 +1,16 @@
+{
+    "bug_id": 43,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of java.lang.String out of VALUE_NULL token",
+    "test_framework": "defects4j",
+    "test_function": "    public void testNullStringPropertyId() throws Exception\n    {\n        IdentifiableStringId value = MAPPER.readValue\n                (aposToQuotes(\"{'value':3, 'next':null, 'id':null}\"), IdentifiableStringId.class);\n        assertNotNull(value);\n        assertEquals(3, value.value);\n    }    ",
+    "test_line": "                (aposToQuotes(\"{'value':3, 'next':null, 'id':null}\"), IdentifiableStringId.class);",
+    "test_name": "testNullStringPropertyId",
+    "test_suite": "com.fasterxml.jackson.databind.objectid.TestObjectIdSerialization"
+}

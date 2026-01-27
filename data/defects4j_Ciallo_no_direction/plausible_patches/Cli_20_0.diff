@@ -1,0 +1,127 @@
+diff --git a/src/java/org/apache/commons/cli/PosixParser.java b/src/java/org/apache/commons/cli/PosixParser.java
+index 7998f07..1c5c1c1 100644
+--- a/src/java/org/apache/commons/cli/PosixParser.java
++++ b/src/java/org/apache/commons/cli/PosixParser.java
+@@ -94,70 +94,77 @@ public class PosixParser extends Parser {
+      * when an non option is found.
+      * @return The flattened <code>arguments</code> String array.
+      */
+-    protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption)
+-    {
+-        init();
+-        this.options = options;
++protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption)
++{
++    init();
++    this.options = options;
+ 
+-        // an iterator for the command line tokens
+-        Iterator iter = Arrays.asList(arguments).iterator();
++    // an iterator for the command line tokens
++    Iterator iter = Arrays.asList(arguments).iterator();
+ 
+-        // process each command line token
+-        while (iter.hasNext())
+-        {
+-            // get the next command line token
+-            String token = (String) iter.next();
++    boolean eatTheRest = false;
+ 
+-            // handle long option --foo or --foo=bar
+-            if (token.startsWith("--"))
++    // process each command line token
++    while (iter.hasNext())
++    {
++        // get the next command line token
++        String token = (String) iter.next();
++
++        if (eatTheRest || !token.startsWith("-") || "-".equals(token))
++        {
++            tokens.add(token);
++            eatTheRest = stopAtNonOption;
++        }
++        else if (token.startsWith("--"))
++        {
++            int pos = token.indexOf('=');
++            String opt = pos == -1 ? token : token.substring(0, pos);
++            
++            if (stopAtNonOption && !options.hasOption(opt))
+             {
+-                if (token.indexOf('=') != -1)
+-                {
+-                    tokens.add(token.substring(0, token.indexOf('=')));
+-                    tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
+-                }
+-                else
+-                {
+-                    tokens.add(token);
+-                }
++                eatTheRest = true;
++                tokens.add(token);
+             }
+-
+-            // single hyphen
+-            else if ("-".equals(token))
++            else if (pos != -1)
++            {
++                tokens.add(opt);
++                tokens.add(token.substring(pos + 1));
++            }
++            else
+             {
+                 tokens.add(token);
+             }
+-            else if (token.startsWith("-"))
++        }
++        else
++        {
++            if (options.hasOption(token))
+             {
+-                if (token.length() == 2)
+-                {
+-                    processOptionToken(token, stopAtNonOption);
+-                }
+-                else if (options.hasOption(token))
+-                {
+-                    tokens.add(token);
+-                }
+-                // requires bursting
+-                else
+-                {
+-                    burstToken(token, stopAtNonOption);
+-                }
++                tokens.add(token);
+             }
+-            else if (stopAtNonOption)
++            else if (token.length() == 2)
+             {
+-                process(token);
++                processOptionToken(token, stopAtNonOption);
++                if (stopAtNonOption && !options.hasOption(token))
++                {
++                    eatTheRest = true;
++                }
+             }
+             else
+             {
+-                tokens.add(token);
++                burstToken(token, stopAtNonOption);
++                if (stopAtNonOption && !options.hasOption(token))
++                {
++                    eatTheRest = true;
++                }
+             }
+-
+-            gobble(iter);
+         }
+ 
+-        return (String[]) tokens.toArray(new String[tokens.size()]);
++        gobble(iter);
+     }
+ 
++    return (String[]) tokens.toArray(new String[tokens.size()]);
++}
++
+     /**
+      * Adds the remaining tokens to the processed tokens list.
+      *

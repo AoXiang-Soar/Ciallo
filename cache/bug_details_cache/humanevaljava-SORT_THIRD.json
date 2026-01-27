@@ -1,0 +1,16 @@
+{
+    "bug_id": "SORT_THIRD",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SORT_THIRD.test_1:20 \u00bb IndexOutOfBounds Index 6 out of bounds for length ...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        List<Integer> result = humaneval.buggy.SORT_THIRD.sort_third(\n            new ArrayList<Integer>(Arrays.asList(5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10))\n        );\n        org.junit.Assert.assertArrayEquals(\n            result.toArray(), Arrays.asList(1, 3, -5, 2, -3, 3, 5, 0, 123, 9, -10).toArray()\n        );\n    }",
+    "test_line": "        List<Integer> result = humaneval.buggy.SORT_THIRD.sort_third(",
+    "test_name": "test_1",
+    "test_suite": "TEST_SORT_THIRD"
+}

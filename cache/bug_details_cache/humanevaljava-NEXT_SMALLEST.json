@@ -1,0 +1,16 @@
+{
+    "bug_id": "NEXT_SMALLEST",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_NEXT_SMALLEST.test_3:31 expected:<1> but was:<null>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_3() throws java.lang.Exception {\n        Integer result = humaneval.buggy.NEXT_SMALLEST.next_smallest(new int[] {1, 1});\n        org.junit.Assert.assertEquals(\n            result, null\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_3",
+    "test_suite": "TEST_NEXT_SMALLEST"
+}

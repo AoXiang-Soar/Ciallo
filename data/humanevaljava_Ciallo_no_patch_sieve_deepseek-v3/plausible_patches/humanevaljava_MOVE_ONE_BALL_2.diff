@@ -1,0 +1,33 @@
+diff --git a/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java b/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
+index ce2ea8a..7019463 100644
+--- a/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
++++ b/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
+@@ -6,9 +6,20 @@ import java.util.Collections;
+ public class MOVE_ONE_BALL {
+     public static boolean move_one_ball(ArrayList<Integer> arr) {
+         if(arr.size() == 0) return true;
++        
++        // Check if array is already sorted
++        boolean sorted = true;
++        for(int i = 0; i < arr.size() - 1; i++) {
++            if(arr.get(i) > arr.get(i + 1)) {
++                sorted = false;
++                break;
++            }
++        }
++        if(sorted) return true;
++
+         ArrayList<Integer> sorted_arr = new ArrayList<>(arr);
+         Collections.sort(sorted_arr);
+-        int min_value = sorted_arr.get(sorted_arr.size() - 1);
++        int min_value = sorted_arr.get(0);
+         int min_index = 0;
+         for(int i = 0; i < arr.size(); i++) {
+             if(arr.get(i) == min_value) min_index = i;
+@@ -27,4 +38,4 @@ public class MOVE_ONE_BALL {
+         }
+         return true;
+     }
+-}
++}
+\ No newline at end of file

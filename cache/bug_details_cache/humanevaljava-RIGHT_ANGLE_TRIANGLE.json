@@ -1,0 +1,16 @@
+{
+    "bug_id": "RIGHT_ANGLE_TRIANGLE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_RIGHT_ANGLE_TRIANGLE.test_2:23 expected:<false> but was:<true>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_2() throws java.lang.Exception {\n        boolean result = humaneval.buggy.RIGHT_ANGLE_TRIANGLE.right_angle_triangle(10, 6, 8);\n        org.junit.Assert.assertEquals(\n            result, true\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_2",
+    "test_suite": "TEST_RIGHT_ANGLE_TRIANGLE"
+}

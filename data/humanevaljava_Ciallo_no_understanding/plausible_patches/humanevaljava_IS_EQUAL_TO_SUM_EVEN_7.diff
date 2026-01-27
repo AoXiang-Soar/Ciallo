@@ -1,0 +1,25 @@
+diff --git a/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java b/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
+old mode 100644
+new mode 100755
+index 7926089..cd07197
+--- a/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
++++ b/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
+@@ -11,6 +11,15 @@ package humaneval.buggy;
+ 
+ public class IS_EQUAL_TO_SUM_EVEN {
+     public static boolean is_equal_to_sum_even(int n) {
+-        return ((n * 2 == 1) ^ (n < 8));
++        if (n % 2 != 0) return false;
++        
++        // The smallest sum of 4 positive even numbers is 2+2+2+2=8
++        if (n < 8) return false;
++        
++        // For any even n >=8, we can always find such numbers:
++        // e.g., for 8: 2+2+2+2
++        // for 10: 2+2+2+4
++        // for 12: 2+2+2+6 or 2+2+4+4, etc.
++        return true;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 20,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Lang",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testJoin_ArrayChar() {\n        assertEquals(null, StringUtils.join((Object[]) null, ','));\n        assertEquals(TEXT_LIST_CHAR, StringUtils.join(ARRAY_LIST, SEPARATOR_CHAR));\n        assertEquals(\"\", StringUtils.join(EMPTY_ARRAY_LIST, SEPARATOR_CHAR));\n        assertEquals(\";;foo\", StringUtils.join(MIXED_ARRAY_LIST, SEPARATOR_CHAR));\n        assertEquals(\"foo;2\", StringUtils.join(MIXED_TYPE_LIST, SEPARATOR_CHAR));\n\n        assertEquals(\"/\", StringUtils.join(MIXED_ARRAY_LIST, '/', 0, MIXED_ARRAY_LIST.length-1));\n        assertEquals(\"foo\", StringUtils.join(MIXED_TYPE_LIST, '/', 0, 1));\n        assertEquals(\"null\", StringUtils.join(NULL_TO_STRING_LIST,'/', 0, 1));\n        assertEquals(\"foo/2\", StringUtils.join(MIXED_TYPE_LIST, '/', 0, 2));\n        assertEquals(\"2\", StringUtils.join(MIXED_TYPE_LIST, '/', 1, 2));\n        assertEquals(\"\", StringUtils.join(MIXED_TYPE_LIST, '/', 2, 1));\n    }",
+    "test_line": "        assertEquals(\"null\", StringUtils.join(NULL_TO_STRING_LIST,'/', 0, 1));",
+    "test_name": "testJoin_ArrayChar",
+    "test_suite": "org.apache.commons.lang3.StringUtilsTest"
+}

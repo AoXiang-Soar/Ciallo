@@ -1,0 +1,35 @@
+diff --git a/src/com/google/javascript/jscomp/TypeCheck.java b/src/com/google/javascript/jscomp/TypeCheck.java
+index ae8a32001..b7e62cbee 100644
+--- a/src/com/google/javascript/jscomp/TypeCheck.java
++++ b/src/com/google/javascript/jscomp/TypeCheck.java
+@@ -1300,7 +1300,7 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+    * @param n The node being visited.
+    * @param parent The parent of <code>n</code>
+    */
+-  private void visitGetProp(NodeTraversal t, Node n, Node parent) {
++private void visitGetProp(NodeTraversal t, Node n, Node parent) {
+     // obj.prop or obj.method()
+     // Lots of types can appear on the left, a call to a void function can
+     // never be on the left. getPropertyType will decide what is acceptable
+@@ -1311,15 +1311,16 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+ 
+     if (childType.isDict()) {
+       report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, "'.'", "dict");
+-    } else if (n.getJSType() != null && parent.isAssign()) {
+-      return;
+     } else if (validator.expectNotNullOrUndefined(t, n, childType,
+         "No properties on this expression", getNativeType(OBJECT_TYPE))) {
+-      checkPropertyAccess(childType, property.getString(), t, n);
++      if (n.getJSType() != null && parent.isAssign()) {
++        checkPropertyAccess(childType, property.getString(), t, n);
++      } else {
++        checkPropertyAccess(childType, property.getString(), t, n);
++      }
+     }
+     ensureTyped(t, n);
+-  }
+-
++}
+   /**
+    * Emit a warning if we can prove that a property cannot possibly be
+    * defined on an object. Note the difference between JS and a strictly

@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/PARSE_MUSIC.java b/src/main/java/humaneval/buggy/PARSE_MUSIC.java
+old mode 100644
+new mode 100755
+index 95a0328..a1cc549
+--- a/src/main/java/humaneval/buggy/PARSE_MUSIC.java
++++ b/src/main/java/humaneval/buggy/PARSE_MUSIC.java
+@@ -12,10 +12,14 @@ public class PARSE_MUSIC {
+         note_map.put(".|", 1);
+ 
+         List<Integer> result = new ArrayList<Integer>();
++        
++        if (music_string == null || music_string.trim().isEmpty()) {
++            return result;
++        }
+ 
+-        for (String note : music_string.split(" ")){
++        for (String note : music_string.split(" ")) {
+             result.add(note_map.get(note));
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

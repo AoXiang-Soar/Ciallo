@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java b/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java
+index 526f5cb..453875d 100644
+--- a/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java
++++ b/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java
+@@ -9,15 +9,22 @@ public class REMOVE_DUPLICATES {
+         List<Integer> result = new ArrayList<Integer>();
+         HashMap<Integer, Integer> count = new HashMap<Integer, Integer>();
+         
++        // Initialize count map with initial value, avoiding null
+         for (Integer n : numbers){
+-            count.put(n, count.get(n) + 1);
++            if (count.containsKey(n)) {
++                count.put(n, count.get(n) + 1);
++            } else {
++                count.put(n, 1);
++            }
+         }
+ 
++        // Add numbers to result list only if they occur once
+         for (Integer n : numbers){
+-            if (count.get(n) == 1)
++            if (count.get(n) == 1) {
+                 result.add(n);
++            }
+         }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

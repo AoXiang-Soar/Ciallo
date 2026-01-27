@@ -1,0 +1,13 @@
+diff --git a/src/java/org/apache/commons/codec/binary/Base64.java b/src/java/org/apache/commons/codec/binary/Base64.java
+index 2cd0163b..ae26628b 100644
+--- a/src/java/org/apache/commons/codec/binary/Base64.java
++++ b/src/java/org/apache/commons/codec/binary/Base64.java
+@@ -824,7 +824,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder {
+             return binaryData;
+         }
+ 
+-        long len = getEncodeLength(binaryData, MIME_CHUNK_SIZE, CHUNK_SEPARATOR);
++        long len = (binaryData.length * 4 + 2) / 3 + (isChunked ? ((binaryData.length + MIME_CHUNK_SIZE - 1) / MIME_CHUNK_SIZE) * CHUNK_SEPARATOR.length : 0);
+         if (len > maxResultSize) {
+             throw new IllegalArgumentException("Input array too big, the output array would be bigger (" +
+                 len +

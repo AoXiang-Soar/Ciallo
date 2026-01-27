@@ -1,0 +1,62 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Lang,1,SF,0,48348,,20,2,22,
+defects4j,Lang,3,SF,1,3405,3,2,0,3,
+defects4j,Lang,4,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,5,SF,1,4859,3,1,1,3,
+defects4j,Lang,6,SL SH SF,0,11166,,22,0,22,
+defects4j,Lang,7,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,8,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,9,SH SF,1,2859,9,8,0,9,
+defects4j,Lang,10,SF,0,10539,,22,0,22,
+defects4j,Lang,11,SH SF,1,991,1,0,0,1,
+defects4j,Lang,12,SF,0,24702,,22,0,22,
+defects4j,Lang,13,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,14,SF,1,647,1,0,0,1,
+defects4j,Lang,15,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,16,SL SH SF,1,0,1,0,0,1,
+defects4j,Lang,17,SF,1,1376,2,1,0,2,
+defects4j,Lang,19,SF,0,14713,,22,0,22,
+defects4j,Lang,20,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,21,SL SH SF,1,873,1,0,0,1,
+defects4j,Lang,22,SF,1,8163,7,6,0,7,
+defects4j,Lang,23,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,24,SL SH SF,1,3436,1,0,0,1,
+defects4j,Lang,26,SL SH SF,1,0,1,0,0,1,
+defects4j,Lang,27,SF,1,0,1,0,0,1,
+defects4j,Lang,28,SF,1,905,1,0,0,1,
+defects4j,Lang,29,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,30,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,31,SF,1,0,1,0,0,1,
+defects4j,Lang,32,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,33,SL SH SF,1,3266,1,0,0,1,
+defects4j,Lang,34,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,35,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,36,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,37,SF,1,0,1,0,0,1,
+defects4j,Lang,38,SL SH SF,0,9159,,0,22,22,
+defects4j,Lang,39,SH SF,1,2221,2,0,1,2,
+defects4j,Lang,40,SH SF,1,0,1,0,0,1,
+defects4j,Lang,41,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,42,SF,0,11545,,22,0,22,
+defects4j,Lang,43,SL SH SF,1,630,1,0,0,1,
+defects4j,Lang,44,SH SF,1,1699,1,0,0,1,
+defects4j,Lang,45,SH SF,1,0,1,0,0,1,
+defects4j,Lang,46,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,47,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,49,SH SF,1,735,3,2,0,3,
+defects4j,Lang,50,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,51,SL SH SF,1,1308,1,0,0,1,
+defects4j,Lang,52,SH SF,1,1055,1,0,0,1,
+defects4j,Lang,53,SF,1,6356,2,0,1,2,
+defects4j,Lang,54,SH SF,1,1510,5,3,1,5,
+defects4j,Lang,55,SF,1,0,1,0,0,1,
+defects4j,Lang,56,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,57,SL SH SF,1,433,1,0,0,1,
+defects4j,Lang,58,SH SF,1,3137,2,1,0,2,
+defects4j,Lang,59,SL SH SF,1,0,1,0,0,1,
+defects4j,Lang,60,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,61,SL SH SF,1,0,1,0,0,1,
+defects4j,Lang,62,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,63,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,64,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Lang,65,SF,0,44914,,19,3,22,

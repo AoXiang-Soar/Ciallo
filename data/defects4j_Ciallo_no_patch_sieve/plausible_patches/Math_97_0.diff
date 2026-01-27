@@ -1,0 +1,17 @@
+diff --git a/src/java/org/apache/commons/math/analysis/BrentSolver.java b/src/java/org/apache/commons/math/analysis/BrentSolver.java
+index 766d87ed5..c049f52bc 100644
+--- a/src/java/org/apache/commons/math/analysis/BrentSolver.java
++++ b/src/java/org/apache/commons/math/analysis/BrentSolver.java
+@@ -134,6 +134,12 @@ public class BrentSolver extends UnivariateRealSolverImpl {
+         double yMax = f.value(max);
+         
+         // Verify bracketing
++        if (Math.abs(yMin) <= getFunctionValueAccuracy()) {
++            return min;
++        }
++        if (Math.abs(yMax) <= getFunctionValueAccuracy()) {
++            return max;
++        }
+         double sign = yMin * yMax;
+         if (sign >= 0) {
+             // check if either value is close to a zero

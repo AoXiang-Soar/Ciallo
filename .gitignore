@@ -1,0 +1,32 @@
+# Environment
+.idea/
+__pycache__/
+
+# Keep custom files from being tracked
+*.gitignore.*
+
+# Initial User Params
+user_params.py
+
+# Keep tools files from being tracked
+*parallel*
+gumtree-spoon*
+
+
+# Keep tmp from being tracked
+cache/chat_cache/
+cache/cigar/
+cache/projects/
+cache/test/
+cache/validate_patch_cache/
+cache/n_shot_cache
+误修复的非单函数错误.txt
+test*
+launcher.py
+multithreaded_launcher.py
+*.tar.gz
+/frameworks/说明书.txt
+/output
+/src/myapr*
+*.rar
+*.zip

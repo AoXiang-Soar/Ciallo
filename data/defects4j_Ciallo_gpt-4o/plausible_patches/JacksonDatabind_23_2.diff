@@ -1,0 +1,109 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java b/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java
+index c11155e6c..f38be897f 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java
+@@ -62,8 +62,7 @@ public class NumberSerializers
+             _schemaType = schemaType;
+             _isInt = (numberType == JsonParser.NumberType.INT)
+                     || (numberType == JsonParser.NumberType.LONG)
+-                    || (numberType == JsonParser.NumberType.BIG_INTEGER)
+-                    ;
++                    || (numberType == JsonParser.NumberType.BIG_INTEGER);
+         }
+ 
+         @Override
+@@ -106,6 +105,24 @@ public class NumberSerializers
+             }
+             return this;
+         }
++
++        @Override
++        public boolean isEmpty(SerializerProvider prov, T value) {
++            if (value == null) {
++                return true;
++            }
++            Number numberValue = (Number) value;
++            if (_isInt) {
++                // Consider integer zero values as empty
++                return numberValue.intValue() == 0;
++            } else {
++                // Consider float/double zero values as empty
++                if (_numberType == JsonParser.NumberType.FLOAT || _numberType == JsonParser.NumberType.DOUBLE) {
++                    return numberValue.doubleValue() == 0.0;
++                }
++            }
++            return false;
++        }
+     }
+     
+     /*
+@@ -121,7 +138,6 @@ public class NumberSerializers
+ 
+         public ShortSerializer() { super(Short.class, JsonParser.NumberType.INT, "number"); }
+ 
+-
+         @Override
+         public void serialize(Short value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+             gen.writeNumber(value.shortValue());
+@@ -155,7 +171,6 @@ public class NumberSerializers
+             // no type info, just regular serialization
+             serialize(value, gen, provider);            
+         }
+-
+     }
+ 
+     /**
+@@ -172,7 +187,6 @@ public class NumberSerializers
+             super(Number.class, JsonParser.NumberType.INT, "integer");
+         }
+ 
+-
+         @Override
+         public void serialize(Number value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+             gen.writeNumber(value.intValue());
+@@ -182,12 +196,10 @@ public class NumberSerializers
+     @JacksonStdImpl
+     public final static class LongSerializer extends Base<Object>
+     {
+-
+         final static LongSerializer instance = new LongSerializer();
+     
+         public LongSerializer() { super(Long.class, JsonParser.NumberType.LONG, "number"); }
+ 
+-
+         @Override
+         public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+             gen.writeNumber(((Long) value).longValue());
+@@ -197,12 +209,10 @@ public class NumberSerializers
+     @JacksonStdImpl
+     public final static class FloatSerializer extends Base<Object>
+     {
+-
+         final static FloatSerializer instance = new FloatSerializer();
+ 
+         public FloatSerializer() { super(Float.class, JsonParser.NumberType.FLOAT, "number"); }
+ 
+-
+         @Override
+         public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+             gen.writeNumber(((Float) value).floatValue());
+@@ -219,12 +229,10 @@ public class NumberSerializers
+     @JacksonStdImpl
+     public final static class DoubleSerializer extends Base<Object>
+     {
+-
+         final static DoubleSerializer instance = new DoubleSerializer();
+     
+         public DoubleSerializer() { super(Double.class, JsonParser.NumberType.DOUBLE, "number"); }
+ 
+-
+         @Override
+         public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+             gen.writeNumber(((Double) value).doubleValue());
+@@ -238,4 +246,4 @@ public class NumberSerializers
+             serialize(value, gen, provider);            
+         }
+     }
+-}
++}
+\ No newline at end of file

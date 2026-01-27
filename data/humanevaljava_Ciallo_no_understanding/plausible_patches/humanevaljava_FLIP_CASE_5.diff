@@ -1,0 +1,32 @@
+diff --git a/src/main/java/humaneval/buggy/FLIP_CASE.java b/src/main/java/humaneval/buggy/FLIP_CASE.java
+old mode 100644
+new mode 100755
+index 52ea999..8002979
+--- a/src/main/java/humaneval/buggy/FLIP_CASE.java
++++ b/src/main/java/humaneval/buggy/FLIP_CASE.java
+@@ -2,17 +2,15 @@ package humaneval.buggy;
+ 
+ public class FLIP_CASE {
+     public static String flip_case(String string) {
+-        char[] char_list = string.toCharArray();
++        StringBuilder result = new StringBuilder();
+         
+-        for (int i = 0; i < char_list.length; i += 1){
+-            char c = char_list[i];
++        for (char c : string.toCharArray()) {
+             if (Character.isLowerCase(c)) {
+-                char_list[i] = Character.toLowerCase(c);
+-            }
+-            else {
+-                char_list[i] = Character.toUpperCase(c);
++                result.append(Character.toUpperCase(c));
++            } else {
++                result.append(Character.toLowerCase(c));
+             }
+         }
+-        return new String(char_list);
++        return result.toString();
+     }
+-}
++}
+\ No newline at end of file

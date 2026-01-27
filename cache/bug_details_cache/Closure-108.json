@@ -1,0 +1,16 @@
+{
+    "bug_id": 108,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "java.lang.IllegalStateException",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIssue1144() {\n    test(\"var ns = {};\" +\n         \"ns.sub = {};\" +\n         \"/** @constructor */ ns.sub.C = function () {};\" +\n         \"goog.scope(function () {\" +\n         \"  var sub = ns.sub;\" +\n         \"  /** @type {sub.C} */\" +\n         \"  var x = null;\" +\n         \"});\",\n         SCOPE_NAMESPACE +\n         \"var ns = {};\" +\n         \"ns.sub = {};\" +\n         \"/** @constructor */ ns.sub.C = function () {};\" +\n         \"$jscomp.scope.x = null;\");\n  }",
+    "test_line": "    test(\"var ns = {};\" +",
+    "test_name": "testIssue1144",
+    "test_suite": "com.google.javascript.jscomp.ScopedAliasesTest"
+}

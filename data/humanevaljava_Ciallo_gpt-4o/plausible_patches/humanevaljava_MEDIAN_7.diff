@@ -1,0 +1,25 @@
+diff --git a/src/main/java/humaneval/buggy/MEDIAN.java b/src/main/java/humaneval/buggy/MEDIAN.java
+index 6ba9604..b45fcff 100644
+--- a/src/main/java/humaneval/buggy/MEDIAN.java
++++ b/src/main/java/humaneval/buggy/MEDIAN.java
+@@ -12,10 +12,15 @@ public class MEDIAN {
+     public static double median(int[] list) {
+         Arrays.sort(list);
+ 
++        int midIndex = list.length / 2;
++
++        // For an odd number of elements, return the middle element
+         if (list.length % 2 == 1) {
+-            return list[(int) (list.length / 2)];
+-        } else {
+-            return list[(int) (list.length / 2)] + list[(int) (list.length / 2) + 1] / 2;
++            return list[midIndex];
++        } 
++        // For an even number of elements, return the average of the two middle elements
++        else {
++            return (list[midIndex - 1] + list[midIndex]) / 2.0;
+         }
+     }
+-}
++}
+\ No newline at end of file

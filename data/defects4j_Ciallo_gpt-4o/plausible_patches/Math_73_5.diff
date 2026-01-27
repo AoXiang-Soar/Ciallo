@@ -1,0 +1,18 @@
+diff --git a/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java b/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java
+index 8142b5edb..6d79bd061 100644
+--- a/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java
++++ b/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java
+@@ -133,6 +133,13 @@ public class BrentSolver extends UnivariateRealSolverImpl {
+             return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+         }
+ 
++        // Ensure that the interval is valid and brackets a root
++        if (min >= max) {
++            throw new IllegalArgumentException("Invalid interval: the minimum must be less than the maximum.");
++        }
++        if (yMin * yMax > 0) {
++            throw new IllegalArgumentException("Function values at the endpoints must have opposite signs (non-bracketing interval).");
++        }
+ 
+         // full Brent algorithm starting with provided initial guess
+         return solve(f, min, yMin, max, yMax, initial, yInitial);

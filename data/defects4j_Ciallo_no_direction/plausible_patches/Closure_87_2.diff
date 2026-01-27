@@ -1,0 +1,56 @@
+diff --git a/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java b/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java
+index 9498fa6e8..11985002b 100644
+--- a/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java
++++ b/src/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java
+@@ -516,26 +516,33 @@ public class PeepholeSubstituteAlternateSyntax
+    * @return Whether the node is a block with a single statement that is
+    *     an expression.
+    */
+-  private boolean isFoldableExpressBlock(Node n) {
+-    if (n.getType() == Token.BLOCK) {
+-      if (n.hasOneChild()) {
+-        Node maybeExpr = n.getFirstChild();
+-          // IE has a bug where event handlers behave differently when
+-          // their return value is used vs. when their return value is in
+-          // an EXPR_RESULT. It's pretty freaking weird. See:
+-          // http://code.google.com/p/closure-compiler/issues/detail?id=291
+-          // We try to detect this case, and not fold EXPR_RESULTs
+-          // into other expressions.
+-
+-            // We only have to worry about methods with an implicit 'this'
+-            // param, or this doesn't happen.
+-
+-          return NodeUtil.isExpressionNode(maybeExpr);
+-      }
++private boolean isFoldableExpressBlock(Node n) {
++    if (n.getType() != Token.BLOCK || !n.hasOneChild()) {
++        return false;
+     }
+ 
+-    return false;
+-  }
++    Node maybeExpr = n.getFirstChild();
++    if (!NodeUtil.isExpressionNode(maybeExpr)) {
++        return false;
++    }
++
++    Node exprChild = maybeExpr.getFirstChild();
++    if (exprChild == null || exprChild.getType() != Token.CALL) {
++        return true;
++    }
++
++    // Check for event handler patterns
++    Node callTarget = exprChild.getFirstChild();
++    switch (callTarget.getType()) {
++        case Token.GETPROP:
++            String propName = callTarget.getLastChild().getString();
++            return propName == null || !propName.startsWith("on");
++        case Token.GETELEM:
++            return false;
++        default:
++            return true;
++    }
++}
+ 
+   /**
+    * @return The expression node.

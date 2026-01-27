@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/DERIVATIVE.java b/src/main/java/humaneval/buggy/DERIVATIVE.java
+index 667fc7e..ebe28da 100644
+--- a/src/main/java/humaneval/buggy/DERIVATIVE.java
++++ b/src/main/java/humaneval/buggy/DERIVATIVE.java
+@@ -3,20 +3,17 @@ package humaneval.buggy;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+-/* xs represent coefficients of a polynomial.
+-xs[0] + xs[1] * x + xs[2] * x^2 + ....
+-    Return derivative of this polynomial in the same form.
+->>> derivative([3, 1, 2, 4, 5])
+-[1, 4, 12, 20]
+->>> derivative([1, 2, 3])
+-[2, 6] */
+-
+ public class DERIVATIVE {
+     public static List<Integer> derivative(List<Integer> xs) {
+         List<Integer> result = new ArrayList<Integer>();
+         
+-        for (int i = 0; i < xs.size(); i += 1)
+-            result.add(xs.get(i));
++        if (xs.size() <= 1) {
++            return result; // derivative of constant is empty list
++        }
++        
++        for (int i = 1; i < xs.size(); i++) {
++            result.add(xs.get(i) * i);
++        }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

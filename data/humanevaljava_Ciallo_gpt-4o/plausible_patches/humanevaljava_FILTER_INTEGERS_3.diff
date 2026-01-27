@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/FILTER_INTEGERS.java b/src/main/java/humaneval/buggy/FILTER_INTEGERS.java
+index 6037fe4..02213ba 100644
+--- a/src/main/java/humaneval/buggy/FILTER_INTEGERS.java
++++ b/src/main/java/humaneval/buggy/FILTER_INTEGERS.java
+@@ -5,11 +5,16 @@ import java.util.List;
+ 
+ public class FILTER_INTEGERS {
+     public static List<Integer> filter_integers(List<Object> values) {
+-        List<Integer> result = new ArrayList<Integer>();
++        List<Integer> result = new ArrayList<>();
+ 
+-        for (Object value : values){
+-            result.add((Integer) value);
++        for (Object value : values) {
++            try {
++                Integer intValue = Integer.parseInt(value.toString());
++                result.add(intValue);
++            } catch (NumberFormatException | ClassCastException e) {
++                // Skip values that are not convertible to Integer
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": "FILE_NAME_CHECK",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_FILE_NAME_CHECK.test_1:15 expected:<[Yes]> but was:<[No]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        String result = humaneval.buggy.FILE_NAME_CHECK.file_name_check(\"1example.dll\");\n        org.junit.Assert.assertEquals(\n            result, \"No\"\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_FILE_NAME_CHECK"
+}

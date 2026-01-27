@@ -1,0 +1,16 @@
+{
+    "bug_id": 15,
+    "bug_type": "SF",
+    "buggy_lines": "        if (pos == -1 || pos == index) {\n            return removed;\n        super.remove(pos);",
+    "code": "    public Object set(int index, Object object) {\n        int pos = indexOf(object);\n        Object removed = super.set(index, object);\n\n        if (pos == -1 || pos == index) {\n            // the object is already in the uniq list\n            // (and it hasn't been swapped with itself)\n            return removed;\n        }\n\n        super.remove(pos);\n        set.remove(removed);  // remove the item deleted by the set\n\n        return removed;  // return the item deleted by the set\n    }",
+    "fixed_code": "    public Object set(int index, Object object) {\n        int pos = indexOf(object);\n        Object removed = super.set(index, object);\n\n        if (pos != -1 && pos != index) {\n            // the object is already in the uniq list\n            // (and it hasn't been swapped with itself)\n            super.remove(pos);  // remove the duplicate by index\n        }\n\n        set.add(object);      // add the new item to the unique set\n        set.remove(removed);  // remove the item deleted by the set\n\n        return removed;  // return the item deleted by the set\n    }",
+    "fixed_lines": "        if (pos != -1 && pos != index) {\n            super.remove(pos);  // remove the duplicate by index\n        set.add(object);      // add the new item to the unique set",
+    "masked_code": "    public Object set(int index, Object object) {\n        int pos = indexOf(object);\n        Object removed = super.set(index, object);\n\n            // the object is already in the uniq list\n            // (and it hasn't been swapped with itself)\n        }\n\n>>> [ INFILL ] <<<\n        set.remove(removed);  // remove the item deleted by the set\n\n        return removed;  // return the item deleted by the set\n    }",
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<3> but was:<4>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCollections304() {\n        List list = new LinkedList();\n        SetUniqueList decoratedList = SetUniqueList.decorate(list);\n        String s1 = \"Apple\";\n        String s2 = \"Lemon\";\n        String s3 = \"Orange\";\n        String s4 = \"Strawberry\";\n\n        decoratedList.add(s1);\n        decoratedList.add(s2);\n        decoratedList.add(s3);\n\n        assertEquals(3, decoratedList.size());\n\n        decoratedList.set(1, s4);\n\n        assertEquals(3, decoratedList.size());\n\n        decoratedList.add(1, s4);\n\n        assertEquals(3, decoratedList.size());\n\n        decoratedList.add(1, s2);\n\n        assertEquals(4, decoratedList.size());\n    }",
+    "test_line": "        assertEquals(3, decoratedList.size());",
+    "test_name": "testCollections304",
+    "test_suite": "org.apache.commons.collections.list.TestSetUniqueList"
+}

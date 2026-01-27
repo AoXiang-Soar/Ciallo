@@ -1,0 +1,22 @@
+diff --git a/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java b/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java
+index f24f87c39..9012abf9b 100644
+--- a/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java
++++ b/src/main/java/org/apache/commons/math3/ode/AbstractIntegrator.java
+@@ -342,9 +342,16 @@ public abstract class AbstractIntegrator implements FirstOrderIntegrator {
+                 interpolator.setInterpolatedTime(eventT);
+                 final double[] eventY = interpolator.getInterpolatedState().clone();
+ 
+-                // advance all event states to current time
++                // first handle the event that triggered
+                 currentEvent.stepAccepted(eventT, eventY);
+                 isLastStep = currentEvent.stop();
++                
++                // then update all other event states
++                for (final EventState state : eventsStates) {
++                    if (state != currentEvent) {
++                        state.stepAccepted(eventT, eventY);
++                    }
++                }
+ 
+                 // handle the first part of the step, up to the event
+                 for (final StepHandler handler : stepHandlers) {

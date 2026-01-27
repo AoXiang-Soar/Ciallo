@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/FIZZ_BUZZ.java b/src/main/java/humaneval/buggy/FIZZ_BUZZ.java
+index 152e84b..7743b83 100644
+--- a/src/main/java/humaneval/buggy/FIZZ_BUZZ.java
++++ b/src/main/java/humaneval/buggy/FIZZ_BUZZ.java
+@@ -4,14 +4,17 @@ public class FIZZ_BUZZ {
+     public static int fizz_buzz(int n) {
+         int result = 0;
+ 
+-        for (int i = 0; i < n; i += 1){
++        for (int i = 0; i < n; i += 1) {
+             if (i % 11 == 0 || i % 13 == 0) {
+-                for (int j = 0; j < i + "".length(); j += 1){
+-                    if (i + "".substring(j, j + 1) == "7")
++                String numStr = Integer.toString(i);
++                for (int j = 0; j < numStr.length(); j += 1) {
++                    String digit = numStr.substring(j, j + 1);
++                    if (digit.equals("7")) {
+                         result += 1;
++                    }
+                 }
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

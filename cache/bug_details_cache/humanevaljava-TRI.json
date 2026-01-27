@@ -1,0 +1,16 @@
+{
+    "bug_id": "TRI",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_TRI.test_0:8 arrays first differed at element [1]; expected:<3> but was:<-3>\nTEST_TRI.test_1:12 \u00bb ArrayIndexOutOfBounds Index -1 out of bounds for length 5",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        int[] result = humaneval.buggy.TRI.tri(3);\n        int[] desired = {1, 3, 2, 8};\n        org.junit.Assert.assertArrayEquals(desired, result);\n    }",
+    "test_line": "        org.junit.Assert.assertArrayEquals(desired, result);",
+    "test_name": "test_0",
+    "test_suite": "TEST_TRI"
+}

@@ -1,0 +1,53 @@
+diff --git a/src/main/java/humaneval/buggy/SAME_CHARS.java b/src/main/java/humaneval/buggy/SAME_CHARS.java
+old mode 100644
+new mode 100755
+index 9367e85..3c0eb1d
+--- a/src/main/java/humaneval/buggy/SAME_CHARS.java
++++ b/src/main/java/humaneval/buggy/SAME_CHARS.java
+@@ -18,15 +18,39 @@ False */
+ 
+ public class SAME_CHARS {
+     public static boolean same_chars(String s0, String s1) {
+-        ArrayList<Character> set0 = new ArrayList<Character>();
+-        ArrayList<Character> set1 = new ArrayList<Character>();
++        ArrayList<Character> list0 = new ArrayList<Character>();
++        ArrayList<Character> list1 = new ArrayList<Character>();
+ 
+         for (char c0 : s0.toCharArray()) {
+-            set0.add(c0);
++            list0.add(c0);
+         }
+         for (char c1 : s1.toCharArray()) {
+-            set1.add(c1);
++            list1.add(c1);
+         }
+-        return set0.equals(set1);
++        
++        Collections.sort(list0);
++        Collections.sort(list1);
++        
++        // Deduplicate the sorted lists
++        List<Character> deduped0 = new ArrayList<Character>();
++        List<Character> deduped1 = new ArrayList<Character>();
++        
++        Character prev = null;
++        for (Character c : list0) {
++            if (!c.equals(prev)) {
++                deduped0.add(c);
++                prev = c;
++            }
++        }
++        
++        prev = null;
++        for (Character c : list1) {
++            if (!c.equals(prev)) {
++                deduped1.add(c);
++                prev = c;
++            }
++        }
++        
++        return deduped0.equals(deduped1);
+     }
+-}
++}
+\ No newline at end of file

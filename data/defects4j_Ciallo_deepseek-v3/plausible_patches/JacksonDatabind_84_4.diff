@@ -1,0 +1,60 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java b/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
+index 30807836d..314a47220 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
++++ b/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
+@@ -25,7 +25,6 @@ public class ResolvedRecursiveType extends TypeBase
+         }
+         _referencedType = ref;
+     }
+-   
+ 
+     public JavaType getSelfReferencedType() { return _referencedType; }
+ 
+@@ -69,7 +68,7 @@ public class ResolvedRecursiveType extends TypeBase
+         return this;
+     }
+ 
+-    @Deprecated // since 2.7
++    @Deprecated
+     @Override
+     protected JavaType _narrow(Class<?> subclass) {
+         return this;
+@@ -93,8 +92,6 @@ public class ResolvedRecursiveType extends TypeBase
+         if (_referencedType == null) {
+             sb.append("UNRESOLVED");
+         } else {
+-            // [databind#1301]: Typically resolves to a loop so short-cut
+-            //   and only include type-erased class
+             sb.append(_referencedType.getRawClass().getName());
+         }
+         return sb.toString();
+@@ -104,11 +101,26 @@ public class ResolvedRecursiveType extends TypeBase
+     public boolean equals(Object o) {
+         if (o == this) return true;
+         if (o == null) return false;
+-        // Do NOT ever match unresolved references
+         if (_referencedType == null) {
+             return false;
+         }
+         return (o.getClass() == getClass()
+                 && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+     }
+-}
++
++    @Override
++    public JavaType getSuperClass() {
++        if (_referencedType == null) {
++            return null;
++        }
++        JavaType ref = _referencedType.getSuperClass();
++        if (ref == null) {
++            return null;
++        }
++        // Need to handle potential recursive references
++        if (ref instanceof ResolvedRecursiveType) {
++            return ref;
++        }
++        return ref;
++    }
++}
+\ No newline at end of file

@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/COUNT_DISTINCT_CHARACTERS.java b/src/main/java/humaneval/buggy/COUNT_DISTINCT_CHARACTERS.java
+index 75ad8e5..2efe17b 100644
+--- a/src/main/java/humaneval/buggy/COUNT_DISTINCT_CHARACTERS.java
++++ b/src/main/java/humaneval/buggy/COUNT_DISTINCT_CHARACTERS.java
+@@ -1,15 +1,15 @@
+ package humaneval.buggy;
+ 
+-import java.util.HashSet;
++import java.util.TreeSet;
++import java.util.Comparator;
+ 
+ public class COUNT_DISTINCT_CHARACTERS {
+     public static int count_distinct_characters(String string) {
+-        HashSet<Character> distinct = new HashSet<Character>();
++        TreeSet<Character> distinct = new TreeSet<Character>(Comparator.comparingInt(Character::toLowerCase));
+ 
+         for (char c : string.toCharArray()) {
+-            if (! distinct.contains(Character.toLowerCase(c)))
+-                distinct.add(c);
++            distinct.add(c);
+         }
+         return distinct.size();
+     }
+-}
++}
+\ No newline at end of file

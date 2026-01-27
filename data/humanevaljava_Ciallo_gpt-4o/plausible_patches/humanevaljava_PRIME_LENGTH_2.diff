@@ -1,0 +1,33 @@
+diff --git a/src/main/java/humaneval/buggy/PRIME_LENGTH.java b/src/main/java/humaneval/buggy/PRIME_LENGTH.java
+index ab81e70..4161482 100644
+--- a/src/main/java/humaneval/buggy/PRIME_LENGTH.java
++++ b/src/main/java/humaneval/buggy/PRIME_LENGTH.java
+@@ -1,22 +1,14 @@
+ package humaneval.buggy;
+ 
+-/* Write a function that takes a string and returns True if the string
+-length is a prime number or False otherwise
+-Examples
+-prime_length('Hello') == True
+-prime_length('abcdcba') == True
+-prime_length('kittens') == True
+-prime_length('orange') == False */
+-
+ public class PRIME_LENGTH {
+     public static boolean prime_length(String string) {
+         int l = string.length();
+-        if (l <= 1)
++        if (l <= 1) // Directly return false for lengths 0 and 1
+             return false;
+-        for (int i = 2; i < l; i += 1) {
+-            if (l - i == 0)
++        for (int i = 2; i * i <= l; i += 1) { // Corrected the loop exit condition
++            if (l % i == 0) // Check if 'l' is divisible by 'i', meaning 'l' is not a prime
+                 return false;
+         }
+-        return true;
++        return true; // If none of the numbers divide 'l', it is a prime number
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/FIND_ZERO.java b/src/main/java/humaneval/buggy/FIND_ZERO.java
+index 9e2c137..62f22ff 100644
+--- a/src/main/java/humaneval/buggy/FIND_ZERO.java
++++ b/src/main/java/humaneval/buggy/FIND_ZERO.java
+@@ -19,15 +19,26 @@ public class FIND_ZERO {
+             begin *= 2.;
+             end *= 2.;
+         }
++        
++        double polyBegin = poly(xs, begin);
++        double polyEnd = poly(xs, end);
++        
++        if (polyBegin == 0) return begin;
++        if (polyEnd == 0) return end;
++        
+         while (end - begin > 1e-10) {
+             double center = (begin + end) / 2.;
++            double polyCenter = poly(xs, center);
+             
+-            if (poly(xs, begin) * poly(xs, end) < 0) {
+-                begin = center;
+-            } else {
++            if (polyCenter == 0) return center;
++            if (polyBegin * polyCenter < 0) {
+                 end = center;
++                polyEnd = polyCenter;
++            } else {
++                begin = center;
++                polyBegin = polyCenter;
+             }
+         }
+         return begin;
+     }
+-}
++}
+\ No newline at end of file

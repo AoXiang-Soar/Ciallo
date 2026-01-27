@@ -1,0 +1,16 @@
+{
+    "bug_id": 22,
+    "bug_type": "SF",
+    "buggy_lines": "        this(duration, null, null);",
+    "code": "    protected BasePeriod(long duration) {\n        this(duration, null, null);\n        // bug [3264409]\n    }",
+    "fixed_code": "    protected BasePeriod(long duration) {\n        super();\n        // bug [3264409]\n        iType = PeriodType.time();\n        int[] values = ISOChronology.getInstanceUTC().get(this, duration);\n        iType = PeriodType.standard();\n        iValues = new int[8];\n        System.arraycopy(values, 0, iValues, 4, 4);\n    }",
+    "fixed_lines": "        super();\n        iType = PeriodType.time();\n        int[] values = ISOChronology.getInstanceUTC().get(this, duration);\n        iType = PeriodType.standard();\n        iValues = new int[8];\n        System.arraycopy(values, 0, iValues, 4, 4);",
+    "masked_code": "    protected BasePeriod(long duration) {\n        // bug [3264409]\n>>> [ INFILL ] <<<\n    }",
+    "project": "Time",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<0> but was:<64>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testToPeriod_fixedZone() throws Throwable {\n        DateTimeZone zone = DateTimeZone.getDefault();\n        try {\n            DateTimeZone.setDefault(DateTimeZone.forOffsetHours(2));\n            long length =\n                (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +\n                5L * DateTimeConstants.MILLIS_PER_HOUR +\n                6L * DateTimeConstants.MILLIS_PER_MINUTE +\n                7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;\n            Duration dur = new Duration(length);\n            Period test = dur.toPeriod();\n            assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450\n            assertEquals(0, test.getMonths());\n            assertEquals(0, test.getWeeks());\n            assertEquals(0, test.getDays());\n            assertEquals((450 * 24) + 5, test.getHours());\n            assertEquals(6, test.getMinutes());\n            assertEquals(7, test.getSeconds());\n            assertEquals(8, test.getMillis());\n        } finally {\n            DateTimeZone.setDefault(zone);\n        }\n    }",
+    "test_line": "            assertEquals(0, test.getWeeks());",
+    "test_name": "testToPeriod_fixedZone",
+    "test_suite": "org.joda.time.TestDuration_Basics"
+}

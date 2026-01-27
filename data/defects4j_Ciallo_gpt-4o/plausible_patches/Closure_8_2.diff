@@ -1,0 +1,193 @@
+diff --git a/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java b/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
+index f2d36f54f..94f427119 100644
+--- a/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
++++ b/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
+@@ -1,19 +1,3 @@
+-/*
+- * Copyright 2006 The Closure Compiler Authors.
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+ package com.google.javascript.jscomp;
+ 
+ import com.google.common.base.Preconditions;
+@@ -24,42 +8,12 @@ import com.google.javascript.jscomp.Scope.Var;
+ import com.google.javascript.rhino.JSDocInfo;
+ import com.google.javascript.rhino.Node;
+ import com.google.javascript.rhino.Token;
+-
+ import java.util.List;
+ import java.util.Set;
+ 
+ /**
+- * Collapses multiple variable declarations into a single one. i.e the
+- * following:
+- *
+- * <pre>
+- * var a;
+- * var b = 1;
+- * var c = 2;
+- * </pre>
+- *
+- * becomes:
+- *
+- * <pre>var a, b = 1, c = 2;</pre>
+- *
+- * This reduces the generated code size. More optimizations are possible:
+- * <li>Group all variable declarations inside a function into one such variable.
+- * declaration block.</li>
+- * <li>Re-use variables instead of declaring a new one if they are used for
+- * only part of a function.</li>
+- *
+- * Similarly, also collapses assigns like:
+- *
+- * <pre>
+- * a = true;
+- * b = true;
+- * var c = true;
+- * </pre>
+- *
+- * becomes:
+- *
+- * <pre>var c = b = a = true;</pre>
+- *
++ * Collapses multiple variable declarations into a single one.
++ * This reduces the generated code size.
+  */
+ class CollapseVariableDeclarations implements CompilerPass {
+   /** Reference to JS Compiler */
+@@ -67,18 +21,8 @@ class CollapseVariableDeclarations implements CompilerPass {
+ 
+   /** Encapsulation of information about a variable declaration collapse */
+   private static class Collapse {
+-    /**
+-     * Variable declaration that any following var nodes should be
+-     * collapsed into
+-     */
+     final Node startNode;
+-
+-    /**
+-     * Last node (non-inclusive) of the chain of nodes to collapse.
+-     */
+     final Node endNode;
+-
+-    /** Parent of the nodes to the collapse */
+     final Node parent;
+ 
+     Collapse(Node startNode, Node endNode, Node parent) {
+@@ -88,16 +32,7 @@ class CollapseVariableDeclarations implements CompilerPass {
+     }
+   }
+ 
+-  /**
+-   * Collapses to do in this pass.
+-   */
+   private final List<Collapse> collapses = Lists.newArrayList();
+-
+-  /**
+-   * Nodes we've already looked at for collapsing, so that we don't look at them
+-   * again (we look ahead when examining what nodes can be collapsed, and the
+-   * node traversal may give them to us again)
+-   */
+   private final Set<Node> nodesToCollapse = Sets.newHashSet();
+ 
+   CollapseVariableDeclarations(AbstractCompiler compiler) {
+@@ -118,19 +53,7 @@ class CollapseVariableDeclarations implements CompilerPass {
+     }
+   }
+ 
+-  /**
+-   * Gathers all of the variable declarations / assignments that should be
+-   * collapsed into one.
+-   *
+-   * We do not do the collapsing as we go since node traversal would be affected
+-   * by the changes we are making to the parse tree.
+-   */
+   private class GatherCollapses extends AbstractPostOrderCallback {
+-
+-    // If a VAR is declared like
+-    // var x;
+-    // then we should not create new VAR nodes for it later in the tree.
+-    // This is a workaround for a bug in Firefox.
+     private final Set<Var> blacklistedVars = Sets.newHashSet();
+ 
+     @Override
+@@ -139,28 +62,16 @@ class CollapseVariableDeclarations implements CompilerPass {
+         blacklistStubVars(t, n);
+       }
+ 
+-      // Only care about var nodes
+       if (!n.isVar() && !canBeRedeclared(n, t.getScope())) return;
+-
+-      // If we've already looked at this node, skip it
+       if (nodesToCollapse.contains(n)) return;
+-
+-      // Adjacent VAR children of an IF node are the if and else parts and can't
+-      // be collapsed
+       if (parent.isIf()) return;
+ 
+       Node varNode = n;
+-
+       boolean hasVar = n.isVar();
+-
+-      // Find variable declarations that follow this one (if any)
+       n = n.getNext();
+-
+       boolean hasNodesToCollapse = false;
+ 
+-      while (n != null &&
+-          (n.isVar() || canBeRedeclared(n, t.getScope()))) {
+-
++      while (n != null && (n.isVar() || canBeRedeclared(n, t.getScope()))) {
+         if (n.isVar()) {
+           blacklistStubVars(t, n);
+           hasVar = true;
+@@ -168,7 +79,6 @@ class CollapseVariableDeclarations implements CompilerPass {
+ 
+         nodesToCollapse.add(n);
+         hasNodesToCollapse = true;
+-
+         n = n.getNext();
+       }
+ 
+@@ -199,12 +109,18 @@ class CollapseVariableDeclarations implements CompilerPass {
+       }
+ 
+       Var var = s.getVar(lhs.getString());
+-      return var != null
+-          && var.getScope() == s
+-          && !blacklistedVars.contains(var);
++
++      return var != null &&
++             var.getScope() == s &&
++             !blacklistedVars.contains(var) &&
++             !isFunctionParameter(var);
+     }
+-  }
+ 
++    private boolean isFunctionParameter(Var var) {
++      Node parent = var.getParentNode();
++      return parent != null && parent.isParamList();
++    }
++  }
+ 
+   private void applyCollapses() {
+     for (Collapse collapse : collapses) {
+@@ -243,4 +159,4 @@ class CollapseVariableDeclarations implements CompilerPass {
+       }
+     }
+   }
+-}
++}
+\ No newline at end of file

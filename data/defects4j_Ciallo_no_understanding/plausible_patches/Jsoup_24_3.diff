@@ -1,0 +1,80 @@
+diff --git a/src/main/java/org/jsoup/parser/TokeniserState.java b/src/main/java/org/jsoup/parser/TokeniserState.java
+index e530264f..15b80751 100644
+--- a/src/main/java/org/jsoup/parser/TokeniserState.java
++++ b/src/main/java/org/jsoup/parser/TokeniserState.java
+@@ -550,40 +550,44 @@ enum TokeniserState {
+         }
+     },
+     ScriptDataEscapedEndTagName {
+-        void read(Tokeniser t, CharacterReader r) {
+-            if (r.matchesLetter()) {
+-                String name = r.consumeLetterSequence();
+-                t.tagPending.appendTagName(name.toLowerCase());
+-                t.dataBuffer.append(name);
+-                r.advance();
+-                return;
+-            }
++void read(Tokeniser t, CharacterReader r) {
++    if (r.matchesLetter()) {
++        String name = r.consumeLetterSequence();
++        t.tagPending.appendTagName(name.toLowerCase());
++        t.dataBuffer.append(name);
++        return;
++    }
+ 
+-            if (t.isAppropriateEndTagToken() && !r.isEmpty()) {
+-                char c = r.consume();
+-                switch (c) {
+-                    case '\t':
+-                    case '\n':
+-                    case '\f':
+-                    case ' ':
+-                        t.transition(BeforeAttributeName);
+-                        break;
+-                    case '/':
+-                        t.transition(SelfClosingStartTag);
+-                        break;
+-                    case '>':
+-                        t.emitTagPending();
+-                        t.transition(Data);
+-                        break;
+-                    default:
+-                        t.dataBuffer.append(c);
+-                        anythingElse(t, r);
+-                        break;
+-                }
+-            } else {
++    if (t.isAppropriateEndTagToken() && !r.isEmpty()) {
++        char c = r.consume();
++        switch (c) {
++            case '\t':
++            case '\n':
++            case '\f':
++            case ' ':
++                t.transition(BeforeAttributeName);
++                break;
++            case '/':
++                t.transition(SelfClosingStartTag);
++                break;
++            case '>':
++                t.emitTagPending();
++                t.transition(Data);
++                break;
++            default:
++                t.dataBuffer.append(c);
+                 anythingElse(t, r);
+-            }
++                break;
++        }
++    } else {
++        if (!r.isEmpty()) {
++            char c = r.current();
++            t.dataBuffer.append(c);
++            r.advance();
++            anythingElse(t, r);
+         }
++    }
++}
+         
+         private void anythingElse(Tokeniser t, CharacterReader r) {
+             t.emit("</" + t.dataBuffer.toString());

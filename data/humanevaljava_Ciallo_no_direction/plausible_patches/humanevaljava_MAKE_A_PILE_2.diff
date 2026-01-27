@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/MAKE_A_PILE.java b/src/main/java/humaneval/buggy/MAKE_A_PILE.java
+index f77ee2a..b6346d8 100644
+--- a/src/main/java/humaneval/buggy/MAKE_A_PILE.java
++++ b/src/main/java/humaneval/buggy/MAKE_A_PILE.java
+@@ -17,11 +17,17 @@ import java.util.ArrayList;
+  */
+ 
+ public class MAKE_A_PILE {
+-	public static ArrayList<Integer> make_a_pile(int n) {
+-		ArrayList<Integer> pile = new ArrayList<Integer>();
+-		for(int i = 0; i < n; i++) {
+-			pile.add(n - 2 * i);
+-		}
+-		return pile;
+-	}
+-}
++    public static ArrayList<Integer> make_a_pile(int n) {
++        ArrayList<Integer> pile = new ArrayList<Integer>();
++        int current = n;
++        for(int i = 0; i < n; i++) {
++            pile.add(current);
++            if (current % 2 == 1) {
++                current += 2; // next odd number
++            } else {
++                current += 2; // next even number (equivalent)
++            }
++        }
++        return pile;
++    }
++}
+\ No newline at end of file

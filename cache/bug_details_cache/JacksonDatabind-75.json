@@ -1,0 +1,16 @@
+{
+    "bug_id": 75,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<{\"color\":[2]}> but was:<{\"color\":[\"GREEN\"]}>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEnumPropertyAsNumber() throws Exception {\n        assertEquals(String.format(aposToQuotes(\"{'color':%s}\"), Color.GREEN.ordinal()),\n                MAPPER.writeValueAsString(new ColorWrapper(Color.GREEN)));\n    }",
+    "test_line": "        assertEquals(String.format(aposToQuotes(\"{'color':%s}\"), Color.GREEN.ordinal()),\n                MAPPER.writeValueAsString(new ColorWrapper(Color.GREEN)));",
+    "test_name": "testEnumPropertyAsNumber",
+    "test_suite": "com.fasterxml.jackson.databind.struct.EnumFormatShapeTest"
+}

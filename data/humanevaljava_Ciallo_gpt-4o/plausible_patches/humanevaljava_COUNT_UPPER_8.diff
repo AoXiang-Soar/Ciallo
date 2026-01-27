@@ -1,0 +1,38 @@
+diff --git a/src/main/java/humaneval/buggy/COUNT_UPPER.java b/src/main/java/humaneval/buggy/COUNT_UPPER.java
+index f431d37..8abdf1d 100644
+--- a/src/main/java/humaneval/buggy/COUNT_UPPER.java
++++ b/src/main/java/humaneval/buggy/COUNT_UPPER.java
+@@ -2,19 +2,24 @@ package humaneval.buggy;
+ 
+ // Given a string s, count the number of uppercase vowels in even indices.
+ 
+-// For example:
+-// count_upper('aBCdEf') returns 1
+-// count_upper('abcdefg') returns 0
+-// count_upper('dBBE') returns 0
+-
+ public class COUNT_UPPER {
+     public static int count_upper(String s) {
+         int count = 0;
+         for (int i = 0; i < s.length(); i += 2) {
+             char c = s.charAt(i);
+-            if (c == 'A' || c == 'e' || c == 'I' || c == 'o' || c == 'u')
+-                count += 1;
++            // Use a switch-case structure to check for uppercase vowels
++            switch (c) {
++                case 'A':
++                case 'E':
++                case 'I':
++                case 'O':
++                case 'U':
++                    count += 1;
++                    break;
++                default:
++                    break; 
++            }
+         }
+         return count;
+     }
+-}
++}
+\ No newline at end of file

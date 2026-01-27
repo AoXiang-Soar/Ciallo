@@ -1,0 +1,27 @@
+diff --git a/src/main/java/org/apache/commons/collections4/IteratorUtils.java b/src/main/java/org/apache/commons/collections4/IteratorUtils.java
+index 40f99898..be29084e 100644
+--- a/src/main/java/org/apache/commons/collections4/IteratorUtils.java
++++ b/src/main/java/org/apache/commons/collections4/IteratorUtils.java
+@@ -599,11 +599,18 @@ public class IteratorUtils {
+      * @return a combination iterator over the iterators
+      * @throws NullPointerException if either iterator is null
+      */
+-    public static <E> Iterator<E> collatedIterator(final Comparator<? super E> comparator,
+-                                                   final Iterator<? extends E> iterator1,
+-                                                   final Iterator<? extends E> iterator2) {
+-        return new CollatingIterator<E>(comparator, iterator1, iterator2);
++public static <E> Iterator<E> collatedIterator(final Comparator<? super E> comparator,
++                                               final Iterator<? extends E> iterator1,
++                                               final Iterator<? extends E> iterator2) {
++    if (iterator1 == null || iterator2 == null) {
++        throw new NullPointerException("The iterators must not be null");
++    }
++    CollatingIterator<E> collatingIterator = new CollatingIterator<E>(comparator, iterator1, iterator2);
++    if (comparator == null) {
++        collatingIterator.setComparator((Comparator<? super E>) ComparatorUtils.naturalComparator());
+     }
++    return collatingIterator;
++}
+ 
+     /**
+      * Gets an iterator that provides an ordered iteration over the elements

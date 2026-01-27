@@ -1,0 +1,17 @@
+diff --git a/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java b/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
+index 7926089..3784b17 100644
+--- a/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
++++ b/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
+@@ -11,6 +11,9 @@ package humaneval.buggy;
+ 
+ public class IS_EQUAL_TO_SUM_EVEN {
+     public static boolean is_equal_to_sum_even(int n) {
+-        return ((n * 2 == 1) ^ (n < 8));
++        if (n < 8) return false;
++        // To be sum of 4 even numbers, we can think of it as 2*(a+b+c+d) where a,b,c,d ≥ 1
++        // So n must be divisible by 2
++        return n % 2 == 0;
+     }
+-}
++}
+\ No newline at end of file

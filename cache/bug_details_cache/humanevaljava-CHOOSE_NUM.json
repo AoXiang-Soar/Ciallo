@@ -1,0 +1,16 @@
+{
+    "bug_id": "CHOOSE_NUM",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_CHOOSE_NUM.test_0:7 expected:<-1> but was:<14>",
+    "test_framework": "humanevaljava",
+    "test_function": "\tpublic void test_0() throws java.lang.Exception {\n        int result = humaneval.buggy.CHOOSE_NUM.choose_num(12, 15);\n        org.junit.Assert.assertEquals(result, 14);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(result, 14);",
+    "test_name": "test_0",
+    "test_suite": "TEST_CHOOSE_NUM"
+}

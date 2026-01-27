@@ -1,0 +1,39 @@
+diff --git a/src/com/google/javascript/jscomp/CodeGenerator.java b/src/com/google/javascript/jscomp/CodeGenerator.java
+index 2270c172c..a41a12f1c 100644
+--- a/src/com/google/javascript/jscomp/CodeGenerator.java
++++ b/src/com/google/javascript/jscomp/CodeGenerator.java
+@@ -780,16 +780,26 @@ class CodeGenerator {
+     } while (current != n);
+   }
+ 
+-  static boolean isSimpleNumber(String s) {
+-    int len = s.length();
+-    for (int index = 0; index < len; index++) {
+-      char c = s.charAt(index);
+-      if (c < '0' || c > '9') {
++static boolean isSimpleNumber(String s) {
++    // Check for empty string
++    if (s.isEmpty()) {
+         return false;
+-      }
+     }
+-    return len > 0 && s.charAt(0) != '0';
+-  }
++    
++    // Check if the first character is a digit and not '0' unless it's "0"
++    if ((s.length() > 1 && s.charAt(0) == '0') || !Character.isDigit(s.charAt(0))) {
++        return false;
++    }
++    
++    // Ensure all characters are digits
++    for (int index = 1; index < s.length(); index++) {
++        if (!Character.isDigit(s.charAt(index))) {
++            return false;
++        }
++    }
++    
++    return true;
++}
+ 
+   static double getSimpleNumber(String s) {
+     if (isSimpleNumber(s)) {

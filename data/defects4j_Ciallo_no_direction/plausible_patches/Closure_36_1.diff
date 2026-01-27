@@ -1,0 +1,17 @@
+diff --git a/src/com/google/javascript/jscomp/InlineVariables.java b/src/com/google/javascript/jscomp/InlineVariables.java
+index 0b4b3ded2..2cf8c4755 100644
+--- a/src/com/google/javascript/jscomp/InlineVariables.java
++++ b/src/com/google/javascript/jscomp/InlineVariables.java
+@@ -572,6 +572,12 @@ class InlineVariables implements CompilerPass {
+ 
+           // issue 668: Don't inline singleton getter methods
+           // calls as this confused class removing logic.
++          // Prevent inlining of singleton getter methods to avoid
++          // interfering with class removal optimizations
++          String className = convention.getSingletonGetterClassName(callNode);
++          if (className != null && !className.isEmpty()) {
++            return false;
++          }
+         }
+       }
+ 

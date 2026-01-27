@@ -1,0 +1,16 @@
+{
+    "bug_id": 6,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Time",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void test_cutoverPreZero() {\n        DateTime cutover = new LocalDate(-2, 6, 30, ISOChronology.getInstanceUTC()).toDateTimeAtStartOfDay(DateTimeZone.UTC);\n        try {\n            GJChronology.getInstance(DateTimeZone.UTC, cutover);\n            fail();\n        } catch (IllegalArgumentException ex) {\n            // expected\n        }\n    }",
+    "test_line": "            fail();",
+    "test_name": "test_cutoverPreZero",
+    "test_suite": "org.joda.time.chrono.TestGJDate"
+}

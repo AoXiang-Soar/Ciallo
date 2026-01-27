@@ -1,0 +1,18 @@
+diff --git a/src/main/java/humaneval/buggy/VOWELS_COUNT.java b/src/main/java/humaneval/buggy/VOWELS_COUNT.java
+old mode 100644
+new mode 100755
+index 5b0715f..e2bd62f
+--- a/src/main/java/humaneval/buggy/VOWELS_COUNT.java
++++ b/src/main/java/humaneval/buggy/VOWELS_COUNT.java
+@@ -21,8 +21,8 @@ public class VOWELS_COUNT {
+                     || c == 'U')
+                 result += 1;
+         }
+-        if (str_chars[str_chars.length - 1] == 'y')
++        if (str_chars[str_chars.length - 1] == 'y' || str_chars[str_chars.length - 1] == 'Y')
+             result += 1;
+         return result;
+     }
+-}
++}
+\ No newline at end of file

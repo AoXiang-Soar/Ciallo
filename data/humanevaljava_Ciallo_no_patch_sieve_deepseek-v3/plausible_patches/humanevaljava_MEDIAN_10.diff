@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/MEDIAN.java b/src/main/java/humaneval/buggy/MEDIAN.java
+index 6ba9604..974508a 100644
+--- a/src/main/java/humaneval/buggy/MEDIAN.java
++++ b/src/main/java/humaneval/buggy/MEDIAN.java
+@@ -10,12 +10,18 @@ import java.util.Arrays;
+ 
+ public class MEDIAN {
+     public static double median(int[] list) {
++        if (list.length == 0) {
++            throw new IllegalArgumentException("Cannot calculate median of empty array");
++        }
++
+         Arrays.sort(list);
+ 
+-        if (list.length % 2 == 1) {
+-            return list[(int) (list.length / 2)];
++        int midIndex = list.length / 2;
++        if (list.length % 2 != 0) {
++            return list[midIndex];
+         } else {
+-            return list[(int) (list.length / 2)] + list[(int) (list.length / 2) + 1] / 2;
++            // Convert to double before division to ensure floating point result
++            return ((double)list[midIndex - 1] + (double)list[midIndex]) / 2;
+         }
+     }
+-}
++}
+\ No newline at end of file

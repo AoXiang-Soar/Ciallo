@@ -1,0 +1,43 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/CollectionDeserializer.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/CollectionDeserializer.java
+index 7f58b7ad8..8edbb16c6 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/CollectionDeserializer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/CollectionDeserializer.java
+@@ -170,7 +170,6 @@ public class CollectionDeserializer
+     public CollectionDeserializer createContextual(DeserializationContext ctxt,
+             BeanProperty property) throws JsonMappingException
+     {
+-        // May need to resolve types for delegate-based creators:
+         JsonDeserializer<Object> delegateDeser = null;
+         if (_valueInstantiator != null) {
+             if (_valueInstantiator.canCreateUsingDelegate()) {
+@@ -181,25 +180,23 @@ public class CollectionDeserializer
+                             +") returned true for 'canCreateUsingDelegate()', but null for 'getDelegateType()'");
+                 }
+                 delegateDeser = findDeserializer(ctxt, delegateType, property);
++            } else if (_collectionType.hasRawClass(Collections.unmodifiableSet(Collections.emptySet()).getClass())) {
++                // Fallback for unmodifiable sets: handle through usual Collection type
++                JavaType baseType = ctxt.constructType(Set.class);
++                delegateDeser = ctxt.findContextualValueDeserializer(baseType, property);
+             }
+         }
+-        // [databind#1043]: allow per-property allow-wrapping of single overrides:
+-        // 11-Dec-2015, tatu: Should we pass basic `Collection.class`, or more refined? Mostly
+-        //   comes down to "List vs Collection" I suppose... for now, pass Collection
+         Boolean unwrapSingle = findFormatFeature(ctxt, property, Collection.class,
+                 JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+-        // also, often value deserializer is resolved here:
+         JsonDeserializer<?> valueDeser = _valueDeserializer;
+         
+-        // May have a content converter
+         valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+         final JavaType vt = _collectionType.getContentType();
+         if (valueDeser == null) {
+             valueDeser = ctxt.findContextualValueDeserializer(vt, property);
+-        } else { // if directly assigned, probably not yet contextual, so:
++        } else {
+             valueDeser = ctxt.handleSecondaryContextualization(valueDeser, property, vt);
+         }
+-        // and finally, type deserializer needs context as well
+         TypeDeserializer valueTypeDeser = _valueTypeDeserializer;
+         if (valueTypeDeser != null) {
+             valueTypeDeser = valueTypeDeser.forProperty(property);

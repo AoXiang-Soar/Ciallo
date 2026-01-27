@@ -1,0 +1,16 @@
+{
+    "bug_id": "CLOSEST_INTEGER",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_CLOSEST_INTEGER.test_1:15 expected:<14> but was:<15>\nTEST_CLOSEST_INTEGER.test_4:38 \u00bb StringIndexOutOfBounds String index out of ra...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        int result = humaneval.buggy.CLOSEST_INTEGER.closest_integer(\"14.5\");\n        org.junit.Assert.assertEquals(\n            result, 15\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_CLOSEST_INTEGER"
+}

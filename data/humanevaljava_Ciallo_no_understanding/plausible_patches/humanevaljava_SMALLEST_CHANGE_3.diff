@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java b/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
+old mode 100644
+new mode 100755
+index 4ab2c82..daaf452
+--- a/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
++++ b/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
+@@ -12,11 +12,15 @@ package humaneval.buggy;
+ public class SMALLEST_CHANGE {
+     public static int smallest_change(int[] arr) {
+         int result = 0;
+-        for (int i = 0; i < arr.length; i += 1) {
+-            if (arr[i] != arr[arr.length - i])
++        int left = 0;
++        int right = arr.length - 1;
++        while (left < right) {
++            if (arr[left] != arr[right])
+                 result += 1;
++            left++;
++            right--;
+         }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 40,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError: Should not have passed",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEmptyToNullCoercionForPrimitives() throws Exception {\n        _testEmptyToNullCoercion(int.class, Integer.valueOf(0));\n        _testEmptyToNullCoercion(long.class, Long.valueOf(0));\n        _testEmptyToNullCoercion(double.class, Double.valueOf(0.0));\n        _testEmptyToNullCoercion(float.class, Float.valueOf(0.0f));\n    }",
+    "test_line": "",
+    "test_name": "testEmptyToNullCoercionForPrimitives",
+    "test_suite": "com.fasterxml.jackson.databind.deser.TestSimpleTypes"
+}

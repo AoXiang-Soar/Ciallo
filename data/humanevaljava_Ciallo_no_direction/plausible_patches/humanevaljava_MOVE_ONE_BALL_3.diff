@@ -1,0 +1,51 @@
+diff --git a/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java b/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
+index ce2ea8a..a83f8e1 100644
+--- a/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
++++ b/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
+@@ -5,26 +5,26 @@ import java.util.Collections;
+ 
+ public class MOVE_ONE_BALL {
+     public static boolean move_one_ball(ArrayList<Integer> arr) {
+-        if(arr.size() == 0) return true;
+-        ArrayList<Integer> sorted_arr = new ArrayList<>(arr);
+-        Collections.sort(sorted_arr);
+-        int min_value = sorted_arr.get(sorted_arr.size() - 1);
+-        int min_index = 0;
+-        for(int i = 0; i < arr.size(); i++) {
+-            if(arr.get(i) == min_value) min_index = i;
+-        }
+-        ArrayList<Integer> arr_after_move = new ArrayList<>();
+-        for(int i = min_index; i < arr.size(); i++) {
+-            arr_after_move.add(arr.get(i));
++        if (arr.isEmpty()) return true;
++        
++        int count = 0;
++        int n = arr.size();
++        
++        // Count how many times the current element is greater than next
++        for (int i = 0; i < n - 1; i++) {
++            if (arr.get(i) > arr.get(i + 1)) {
++                count++;
++            }
+         }
+-        for(int i = 0; i < min_index; i++) {
+-            arr_after_move.add(arr.get(i));
++        
++        // Check if the array is already sorted or can be sorted with one move
++        if (count == 0) {
++            return true; // already sorted
+         }
+-        for(int i = 0; i < arr.size(); i++) {
+-            if(arr_after_move.get(i) != sorted_arr.get(i)) {
+-                return false;
+-            }
++        if (count == 1 && arr.get(n - 1) <= arr.get(0)) {
++            return true; // can be sorted with one move
+         }
+-        return true;
++        
++        return false;
+     }
+-}
++}
+\ No newline at end of file

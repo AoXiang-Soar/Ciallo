@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/REVERSE_DELETE.java b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+old mode 100644
+new mode 100755
+index 93117a1..7a9a5aa
+--- a/src/main/java/humaneval/buggy/REVERSE_DELETE.java
++++ b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+@@ -15,19 +15,17 @@ import java.util.ArrayList;
+ 
+ public class REVERSE_DELETE {
+     public static ArrayList<Object> reverse_delete(String s, String c) {
+-        String new_s = "";
++        StringBuilder new_s = new StringBuilder();
+         for(int i = 0; i < s.length(); i++) {
+-            if(c.indexOf(s.charAt(i)) != -1) {
+-                new_s += s.charAt(i);
++            if(c.indexOf(s.charAt(i)) == -1) {
++                new_s.append(s.charAt(i));
+             }
+         }
+-        String reverse_s = "";
+-        for(int i = new_s.length() - 1; i >= 0; i--) {
+-            reverse_s += new_s.charAt(i);
+-        }
++        String result_str = new_s.toString();
++        String reverse_s = new StringBuilder(result_str).reverse().toString();
+         ArrayList<Object> res = new ArrayList<>();
+-        res.add(new_s);
+-        res.add(reverse_s.equals(new_s));
++        res.add(result_str);
++        res.add(reverse_s.equals(result_str));
+         return res;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,29 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/sevenz/SevenZFile.java b/src/main/java/org/apache/commons/compress/archivers/sevenz/SevenZFile.java
+index 3e2113df..22cf3878 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/sevenz/SevenZFile.java
++++ b/src/main/java/org/apache/commons/compress/archivers/sevenz/SevenZFile.java
+@@ -898,7 +898,24 @@ public class SevenZFile implements Closeable {
+         return getCurrentStream().read();
+     }
+     
++
+     private InputStream getCurrentStream() throws IOException {
++        if (deferredBlockStreams.isEmpty()) {
++            if (currentEntryIndex < 0) {
++                throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
++            }
++            // Handle empty entry case by returning an immediately exhausted stream
++            return new ByteArrayInputStream(new byte[0]) {
++                @Override
++                public int read() {
++                    return -1;
++                }
++                @Override
++                public int available() {
++                    return 0;
++                }
++            };
++        }
+         if (deferredBlockStreams.isEmpty()) {
+             throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
+         }

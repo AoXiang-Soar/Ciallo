@@ -1,0 +1,33 @@
+diff --git a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+old mode 100644
+new mode 100755
+index 7791efd..3502b7a
+--- a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
++++ b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+@@ -2,15 +2,6 @@ package humaneval.buggy;
+ 
+ import java.util.*;
+ 
+-/* You are given a list of integers.
+-Write a function next_smallest() that returns the 2nd smallest element of the list.
+-Return None if there is no such element.
+-
+-next_smallest([1, 2, 3, 4, 5]) == 2
+-next_smallest([5, 1, 4, 3, 2]) == 2
+-next_smallest([]) == None
+-next_smallest([1, 1]) == None */
+-
+ public class NEXT_SMALLEST {
+     public static Integer next_smallest(int[] lst) {
+         List<Integer> numbers = new ArrayList<Integer>();
+@@ -21,6 +12,8 @@ public class NEXT_SMALLEST {
+ 
+         if (no_duplicate.length < 2)
+             return null;
++        if (no_duplicate[0] == no_duplicate[1])
++            return null;
+         return no_duplicate[1];
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 127,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIssue4177428_return() {\n    test(\n        \"f = function() {\\n\" +\n        \"  var action;\\n\" +\n        \"  a: {\\n\" +\n        \"    var proto = null;\\n\" +\n        \"    try {\\n\" +\n        \"      proto = new Proto\\n\" +\n        \"    } finally {\\n\" +\n        \"      action = proto;\\n\" +\n        \"      return\\n\" +  // Keep this...\n        \"    }\\n\" +\n        \"  }\\n\" +\n        \"  alert(action)\\n\" + // and remove this.\n        \"};\",\n        \"f = function() {\\n\" +\n        \"  var action;\\n\" +\n        \"  a: {\\n\" +\n        \"    var proto = null;\\n\" +\n        \"    try {\\n\" +\n        \"      proto = new Proto\\n\" +\n        \"    } finally {\\n\" +\n        \"      action = proto;\\n\" +\n        \"      return\\n\" +\n        \"    }\\n\" +\n        \"  }\\n\" +\n        \"};\"\n        );\n  }",
+    "test_line": "    test(",
+    "test_name": "testIssue4177428_return",
+    "test_suite": "com.google.javascript.jscomp.UnreachableCodeEliminationTest"
+}

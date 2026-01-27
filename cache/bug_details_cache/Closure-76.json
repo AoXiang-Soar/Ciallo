@@ -1,0 +1,16 @@
+{
+    "bug_id": 76,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testInExpression2() {\n    // This can be improved.  \"a = 1\" is dead but \"a\" is read in the following\n    // expression.\n    inFunction(\n        \"var a; a = 1; if ((a = 2) || (a = 3) || (a)) {}\",\n        \"var a; a = 1; if ((    2) || (a = 3) || (a)) {}\");\n\n    inFunction(\n        \"var a; (a = 1) || (a = 2)\",\n        \"var a; 1 || 2\");\n\n    inFunction(\"var a; (a = 1) || (a = 2); return a\");\n\n    inFunction(\n        \"var a; a = 1; a ? a = 2 : a;\",\n        \"var a; a = 1; a ?     2 : a;\");\n\n    inFunction(\"var a; a = 1; a ? a = 2 : a; return a\");\n\n    inFunction(\n        \"var a; a = 1; a ? a : a = 2;\",\n        \"var a; a = 1; a ? a : 2;\");\n\n    inFunction(\"var a; a = 1; a ? a : a =2; return a\");\n\n    inFunction(\n        \"var a; (a = 1) ? a = 2 : a = 3;\",\n        \"var a;      1  ?     2 :     3;\");\n\n    // This can be improved.  \"a = 1\" is dead but \"a\" is read in the following\n    // expression.\n    inFunction(\"var a; (a = 1) ? a = 2 : a = 3; return a\");\n  }",
+    "test_line": "    test(\"function FUNC(param1, param2){\" + src + \"}\",",
+    "test_name": "testInExpression2",
+    "test_suite": "com.google.javascript.jscomp.DeadAssignmentsEliminationTest"
+}

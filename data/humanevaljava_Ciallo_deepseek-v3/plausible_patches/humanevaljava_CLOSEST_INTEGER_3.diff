@@ -1,0 +1,51 @@
+diff --git a/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java b/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java
+index 23630cd..d94acf1 100644
+--- a/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java
++++ b/src/main/java/humaneval/buggy/CLOSEST_INTEGER.java
+@@ -1,36 +1,16 @@
+ package humaneval.buggy;
+ 
+-// Create a function that takes a value (string) representing a number
+-// and returns the closest integer to it. If the number is equidistant
+-// from two integers, round it away from zero.
+-
+-// Examples
+-// >>> closest_integer("10")
+-// 10
+-// >>> closest_integer("15.3")
+-// 15
+-
+-// Note:
+-// Rounding away from zero means that if the given number is equidistant
+-// from two integers, the one you should return is the one that is the
+-// farthest from zero. For example closest_integer("14.5") should
+-// return 15 and closest_integer("-14.5") should return -15.
+-
+ public class CLOSEST_INTEGER {
+     public static int closest_integer(String value) {
+-        if (value.indexOf('.') >= 0) {
+-            while (value.charAt(value.length() - 1) == '0')
+-                value = value.substring(0, value.length() - 1);
+-        }
+-
+         double num = Double.parseDouble(value);
+-        int result = 0;
+-        if (value.substring(value.length() - 2).equals(".5")) {
+-            result = num > 0 ? (int)Math.floor(num) : (int)Math.ceil(num);
+-        } else if (value.length() > 0){
+-            result = (int)Math.round(num);
+-        }
+ 
+-        return result;
++        // Check if the number is exactly halfway between two integers
++        if (num - (int)num == 0.5 || num - (int)num == -0.5) {
++            // If it's equidistant, round away from zero
++            return num > 0 ? (int)Math.ceil(num) : (int)Math.floor(num);
++        } else {
++            // Otherwise, round normally
++            return (int)Math.round(num);
++        }
+     }
+-}
++}
+\ No newline at end of file

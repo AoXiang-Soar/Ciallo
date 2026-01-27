@@ -1,0 +1,29 @@
+diff --git a/src/main/java/org/jsoup/nodes/Node.java b/src/main/java/org/jsoup/nodes/Node.java
+index 3d0bf2ea..70d8a23d 100644
+--- a/src/main/java/org/jsoup/nodes/Node.java
++++ b/src/main/java/org/jsoup/nodes/Node.java
+@@ -101,11 +101,21 @@ public abstract class Node implements Cloneable {
+      * @param attributeKey The attribute key to check.
+      * @return true if the attribute exists, false if not.
+      */
+-    public boolean hasAttr(String attributeKey) {
+-        Validate.notNull(attributeKey);
++public boolean hasAttr(String attributeKey) {
++    Validate.notNull(attributeKey);
+ 
+-        return attributes.hasKey(attributeKey);
++    if (attributes.hasKey(attributeKey)) {
++        return true;
++    }
++    
++    if (attributeKey.startsWith("abs:")) {
++        String plainKey = attributeKey.substring("abs:".length());
++        String absValue = absUrl(plainKey);
++        return attributes.hasKey(plainKey) && absValue != null && !absValue.isEmpty();
+     }
++    
++    return false;
++}
+ 
+     /**
+      * Remove an attribute from this element.

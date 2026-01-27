@@ -1,0 +1,27 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index c9d99aef..7fad1a17 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -101,7 +101,7 @@ public class TarUtils {
+      */
+     public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+         long    result = 0;
+-        int     end = offset + length;
++        int    end = offset + length;
+         int     start = offset;
+ 
+         if (length < 2){
+@@ -129,8 +129,11 @@ public class TarUtils {
+         if (trailer == 0 || trailer == ' '){
+             end--;
+         } else {
+-            throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, end-1, trailer));
++            // Allow digit at end position for overflow cases
++            if (trailer < '0' || trailer > '7') {
++                throw new IllegalArgumentException(
++                        exceptionMessage(buffer, offset, length, end-1, trailer));
++            }
+         }
+         trailer = buffer[end - 1];
+         while (start < end - 1 && (trailer == 0 || trailer == ' ')) {

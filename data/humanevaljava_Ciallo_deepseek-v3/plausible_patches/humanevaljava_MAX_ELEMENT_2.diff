@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/MAX_ELEMENT.java b/src/main/java/humaneval/buggy/MAX_ELEMENT.java
+index e510a0a..b361b8f 100644
+--- a/src/main/java/humaneval/buggy/MAX_ELEMENT.java
++++ b/src/main/java/humaneval/buggy/MAX_ELEMENT.java
+@@ -1,15 +1,15 @@
+ package humaneval.buggy;
+ 
+ import java.util.List;
++import java.util.OptionalInt;
+ 
+ public class MAX_ELEMENT {
+     public static int max_element(List<Integer> l) {
+-        int m = 0;
+-        for (Integer e : l) {
+-            if (e > m){
+-                m = e;
+-            }
++        OptionalInt max = l.stream().mapToInt(Integer::intValue).max();
++        if (max.isPresent()) {
++            return max.getAsInt();
++        } else {
++            throw new IllegalArgumentException("List is empty");
+         }
+-        return m;
+     }
+-}
++}
+\ No newline at end of file

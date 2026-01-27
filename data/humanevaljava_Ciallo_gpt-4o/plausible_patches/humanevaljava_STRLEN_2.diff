@@ -1,0 +1,18 @@
+diff --git a/src/main/java/humaneval/buggy/STRLEN.java b/src/main/java/humaneval/buggy/STRLEN.java
+index 326e5da..5a10e7a 100644
+--- a/src/main/java/humaneval/buggy/STRLEN.java
++++ b/src/main/java/humaneval/buggy/STRLEN.java
+@@ -2,6 +2,10 @@ package humaneval.buggy;
+ 
+ public class STRLEN {
+     public static int strlen(String string){
+-        return string.length() - 1;
++        int length = 0;
++        for (int i = 0; i < string.length(); i++) {
++            length++;
++        }
++        return length;
+     }
+-}
++}
+\ No newline at end of file

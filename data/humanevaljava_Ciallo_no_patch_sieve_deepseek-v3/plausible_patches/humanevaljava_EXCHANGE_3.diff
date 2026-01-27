@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/EXCHANGE.java b/src/main/java/humaneval/buggy/EXCHANGE.java
+index f6c900f..94a6a6b 100644
+--- a/src/main/java/humaneval/buggy/EXCHANGE.java
++++ b/src/main/java/humaneval/buggy/EXCHANGE.java
+@@ -18,16 +18,16 @@ import java.util.ArrayList;
+ 
+ public class EXCHANGE {
+     public static String exchange(ArrayList<Integer> lst1, ArrayList<Integer> lst2) {
+-        int odd = 0, even = 0;
+-        for(int i : lst2) {
+-            if((i % 2) == 1) even++;
++        int odd_in_lst1 = 0, even_in_lst2 = 0;
++        for(int i : lst1) {
++            if((i % 2) == 1) odd_in_lst1++;
+         }
+         for(int i : lst2) {
+-            if((i % 2) == 0) even++;
++            if((i % 2) == 0) even_in_lst2++;
+         }
+-        if(even >= odd) {
++        if(even_in_lst2 >= odd_in_lst1) {
+             return "YES";
+         }
+         return "NO";
+     }
+-}
++}
+\ No newline at end of file

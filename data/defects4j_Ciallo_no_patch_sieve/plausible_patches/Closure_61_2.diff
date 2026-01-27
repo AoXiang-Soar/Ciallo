@@ -1,0 +1,23 @@
+diff --git a/src/com/google/javascript/jscomp/NodeUtil.java b/src/com/google/javascript/jscomp/NodeUtil.java
+index 1844b18ab..9dc140960 100644
+--- a/src/com/google/javascript/jscomp/NodeUtil.java
++++ b/src/com/google/javascript/jscomp/NodeUtil.java
+@@ -955,6 +955,18 @@ public final class NodeUtil {
+       }
+ 
+       // Functions in the "Math" namespace have no side effects.
++      // Functions in the "Math" namespace have no side effects.
++      if (nameNode.getType() == Token.GETPROP) {
++        Node mathCheckNode = nameNode.getFirstChild();
++        while (mathCheckNode != null && mathCheckNode.getType() == Token.GETPROP) {
++          mathCheckNode = mathCheckNode.getFirstChild();
++        }
++        if (mathCheckNode != null 
++            && mathCheckNode.getType() == Token.NAME
++            && "Math".equals(mathCheckNode.getString())) {
++          return false;
++        }
++      }
+ 
+       if (compiler != null && !compiler.hasRegExpGlobalReferences()) {
+         if (nameNode.getFirstChild().getType() == Token.REGEXP

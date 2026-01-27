@@ -1,0 +1,175 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Closure,1,SH SF,1,3361,5,0,4,5,
+defects4j,Closure,2,SF,1,1216,1,0,0,1,
+defects4j,Closure,3,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,4,SF,0,17320,,22,0,22,
+defects4j,Closure,5,SH SF,1,1143,1,0,0,1,
+defects4j,Closure,6,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,7,SF,1,5545,12,11,0,12,
+defects4j,Closure,8,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,9,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,10,SL SH SF,1,439,1,0,0,1,
+defects4j,Closure,11,SH SF,1,1743,3,2,0,3,
+defects4j,Closure,12,SH SF,0,9276,,5,17,22,
+defects4j,Closure,13,SF,1,1879,2,0,1,2,
+defects4j,Closure,14,SL SH SF,0,27337,,21,1,22,
+defects4j,Closure,15,SH SF,0,12745,,8,14,22,
+defects4j,Closure,16,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,17,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,18,SL SH SF,1,1399,1,0,0,1,
+defects4j,Closure,19,SF,1,700,1,0,0,1,
+defects4j,Closure,20,SH SF,0,13094,,22,0,22,
+defects4j,Closure,21,SF,0,43243,,18,4,22,
+defects4j,Closure,22,SF,0,46148,,17,5,22,
+defects4j,Closure,23,SF,0,25080,,21,1,22,
+defects4j,Closure,24,SF,0,17673,,22,0,22,
+defects4j,Closure,25,SF,0,20586,,2,20,22,
+defects4j,Closure,26,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,27,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,28,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,29,SF,0,46600,,22,0,22,
+defects4j,Closure,30,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,31,SL SH SF,1,1602,1,0,0,1,
+defects4j,Closure,32,SF,0,34432,,22,0,22,
+defects4j,Closure,33,SH SF,0,20633,,0,22,22,
+defects4j,Closure,34,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,35,SH SF,0,18823,,2,20,22,
+defects4j,Closure,36,SH SF,1,1958,2,0,1,2,
+defects4j,Closure,37,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,38,SL SH SF,1,600,1,0,0,1,
+defects4j,Closure,39,SF,0,21593,,4,18,22,
+defects4j,Closure,40,SF,0,25796,,20,2,22,
+defects4j,Closure,41,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,42,SF,0,24126,,0,22,22,
+defects4j,Closure,43,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,44,SF,1,563,1,0,0,1,
+defects4j,Closure,45,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,46,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,47,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,48,SF,0,65952,,15,7,22,
+defects4j,Closure,49,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,50,SF,0,54061,,19,3,22,
+defects4j,Closure,51,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,52,SL SH SF,1,614,1,0,0,1,
+defects4j,Closure,53,SF,1,4532,3,2,0,3,
+defects4j,Closure,54,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,55,SH SF,0,12719,,7,15,22,
+defects4j,Closure,56,SF,1,977,1,0,0,1,
+defects4j,Closure,57,SL SH SF,1,491,1,0,0,1,
+defects4j,Closure,58,SF,0,37999,,22,0,22,
+defects4j,Closure,59,SH SF,1,2564,3,2,0,3,
+defects4j,Closure,60,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,61,SH SF,1,12061,16,5,10,16,
+defects4j,Closure,62,SL SH SF,1,1474,2,1,0,2,
+defects4j,Closure,64,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,65,SL SH SF,1,1015,1,0,0,1,
+defects4j,Closure,66,SF,1,15269,3,2,0,3,
+defects4j,Closure,67,SL SH SF,0,11750,,4,18,22,
+defects4j,Closure,68,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,69,SH SF,0,18448,,2,20,22,
+defects4j,Closure,70,SL SH SF,1,601,1,0,0,1,
+defects4j,Closure,71,SL SH SF,0,26307,,13,9,22,
+defects4j,Closure,72,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,73,SL SH SF,1,1008,1,0,0,1,
+defects4j,Closure,74,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,75,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,76,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,77,SL SH SF,1,983,1,0,0,1,
+defects4j,Closure,78,SF,1,5299,3,2,0,3,
+defects4j,Closure,79,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,80,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,81,SH SF,0,36925,,7,15,22,
+defects4j,Closure,82,SH SF,0,8719,,21,1,22,
+defects4j,Closure,83,SH SF,0,10733,,8,14,22,
+defects4j,Closure,84,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,85,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,86,SL SH SF,1,1701,1,0,0,1,
+defects4j,Closure,87,SF,0,15477,,17,5,22,
+defects4j,Closure,88,SF,1,8174,10,6,3,10,
+defects4j,Closure,89,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,90,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,91,SH SF,0,20522,,1,21,22,
+defects4j,Closure,92,SL SH SF,1,4714,5,4,0,5,
+defects4j,Closure,94,SF,1,792,1,0,0,1,
+defects4j,Closure,95,SF,0,36297,,16,6,22,
+defects4j,Closure,96,SF,1,9764,11,5,5,11,
+defects4j,Closure,97,SH SF,1,6064,4,3,0,4,
+defects4j,Closure,98,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,99,SF,0,24903,,22,0,22,
+defects4j,Closure,100,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,101,SF,1,1164,2,0,1,2,
+defects4j,Closure,102,SF,1,2515,4,1,2,4,
+defects4j,Closure,103,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,104,SL SH SF,1,1293,2,1,0,2,
+defects4j,Closure,105,SF,0,46168,,22,0,22,
+defects4j,Closure,106,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,107,SL SH SF,0,17575,,2,20,22,
+defects4j,Closure,108,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,109,SH SF,1,793,2,1,0,2,
+defects4j,Closure,110,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,111,SH SF,0,7958,,1,21,22,
+defects4j,Closure,112,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,113,SL SH SF,0,15646,,20,2,22,
+defects4j,Closure,114,SL SH SF,0,14597,,18,4,22,
+defects4j,Closure,115,SF,0,39649,,20,2,22,
+defects4j,Closure,116,SF,0,28194,,22,0,22,
+defects4j,Closure,117,SF,0,28244,,20,2,22,
+defects4j,Closure,118,SH SF,0,13703,,13,9,22,
+defects4j,Closure,119,SL SH SF,1,2295,2,0,1,2,
+defects4j,Closure,120,SH SF,0,16779,,4,18,22,
+defects4j,Closure,121,SF,0,34528,,21,1,22,
+defects4j,Closure,122,SH SF,1,843,2,1,0,2,
+defects4j,Closure,123,SL SH SF,1,10469,2,1,0,2,
+defects4j,Closure,124,SF,1,459,1,0,0,1,
+defects4j,Closure,125,SL SH SF,1,1148,2,1,0,2,
+defects4j,Closure,126,SH SF,1,1234,1,0,0,1,
+defects4j,Closure,127,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,128,SF,1,880,2,1,0,2,
+defects4j,Closure,129,SH SF,1,589,1,0,0,1,
+defects4j,Closure,130,SL SH SF,0,16094,,8,14,22,
+defects4j,Closure,131,SF,1,491,1,0,0,1,
+defects4j,Closure,132,SH SF,0,54261,,13,9,22,
+defects4j,Closure,133,SL SH SF,0,8193,,21,1,22,
+defects4j,Closure,134,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,135,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,136,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,137,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,138,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,139,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,140,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,141,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,142,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,143,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,144,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,145,SF,0,14469,,19,3,22,
+defects4j,Closure,146,SH SF,0,12065,,20,2,22,
+defects4j,Closure,147,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,148,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,149,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,150,SH SF,0,14600,,15,7,22,
+defects4j,Closure,151,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,152,SH SF,1,2199,3,2,0,3,
+defects4j,Closure,153,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,154,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,155,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,156,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,157,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,158,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,159,SH SF,0,14988,,1,21,22,
+defects4j,Closure,160,SF,1,5897,5,1,3,5,
+defects4j,Closure,161,SH SF,1,4918,7,0,6,7,
+defects4j,Closure,162,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,163,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,164,SF,0,33043,,16,6,22,
+defects4j,Closure,165,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,166,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,167,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,168,SL SH SF,1,14198,16,13,2,16,
+defects4j,Closure,169,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,170,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,171,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,172,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,173,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,174,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,175,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Closure,176,SF,0,35689,,0,22,22,

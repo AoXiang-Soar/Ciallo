@@ -1,0 +1,32 @@
+diff --git a/src/main/java/humaneval/buggy/GET_ODD_COLLATZ.java b/src/main/java/humaneval/buggy/GET_ODD_COLLATZ.java
+index 33f1d5d..937fa51 100644
+--- a/src/main/java/humaneval/buggy/GET_ODD_COLLATZ.java
++++ b/src/main/java/humaneval/buggy/GET_ODD_COLLATZ.java
+@@ -23,13 +23,20 @@ import java.util.Collections;
+ public class GET_ODD_COLLATZ {
+     public static ArrayList<Integer> get_odd_collatz(int n) {
+         ArrayList<Integer> result = new ArrayList<>();
+-        if((n % 2) == 1) result.add(n);
+-        while(n >= 1) {
+-            if((n % 2) == 1) n /= 2;
+-            else n = 3 * n + 1;
+-            if((n % 2) == 1) result.add(n);
++        while(n != 1) {
++            if((n % 2) == 1) {
++                result.add(n);
++                n = 3 * n + 1;
++            } else {
++                n /= 2;
++            }
+         }
++        
++        // add 1 as it's part of the sequence and odd number
++        result.add(1);
++        
++        // Sort the result before returning
+         Collections.sort(result);
+         return result;
+     }
+-}
++}
+\ No newline at end of file

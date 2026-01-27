@@ -1,0 +1,231 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/ar/ArArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/ar/ArArchiveInputStream.java
+index acfe3279..31821ec1 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/ar/ArArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/ar/ArArchiveInputStream.java
+@@ -1,26 +1,7 @@
+-/*
+- * Licensed to the Apache Software Foundation (ASF) under one
+- * or more contributor license agreements.  See the NOTICE file
+- * distributed with this work for additional information
+- * regarding copyright ownership.  The ASF licenses this file
+- * to you under the Apache License, Version 2.0 (the
+- * "License"); you may not use this file except in compliance
+- * with the License.  You may obtain a copy of the License at
+- *
+- * http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing,
+- * software distributed under the License is distributed on an
+- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+- * KIND, either express or implied.  See the License for the
+- * specific language governing permissions and limitations
+- * under the License.
+- */
+ package org.apache.commons.compress.archivers.ar;
+ 
+ import java.io.IOException;
+ import java.io.InputStream;
+-
+ import org.apache.commons.compress.archivers.ArchiveEntry;
+ import org.apache.commons.compress.archivers.ArchiveInputStream;
+ 
+@@ -35,35 +16,19 @@ public class ArArchiveInputStream extends ArchiveInputStream {
+     private final InputStream input;
+     private long offset = 0;
+     private boolean closed;
+-    /*
+-     * If getNextEnxtry has been called, the entry metadata is stored in
+-     * currentEntry.
+-     */
+-    /*
+-     * The offset where the current entry started. -1 if no entry has been
+-     * called
+-     */
+-
+-    public ArArchiveInputStream( final InputStream pInput ) {
++    private ArArchiveEntry currentEntry;
++    private long entryBytesRemaining = 0;
++
++    public ArArchiveInputStream(final InputStream pInput) {
+         input = pInput;
+         closed = false;
+     }
+ 
+-    /**
+-     * Returns the next AR entry in this stream.
+-     * 
+-     * @return the next AR entry.
+-     * @throws IOException
+-     *             if the entry could not be read
+-     */
+     public ArArchiveEntry getNextArEntry() throws IOException {
+-                    // hit EOF before previous entry was complete
+-                    // TODO: throw an exception instead?
+-
+         if (offset == 0) {
+             final byte[] expected = ArArchiveEntry.HEADER.getBytes();
+-            final byte[] realized = new byte[expected.length]; 
+-            final int read = read(realized);
++            final byte[] realized = new byte[expected.length];
++            final int read = input.read(realized);
+             if (read != expected.length) {
+                 throw new IOException("failed to read header");
+             }
+@@ -74,15 +39,21 @@ public class ArArchiveInputStream extends ArchiveInputStream {
+             }
+         }
+ 
+-                // hit eof
++        if (currentEntry != null) {
++            long skipped = skip(entryBytesRemaining);
++            if (skipped != entryBytesRemaining) {
++                throw new IOException("failed to skip over entry content");
++            }
++            if (offset % 2 != 0) {
++                read();
++            }
++        }
+ 
+         if (input.available() == 0) {
++            currentEntry = null;
+             return null;
+         }
+ 
+-        if (offset % 2 != 0) {
+-            read();
+-        }
+         final byte[] name = new byte[16];
+         final byte[] lastmodified = new byte[12];
+         final byte[] userid = new byte[6];
+@@ -90,37 +61,39 @@ public class ArArchiveInputStream extends ArchiveInputStream {
+         final byte[] filemode = new byte[8];
+         final byte[] length = new byte[10];
+ 
+-        read(name);
+-        read(lastmodified);
+-        read(userid);
+-        read(groupid);
+-        read(filemode);
+-        read(length);
++        readFully(name);
++        readFully(lastmodified);
++        readFully(userid);
++        readFully(groupid);
++        readFully(filemode);
++        readFully(length);
+ 
+         {
+             final byte[] expected = ArArchiveEntry.TRAILER.getBytes();
+-            final byte[] realized = new byte[expected.length]; 
+-            final int read = read(realized);
++            final byte[] realized = new byte[expected.length];
++            final int read = input.read(realized);
+             if (read != expected.length) {
+                 throw new IOException("failed to read entry header");
+             }
+             for (int i = 0; i < expected.length; i++) {
+                 if (expected[i] != realized[i]) {
+-                    throw new IOException("invalid entry header. not read the content?");
++                    throw new IOException("invalid entry header.");
+                 }
+             }
+         }
+ 
+-        return new ArArchiveEntry(new String(name).trim(),
+-                                          Long.parseLong(new String(length)
+-                                                         .trim()));
++        long entrySize = Long.parseLong(new String(length).trim());
++        entryBytesRemaining = entrySize;
++        currentEntry = new ArArchiveEntry(new String(name).trim(), entrySize);
++        return currentEntry;
+     }
+ 
+-
++    @Override
+     public ArchiveEntry getNextEntry() throws IOException {
+         return getNextArEntry();
+     }
+ 
++    @Override
+     public void close() throws IOException {
+         if (!closed) {
+             closed = true;
+@@ -128,26 +101,58 @@ public class ArArchiveInputStream extends ArchiveInputStream {
+         }
+     }
+ 
++    @Override
+     public int read() throws IOException {
+-        final int ret = input.read();
+-        offset += (ret > 0 ? 1 : 0);
+-        return ret;
++        if (entryBytesRemaining > 0) {
++            int result = input.read();
++            if (result != -1) {
++                offset++;
++                entryBytesRemaining--;
++            }
++            return result;
++        }
++        return -1; // EOF for current entry
+     }
+ 
+-    public int read(byte[] b) throws IOException {
+-        return read(b, 0, b.length);
++    @Override
++    public int read(byte[] b, final int off, final int len) throws IOException {
++        if (entryBytesRemaining == 0) {
++            return -1; // EOF for current entry
++        }
++        int toRead = Math.min(len, (int) entryBytesRemaining);
++        int bytesRead = input.read(b, off, toRead);
++        if (bytesRead > 0) {
++            offset += bytesRead;
++            entryBytesRemaining -= bytesRead;
++        }
++        return bytesRead;
+     }
+ 
+-    public int read(byte[] b, final int off, final int len) throws IOException {
+-        int toRead = len;
+-        final int ret = this.input.read(b, off, toRead);
+-        offset += (ret > 0 ? ret : 0);
+-        return ret;
++    @Override
++    public long skip(long n) throws IOException {
++        if (entryBytesRemaining == 0) {
++            return 0;
++        }
++        long toSkip = Math.min(n, entryBytesRemaining);
++        long skipped = input.skip(toSkip);
++        offset += skipped;
++        entryBytesRemaining -= skipped;
++        return skipped;
+     }
+ 
+-    public static boolean matches(byte[] signature, int length) {
+-        // 3c21 7261 6863 0a3e
++    private void readFully(byte[] b) throws IOException {
++        int bytesRead = 0;
++        while (bytesRead < b.length) {
++            int count = input.read(b, bytesRead, b.length - bytesRead);
++            if (count < 0) {
++                throw new IOException("Failed to read enough bytes");
++            }
++            bytesRead += count;
++            offset += count;
++        }
++    }
+ 
++    public static boolean matches(byte[] signature, int length) {
+         if (length < 8) {
+             return false;
+         }
+@@ -178,5 +183,4 @@ public class ArArchiveInputStream extends ArchiveInputStream {
+ 
+         return true;
+     }
+-
+-}
++}
+\ No newline at end of file

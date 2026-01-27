@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java b/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
+old mode 100644
+new mode 100755
+index 4045209..aabc4c0
+--- a/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
++++ b/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
+@@ -20,21 +20,21 @@ public class UNIQUE_DIGITS {
+     public static ArrayList<Integer> unique_digits(ArrayList<Integer> x) {
+         ArrayList<Integer> res = new ArrayList<Integer>();
+         for(int i : x) {
++            boolean has_even = false;
+             int num = i;
+-            boolean all_odd = true;
+             while(num > 0) {
+                 int curr_digit = num % 10;
+-                if((curr_digit % 2) != 0) {
+-                    all_odd = true;
++                if(curr_digit % 2 == 0) {
++                    has_even = true;
+                     break;
+                 }
+                 num /= 10;
+             }
+-            if(all_odd) {
++            if(!has_even) {
+                 res.add(i);
+             }
+         }
+         Collections.sort(res);
+         return res;
+     }
+-}
++}
+\ No newline at end of file

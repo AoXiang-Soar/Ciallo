@@ -1,0 +1,16 @@
+{
+    "bug_id": 3,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Time",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<...10-30T02:30:00.000+0[1]:00> but was:<...10-30T02:30:00.000+0[2]:00>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testAddYears_int_dstOverlapWinter_addZero() {\n        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID(\"Europe/Berlin\"));\n        test.addHours(1);\n        assertEquals(\"2011-10-30T02:30:00.000+01:00\", test.toString());\n        test.addYears(0);\n        assertEquals(\"2011-10-30T02:30:00.000+01:00\", test.toString());\n    }",
+    "test_line": "        assertEquals(\"2011-10-30T02:30:00.000+01:00\", test.toString());",
+    "test_name": "testAddYears_int_dstOverlapWinter_addZero",
+    "test_suite": "org.joda.time.TestMutableDateTime_Adds"
+}

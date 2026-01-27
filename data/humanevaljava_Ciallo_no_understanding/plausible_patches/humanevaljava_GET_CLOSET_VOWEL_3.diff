@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java b/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java
+old mode 100644
+new mode 100755
+index 885eb35..34829e4
+--- a/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java
++++ b/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java
+@@ -25,11 +25,13 @@ public class GET_CLOSET_VOWEL {
+         ArrayList<Character> vowels = new ArrayList<Character>(Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'));
+         for(int i = word.length() - 2; i >= 0; i--) {
+             if(vowels.contains(word.charAt(i))) {
+-                if(!vowels.contains(word.charAt(i + 1)) && !vowels.contains(word.charAt(i - 1))) {
++                if(i > 0 && i < word.length() - 1 && 
++                   !vowels.contains(word.charAt(i + 1)) && 
++                   !vowels.contains(word.charAt(i - 1))) {
+                     return word.substring(i, i + 1);
+                 }
+             }
+         }
+         return "";
+     }
+-}
++}
+\ No newline at end of file

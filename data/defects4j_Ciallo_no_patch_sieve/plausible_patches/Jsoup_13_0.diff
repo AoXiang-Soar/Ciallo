@@ -1,0 +1,30 @@
+diff --git a/src/main/java/org/jsoup/nodes/Node.java b/src/main/java/org/jsoup/nodes/Node.java
+index 3d0bf2ea..968df6c2 100644
+--- a/src/main/java/org/jsoup/nodes/Node.java
++++ b/src/main/java/org/jsoup/nodes/Node.java
+@@ -101,11 +101,22 @@ public abstract class Node implements Cloneable {
+      * @param attributeKey The attribute key to check.
+      * @return true if the attribute exists, false if not.
+      */
+-    public boolean hasAttr(String attributeKey) {
+-        Validate.notNull(attributeKey);
++public boolean hasAttr(String attributeKey) {
++    Validate.notNull(attributeKey);
+ 
+-        return attributes.hasKey(attributeKey);
++    // First check direct attribute
++    if (attributes.hasKey(attributeKey)) {
++        return true;
++    }
++    
++    // Then check if it's an absolute URL attribute
++    if (attributeKey.startsWith("abs:")) {
++        String key = attributeKey.substring("abs:".length());
++        return attributes.hasKey(key) && !absUrl(key).isEmpty();
+     }
++    
++    return false;
++}
+ 
+     /**
+      * Remove an attribute from this element.

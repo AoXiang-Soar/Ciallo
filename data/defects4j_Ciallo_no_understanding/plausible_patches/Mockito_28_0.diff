@@ -1,0 +1,33 @@
+diff --git a/src/org/mockito/internal/configuration/DefaultInjectionEngine.java b/src/org/mockito/internal/configuration/DefaultInjectionEngine.java
+index 213ebf351..6f355be89 100644
+--- a/src/org/mockito/internal/configuration/DefaultInjectionEngine.java
++++ b/src/org/mockito/internal/configuration/DefaultInjectionEngine.java
+@@ -88,11 +88,23 @@ public class DefaultInjectionEngine {
+         }
+     }
+ 
+-    private void injectMockCandidate(Class<?> awaitingInjectionClazz, Set<Object> mocks, Object fieldInstance) {
+-        for(Field field : orderedInstanceFieldsFrom(awaitingInjectionClazz)) {
+-            mockCandidateFilter.filterCandidate(mocks, field, fieldInstance).thenInject();
+-        }
+-    }
++
++private void injectMockCandidate(Class<?> awaitingInjectionClazz, Set<Object> mocks, Object fieldInstance) {
++    for (Field field : orderedInstanceFieldsFrom(awaitingInjectionClazz)) {
++        Object candidate = mockCandidateFilter.filterCandidate(mocks, field, fieldInstance).thenInject();
++        if (candidate != null && field.getType().isAssignableFrom(candidate.getClass())) {
++            try {
++                if (!java.lang.reflect.Modifier.isFinal(field.getModifiers())) {
++                    field.setAccessible(true);
++                    field.set(fieldInstance, candidate);
++                }
++            } catch (IllegalAccessException e) {
++                throw new RuntimeException(e);
++            }
++            mocks.remove(candidate); // Remove from available mocks after injection
++        }
++    }
++}
+ 
+     private Field[] orderedInstanceFieldsFrom(Class<?> awaitingInjectionClazz) {
+         Field[] declaredFields = awaitingInjectionClazz.getDeclaredFields();

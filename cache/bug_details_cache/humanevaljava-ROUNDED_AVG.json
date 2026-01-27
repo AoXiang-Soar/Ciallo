@@ -1,0 +1,16 @@
+{
+    "bug_id": "ROUNDED_AVG",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_ROUNDED_AVG.test_2:20 expected:<111100101[1]> but was:<111100101[0]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_2() throws java.lang.Exception {\n        String result = humaneval.buggy.ROUNDED_AVG.rounded_avg(964, 977);\n        String desired = \"1111001010\";\n        org.junit.Assert.assertEquals(result, desired);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(result, desired);",
+    "test_name": "test_2",
+    "test_suite": "TEST_ROUNDED_AVG"
+}

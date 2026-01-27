@@ -1,0 +1,16 @@
+{
+    "bug_id": "PRIME_FIB",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_PRIME_FIB.test_0:6 \u00bb IndexOutOfBounds Index 2 out of bounds for length 2",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        int result = humaneval.buggy.PRIME_FIB.prime_fib(1);\n        org.junit.Assert.assertEquals(\n            result, 2\n        );\n    }",
+    "test_line": "        int result = humaneval.buggy.PRIME_FIB.prime_fib(1);",
+    "test_name": "test_0",
+    "test_suite": "TEST_PRIME_FIB"
+}

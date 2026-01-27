@@ -1,0 +1,19 @@
+diff --git a/src/com/google/javascript/jscomp/PrepareAst.java b/src/com/google/javascript/jscomp/PrepareAst.java
+index d993bee7b..562dd556e 100644
+--- a/src/com/google/javascript/jscomp/PrepareAst.java
++++ b/src/com/google/javascript/jscomp/PrepareAst.java
+@@ -163,6 +163,14 @@ class PrepareAst implements CompilerPass {
+       Node first = n.getFirstChild();
+ 
+       // ignore cast nodes.
++      // Skip past cast nodes by following the first child chain
++      while (first != null && first.isCast()) {
++        first = first.getFirstChild();
++      }
++
++      if (first == null || first.isEmpty()) {
++        return;
++      }
+ 
+       if (!NodeUtil.isGet(first)) {
+         n.putBooleanProp(Node.FREE_CALL, true);

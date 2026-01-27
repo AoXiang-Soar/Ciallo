@@ -1,0 +1,16 @@
+{
+    "bug_id": 24,
+    "bug_type": "SF",
+    "buggy_lines": "        TimeZone tz = (df == null) ? _timeZone : df.getTimeZone();\n                tz, _defaultBase64);",
+    "code": "    public BaseSettings withDateFormat(DateFormat df) {\n        if (_dateFormat == df) {\n            return this;\n        }\n        TimeZone tz = (df == null) ? _timeZone : df.getTimeZone();\n        return new BaseSettings(_classIntrospector, _annotationIntrospector, _visibilityChecker, _propertyNamingStrategy, _typeFactory,\n                _typeResolverBuilder, df, _handlerInstantiator, _locale,\n                tz, _defaultBase64);\n    }",
+    "fixed_code": "    public BaseSettings withDateFormat(DateFormat df) {\n        if (_dateFormat == df) {\n            return this;\n        }\n        return new BaseSettings(_classIntrospector, _annotationIntrospector, _visibilityChecker, _propertyNamingStrategy, _typeFactory,\n                _typeResolverBuilder, df, _handlerInstantiator, _locale,\n                _timeZone, _defaultBase64);\n    }",
+    "fixed_lines": "                _timeZone, _defaultBase64);",
+    "masked_code": "    public BaseSettings withDateFormat(DateFormat df) {\n        if (_dateFormat == df) {\n            return this;\n        }\n        return new BaseSettings(_classIntrospector, _annotationIntrospector, _visibilityChecker, _propertyNamingStrategy, _typeFactory,\n                _typeResolverBuilder, df, _handlerInstantiator, _locale,\n>>> [ INFILL ] <<<\n    }",
+    "project": "JacksonDatabind",
+    "test_error_message": "",
+    "test_framework": "defects4j",
+    "test_function": "",
+    "test_line": "",
+    "test_name": "",
+    "test_suite": ""
+}

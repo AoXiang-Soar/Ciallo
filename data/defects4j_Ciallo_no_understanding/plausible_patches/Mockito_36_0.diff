@@ -1,0 +1,80 @@
+diff --git a/src/org/mockito/internal/invocation/Invocation.java b/src/org/mockito/internal/invocation/Invocation.java
+index 94d4612f5..a26b0f28a 100644
+--- a/src/org/mockito/internal/invocation/Invocation.java
++++ b/src/org/mockito/internal/invocation/Invocation.java
+@@ -5,9 +5,9 @@
+ package org.mockito.internal.invocation;
+ 
+ import java.util.*;
+-
+ import org.hamcrest.Matcher;
+ import org.mockito.exceptions.PrintableInvocation;
++import org.mockito.exceptions.base.MockitoException;
+ import org.mockito.internal.debugging.Location;
+ import org.mockito.internal.invocation.realmethod.RealMethod;
+ import org.mockito.internal.matchers.*;
+@@ -51,8 +51,6 @@ public class Invocation implements PrintableInvocation, InvocationOnMock, Printi
+         this.location = new Location();
+     }
+ 
+-    // expands array varArgs that are given by runtime (1, [a, b]) into true
+-    // varArgs (1, a, b);
+     private static Object[] expandVarArgs(final boolean isVarArgs, final Object[] args) {
+         if (!isVarArgs || args[args.length - 1] != null && !args[args.length - 1].getClass().isArray()) {
+             return args == null ? new Object[0] : args;
+@@ -61,7 +59,6 @@ public class Invocation implements PrintableInvocation, InvocationOnMock, Printi
+         final int nonVarArgsCount = args.length - 1;
+         Object[] varArgs;
+         if (args[nonVarArgsCount] == null) {
+-            // in case someone deliberately passed null varArg array
+             varArgs = new Object[] { null };
+         } else {
+             varArgs = ArrayEquals.createObjectArray(args[nonVarArgsCount]);
+@@ -73,6 +70,18 @@ public class Invocation implements PrintableInvocation, InvocationOnMock, Printi
+         return newArgs;
+     }
+ 
++    public Object callRealMethod() throws Throwable {
++        if (realMethod == null) {
++            throw new MockitoException("Cannot call real method on interface");
++        }
++        try {
++            return realMethod.invoke(mock, rawArguments);
++        } catch (NoSuchMethodError e) {
++            throw new MockitoException("Cannot call real method on interface", e);
++        }
++    }
++
++    // Rest of the methods remain the same as in the original version
+     public Object getMock() {
+         return mock;
+     }
+@@ -101,9 +110,7 @@ public class Invocation implements PrintableInvocation, InvocationOnMock, Printi
+         if (o == null || !o.getClass().equals(this.getClass())) {
+             return false;
+         }
+-
+         Invocation other = (Invocation) o;
+-
+         return this.mock.equals(other.mock) && this.method.equals(other.method) && this.equalArguments(other.arguments);
+     }
+ 
+@@ -158,7 +165,6 @@ public class Invocation implements PrintableInvocation, InvocationOnMock, Printi
+                 return true;
+             }
+         }
+-
+         return false;
+     }
+ 
+@@ -198,10 +204,6 @@ public class Invocation implements PrintableInvocation, InvocationOnMock, Printi
+         return this.rawArguments;
+     }
+ 
+-    public Object callRealMethod() throws Throwable {
+-        return realMethod.invoke(mock, rawArguments);
+-    }
+-
+     public String toString(PrintSettings printSettings) {
+         return toString(argumentsToMatchers(), printSettings);
+     }

@@ -1,0 +1,16 @@
+{
+    "bug_id": 3,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Mockito",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<[['a', 'b']]> but was:<[[1]]>",
+    "test_framework": "defects4j",
+    "test_function": "    public void should_capture_varargs_as_vararg() throws Exception {\n        //given\n        mock.mixedVarargs(1, \"a\", \"b\");\n        Invocation invocation = getLastInvocation();\n        CapturingMatcher m = new CapturingMatcher();\n        InvocationMatcher invocationMatcher = new InvocationMatcher(invocation, (List) asList(new Equals(1), new LocalizedMatcher(m)));\n\n        //when\n        invocationMatcher.captureArgumentsFrom(invocation);\n\n        //then\n        Assertions.assertThat(m.getAllValues()).containsExactly(\"a\", \"b\");\n    }",
+    "test_line": "        Assertions.assertThat(m.getAllValues()).containsExactly(\"a\", \"b\");",
+    "test_name": "should_capture_varargs_as_vararg",
+    "test_suite": "org.mockito.internal.invocation.InvocationMatcherTest"
+}

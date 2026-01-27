@@ -1,0 +1,32 @@
+diff --git a/src/main/java/humaneval/buggy/BF.java b/src/main/java/humaneval/buggy/BF.java
+index dd3c22b..dbe61d3 100644
+--- a/src/main/java/humaneval/buggy/BF.java
++++ b/src/main/java/humaneval/buggy/BF.java
+@@ -26,10 +26,21 @@ public class BF {
+         ArrayList<String> result = new ArrayList<String>();
+         if ((! planet_names.contains(planet1)) || (! planet_names.contains(planet2)))
+             return result;
+-        int planet1_index = planet_names.indexOf(planet1);
+-        int planet2_index = planet_names.indexOf(planet2);
+-        for (int i = planet1_index; i < planet2_index; i += 1)
+-            result.add(planet_names.get(i));
++        
++        int startIndex = planet_names.indexOf(planet1);
++        int endIndex = planet_names.indexOf(planet2);
++        
++        // Ensure we iterate in the right direction regardless of which planet is first
++        if (startIndex < endIndex) {
++            for (int i = startIndex + 1; i < endIndex; i++) {
++                result.add(planet_names.get(i));
++            }
++        } else {
++            for (int i = endIndex + 1; i < startIndex; i++) {
++                result.add(planet_names.get(i));
++            }
++        }
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

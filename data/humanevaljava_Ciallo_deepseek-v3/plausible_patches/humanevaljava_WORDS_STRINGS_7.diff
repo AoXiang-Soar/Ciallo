@@ -1,0 +1,40 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_STRINGS.java b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+index e98a5f0..4aa5294 100644
+--- a/src/main/java/humaneval/buggy/WORDS_STRINGS.java
++++ b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+@@ -14,18 +14,24 @@ import java.util.ArrayList;
+ public class WORDS_STRINGS {
+ 	public static ArrayList<String> words_strings(String s) {
+ 		ArrayList<String> result = new ArrayList<String>();
+-		String s_list = "";
+-		for(char c : s.toCharArray()) {
+-			if(c == ',') {
+-				s_list += ' ';
+-			} else {
+-				s_list += c;
+-			}
++
++		// Return empty list if the input string is null or empty after trimming
++		if (s == null || s.trim().isEmpty()) {
++			return result;
+ 		}
+-		String[] result_array = s_list.trim().split("\\s+");
++
++		// Replace commas and trim leading and trailing spaces
++		String cleanedString = s.replace(',', ' ').trim();
++
++		// Split the cleaned string around spaces and iterate over parts
++		String[] result_array = cleanedString.split("\\s+");
+ 		for(String r : result_array) {
+-			result.add(r);
++			// Add each non-empty word to the result list
++			if (!r.isEmpty()) {
++				result.add(r);
++			}
+ 		}
++		
+ 		return result;
+ 	}
+-}
++}
+\ No newline at end of file

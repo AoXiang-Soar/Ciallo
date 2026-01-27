@@ -1,0 +1,16 @@
+{
+    "bug_id": "VALID_DATE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_VALID_DATE.test_0:6 expected:<true> but was:<false>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        org.junit.Assert.assertEquals(true, humaneval.buggy.VALID_DATE.valid_date(\"03-11-2000\"));\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(true, humaneval.buggy.VALID_DATE.valid_date(\"03-11-2000\"));",
+    "test_name": "test_0",
+    "test_suite": "TEST_VALID_DATE"
+}

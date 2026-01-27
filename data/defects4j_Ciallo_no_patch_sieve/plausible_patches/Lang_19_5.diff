@@ -1,0 +1,99 @@
+diff --git a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+index 68891ace7..cd16b0d8e 100644
+--- a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
++++ b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+@@ -34,38 +34,45 @@ public class NumericEntityUnescaper extends CharSequenceTranslator {
+      * {@inheritDoc}
+      */
+     @Override
+-    public int translate(CharSequence input, int index, Writer out) throws IOException {
+-        int seqEnd = input.length();
+-        // Uses -2 to ensure there is something after the &#
+-        if(input.charAt(index) == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {
+-            int start = index + 2;
+-            boolean isHex = false;
+-
+-            char firstChar = input.charAt(start);
+-            if(firstChar == 'x' || firstChar == 'X') {
+-                start++;
+-                isHex = true;
++public int translate(CharSequence input, int index, Writer out) throws IOException {
++    int seqEnd = input.length();
++    // Check if we have at least "&#" sequence
++    if(input.charAt(index) == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {
++        int start = index + 2;
++        if(start >= seqEnd) {
++            return 0;  // Incomplete entity ("&#" at end)
++        }
+ 
+-                // Check there's more than just an x after the &#
++        boolean isHex = false;
++        char firstChar = input.charAt(start);
++        if(firstChar == 'x' || firstChar == 'X') {
++            start++;
++            isHex = true;
++            if(start >= seqEnd) {
++                return 0;  // Incomplete entity ("&#x" at end)
+             }
++        }
+ 
+-            int end = start;
+-            // Note that this supports character codes without a ; on the end
+-            while(input.charAt(end) != ';') 
+-            {
+-                end++;
++        int end = start;
++        // Scan until semicolon or end of string
++        while(end < seqEnd && input.charAt(end) != ';') {
++            char c = input.charAt(end);
++            if(isHex ? !isHexDigit(c) : !Character.isDigit(c)) {
++                break;  // Invalid character encountered
+             }
++            end++;
++        }
++
++        if(end == start) {
++            return 0;  // No valid digits found
++        }
+ 
++        try {
+             int entityValue;
+-            try {
+-                if(isHex) {
+-                    entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 16);
+-                } else {
+-                    entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
+-                }
+-            } catch(NumberFormatException nfe) {
+-            System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start +"]["+ end +"]");
+-                return 0;
++            if(isHex) {
++                entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 16);
++            } else {
++                entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
+             }
+ 
+             if(entityValue > 0xFFFF) {
+@@ -76,9 +83,19 @@ public class NumericEntityUnescaper extends CharSequenceTranslator {
+                 out.write(entityValue);
+             }
+ 
+-
+-            return 2 + (end - start) + (isHex ? 1 : 0) + 1;
++            // Calculate length including semicolon if present
++            int length = 2 + (end - start); // '&#' + digits
++            if(isHex) length++; // account for 'x'
++            if(end < seqEnd && input.charAt(end) == ';') length++; // account for ';'
++            return length;
++        } catch(NumberFormatException nfe) {
++            return 0;
+         }
+-        return 0;
+     }
++    return 0;
++}
++
++private boolean isHexDigit(char c) {
++    return Character.isDigit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
++}
+ }

@@ -1,0 +1,16 @@
+{
+    "bug_id": 30,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void testIsValid() {\n        String ok = \"<p>Test <b><a href='http://example.com/'>OK</a></b></p>\";\n        String nok1 = \"<p><script></script>Not <b>OK</b></p>\";\n        String nok2 = \"<p align=right>Test Not <b>OK</b></p>\";\n        String nok3 = \"<!-- comment --><p>Not OK</p>\"; // comments and the like will be cleaned\n        assertTrue(Jsoup.isValid(ok, Whitelist.basic()));\n        assertFalse(Jsoup.isValid(nok1, Whitelist.basic()));\n        assertFalse(Jsoup.isValid(nok2, Whitelist.basic()));\n        assertFalse(Jsoup.isValid(nok3, Whitelist.basic()));\n    }",
+    "test_line": "        assertFalse(Jsoup.isValid(nok3, Whitelist.basic()));",
+    "test_name": "testIsValid",
+    "test_suite": "org.jsoup.safety.CleanerTest"
+}

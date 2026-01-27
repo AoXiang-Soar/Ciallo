@@ -1,0 +1,19 @@
+diff --git a/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java b/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
+index 13ced27d7..a8c74da03 100644
+--- a/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
++++ b/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
+@@ -246,6 +246,14 @@ public abstract class EmbeddedRungeKuttaIntegrator
+           firstTime = false;
+         }
+ 
++        stepSize = hNew;
++        // adjust step size to not exceed final time
++        if (forward) {
++            hNew = FastMath.min(hNew, t - stepStart);
++        } else {
++            hNew = FastMath.max(hNew, t - stepStart);
++        }
++        isLastStep = FastMath.abs(stepStart + hNew - t) < 1.0e-12;
+         stepSize = hNew;
+ 
+         // next stages

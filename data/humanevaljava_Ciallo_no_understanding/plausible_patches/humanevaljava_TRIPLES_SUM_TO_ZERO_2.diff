@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/TRIPLES_SUM_TO_ZERO.java b/src/main/java/humaneval/buggy/TRIPLES_SUM_TO_ZERO.java
+old mode 100644
+new mode 100755
+index e851652..a7edcf2
+--- a/src/main/java/humaneval/buggy/TRIPLES_SUM_TO_ZERO.java
++++ b/src/main/java/humaneval/buggy/TRIPLES_SUM_TO_ZERO.java
+@@ -1,5 +1,7 @@
+ package humaneval.buggy;
+ 
++import java.util.Arrays;
++
+ /* 
+ triples_sum_to_zero takes a list of integers as an input.
+ it returns True if there are three distinct elements in the list that
+@@ -19,14 +21,22 @@ False
+ 
+ public class TRIPLES_SUM_TO_ZERO {
+     public static boolean triples_sum_to_zero(int[] numbers) {
+-        for (int i = 0; i < numbers.length; i += 1) {
+-            for (int j = i; j < numbers.length; j += 1) {
+-                for (int k = j; k < numbers.length; k += 1) {
+-                    if (numbers[i] + numbers[j] + numbers[k] == 0)
+-                        return true;
++        Arrays.sort(numbers);
++        for (int i = 0; i < numbers.length - 2; i += 1) {
++            if (i > 0 && numbers[i] == numbers[i - 1]) continue;
++            int left = i + 1;
++            int right = numbers.length - 1;
++            while (left < right) {
++                int sum = numbers[i] + numbers[left] + numbers[right];
++                if (sum == 0) {
++                    return true;
++                } else if (sum < 0) {
++                    left += 1;
++                } else {
++                    right -= 1;
+                 }
+             }
+         }
+         return false;
+     }
+-}
++}
+\ No newline at end of file

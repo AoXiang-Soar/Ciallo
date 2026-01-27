@@ -1,0 +1,118 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java b/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java
+index dc0b05f48..17f9586c0 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java
+@@ -4,8 +4,9 @@ import java.io.IOException;
+ import java.lang.annotation.Annotation;
+ 
+ import com.fasterxml.jackson.core.JsonParser;
++import com.fasterxml.jackson.core.JsonToken;
+ import com.fasterxml.jackson.databind.*;
+-import com.fasterxml.jackson.databind.deser.*;
++import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
+ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+ 
+ /**
+@@ -13,23 +14,19 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+  * for virtual property that represents Object Id that is used
+  * for some POJO types (or properties).
+  */
+-public final class ObjectIdValueProperty
+-    extends SettableBeanProperty
+-{
++public final class ObjectIdValueProperty extends SettableBeanProperty {
+     private static final long serialVersionUID = 1L;
+ 
+     protected final ObjectIdReader _objectIdReader;
+ 
+     public ObjectIdValueProperty(ObjectIdReader objectIdReader,
+-            PropertyMetadata metadata)
+-    {
++                                 PropertyMetadata metadata) {
+         super(objectIdReader.propertyName, objectIdReader.getIdType(), metadata,
+                 objectIdReader.getDeserializer());
+         _objectIdReader = objectIdReader;
+     }
+ 
+-    protected ObjectIdValueProperty(ObjectIdValueProperty src, JsonDeserializer<?> deser)
+-    {
++    protected ObjectIdValueProperty(ObjectIdValueProperty src, JsonDeserializer<?> deser) {
+         super(src, deser);
+         _objectIdReader = src._objectIdReader;
+     }
+@@ -50,13 +47,14 @@ public final class ObjectIdValueProperty
+     }
+     
+     // // // BeanProperty impl
+-    
++
+     @Override
+     public <A extends Annotation> A getAnnotation(Class<A> acls) {
+         return null;
+     }
+ 
+-    @Override public AnnotatedMember getMember() {  return null; }
++    @Override
++    public AnnotatedMember getMember() { return null; }
+ 
+     /*
+     /**********************************************************
+@@ -66,28 +64,30 @@ public final class ObjectIdValueProperty
+ 
+     @Override
+     public void deserializeAndSet(JsonParser p, DeserializationContext ctxt,
+-            Object instance) throws IOException
+-    {
++                                  Object instance) throws IOException {
+         deserializeSetAndReturn(p, ctxt, instance);
+     }
+ 
+     @Override
+     public Object deserializeSetAndReturn(JsonParser p,
+-    		DeserializationContext ctxt, Object instance) throws IOException
+-    {
++                                          DeserializationContext ctxt, Object instance) throws IOException {
++        // Check for null token before attempting deserialization
++        if (p.getCurrentToken() == JsonToken.VALUE_NULL) {
++            if (_objectIdReader.idProperty != null) {
++                _objectIdReader.idProperty.set(instance, null);
++            }
++            return instance; // Return the instance immediately without further processing
++        }
++
+         Object id = _valueDeserializer.deserialize(p, ctxt);
+-        /* 02-Apr-2015, tatu: Actually, as per [databind#742], let it be;
+-         *  missing or null id is needed for some cases, such as cases where id
+-         *  will be generated externally, at a later point, and is not available
+-         *  quite yet. Typical use case is with DB inserts.
+-         */
+-        // note: no null checks (unlike usually); deserializer should fail if one found
+         if (id == null) {
+             return null;
+         }
++
+         ReadableObjectId roid = ctxt.findObjectId(id, _objectIdReader.generator, _objectIdReader.resolver);
+         roid.bindItem(instance);
+-        // also: may need to set a property value as well
++        
++        // If there's an id property, set it
+         SettableBeanProperty idProp = _objectIdReader.idProperty;
+         if (idProp != null) {
+             return idProp.setAndReturn(instance, id);
+@@ -101,8 +101,7 @@ public final class ObjectIdValueProperty
+     }
+ 
+     @Override
+-    public Object setAndReturn(Object instance, Object value) throws IOException
+-    {
++    public Object setAndReturn(Object instance, Object value) throws IOException {
+         SettableBeanProperty idProp = _objectIdReader.idProperty;
+         if (idProp == null) {
+             throw new UnsupportedOperationException(
+@@ -110,4 +109,4 @@ public final class ObjectIdValueProperty
+         }
+         return idProp.setAndReturn(instance, value);
+     }
+-}
++}
+\ No newline at end of file

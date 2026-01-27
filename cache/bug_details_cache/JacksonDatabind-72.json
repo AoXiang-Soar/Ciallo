@@ -1,0 +1,16 @@
+{
+    "bug_id": 72,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "java.lang.IllegalStateException: Internal error: no creator index for property 'a' (of type com.fasterxml.jackson.databind.deser.impl.InnerClassProperty)",
+    "test_framework": "defects4j",
+    "test_function": "    public void testIssue1501() throws Exception\n    {\n        ObjectMapper mapper = new ObjectMapper();\n        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);\n        String ser = mapper.writeValueAsString(new Something());\n        mapper.readValue(ser, Something.class);\n    }",
+    "test_line": "        mapper.readValue(ser, Something.class);",
+    "test_name": "testIssue1501",
+    "test_suite": "com.fasterxml.jackson.databind.creators.InnerClassCreatorTest"
+}

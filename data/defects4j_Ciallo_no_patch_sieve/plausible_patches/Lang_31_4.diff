@@ -1,0 +1,49 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index a90b0673d..21bf266b1 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -1436,8 +1436,7 @@ public class StringUtils {
+      * @return the <code>true</code> if any of the chars are found,
+      * <code>false</code> if no match or null input
+      * @since 2.4
+-     */
+-	public static boolean containsAny(CharSequence cs, char[] searchChars) {
++     */	public static boolean containsAny(CharSequence cs, char[] searchChars) {
+ 		if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
+ 			return false;
+ 		}
+@@ -1445,17 +1444,29 @@ public class StringUtils {
+ 		int searchLength = searchChars.length;
+ 		for (int i = 0; i < csLength; i++) {
+ 			char ch = cs.charAt(i);
+-			for (int j = 0; j < searchLength; j++) {
+-				if (searchChars[j] == ch) {
+-						// ch is a supplementary character
+-						// ch is in the Basic Multilingual Plane
++			if (Character.isHighSurrogate(ch) && i + 1 < csLength) {
++				char low = cs.charAt(i + 1);
++				int codePoint = Character.toCodePoint(ch, low);
++				for (int j = 0; j < searchLength; j++) {
++					if (j + 1 < searchLength && Character.isHighSurrogate(searchChars[j])) {
++						int searchCodePoint = Character.toCodePoint(searchChars[j], searchChars[j + 1]);
++						if (searchCodePoint == codePoint) {
++							return true;
++						}
++						j++; // skip next char as we already processed it
++					}
++				}
++				i++; // skip next char as we already processed it
++			} else {
++				for (int j = 0; j < searchLength; j++) {
++					if (searchChars[j] == ch) {
+ 						return true;
++					}
+ 				}
+ 			}
+ 		}
+ 		return false;
+ 	}
+-
+     /**
+      * <p>
+      * Checks if the CharSequence contains any character in the given set of characters.

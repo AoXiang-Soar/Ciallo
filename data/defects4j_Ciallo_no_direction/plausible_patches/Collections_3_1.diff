@@ -1,0 +1,15 @@
+diff --git a/src/java/org/apache/commons/collections/CollectionUtils.java b/src/java/org/apache/commons/collections/CollectionUtils.java
+index 73bd1730..166efa6f 100644
+--- a/src/java/org/apache/commons/collections/CollectionUtils.java
++++ b/src/java/org/apache/commons/collections/CollectionUtils.java
+@@ -1118,7 +1118,9 @@ public class CollectionUtils {
+      * @since Commons Collections 3.3 (method existed in 3.2 but was completely broken)
+      */
+     public static Collection removeAll(Collection collection, Collection remove) {
+-        return ListUtils.retainAll(collection, remove);
++        Collection result = new ArrayList(collection);
++        result.removeAll(remove);
++        return result;
+     }
+ 
+     //-----------------------------------------------------------------------

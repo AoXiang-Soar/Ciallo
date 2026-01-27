@@ -1,0 +1,16 @@
+{
+    "bug_id": 15,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Mockito",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void shouldInjectUsingPropertySetterIfAvailable() {\n        assertTrue(awaitingInjection.propertySetterUsed);\n    }",
+    "test_line": "        assertTrue(awaitingInjection.propertySetterUsed);",
+    "test_name": "shouldInjectUsingPropertySetterIfAvailable",
+    "test_suite": "org.mockitousage.bugs.InjectMocksShouldTryPropertySettersFirstBeforeFieldAccessTest"
+}

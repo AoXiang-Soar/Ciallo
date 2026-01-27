@@ -1,0 +1,47 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveEntry.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveEntry.java
+index 941bbbd3..e4f0061c 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveEntry.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveEntry.java
+@@ -847,22 +847,26 @@ public class TarArchiveEntry implements TarConstants, ArchiveEntry {
+      * @return True if this entry is a directory.
+      */
+     @Override
+-    public boolean isDirectory() {
+-        if (file != null) {
+-            return file.isDirectory();
+-        }
+-
+-        if (linkFlag == LF_DIR) {
+-            return true;
+-        }
++public boolean isDirectory() {
++    if (file != null) {
++        return file.isDirectory();
++    }
+ 
+-        if (getName().endsWith("/")) {
+-            return true;
+-        }
++    // Highest priority checks
++    if (linkFlag == LF_DIR) {
++        return true;
++    }
+ 
++    // Check if this is a special header type (like PAX) that shouldn't be treated as directory
++    if (isPaxHeader() || isGlobalPaxHeader()) {
+         return false;
+     }
+ 
++    // Final check based on name convention
++    String name = getName();
++    return name != null && name.endsWith("/");
++}
++
+     /**
+      * Check if this is a "normal file"
+      *
+@@ -1250,4 +1254,3 @@ public class TarArchiveEntry implements TarConstants, ArchiveEntry {
+         }
+     }
+ }
+-

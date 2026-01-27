@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/FIB4.java b/src/main/java/humaneval/buggy/FIB4.java
+index e4ae6f3..c3b40ff 100644
+--- a/src/main/java/humaneval/buggy/FIB4.java
++++ b/src/main/java/humaneval/buggy/FIB4.java
+@@ -2,7 +2,7 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ 
+-/* The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:
++/* The Fib4 number sequence is a sequence similar to the Fibonacci sequence that's defined as follows:
+ fib4(0) -> 0
+ fib4(1) -> 0
+ fib4(2) -> 2
+@@ -28,9 +28,9 @@ public class FIB4 {
+             return result.get(n);
+         for (int i = 4; i < n + 1; i += 1) {
+             result.add(
+-                result.get(0) + result.get(1) + result.get(2) + result.get(3)
++                result.get(i - 1) + result.get(i - 2) + result.get(i - 3) + result.get(i - 4)
+             );
+         }
+         return result.get(result.size() - 1);
+     }
+-}
++}
+\ No newline at end of file

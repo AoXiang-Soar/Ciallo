@@ -1,0 +1,16 @@
+{
+    "bug_id": 49,
+    "bug_type": "SF",
+    "buggy_lines": "        reindexChildren(index);",
+    "code": "    protected void addChildren(int index, Node... children) {\n        Validate.noNullElements(children);\n        ensureChildNodes();\n        for (int i = children.length - 1; i >= 0; i--) {\n            Node in = children[i];\n            reparentChild(in);\n            childNodes.add(index, in);\n        }\n        reindexChildren(index);\n    }",
+    "fixed_code": "    protected void addChildren(int index, Node... children) {\n        Validate.noNullElements(children);\n        ensureChildNodes();\n        for (int i = children.length - 1; i >= 0; i--) {\n            Node in = children[i];\n            reparentChild(in);\n            childNodes.add(index, in);\n            reindexChildren(index);\n        }\n    }",
+    "fixed_lines": "            reindexChildren(index);",
+    "masked_code": "    protected void addChildren(int index, Node... children) {\n        Validate.noNullElements(children);\n        ensureChildNodes();\n        for (int i = children.length - 1; i >= 0; i--) {\n            Node in = children[i];\n            reparentChild(in);\n            childNodes.add(index, in);\n        }\n>>> [ INFILL ] <<<\n    }",
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<...><div3>Check</div3><[div4></div4><div1></div1><div2></div2><]/body>> but was:<...><div3>Check</div3><[]/body>>",
+    "test_framework": "defects4j",
+    "test_function": "    public void appendMustCorrectlyMoveChildrenInsideOneParentElement() {\n        Document doc = new Document(\"\");\n        Element body = doc.appendElement(\"body\");\n        body.appendElement(\"div1\");\n        body.appendElement(\"div2\");\n        final Element div3 = body.appendElement(\"div3\");\n        div3.text(\"Check\");\n        final Element div4 = body.appendElement(\"div4\");\n\n        ArrayList<Element> toMove = new ArrayList<Element>();\n        toMove.add(div3);\n        toMove.add(div4);\n\n        body.insertChildren(0, toMove);\n\n        String result = doc.toString().replaceAll(\"\\\\s+\", \"\");\n        assertEquals(\"<body><div3>Check</div3><div4></div4><div1></div1><div2></div2></body>\", result);\n\n    }",
+    "test_line": "        assertEquals(\"<body><div3>Check</div3><div4></div4><div1></div1><div2></div2></body>\", result);",
+    "test_name": "appendMustCorrectlyMoveChildrenInsideOneParentElement",
+    "test_suite": "org.jsoup.nodes.ElementTest"
+}

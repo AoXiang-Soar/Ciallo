@@ -1,0 +1,23 @@
+diff --git a/src/com/google/javascript/jscomp/TypeCheck.java b/src/com/google/javascript/jscomp/TypeCheck.java
+index a0f95db9f..664a4f4d8 100644
+--- a/src/com/google/javascript/jscomp/TypeCheck.java
++++ b/src/com/google/javascript/jscomp/TypeCheck.java
+@@ -1563,12 +1563,14 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+    * that have been visited
+    * @param interfaceType The super interface that is being visited
+    */
+-  private void checkInterfaceConflictProperties(NodeTraversal t, Node n,
+-      String functionName, HashMap<String, ObjectType> properties,
+-      HashMap<String, ObjectType> currentProperties,
+-      ObjectType interfaceType) {
++private void checkInterfaceConflictProperties(NodeTraversal t, Node n,
++    String functionName, HashMap<String, ObjectType> properties,
++    HashMap<String, ObjectType> currentProperties,
++    ObjectType interfaceType) {
++    if (interfaceType == null) return;
+     ObjectType implicitProto = interfaceType.getImplicitPrototype();
+     Set<String> currentPropertyNames;
++    if (implicitProto == null) return;
+       // This can be the case if interfaceType is proxy to a non-existent
+       // object (which is a bad type annotation, but shouldn't crash).
+       currentPropertyNames = implicitProto.getOwnPropertyNames();

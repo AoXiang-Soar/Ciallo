@@ -1,0 +1,32 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/JdkDeserializers.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/JdkDeserializers.java
+index c4c0ed93f..db1d071cb 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/JdkDeserializers.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/JdkDeserializers.java
+@@ -19,7 +19,8 @@ public class JdkDeserializers
+                 UUID.class,
+                 AtomicBoolean.class,
+                 StackTraceElement.class,
+-                ByteBuffer.class
++                ByteBuffer.class,
++                Void.class
+         };
+         for (Class<?> cls : types) { _classNames.add(cls.getName()); }
+         for (Class<?> cls : FromStringDeserializer.types()) { _classNames.add(cls.getName()); }
+@@ -45,7 +46,15 @@ public class JdkDeserializers
+             if (rawType == ByteBuffer.class) {
+                 return new ByteBufferDeserializer();
+             }
++            if (rawType == Void.class) {
++                return new FromStringDeserializer(rawType) {
++                    @Override
++                    protected Object _deserialize(String value, DeserializationContext ctxt) {
++                        return null;
++                    }
++                };
++            }
+         }
+         return null;
+     }
+-}
++}
+\ No newline at end of file

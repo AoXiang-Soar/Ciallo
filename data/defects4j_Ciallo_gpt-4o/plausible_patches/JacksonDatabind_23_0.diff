@@ -1,0 +1,46 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java b/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java
+index c11155e6c..ebbc928a7 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java
+@@ -62,8 +62,7 @@ public class NumberSerializers
+             _schemaType = schemaType;
+             _isInt = (numberType == JsonParser.NumberType.INT)
+                     || (numberType == JsonParser.NumberType.LONG)
+-                    || (numberType == JsonParser.NumberType.BIG_INTEGER)
+-                    ;
++                    || (numberType == JsonParser.NumberType.BIG_INTEGER);
+         }
+ 
+         @Override
+@@ -106,6 +105,24 @@ public class NumberSerializers
+             }
+             return this;
+         }
++
++        // Extend the isEmpty method to cover both integer and floating types
++        @Override
++        public boolean isEmpty(SerializerProvider prov, T value) {
++            if (value == null) {
++                return true;
++            }
++            Number num = (Number) value;
++            if (_isInt) {
++                return num.intValue() == 0;
++            } else {
++                // Check for float and double being zero
++                if (_numberType == JsonParser.NumberType.FLOAT || _numberType == JsonParser.NumberType.DOUBLE) {
++                    return num.doubleValue() == 0.0;
++                }
++            }
++            return false;
++        }
+     }
+     
+     /*
+@@ -238,4 +255,4 @@ public class NumberSerializers
+             serialize(value, gen, provider);            
+         }
+     }
+-}
++}
+\ No newline at end of file

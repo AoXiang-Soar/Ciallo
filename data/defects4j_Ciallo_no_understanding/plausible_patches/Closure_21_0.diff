@@ -1,0 +1,32 @@
+diff --git a/src/com/google/javascript/jscomp/CheckSideEffects.java b/src/com/google/javascript/jscomp/CheckSideEffects.java
+index 0d1e95a0e..fee3d9fd5 100644
+--- a/src/com/google/javascript/jscomp/CheckSideEffects.java
++++ b/src/com/google/javascript/jscomp/CheckSideEffects.java
+@@ -81,7 +81,7 @@ final class CheckSideEffects extends AbstractPostOrderCallback
+   }
+ 
+   @Override
+-  public void visit(NodeTraversal t, Node n, Node parent) {
++public void visit(NodeTraversal t, Node n, Node parent) {
+     // VOID nodes appear when there are extra semicolons at the BLOCK level.
+     // I've been unable to think of any cases where this indicates a bug,
+     // and apparently some people like keeping these semicolons around,
+@@ -109,12 +109,16 @@ final class CheckSideEffects extends AbstractPostOrderCallback
+     }
+ 
+     boolean isResultUsed = NodeUtil.isExpressionResultUsed(n);
+-    boolean isSimpleOp = NodeUtil.isSimpleOperatorType(n.getType());
++ boolean isSimpleOp = NodeUtil.isSimpleOperatorType(n.getType());
+     if (parent.getType() == Token.COMMA) {
+       if (isResultUsed) {
+         return;
+       }
+-      if (n == parent.getLastChild()) {
++      Node ancestor = parent;
++      while (ancestor.getParent() != null && ancestor.getParent().getType() == Token.COMMA) {
++        ancestor = ancestor.getParent();
++      }
++      if (ancestor == parent.getLastChild()) {
+         for (Node an : parent.getAncestors()) {
+           int ancestorType = an.getType();
+           if (ancestorType == Token.COMMA) continue;

@@ -1,0 +1,28 @@
+diff --git a/src/java/org/apache/commons/cli2/builder/PatternBuilder.java b/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
+index 6910017..951f1a1 100644
+--- a/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
++++ b/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
+@@ -18,6 +18,7 @@ package org.apache.commons.cli2.builder;
+ 
+ import java.util.HashSet;
+ import java.util.Iterator;
++import java.util.LinkedHashSet;
+ import java.util.Set;
+ 
+ import org.apache.commons.cli2.Argument;
+@@ -64,7 +65,7 @@ public class PatternBuilder {
+         this.abuilder = abuilder;
+     }
+ 
+-    private final Set options = new HashSet();
++    private final Set options = new LinkedHashSet();
+ 
+     /**
+      * Creates a new Option instance.
+@@ -199,4 +200,4 @@ public class PatternBuilder {
+                 return null;
+         }
+     }
+-}
++}
+\ No newline at end of file

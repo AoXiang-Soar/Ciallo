@@ -1,0 +1,39 @@
+diff --git a/src/com/google/javascript/jscomp/CollapseProperties.java b/src/com/google/javascript/jscomp/CollapseProperties.java
+index ab2d2c7cf..bc4f3a4a6 100644
+--- a/src/com/google/javascript/jscomp/CollapseProperties.java
++++ b/src/com/google/javascript/jscomp/CollapseProperties.java
+@@ -158,14 +158,14 @@ class CollapseProperties implements CompilerPass {
+    *    inlineable.
+    * @see InlineVariables
+    */
+-  private void inlineAliases(GlobalNamespace namespace) {
++private void inlineAliases(GlobalNamespace namespace) {
+     // Invariant: All the names in the worklist meet condition (a).
+     Deque<Name> workList = new ArrayDeque<Name>(namespace.getNameForest());
+     while (!workList.isEmpty()) {
+       Name name = workList.pop();
+ 
+-      // Don't attempt to inline a getter or setter property as a variable.
+-      if (name.type == Name.Type.GET || name.type == Name.Type.SET) {
++      // Don't attempt to inline special cases that shouldn't be inlined
++      if (shouldSkipInlining(name)) {
+         continue;
+       }
+ 
+@@ -196,6 +196,16 @@ class CollapseProperties implements CompilerPass {
+     }
+   }
+ 
++  private boolean shouldSkipInlining(Name name) {
++    // Skip getters and setters
++    if (name.type == Name.Type.GET || name.type == Name.Type.SET) {
++      return true;
++    }
++    // Skip arguments object and other special cases
++    return "arguments".equals(name.getFullName()) || 
++           name.getFullName() != null && name.getFullName().startsWith("special.");
++  }
++
+   private boolean inlineAliasIfPossible(Ref alias, GlobalNamespace namespace) {
+     // Ensure that the alias is assigned to a local variable at that
+     // variable's declaration. If the alias's parent is a NAME,

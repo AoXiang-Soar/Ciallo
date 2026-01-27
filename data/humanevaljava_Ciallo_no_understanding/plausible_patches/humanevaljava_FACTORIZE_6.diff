@@ -1,0 +1,38 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIZE.java b/src/main/java/humaneval/buggy/FACTORIZE.java
+index 57975b5..d63fc82 100644
+--- a/src/main/java/humaneval/buggy/FACTORIZE.java
++++ b/src/main/java/humaneval/buggy/FACTORIZE.java
+@@ -7,16 +7,26 @@ public class FACTORIZE {
+     public static List<Integer> factorize(int n){
+         List<Integer> result = new ArrayList<Integer>();
+ 
++        // Handle edge cases
++        if (n < 2) {
++            return result;
++        }
++
+         int i = 2;
+-        while (i <= (int)(Math.sqrt(n) + 1)){
+-            if (n % i == 0){
++        while (n > 1) {
++            while (n % i == 0) {
+                 result.add(i);
+-                n = n / i;
+-            } else{
+-                i += 1;
++                n /= i;
++            }
++            i += 1;
++            
++            // Early termination if i exceeds square root of remaining n
++            if (i * i > n && n > 1) {
++                result.add(n);
++                break;
+             }
+         }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

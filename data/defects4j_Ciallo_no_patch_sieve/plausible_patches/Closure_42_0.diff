@@ -1,0 +1,34 @@
+diff --git a/src/com/google/javascript/jscomp/parsing/IRFactory.java b/src/com/google/javascript/jscomp/parsing/IRFactory.java
+index 1a95aa2f8..dfb486f9f 100644
+--- a/src/com/google/javascript/jscomp/parsing/IRFactory.java
++++ b/src/com/google/javascript/jscomp/parsing/IRFactory.java
+@@ -552,21 +552,24 @@ class IRFactory {
+ 
+     @Override
+     Node processEmptyExpression(EmptyExpression exprNode) {
+-      Node node = newNode(Token.EMPTY);
+-      return node;
++      return newNode(Token.EMPTY);
+     }
+ 
+     @Override
+     Node processExpressionStatement(ExpressionStatement statementNode) {
+-      Node node = newNode(transformTokenType(statementNode.getType()));
++      Node node = newNode(Token.EXPR_RESULT);
+       node.addChildToBack(transform(statementNode.getExpression()));
+       return node;
+     }
+ 
+     @Override
+     Node processForInLoop(ForInLoop loopNode) {
+-
+-        // Return the bare minimum to put the AST in a valid state.
++      if (loopNode.isForEach()) {
++        errorReporter.error(
++            "unsupported language extension: for each",
++            sourceName,
++            loopNode.getLineno(), "", 0);
++      }
+       return newNode(
+           Token.FOR,
+           transform(loopNode.getIterator()),

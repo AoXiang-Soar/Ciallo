@@ -1,0 +1,134 @@
+diff --git a/src/main/java/org/apache/commons/collections4/collection/UnmodifiableBoundedCollection.java b/src/main/java/org/apache/commons/collections4/collection/UnmodifiableBoundedCollection.java
+index 5a9a9a50..8c4e1516 100644
+--- a/src/main/java/org/apache/commons/collections4/collection/UnmodifiableBoundedCollection.java
++++ b/src/main/java/org/apache/commons/collections4/collection/UnmodifiableBoundedCollection.java
+@@ -20,92 +20,57 @@ import java.util.Collection;
+ import java.util.Iterator;
+ 
+ import org.apache.commons.collections4.BoundedCollection;
++import org.apache.commons.collections4.Unmodifiable;
+ import org.apache.commons.collections4.iterators.UnmodifiableIterator;
+ 
+ /**
+  * {@link UnmodifiableBoundedCollection} decorates another
+  * {@link BoundedCollection} to ensure it can't be altered.
+- * <p>
+- * If a BoundedCollection is first wrapped in some other collection decorator,
+- * such as synchronized or predicated, the BoundedCollection methods are no
+- * longer accessible.
+- * The factory on this class will attempt to retrieve the bounded nature by
+- * examining the package scope variables.
+- * <p>
+- * This class is Serializable from Commons Collections 3.1.
+- * <p>
+- * Attempts to modify it will result in an UnsupportedOperationException.
+- *
+- * @since 3.0
+- * @version $Id$
+  */
+ public final class UnmodifiableBoundedCollection<E> extends AbstractCollectionDecorator<E>
+-        implements BoundedCollection<E> {
++        implements BoundedCollection<E>, Unmodifiable {
+ 
+-    /** Serialization version */
+     private static final long serialVersionUID = -7112672385450340330L;
+ 
+-    /**
+-     * Factory method to create an unmodifiable bounded collection.
+-     *
+-     * @param <E> the type of the elements in the collection
+-     * @param coll  the <code>BoundedCollection</code> to decorate, must not be null
+-     * @return a new unmodifiable bounded collection
+-     * @throws IllegalArgumentException if {@code coll} is {@code null}
+-     * @since 4.0
+-     */
+     public static <E> BoundedCollection<E> unmodifiableBoundedCollection(final BoundedCollection<? extends E> coll) {
++        if (coll == null) {
++            throw new IllegalArgumentException("The collection must not be null");
++        }
++        if (coll instanceof Unmodifiable) {
++            return (BoundedCollection<E>) coll;
++        }
+         return new UnmodifiableBoundedCollection<E>(coll);
+     }
+ 
+-    /**
+-     * Factory method to create an unmodifiable bounded collection.
+-     * <p>
+-     * This method is capable of drilling down through up to 1000 other decorators
+-     * to find a suitable BoundedCollection.
+-     *
+-     * @param <E> the type of the elements in the collection
+-     * @param coll  the <code>BoundedCollection</code> to decorate, must not be null
+-     * @return a new unmodifiable bounded collection
+-     * @throws IllegalArgumentException if {@code coll} is {@code null}
+-     * @since 4.0
+-     */
+     @SuppressWarnings("unchecked")
+     public static <E> BoundedCollection<E> unmodifiableBoundedCollection(Collection<? extends E> coll) {
+         if (coll == null) {
+             throw new IllegalArgumentException("The collection must not be null");
+         }
+ 
+-        // handle decorators
+-        for (int i = 0; i < 1000; i++) {  // counter to prevent infinite looping
+-            if (coll instanceof BoundedCollection) {
+-                break;  // normal loop exit
++        Collection<? extends E> current = coll;
++        while (true) {
++            if (current instanceof BoundedCollection) {
++                if (current instanceof Unmodifiable) {
++                    return (BoundedCollection<E>) current;
++                }
++                return new UnmodifiableBoundedCollection<E>((BoundedCollection<E>) current);
+             }
+-            if (coll instanceof AbstractCollectionDecorator) {
+-                coll = ((AbstractCollectionDecorator<E>) coll).decorated();
+-            } else if (coll instanceof SynchronizedCollection) {
+-                coll = ((SynchronizedCollection<E>) coll).decorated();
++            if (current instanceof AbstractCollectionDecorator) {
++                current = ((AbstractCollectionDecorator<E>) current).decorated();
++            } else if (current instanceof SynchronizedCollection) {
++                current = ((SynchronizedCollection<E>) current).decorated();
++            } else {
++                throw new IllegalArgumentException("The collection is not a bounded collection");
+             }
+         }
+-
+-        if (coll instanceof BoundedCollection == false) {
+-            throw new IllegalArgumentException("The collection is not a bounded collection");
+-        }
+-        return new UnmodifiableBoundedCollection<E>((BoundedCollection<E>) coll);
+     }
+ 
+-    /**
+-     * Constructor that wraps (not copies).
+-     *
+-     * @param coll  the collection to decorate, must not be null
+-     * @throws IllegalArgumentException if coll is null
+-     */
+-    @SuppressWarnings("unchecked") // safe to upcast
++    @SuppressWarnings("unchecked")
+     private UnmodifiableBoundedCollection(final BoundedCollection<? extends E> coll) {
+         super((BoundedCollection<E>) coll);
+     }
+ 
+-    //-----------------------------------------------------------------------
+     @Override
+     public Iterator<E> iterator() {
+         return UnmodifiableIterator.unmodifiableIterator(decorated().iterator());
+@@ -141,7 +106,6 @@ public final class UnmodifiableBoundedCollection<E> extends AbstractCollectionDe
+         throw new UnsupportedOperationException();
+     }
+ 
+-    //-----------------------------------------------------------------------
+     public boolean isFull() {
+         return decorated().isFull();
+     }
+@@ -154,4 +118,4 @@ public final class UnmodifiableBoundedCollection<E> extends AbstractCollectionDe
+     protected BoundedCollection<E> decorated() {
+         return (BoundedCollection<E>) super.decorated();
+     }
+-}
++}
+\ No newline at end of file

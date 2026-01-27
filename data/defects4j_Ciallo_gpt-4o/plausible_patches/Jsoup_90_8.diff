@@ -1,0 +1,22 @@
+diff --git a/src/main/java/org/jsoup/helper/HttpConnection.java b/src/main/java/org/jsoup/helper/HttpConnection.java
+index a941e483..7db6abb0 100644
+--- a/src/main/java/org/jsoup/helper/HttpConnection.java
++++ b/src/main/java/org/jsoup/helper/HttpConnection.java
+@@ -421,6 +421,17 @@ public class HttpConnection implements Connection {
+                     return false;
+                 }
+ 
++                if (end >= input.length) {
++                    return false;
++                }
++
++                while (i < end) {
++                    i++;
++                    o = input[i];
++                    if ((o & 0xC0) != 0x80) {
++                        return false;
++                    }
++                }
+ 
+                 while (i < end) {
+                     i++;

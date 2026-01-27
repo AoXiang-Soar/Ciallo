@@ -1,0 +1,24 @@
+diff --git a/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java b/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
+index 51d1c6428..11fd8e743 100644
+--- a/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
++++ b/src/main/java/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
+@@ -537,6 +537,19 @@ public class CMAESOptimizer
+                 boundaries[1] = uB;
+ 
+                 // Abort early if the normalization will overflow (cf. "encode" method).
++                // Check for boundary ranges that could cause overflow
++                for (int i = 0; i < lB.length; i++) {
++                    final double lower = boundaries[0][i];
++                    final double upper = boundaries[1][i];
++                    final double range = upper - lower;
++                    
++                    if (Double.isInfinite(range)) {
++                        throw new NumberIsTooLargeException(range, Double.MAX_VALUE, true);
++                    }
++                    if (range >= Double.MAX_VALUE / 2) {
++                        throw new NumberIsTooLargeException(range, Double.MAX_VALUE / 2, true);
++                    }
++                }
+             }
+         } else {
+             // Convert API to internal handling of boundaries.

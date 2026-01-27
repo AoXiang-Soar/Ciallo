@@ -1,0 +1,16 @@
+{
+    "bug_id": 30,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Lang",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<true> but was:<false>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testContainsNone_CharArrayWithSupplementaryChars() {\n        assertEquals(false, StringUtils.containsNone(CharU20000 + CharU20001, CharU20000.toCharArray()));\n        assertEquals(false, StringUtils.containsNone(CharU20000 + CharU20001, CharU20001.toCharArray()));\n        assertEquals(false, StringUtils.containsNone(CharU20000, CharU20000.toCharArray()));\n        // Sanity check:\n        assertEquals(-1, CharU20000.indexOf(CharU20001));\n        assertEquals(0, CharU20000.indexOf(CharU20001.charAt(0)));\n        assertEquals(-1, CharU20000.indexOf(CharU20001.charAt(1)));\n        // Test:\n        assertEquals(true, StringUtils.containsNone(CharU20000, CharU20001.toCharArray()));\n        assertEquals(true, StringUtils.containsNone(CharU20001, CharU20000.toCharArray()));\n    }",
+    "test_line": "        assertEquals(true, StringUtils.containsNone(CharU20000, CharU20001.toCharArray()));",
+    "test_name": "testContainsNone_CharArrayWithSupplementaryChars",
+    "test_suite": "org.apache.commons.lang3.StringUtilsEqualsIndexOfTest"
+}

@@ -1,0 +1,45 @@
+diff --git a/src/main/java/humaneval/buggy/COMMON.java b/src/main/java/humaneval/buggy/COMMON.java
+index f818c29..9f21856 100644
+--- a/src/main/java/humaneval/buggy/COMMON.java
++++ b/src/main/java/humaneval/buggy/COMMON.java
+@@ -10,21 +10,27 @@ import java.util.*;
+ 
+ public class COMMON {
+     public static int[] common(int[] l1, int[] l2) {
+-        ArrayList<Integer> common = new ArrayList<Integer>();
++        Set<Integer> commonElements = new TreeSet<>();
+         
+-        for (int i = 0; i < l1.length; i += 1){
+-            for (int j = 0; j < l2.length; j += 1){
+-                if (l1[i] == l2[j])
+-                    common.add(l1[i]);
++        // Convert arrays to sets for efficient lookup
++        Set<Integer> set1 = new HashSet<>();
++        for (int num : l1) {
++            set1.add(num);
++        }
++        
++        // Check each element in second array against first set
++        for (int num : l2) {
++            if (set1.contains(num)) {
++                commonElements.add(num);
+             }
+         }
+-        int[] result = new int[common.size()];
+-        int index = 0;
+-        for (Integer c : common) {
+-            result[index] = c;
+-            index += 1;
++        
++        // Convert TreeSet to array (already sorted)
++        int[] result = new int[commonElements.size()];
++        int i = 0;
++        for (int num : commonElements) {
++            result[i++] = num;
+         }
+-        Arrays.sort(result);
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": "MONOTONIC",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MONOTONIC.test_2:29 expected:<true> but was:<false>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_2() throws java.lang.Exception {\n        boolean result = humaneval.buggy.MONOTONIC.monotonic(\n            new int[] {1, 20, 4, 10}\n        );\n        org.junit.Assert.assertEquals(\n            result, false\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_2",
+    "test_suite": "TEST_MONOTONIC"
+}

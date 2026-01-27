@@ -1,0 +1,58 @@
+diff --git a/src/com/google/javascript/jscomp/ScopedAliases.java b/src/com/google/javascript/jscomp/ScopedAliases.java
+index 30d29d0ad..fce0b957d 100644
+--- a/src/com/google/javascript/jscomp/ScopedAliases.java
++++ b/src/com/google/javascript/jscomp/ScopedAliases.java
+@@ -269,32 +269,32 @@ class ScopedAliases implements HotSwapCompilerPass {
+       hasErrors = true;
+     }
+ 
+-    private void findAliases(NodeTraversal t) {
+-      Scope scope = t.getScope();
+-      for (Var v : scope.getVarIterable()) {
++private void findAliases(NodeTraversal t) {
++    Scope scope = t.getScope();
++    for (Var v : scope.getVarIterable()) {
+         Node n = v.getNode();
+-        int type = n.getType();
+         Node parent = n.getParent();
++        
+         if (parent.isVar()) {
+-          if (n.hasChildren() && n.getFirstChild().isQualifiedName()) {
+-          String name = n.getString();
+-          Var aliasVar = scope.getVar(name);
+-          aliases.put(name, aliasVar);
+-
+-          String qualifiedName =
+-              aliasVar.getInitialValue().getQualifiedName();
+-          transformation.addAlias(name, qualifiedName);
+-          // Bleeding functions already get a BAD_PARAMETERS error, so just
+-          // do nothing.
+-          // Parameters of the scope function also get a BAD_PARAMETERS
+-          // error.
+-        } else {
+-          // TODO(robbyw): Support using locals for private variables.
+-          report(t, n, GOOG_SCOPE_NON_ALIAS_LOCAL, n.getString());
+-        }
++            // Only handle variables declared via var (not let/const)
++            if (n.hasChildren() && n.getFirstChild().isQualifiedName()) {
++                // Valid alias case
++                String name = n.getString();
++                Var aliasVar = scope.getVar(name);
++                aliases.put(name, aliasVar);
++
++                String qualifiedName = aliasVar.getInitialValue().getQualifiedName();
++                transformation.addAlias(name, qualifiedName);
++            } else {
++                // Report error for non-alias local variables declared with var
++                report(t, n, GOOG_SCOPE_NON_ALIAS_LOCAL, n.getString());
++            }
++        } else if (!v.isBleedingFunction() && !parent.isParamList()) {
++            // Report error for non-var declarations (let/const) and other cases
++            report(t, n, GOOG_SCOPE_NON_ALIAS_LOCAL, n.getString());
+         }
+-      }
+     }
++}
+ 
+     private void validateScopeCall(NodeTraversal t, Node n, Node parent) {
+       if (preprocessorSymbolTable != null) {

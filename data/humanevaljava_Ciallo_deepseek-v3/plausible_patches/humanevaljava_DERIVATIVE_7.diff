@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/DERIVATIVE.java b/src/main/java/humaneval/buggy/DERIVATIVE.java
+index 667fc7e..a4fcee4 100644
+--- a/src/main/java/humaneval/buggy/DERIVATIVE.java
++++ b/src/main/java/humaneval/buggy/DERIVATIVE.java
+@@ -15,8 +15,12 @@ public class DERIVATIVE {
+     public static List<Integer> derivative(List<Integer> xs) {
+         List<Integer> result = new ArrayList<Integer>();
+         
+-        for (int i = 0; i < xs.size(); i += 1)
+-            result.add(xs.get(i));
++        // Start from the first order term (skip the constant term for derivative)
++        for (int i = 1; i < xs.size(); i++) {
++            // Multiply coefficient by its power (i) to get the derivative
++            result.add(xs.get(i) * i);
++        }
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

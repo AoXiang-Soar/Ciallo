@@ -1,0 +1,40 @@
+diff --git a/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java b/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java
+index 484c02b..9595f19 100644
+--- a/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java
++++ b/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java
+@@ -9,19 +9,26 @@ Otherwise return -1
+ Three sides make a valid triangle when the sum of any two sides is greater 
+ than the third side.
+ Example:
+-triangle_area(3, 4, 5) == 6.00
+-triangle_area(1, 2, 10) == -1 */
++triangle_area_2(3, 4, 5) == 6.00
++triangle_area_2(1, 2, 10) == -1 */
+ 
+ public class TRIANGLE_AREA_2 {
+     public static double triangle_area_2(double a, double b, double c) {
+-        if (a + b <= c || a + c <= b || b + c <= a)
++        // Check if the provided sides form a valid triangle
++        if (a + b <= c || a + c <= b || b + c <= a || a <= 0 || b <= 0 || c <= 0) {
+             return -1;
++        }
+         
+-        double s = (a + b + c) / 2.;
+-        double result = Math.pow(s, 0.5);
+-        
+-        BigDecimal bd = BigDecimal.valueOf(result);
++        // Calculate the semi-perimeter
++        double s = (a + b + c) / 2.0;
++
++        // Correct calculation of the area using Heron's Formula
++        double area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
++
++        // Round the area to 2 decimal places
++        BigDecimal bd = BigDecimal.valueOf(area);
+         bd = bd.setScale(2, RoundingMode.HALF_UP);
++        
+         return bd.doubleValue();
+     }
+-}
++}
+\ No newline at end of file

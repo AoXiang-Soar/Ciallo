@@ -1,0 +1,43 @@
+diff --git a/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java b/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
+index 02810e142..7674daae8 100644
+--- a/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
++++ b/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
+@@ -105,11 +105,35 @@ public class NormalDistributionImpl extends AbstractContinuousDistribution
+      * x is more than 20 standard deviations from the mean, in which case the
+      * convergence exception is caught and 0 or 1 is returned.
+      */
+-    public double cumulativeProbability(double x) throws MathException {
+-            return 0.5 * (1.0 + Erf.erf((x - mean) /
+-                    (standardDeviation * Math.sqrt(2.0))));
++public double cumulativeProbability(double x) throws MathException {
++    // Handle infinity cases directly
++    if (Double.isInfinite(x)) {
++        return (x < 0) ? 0.0 : 1.0;
+     }
+     
++    // Pre-check extremely large values to avoid unnecessary calculations
++    // Standard normal distribution saturates extremely quickly
++    double sigma = standardDeviation * Math.sqrt(2.0);
++    double zScore = (x - mean) / sigma;
++    
++    // Using more conservative bounds than erf's theoretical limits
++    // These threshold values ensure erf evaluation won't fail for extreme inputs
++    final double ERF_MAX_INPUT = 8.9;  // Beyond this, erf() returns effectively ±1.0
++    if (zScore <= -ERF_MAX_INPUT) {
++        return 0.0;
++    }
++    if (zScore >= ERF_MAX_INPUT) {
++        return 1.0;
++    }
++    
++    try {
++        return 0.5 * (1.0 + Erf.erf(zScore));
++    } catch (MaxIterationsExceededException e) {
++        // Fallback for cases where erf still fails to converge
++        return (zScore < 0) ? 0.0 : 1.0;
++    }
++}
++    
+     /**
+      * For this distribution, X, this method returns the critical point x, such
+      * that P(X &lt; x) = <code>p</code>.

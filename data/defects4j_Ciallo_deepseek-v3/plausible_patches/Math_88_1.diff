@@ -1,0 +1,59 @@
+diff --git a/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java b/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java
+index 3bcb17f2a..024106b9d 100644
+--- a/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java
++++ b/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java
+@@ -321,28 +321,36 @@ class SimplexTableau implements Serializable {
+      * </p>
+      * @return current solution
+      */
+-    protected RealPointValuePair getSolution() {
+-        double[] coefficients = new double[getOriginalNumDecisionVariables()];
+-        Integer basicRow =
+-            getBasicRow(getNumObjectiveFunctions() + getOriginalNumDecisionVariables());
+-        double mostNegative = basicRow == null ? 0 : getEntry(basicRow, getRhsOffset());
+-        for (int i = 0; i < coefficients.length; i++) {
+-            basicRow = getBasicRow(getNumObjectiveFunctions() + i);
+-                // if multiple variables can take a given value 
+-                // then we choose the first and set the rest equal to 0
+-                coefficients[i] =
+-                    (basicRow == null ? 0 : getEntry(basicRow, getRhsOffset())) -
+-                    (restrictToNonNegative ? 0 : mostNegative);
+-            if (basicRow != null) {
+-                for (int j = getNumObjectiveFunctions(); j < getNumObjectiveFunctions() + i; j++) {
+-                    if (tableau.getEntry(basicRow, j) == 1) {
+-                         coefficients[i] = 0;
+-                    }
++protected RealPointValuePair getSolution() {
++    double[] coefficients = new double[getOriginalNumDecisionVariables()];
++    Integer basicRow =
++        getBasicRow(getNumObjectiveFunctions() + getOriginalNumDecisionVariables());
++    double mostNegative = basicRow == null ? 0 : getEntry(basicRow, getRhsOffset());
++    
++    for (int i = 0; i < coefficients.length; i++) {
++        basicRow = getBasicRow(getNumObjectiveFunctions() + i);
++        coefficients[i] = (basicRow == null ? 0 : getEntry(basicRow, getRhsOffset()));
++        
++        if (basicRow != null) {
++            // Check if this is not the first occurrence of this basic row
++            boolean alreadySet = false;
++            for (int j = 0; j < i; j++) {
++                if (getBasicRow(getNumObjectiveFunctions() + j) == basicRow) {
++                    alreadySet = true;
++                    break;
+                 }
+             }
++            if (alreadySet) {
++                coefficients[i] = 0;
++            }
++        }
++        
++        if (!restrictToNonNegative) {
++            coefficients[i] -= mostNegative;
+         }
+-        return new RealPointValuePair(coefficients, f.getValue(coefficients));
+     }
++    return new RealPointValuePair(coefficients, f.getValue(coefficients));
++}
+ 
+     /**
+      * Subtracts a multiple of one row from another.

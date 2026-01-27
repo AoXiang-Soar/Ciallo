@@ -1,0 +1,19 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java b/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
+index a30cd5a8..9e1d1f9b 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
++++ b/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
+@@ -238,9 +238,11 @@ public class ArchiveStreamFactory {
+             }
+             // COMPRESS-117 - improve auto-recognition
+             try {
+-                TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(tarheader));
+-                tais.getNextEntry();
+-                return new TarArchiveInputStream(in);
++                if (signatureLength == tarheader.length) {
++                    TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(tarheader));
++                    tais.getNextEntry();
++                    return new TarArchiveInputStream(in);
++                }
+             } catch (Exception e) { // NOPMD
+                 // can generate IllegalArgumentException as well as IOException
+                 // autodetection, simply not a TAR

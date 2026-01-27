@@ -1,0 +1,23 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+index fe2c1133..53affc43 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+@@ -567,7 +567,7 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+      */
+     @Override
+     public int read(byte[] buf, int offset, int numToRead) throws IOException {
+-    	int totalRead = 0;
++        int totalRead = 0;
+ 
+         if (hasHitEOF || entryOffset >= entrySize) {
+             return -1;
+@@ -580,6 +580,9 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+         numToRead = Math.min(numToRead, available());
+         
+         totalRead = is.read(buf, offset, numToRead);
++        if (totalRead == -1 && entryOffset < entrySize) {
++            throw new IOException("Truncated TAR archive");
++        }
+         count(totalRead);
+         
+         if (totalRead == -1) {

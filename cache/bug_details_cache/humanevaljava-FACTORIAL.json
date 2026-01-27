@@ -1,0 +1,16 @@
+{
+    "bug_id": "FACTORIAL",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_FACTORIAL.test_0:9 \u00bb TestTimedOut test timed out after 3000 milliseconds",
+    "test_framework": "humanevaljava",
+    "test_function": "\tpublic void test_0() throws java.lang.Exception {\n        ArrayList<Integer> result = humaneval.buggy.FACTORIAL.factorial(5);\n        ArrayList<Integer> desired = new ArrayList<>(Arrays.asList(1, 2, 6, 24, 15));\n        org.junit.Assert.assertEquals(result, desired);\n    }",
+    "test_line": "        ArrayList<Integer> result = humaneval.buggy.FACTORIAL.factorial(5);",
+    "test_name": "test_0",
+    "test_suite": "TEST_FACTORIAL"
+}

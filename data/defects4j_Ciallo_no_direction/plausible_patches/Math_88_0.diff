@@ -1,0 +1,61 @@
+diff --git a/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java b/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java
+index 3bcb17f2a..95991c22f 100644
+--- a/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java
++++ b/src/java/org/apache/commons/math/optimization/linear/SimplexTableau.java
+@@ -321,28 +321,38 @@ class SimplexTableau implements Serializable {
+      * </p>
+      * @return current solution
+      */
+-    protected RealPointValuePair getSolution() {
+-        double[] coefficients = new double[getOriginalNumDecisionVariables()];
+-        Integer basicRow =
+-            getBasicRow(getNumObjectiveFunctions() + getOriginalNumDecisionVariables());
+-        double mostNegative = basicRow == null ? 0 : getEntry(basicRow, getRhsOffset());
+-        for (int i = 0; i < coefficients.length; i++) {
+-            basicRow = getBasicRow(getNumObjectiveFunctions() + i);
+-                // if multiple variables can take a given value 
+-                // then we choose the first and set the rest equal to 0
+-                coefficients[i] =
+-                    (basicRow == null ? 0 : getEntry(basicRow, getRhsOffset())) -
+-                    (restrictToNonNegative ? 0 : mostNegative);
+-            if (basicRow != null) {
+-                for (int j = getNumObjectiveFunctions(); j < getNumObjectiveFunctions() + i; j++) {
+-                    if (tableau.getEntry(basicRow, j) == 1) {
+-                         coefficients[i] = 0;
+-                    }
++protected RealPointValuePair getSolution() {
++    double[] coefficients = new double[getOriginalNumDecisionVariables()];
++    Integer artificialVarRow = getBasicRow(getNumObjectiveFunctions() + getOriginalNumDecisionVariables());
++    double mostNegative = artificialVarRow == null ? 0 : getEntry(artificialVarRow, getRhsOffset());
++    
++    for (int i = 0; i < coefficients.length; i++) {
++        Integer basicRow = getBasicRow(getNumObjectiveFunctions() + i);
++        if (basicRow != null) {
++            // This is a basic variable - get its value from RHS
++            coefficients[i] = getEntry(basicRow, getRhsOffset());
++            // Only subtract mostNegative if we're not restricting to non-negative
++            if (!restrictToNonNegative) {
++                coefficients[i] -= mostNegative;
++            }
++            
++            // Check if there are other basic variables claiming this column
++            // We'll keep the first basic variable we find (i) and zero out others
++            for (int j = getNumObjectiveFunctions(); j < getNumObjectiveFunctions() + i; j++) {
++                Integer otherRow = getBasicRow(j);
++                if (otherRow != null && otherRow.equals(basicRow)) {
++                    coefficients[i] = 0;
++                    break;
+                 }
+             }
++        } else {
++            // Non-basic variables are zero (or -mostNegative if unrestricted)
++            coefficients[i] = restrictToNonNegative ? 0 : -mostNegative;
+         }
+-        return new RealPointValuePair(coefficients, f.getValue(coefficients));
+     }
++    
++    return new RealPointValuePair(coefficients, f.getValue(coefficients));
++}
+ 
+     /**
+      * Subtracts a multiple of one row from another.

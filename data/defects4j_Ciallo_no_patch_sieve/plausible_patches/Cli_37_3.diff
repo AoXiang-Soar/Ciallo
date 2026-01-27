@@ -1,0 +1,22 @@
+diff --git a/src/main/java/org/apache/commons/cli/DefaultParser.java b/src/main/java/org/apache/commons/cli/DefaultParser.java
+index 6aeaebe..5207ef3 100644
+--- a/src/main/java/org/apache/commons/cli/DefaultParser.java
++++ b/src/main/java/org/apache/commons/cli/DefaultParser.java
+@@ -299,9 +299,14 @@ public class DefaultParser implements CommandLineParser
+     private boolean isShortOption(String token)
+     {
+         // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+-        return token.startsWith("-") && token.length() >= 2 && options.hasShortOption(token.substring(1, 2));
+-
+-        // remove leading "-" and "=value"
++        if (!token.startsWith("-") || token.length() < 2) {
++            return false;
++        }
++        int equalPos = token.indexOf('=');
++        String opt = equalPos == -1 
++                    ? token.substring(1)
++                    : token.substring(1, equalPos);
++        return !opt.isEmpty() && options.hasShortOption(opt);
+     }
+ 
+     /**

@@ -1,0 +1,16 @@
+{
+    "bug_id": 18,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<11.099999988790934> but was:<8.0>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testFitAccuracyDependsOnBoundary() {\n        final CMAESOptimizer optimizer = new CMAESOptimizer();\n        final MultivariateFunction fitnessFunction = new MultivariateFunction() {\n                public double value(double[] parameters) {\n                    final double target = 11.1;\n                    final double error = target - parameters[0];\n                    return error * error;\n                }\n            };\n\n        final double[] start = { 1 };\n \n        // No bounds.\n        PointValuePair result = optimizer.optimize(100000, fitnessFunction, GoalType.MINIMIZE,\n                                                   start);\n        final double resNoBound = result.getPoint()[0];\n\n        // Optimum is near the lower bound.\n        final double[] lower = { -20 };\n        final double[] upper = { 5e16 };\n        result = optimizer.optimize(100000, fitnessFunction, GoalType.MINIMIZE,\n                                    start, lower, upper);\n        final double resNearLo = result.getPoint()[0];\n\n        // Optimum is near the upper bound.\n        lower[0] = -5e16;\n        upper[0] = 20;\n        result = optimizer.optimize(100000, fitnessFunction, GoalType.MINIMIZE,\n                                    start, lower, upper);\n        final double resNearHi = result.getPoint()[0];\n\n        // System.out.println(\"resNoBound=\" + resNoBound +\n        //                    \" resNearLo=\" + resNearLo +\n        //                    \" resNearHi=\" + resNearHi);\n\n        // The two values currently differ by a substantial amount, indicating that\n        // the bounds definition can prevent reaching the optimum.\n        Assert.assertEquals(resNoBound, resNearLo, 1e-3);\n        Assert.assertEquals(resNoBound, resNearHi, 1e-3);\n    }",
+    "test_line": "        Assert.assertEquals(resNoBound, resNearHi, 1e-3);",
+    "test_name": "testFitAccuracyDependsOnBoundary",
+    "test_suite": "org.apache.commons.math3.optimization.direct.CMAESOptimizerTest"
+}

@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java b/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
+old mode 100644
+new mode 100755
+index fba3afc..8449214
+--- a/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
++++ b/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
+@@ -2,6 +2,7 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ import java.util.Collections;
++import java.util.Comparator;
+ 
+ /* Write a function that accepts a list of strings as a parameter,
+ deletes the strings that have odd lengths from it,
+@@ -27,9 +28,9 @@ public class SORTED_LIST_SUM {
+ 
+         Collections.sort(
+             result,
+-            (s1, s2) -> s1.length() - s2.length()
++            Comparator.comparing(String::length).thenComparing(Comparator.naturalOrder())
+         );
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

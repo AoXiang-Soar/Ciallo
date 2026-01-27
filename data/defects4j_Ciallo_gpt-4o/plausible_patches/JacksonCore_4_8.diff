@@ -1,0 +1,42 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/util/TextBuffer.java b/src/main/java/com/fasterxml/jackson/core/util/TextBuffer.java
+index f97a083f..8bbd0e4a 100644
+--- a/src/main/java/com/fasterxml/jackson/core/util/TextBuffer.java
++++ b/src/main/java/com/fasterxml/jackson/core/util/TextBuffer.java
+@@ -577,15 +577,29 @@ public final class TextBuffer
+      * accommodate for more contiguous content. Usually only
+      * used when parsing tokens like names if even then.
+      */
+-    public char[] expandCurrentSegment()
+-    {
+-        final char[] curr = _currentSegment;
+-        // Let's grow by 50% by default
+-        final int len = curr.length;
+-        // but above intended maximum, slow to increase by 25%
+-        int newLen = (len == MAX_SEGMENT_LEN) ? (MAX_SEGMENT_LEN+1) : Math.min(MAX_SEGMENT_LEN, len + (len >> 1));
+-        return (_currentSegment = Arrays.copyOf(curr, newLen));
++public char[] expandCurrentSegment()
++{
++    final char[] curr = _currentSegment;
++    final int len = curr.length;
++    int newLen;
++    
++    // First, check if we are already at or have exceeded the max segment length
++    if (len >= MAX_SEGMENT_LEN) {
++        // Always expand by 1 to ensure growth, even if max segment length is reached
++        newLen = len + 1;
++    } else {
++        // Calculate a 50% growth
++        int growth = len >> 1;
++        
++        // Ensure we always grow by at least one character unless it hits the max
++        newLen = len + Math.max(growth, 1);
++        
++        // Cap new length to MAX_SEGMENT_LEN if it exceeds
++        newLen = Math.min(newLen, MAX_SEGMENT_LEN);
+     }
++    
++    return (_currentSegment = Arrays.copyOf(curr, newLen));
++}
+ 
+     /**
+      * Method called to expand size of the current segment, to

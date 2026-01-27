@@ -1,0 +1,16 @@
+{
+    "bug_id": "MAX_ELEMENT",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MAX_ELEMENT.test_2:32 expected:<0> but was:<-1>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_2() throws java.lang.Exception {\n        int result = humaneval.buggy.MAX_ELEMENT.max_element(\n            new ArrayList<Integer>(Arrays.asList(-1, -2, -3))\n        );\n        org.junit.Assert.assertEquals(\n            result, -1\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_2",
+    "test_suite": "TEST_MAX_ELEMENT"
+}

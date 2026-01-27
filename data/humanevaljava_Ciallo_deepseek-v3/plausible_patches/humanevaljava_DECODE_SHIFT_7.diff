@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/DECODE_SHIFT.java b/src/main/java/humaneval/buggy/DECODE_SHIFT.java
+index c8aba74..ec6d2d5 100644
+--- a/src/main/java/humaneval/buggy/DECODE_SHIFT.java
++++ b/src/main/java/humaneval/buggy/DECODE_SHIFT.java
+@@ -1,13 +1,12 @@
+ package humaneval.buggy;
+ 
+-/* encode_shift(): returns encoded string by shifting every character by 5 in the alphabet.
+-decode_shift(): takes as input string encoded with encode_shift function. Returns decoded string. */
+-
+ public class DECODE_SHIFT {
+     public static String encode_shift(String string){
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            c = (char)((((int) c + 5 - (int)('a')) % 26) + (int)('a'));
++            if (Character.isLowerCase(c)) {
++                c = (char)(((((int) c - (int)('a')) + 5) % 26) + (int)('a'));
++            }
+             sb.append(c);
+         }
+         return sb.toString();
+@@ -16,9 +15,11 @@ public class DECODE_SHIFT {
+     public static String decode_shift(String string) {
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            c = (char)((((int) c - 5 - (int)('a')) % 26) + (int)('a'));
++            if (Character.isLowerCase(c)) {
++                c = (char)(((((int) c - (int)('a')) - 5 + 26) % 26) + (int)('a'));
++            }
+             sb.append(c);
+         }
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

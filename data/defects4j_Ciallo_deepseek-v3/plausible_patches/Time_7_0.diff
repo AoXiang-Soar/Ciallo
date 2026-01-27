@@ -1,0 +1,69 @@
+diff --git a/src/main/java/org/joda/time/format/DateTimeFormatter.java b/src/main/java/org/joda/time/format/DateTimeFormatter.java
+index 447674a2..e3fc07c4 100644
+--- a/src/main/java/org/joda/time/format/DateTimeFormatter.java
++++ b/src/main/java/org/joda/time/format/DateTimeFormatter.java
+@@ -697,35 +697,35 @@ public class DateTimeFormatter {
+      * @throws IllegalArgumentException if the instant is null
+      * @throws IllegalArgumentException if any field is out of range
+      */
+-    public int parseInto(ReadWritableInstant instant, String text, int position) {
+-        DateTimeParser parser = requireParser();
+-        if (instant == null) {
+-            throw new IllegalArgumentException("Instant must not be null");
+-        }
+-        
+-        long instantMillis = instant.getMillis();
+-        Chronology chrono = instant.getChronology();
+-        long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
+-        chrono = selectChronology(chrono);
+-        int defaultYear = chrono.year().get(instantLocal);
+-        
+-        DateTimeParserBucket bucket = new DateTimeParserBucket(
+-            instantLocal, chrono, iLocale, iPivotYear, defaultYear);
+-        int newPos = parser.parseInto(bucket, text, position);
+-        instant.setMillis(bucket.computeMillis(false, text));
+-        if (iOffsetParsed && bucket.getOffsetInteger() != null) {
+-            int parsedOffset = bucket.getOffsetInteger();
+-            DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+-            chrono = chrono.withZone(parsedZone);
+-        } else if (bucket.getZone() != null) {
+-            chrono = chrono.withZone(bucket.getZone());
+-        }
+-        instant.setChronology(chrono);
+-        if (iZone != null) {
+-            instant.setZone(iZone);
+-        }
+-        return newPos;
+-    }
++public int parseInto(ReadWritableInstant instant, String text, int position) {
++    DateTimeParser parser = requireParser();
++    if (instant == null) {
++        throw new IllegalArgumentException("Instant must not be null");
++    }
++    
++    Chronology chrono = instant.getChronology();
++    long instantMillis = instant.getMillis();
++    long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
++    chrono = selectChronology(chrono);
++    int defaultYear = chrono.year().get(instantMillis);  // Changed from instantLocal to instantMillis
++    
++    DateTimeParserBucket bucket = new DateTimeParserBucket(
++        instantLocal, chrono, iLocale, iPivotYear, defaultYear);
++    int newPos = parser.parseInto(bucket, text, position);
++    instant.setMillis(bucket.computeMillis(false, text));
++    if (iOffsetParsed && bucket.getOffsetInteger() != null) {
++        int parsedOffset = bucket.getOffsetInteger();
++        DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
++        chrono = chrono.withZone(parsedZone);
++    } else if (bucket.getZone() != null) {
++        chrono = chrono.withZone(bucket.getZone());
++    }
++    instant.setChronology(chrono);
++    if (iZone != null) {
++        instant.setZone(iZone);
++    }
++    return newPos;
++}
+ 
+     /**
+      * Parses a datetime from the given text, returning the number of

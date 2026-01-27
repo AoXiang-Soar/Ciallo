@@ -1,0 +1,46 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/json/UTF8StreamJsonParser.java b/src/main/java/com/fasterxml/jackson/core/json/UTF8StreamJsonParser.java
+index f89e661d..eaade04f 100644
+--- a/src/main/java/com/fasterxml/jackson/core/json/UTF8StreamJsonParser.java
++++ b/src/main/java/com/fasterxml/jackson/core/json/UTF8StreamJsonParser.java
+@@ -110,21 +110,26 @@ public class UTF8StreamJsonParser
+     /**********************************************************
+      */
+ 
+-    public UTF8StreamJsonParser(IOContext ctxt, int features, InputStream in,
+-            ObjectCodec codec, BytesToNameCanonicalizer sym,
+-            byte[] inputBuffer, int start, int end,
+-            boolean bufferRecyclable)
+-    {
+-        super(ctxt, features);
+-        _inputStream = in;
+-        _objectCodec = codec;
+-        _symbols = sym;
+-        _inputBuffer = inputBuffer;
+-        _inputPtr = start;
+-        _inputEnd = end;
+-        // If we have offset, need to omit that from byte offset, so:
+-        _bufferRecyclable = bufferRecyclable;
+-    }
++public UTF8StreamJsonParser(IOContext ctxt, int features, InputStream in,
++        ObjectCodec codec, BytesToNameCanonicalizer sym,
++        byte[] inputBuffer, int start, int end,
++        boolean bufferRecyclable)
++{
++    super(ctxt, features);
++    _inputStream = in;
++    _objectCodec = codec;
++    _symbols = sym;
++    _inputBuffer = inputBuffer;
++    _inputPtr = start;
++    _inputEnd = end;
++    _bufferRecyclable = bufferRecyclable;
++
++    // This variable is used to track the total number of bytes processed
++    _currInputProcessed = -start;  // Account for the initial offset given by `start`
++    
++    // Adjust _currInputRowStart if row-based operations are affected by the initial offset.
++    _currInputRowStart = _inputPtr;
++}
+ 
+     @Override
+     public ObjectCodec getCodec() {

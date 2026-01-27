@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java b/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java
+index 905614f..b41f7df 100644
+--- a/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java
++++ b/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java
+@@ -3,21 +3,21 @@ package humaneval.buggy;
+ public class RESCALE_TO_UNIT {
+     public static double[] rescale_to_unit(double[] numbers){
+         double min = Double.MAX_VALUE;
+-        double max = Double.MIN_VALUE;
++        double max = -Double.MAX_VALUE;  // Fix: Initialize max with -Double.MAX_VALUE for correct computation
+ 
+         for (int i = 0; i < numbers.length; i += 1) {
+-            if (numbers[i] > max) {
+-                max = numbers[i];
+-            }
+-            else if (numbers[i] < min) {
+-                min = numbers[i];
+-            }
++            min = Math.min(min, numbers[i]);  // Use Math.min to update min
++            max = Math.max(max, numbers[i]);  // Use Math.max to update max
+         }
+ 
+         double[] result = new double[numbers.length];
+         for (int i = 0; i < numbers.length; i += 1) {
+-            result[i] = (numbers[i] - min) / (max - min);
++            if (max == min) {
++                result[i] = 1.0;  // Handle case where all numbers are identical to avoid division by zero
++            } else {
++                result[i] = (numbers[i] - min) / (max - min);
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

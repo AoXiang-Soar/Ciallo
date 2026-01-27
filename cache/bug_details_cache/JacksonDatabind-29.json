@@ -1,0 +1,16 @@
+{
+    "bug_id": 29,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of com.fasterxml.jackson.databind.jsontype.TestExternalId$ValueBean out of VALUE_STRING token",
+    "test_framework": "defects4j",
+    "test_function": "    public void testExternalTypeIdWithNull() throws Exception\n    {\n        ObjectMapper mapper = new ObjectMapper();\n        mapper.registerSubtypes(ValueBean.class);\n        ExternalBean b;\n        b = mapper.readValue(aposToQuotes(\"{'bean':null,'extType':'vbean'}\"),\n                ExternalBean.class);\n        assertNotNull(b);\n        b = mapper.readValue(aposToQuotes(\"{'extType':'vbean','bean':null}\"),\n                ExternalBean.class);\n        assertNotNull(b);\n    }",
+    "test_line": "",
+    "test_name": "testExternalTypeIdWithNull",
+    "test_suite": "com.fasterxml.jackson.databind.jsontype.TestExternalId"
+}

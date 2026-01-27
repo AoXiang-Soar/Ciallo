@@ -1,0 +1,40 @@
+diff --git a/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java b/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
+index 4389f67..ba4b605 100644
+--- a/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
++++ b/src/main/java/humaneval/buggy/ANTI_SHUFFLE.java
+@@ -4,7 +4,7 @@ import java.util.Arrays;
+ 
+ /* Write a function that takes a string and returns an ordered version of it.
+ Ordered version of string, is a string where all words (separated by space)
+-are replaced by a new word where all the characters arranged in
++are replaced by a new word where all the characters are arranged in
+ ascending order based on ascii value.
+ Note: You should keep the order of words and blank spaces in the sentence.
+ 
+@@ -15,12 +15,18 @@ anti_shuffle('Hello World!!!') returns 'Hello !!!Wdlor' */
+ 
+ public class ANTI_SHUFFLE {
+     public static String anti_shuffle(String s) {
+-        String result = "";
+-        for (String str : s.split(" ")) {
+-            char[] chars = str.toCharArray();
+-            Arrays.sort(chars);
+-            result += new String(chars);
++        StringBuilder result = new StringBuilder();
++        String[] parts = s.split("(?=[ ])|(?<=[ ])");
++
++        for (String part : parts) {
++            if (!part.equals(" ")) {
++                char[] chars = part.toCharArray();
++                Arrays.sort(chars);
++                result.append(new String(chars));
++            } else {
++                result.append(part);
++            }
+         }
+-        return result;
++        return result.toString();
+     }
+-}
++}
+\ No newline at end of file

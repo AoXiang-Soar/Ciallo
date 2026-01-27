@@ -1,0 +1,33 @@
+diff --git a/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java b/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
+index 558a5864..aee9e68f 100644
+--- a/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
++++ b/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
+@@ -2537,17 +2537,19 @@ public class DateTimeFormatterBuilder {
+             return MAX_LENGTH;
+         }
+ 
+-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+-            String str = text.substring(position);
+-            for (String id : ALL_IDS) {
+-                if (str.startsWith(id)) {
+-                    bucket.setZone(DateTimeZone.forID(id));
+-                    return position + id.length();
+-                }
+-            }
+-            return ~position;
++public int parseInto(DateTimeParserBucket bucket, String text, int position) {
++    String str = text.substring(position);
++    // Try to find the longest matching timezone ID first
++    for (int len = str.length(); len > 0; len--) {
++        String possibleId = str.substring(0, len);
++        if (ALL_IDS.contains(possibleId)) {
++            bucket.setZone(DateTimeZone.forID(possibleId));
++            return position + possibleId.length();
+         }
+     }
++    return ~position;
++}
++    }
+ 
+     //-----------------------------------------------------------------------
+     static class Composite

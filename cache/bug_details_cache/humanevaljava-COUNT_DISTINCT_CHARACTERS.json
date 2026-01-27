@@ -1,0 +1,16 @@
+{
+    "bug_id": "COUNT_DISTINCT_CHARACTERS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_COUNT_DISTINCT_CHARACTERS.test_4:39 expected:<6> but was:<5>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_4() throws java.lang.Exception {\n        int result = humaneval.buggy.COUNT_DISTINCT_CHARACTERS.count_distinct_characters(\"Jerry jERRY JeRRRY\");\n        org.junit.Assert.assertEquals(\n            result, 5\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_4",
+    "test_suite": "TEST_COUNT_DISTINCT_CHARACTERS"
+}

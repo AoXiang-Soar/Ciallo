@@ -1,0 +1,77 @@
+diff --git a/src/main/java/org/apache/commons/math3/fraction/Fraction.java b/src/main/java/org/apache/commons/math3/fraction/Fraction.java
+index f81ff0a94..cfdfd0926 100644
+--- a/src/main/java/org/apache/commons/math3/fraction/Fraction.java
++++ b/src/main/java/org/apache/commons/math3/fraction/Fraction.java
+@@ -172,18 +172,20 @@ public class Fraction
+      * @throws FractionConversionException if the continued fraction failed to
+      *         converge.
+      */
+-    private Fraction(double value, double epsilon, int maxDenominator, int maxIterations)
++private Fraction(double value, double epsilon, int maxDenominator, int maxIterations)
+         throws FractionConversionException
+     {
+         long overflow = Integer.MAX_VALUE;
+         double r0 = value;
+-        long a0 = (long)FastMath.floor(r0);
+-        if (a0 > overflow) {
+-            throw new FractionConversionException(value, a0, 1l);
++        long a0 = (long) FastMath.floor(r0);
++
++        // Since a0 is casted from a floor operation it should not exceed the overflow, we check:
++        if (a0 > overflow || a0 < -overflow) {
++            throw new FractionConversionException(value, a0, 1L);
+         }
+ 
+-        // check for (almost) integer arguments, which should not go
+-        // to iterations.
++        // Check for (almost) integer arguments, which should not go
++        // through iterations.
+         if (FastMath.abs(a0 - value) < epsilon) {
+             this.numerator = (int) a0;
+             this.denominator = 1;
+@@ -195,22 +197,23 @@ public class Fraction
+         long p1 = a0;
+         long q1 = 1;
+ 
+-        long p2 = 0;
+-        long q2 = 1;
+-
++        long p2, q2;
+         int n = 0;
+         boolean stop = false;
++
+         do {
+             ++n;
+             double r1 = 1.0 / (r0 - a0);
+-            long a1 = (long)FastMath.floor(r1);
++            long a1 = (long) FastMath.floor(r1);
+             p2 = (a1 * p1) + p0;
+             q2 = (a1 * q1) + q0;
+-            if ((p2 > overflow) || (q2 > overflow)) {
++
++            // Check for overflow using long comparison
++            if (p2 > overflow || q2 > overflow || p2 < -overflow || q2 < -overflow) {
+                 throw new FractionConversionException(value, p2, q2);
+             }
+ 
+-            double convergent = (double)p2 / (double)q2;
++            double convergent = (double) p2 / (double) q2;
+             if (n < maxIterations && FastMath.abs(convergent - value) > epsilon && q2 < maxDenominator) {
+                 p0 = p1;
+                 p1 = p2;
+@@ -227,6 +230,7 @@ public class Fraction
+             throw new FractionConversionException(value, maxIterations);
+         }
+ 
++        // Set the fraction depending on which denominator meets criteria
+         if (q2 < maxDenominator) {
+             this.numerator = (int) p2;
+             this.denominator = (int) q2;
+@@ -234,7 +238,6 @@ public class Fraction
+             this.numerator = (int) p1;
+             this.denominator = (int) q1;
+         }
+-
+     }
+ 
+     /**

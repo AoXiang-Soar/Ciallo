@@ -1,0 +1,55 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/JdkDeserializers.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/JdkDeserializers.java
+index c4c0ed93f..12b3d5bcd 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/JdkDeserializers.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/JdkDeserializers.java
+@@ -3,8 +3,9 @@ package com.fasterxml.jackson.databind.deser.std;
+ import java.nio.ByteBuffer;
+ import java.util.*;
+ import java.util.concurrent.atomic.AtomicBoolean;
+-
++import com.fasterxml.jackson.core.JsonParser;
+ import com.fasterxml.jackson.databind.*;
++import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+ 
+ /**
+  * Container class that contains serializers for JDK types that
+@@ -19,7 +20,8 @@ public class JdkDeserializers
+                 UUID.class,
+                 AtomicBoolean.class,
+                 StackTraceElement.class,
+-                ByteBuffer.class
++                ByteBuffer.class,
++                Void.class
+         };
+         for (Class<?> cls : types) { _classNames.add(cls.getName()); }
+         for (Class<?> cls : FromStringDeserializer.types()) { _classNames.add(cls.getName()); }
+@@ -39,13 +41,26 @@ public class JdkDeserializers
+                 return new StackTraceElementDeserializer();
+             }
+             if (rawType == AtomicBoolean.class) {
+-                // (note: AtomicInteger/Long work due to single-arg constructor. For now?
+                 return new AtomicBooleanDeserializer();
+             }
+             if (rawType == ByteBuffer.class) {
+                 return new ByteBufferDeserializer();
+             }
++            if (rawType == Void.class) {
++                return new VoidDeserializer();
++            }
+         }
+         return null;
+     }
+-}
++    
++    public static class VoidDeserializer extends StdDeserializer<Void> {
++        public VoidDeserializer() {
++            super(Void.class);
++        }
++
++        @Override
++        public Void deserialize(JsonParser p, DeserializationContext ctxt) {
++            return null;
++        }
++    }
++}
+\ No newline at end of file

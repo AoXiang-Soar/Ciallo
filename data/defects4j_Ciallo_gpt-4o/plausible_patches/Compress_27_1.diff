@@ -1,0 +1,16 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index 4cf32d6f..a19c820c 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -130,9 +130,9 @@ public class TarUtils {
+             end--;
+             trailer = buffer[end - 1];
+         }
++        // Correctly handle buffers with leading/trailing spaces and NULs.
+         if (start == end) {
+-            throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, start, trailer));
++            return 0L;  // If the buffer is completely filled with spaces/NULs, return 0.
+         }
+ 
+         for ( ;start < end; start++) {

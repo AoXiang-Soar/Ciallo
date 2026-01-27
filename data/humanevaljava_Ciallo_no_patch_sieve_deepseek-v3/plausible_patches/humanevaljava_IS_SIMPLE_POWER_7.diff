@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/IS_SIMPLE_POWER.java b/src/main/java/humaneval/buggy/IS_SIMPLE_POWER.java
+index 87a0fa5..f1a6bc5 100644
+--- a/src/main/java/humaneval/buggy/IS_SIMPLE_POWER.java
++++ b/src/main/java/humaneval/buggy/IS_SIMPLE_POWER.java
+@@ -1,22 +1,17 @@
+ package humaneval.buggy;
+ 
+-// Your task is to write a function that returns true if a number x is a simple
+-// power of n and false in other cases.
+-// x is a simple power of n if n**int=x
+-// For example:
+-// is_simple_power(1, 4) => true
+-// is_simple_power(2, 2) => true
+-// is_simple_power(8, 2) => true
+-// is_simple_power(3, 2) => false
+-// is_simple_power(3, 1) => false
+-// is_simple_power(5, 3) => false
+-
+ public class IS_SIMPLE_POWER {
+     public static boolean is_simple_power(int x, int n) {
+-        int power = 1;
++        if (x == 1) {
++            return true; // 1 is a power of any n (n^0 = 1)
++        }
++        if (n == 1) {
++            return false; // Only 1^0=1, so other x's are false
++        }
++        long power = 1; // Use long to prevent integer overflow
+         while (power < x) {
+             power *= n;
+         }
+         return power == x;
+     }
+-}
++}
+\ No newline at end of file

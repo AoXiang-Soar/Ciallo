@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/MODP.java b/src/main/java/humaneval/buggy/MODP.java
+old mode 100644
+new mode 100755
+index a8f7394..740ba4b
+--- a/src/main/java/humaneval/buggy/MODP.java
++++ b/src/main/java/humaneval/buggy/MODP.java
+@@ -1,5 +1,7 @@
+ package humaneval.buggy;
+ 
++import java.math.BigInteger;
++
+ /* Return 2^n modulo p (be aware of numerics).
+ >>> modp(3, 5)
+ 3
+@@ -14,10 +16,11 @@ package humaneval.buggy;
+ 
+ public class MODP {
+     public static int modp(int n, int p) {
+-        int result = 1;
++        BigInteger result = BigInteger.ONE;
++        BigInteger two = BigInteger.valueOf(2);
+         for (int i = 0; i < n; i += 1){
+-            result = 2 * result;
++            result = result.multiply(two);
+         }
+-        return result % p;
++        return result.mod(BigInteger.valueOf(p)).intValue();
+     }
+-}
++}
+\ No newline at end of file

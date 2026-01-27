@@ -1,0 +1,91 @@
+diff --git a/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java b/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
+index 0f3c881..3fc5fde 100644
+--- a/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
++++ b/src/main/java/humaneval/buggy/INT_TO_MINI_ROMAN.java
+@@ -1,28 +1,62 @@
+ package humaneval.buggy;
+ 
+-// Given a positive integer, obtain its roman numeral equivalent as a string,
+-// and return it in lowercase.
+-// Restrictions: 1 <= num <= 1000
+-
+-// Examples:
+-// >>> int_to_mini_roman(19) == 'xix'
+-// >>> int_to_mini_roman(152) == 'clii'
+-// >>> int_to_mini_roman(426) == 'cdxxvi'
+-
+ public class INT_TO_MINI_ROMAN {
+     public static String int_to_mini_roman(int number) {
+-        int[] num = new int[] {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
+-        String[] sym = new String[] {
+-            "I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"
+-        };
+-
+-        int i = 12;
+-        String result = "";
+-        while (number > 0) {
+-            result += sym[i];
+-            number %= num[i];
+-            i -= 1;
+-        }
+-        return result.toLowerCase();
++        StringBuilder result = new StringBuilder();
++        
++        while (number >= 1000) {
++            result.append("M");
++            number -= 1000;
++        }
++        if (number >= 900) {
++            result.append("CM");
++            number -= 900;
++        }
++        if (number >= 500) {
++            result.append("D");
++            number -= 500;
++        }
++        if (number >= 400) {
++            result.append("CD");
++            number -= 400;
++        }
++        while (number >= 100) {
++            result.append("C");
++            number -= 100;
++        }
++        if (number >= 90) {
++            result.append("XC");
++            number -= 90;
++        }
++        if (number >= 50) {
++            result.append("L");
++            number -= 50;
++        }
++        if (number >= 40) {
++            result.append("XL");
++            number -= 40;
++        }
++        while (number >= 10) {
++            result.append("X");
++            number -= 10;
++        }
++        if (number >= 9) {
++            result.append("IX");
++            number -= 9;
++        }
++        if (number >= 5) {
++            result.append("V");
++            number -= 5;
++        }
++        if (number >= 4) {
++            result.append("IV");
++            number -= 4;
++        }
++        while (number >= 1) {
++            result.append("I");
++            number -= 1;
++        }
++        
++        return result.toString().toLowerCase();
+     }
+-}
++}
+\ No newline at end of file

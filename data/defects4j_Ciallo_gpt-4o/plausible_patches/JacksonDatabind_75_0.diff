@@ -1,0 +1,20 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ser/std/EnumSerializer.java b/src/main/java/com/fasterxml/jackson/databind/ser/std/EnumSerializer.java
+index 75c12b5c4..9947515aa 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ser/std/EnumSerializer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ser/std/EnumSerializer.java
+@@ -102,7 +102,7 @@ public class EnumSerializer
+             if (format != null) {
+                 Boolean serializeAsIndex = _isShapeWrittenUsingIndex(property.getType().getRawClass(),
+                         format, false);
+-                if (serializeAsIndex != _serializeAsIndex) {
++                if (serializeAsIndex != null && serializeAsIndex != _serializeAsIndex) {
+                     return new EnumSerializer(_values, serializeAsIndex);
+                 }
+             }
+@@ -237,4 +237,4 @@ public class EnumSerializer
+                 "Unsupported serialization shape (%s) for Enum %s, not supported as %s annotation",
+                     shape, enumClass.getName(), (fromClass? "class" : "property")));
+     }
+-}
++}
+\ No newline at end of file

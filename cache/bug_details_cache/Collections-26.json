@@ -1,0 +1,16 @@
+{
+    "bug_id": 26,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<3> but was:<0>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEqualsAfterSerializationOfDerivedClass() throws IOException, ClassNotFoundException\n    {\n        final DerivedMultiKey<?> mk = new DerivedMultiKey<String>(\"A\", \"B\");\n\n        // serialize\n        final ByteArrayOutputStream baos = new ByteArrayOutputStream();\n        final ObjectOutputStream out = new ObjectOutputStream(baos);\n        out.writeObject(mk);\n        out.close();\n\n        // deserialize\n        final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());\n        final ObjectInputStream in = new ObjectInputStream(bais);\n        final DerivedMultiKey<?> mk2 = (DerivedMultiKey<?>)in.readObject();\n        in.close();\n\n        assertEquals(mk.hashCode(), mk2.hashCode());\n    }",
+    "test_line": "        assertEquals(mk.hashCode(), mk2.hashCode());",
+    "test_name": "testEqualsAfterSerializationOfDerivedClass",
+    "test_suite": "org.apache.commons.collections4.keyvalue.MultiKeyTest"
+}

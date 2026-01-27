@@ -1,0 +1,16 @@
+{
+    "bug_id": 3,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Compress",
+    "test_error_message": "junit.framework.AssertionFailedError: After putArchive should follow closeArchive",
+    "test_framework": "defects4j",
+    "test_function": "    public void testFinish() throws Exception {\n        OutputStream out1 = new ByteArrayOutputStream();\n        \n        ArchiveOutputStream aos1 = factory.createArchiveOutputStream(\"zip\", out1);\n        aos1.putArchiveEntry(new ZipArchiveEntry(\"dummy\"));\n        try {\n            aos1.finish();\n            fail(\"After putArchive should follow closeArchive\");\n        } catch (IOException io) {\n            // Exception expected\n        }\n        \n        aos1 = factory.createArchiveOutputStream(\"jar\", out1);\n        aos1.putArchiveEntry(new JarArchiveEntry(\"dummy\"));\n        try {\n            aos1.finish();\n            fail(\"After putArchive should follow closeArchive\");\n        } catch (IOException io) {\n            // Exception expected\n        }\n        \n        aos1 = factory.createArchiveOutputStream(\"ar\", out1);\n        aos1.putArchiveEntry(new ArArchiveEntry(\"dummy\", 100));\n        try {\n            aos1.finish();\n            fail(\"After putArchive should follow closeArchive\");\n        } catch (IOException io) {\n            // Exception expected\n        }\n        \n        aos1 = factory.createArchiveOutputStream(\"cpio\", out1);\n        aos1.putArchiveEntry(new CpioArchiveEntry(\"dummy\"));\n        try {\n            aos1.finish();\n            fail(\"After putArchive should follow closeArchive\");\n        } catch (IOException io) {\n            // Exception expected\n        }\n        \n        aos1 = factory.createArchiveOutputStream(\"tar\", out1);\n        aos1.putArchiveEntry(new TarArchiveEntry(\"dummy\"));\n        try {\n            aos1.finish();\n            fail(\"After putArchive should follow closeArchive\");\n        } catch (IOException io) {\n            // Exception expected\n        }\n    }",
+    "test_line": "            fail(\"After putArchive should follow closeArchive\");",
+    "test_name": "testFinish",
+    "test_suite": "org.apache.commons.compress.archivers.ArchiveOutputStreamTest"
+}

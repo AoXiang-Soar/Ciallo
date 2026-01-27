@@ -1,0 +1,48 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/DeserializerCache.java b/src/main/java/com/fasterxml/jackson/databind/deser/DeserializerCache.java
+index aae7e87f5..d4e547d87 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/DeserializerCache.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/DeserializerCache.java
+@@ -533,17 +533,34 @@ public final class DeserializerCache
+      *
+      * @since 2.8.11
+      */
+-    private boolean _hasCustomHandlers(JavaType t) {
+-        if (t.isContainerType()) {
+-            // First: value types may have both value and type handlers
+-            JavaType ct = t.getContentType();
+-            if (ct != null) {
+-                return (ct.getValueHandler() != null) || (ct.getTypeHandler() != null);
+-            // Second: map(-like) types may have value handler for key (but not type; keys are untyped)
+-            }
++private boolean _hasCustomHandlers(JavaType t) {
++    // Check for container types and their content handlers
++    if (t.isContainerType()) {
++        JavaType ct = t.getContentType();
++        if (ct != null && ((ct.getValueHandler() != null) || (ct.getTypeHandler() != null))) {
++            return true;
++        }
++    }
++    
++    // Check for map-like types and their key and content handlers
++    if (t.isMapLikeType()) {
++        JavaType kt = t.getKeyType();
++        if (kt != null && ((kt.getValueHandler() != null) || (kt.getTypeHandler() != null))) {
++            return true;
++        }
++        JavaType vt = t.getContentType();
++        if (vt != null && ((vt.getValueHandler() != null) || (vt.getTypeHandler() != null))) {
++            return true;
+         }
+-        return false;
+     }
++    
++    // Also check the main type for handlers
++    if ((t.getValueHandler() != null) || (t.getTypeHandler() != null)) {
++        return true;
++    }
++
++    return false;
++}
+ 
+     private Class<?> _verifyAsClass(Object src, String methodName, Class<?> noneClass)
+     {

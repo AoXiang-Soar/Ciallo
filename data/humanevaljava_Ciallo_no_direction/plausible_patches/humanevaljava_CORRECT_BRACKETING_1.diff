@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/CORRECT_BRACKETING.java b/src/main/java/humaneval/buggy/CORRECT_BRACKETING.java
+index 2df59fe..e60b151 100644
+--- a/src/main/java/humaneval/buggy/CORRECT_BRACKETING.java
++++ b/src/main/java/humaneval/buggy/CORRECT_BRACKETING.java
+@@ -14,15 +14,20 @@ False */
+ 
+ public class CORRECT_BRACKETING {
+     public static boolean correct_bracketing(String brackets) {
+-        int depth = 0;
+-        for (char b : brackets.toCharArray()) {
+-            if (b == '<')
+-                depth += 1;
+-            else
+-                depth -= 1;
+-            if (depth >= 0)
+-                return true;
++        int balance = 0;
++        for (int i = 0; i < brackets.length(); i++) {
++            char c = brackets.charAt(i);
++            if (c == '<') {
++                balance++;
++            } else {
++                balance--;
++            }
++            // If balance goes negative at any point, it's invalid
++            if (balance < 0) {
++                return false;
++            }
+         }
+-        return false;
++        // At the end, balance should be exactly 0
++        return balance == 0;
+     }
+-}
++}
+\ No newline at end of file

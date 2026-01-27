@@ -1,0 +1,16 @@
+{
+    "bug_id": "COMPARE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_COMPARE.test_0:9 arrays first differed at element [0]; expected:<1> but was:<0>\nTEST_COMPARE.test_1:16 \u00bb Arithmetic / by zero",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        int[] result = humaneval.buggy.COMPARE.compare(\n           new int[] {1,2,3,4,5,1}, new int[] {1,2,3,4,2,-2}\n        );\n        org.junit.Assert.assertArrayEquals(\n            result, new int[] {0,0,0,0,3,3}\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertArrayEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_COMPARE"
+}

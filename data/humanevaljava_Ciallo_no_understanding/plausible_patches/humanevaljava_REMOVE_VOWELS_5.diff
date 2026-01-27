@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/REMOVE_VOWELS.java b/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
+old mode 100644
+new mode 100755
+index a51c513..c3dabc0
+--- a/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
++++ b/src/main/java/humaneval/buggy/REMOVE_VOWELS.java
+@@ -18,10 +18,15 @@ public class REMOVE_VOWELS {
+     public static String remove_vowels(String string) {
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+-                continue;
+-            sb.append(c);
++            if (!isVowel(c)) {
++                sb.append(c);
++            }
+         }
+         return sb.toString();
+     }
+-}
++    
++    private static boolean isVowel(char c) {
++        // Check both lowercase and uppercase vowels
++        return "aeiouAEIOU".indexOf(c) != -1;
++    }
++}
+\ No newline at end of file

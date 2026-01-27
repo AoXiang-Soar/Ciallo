@@ -1,0 +1,23 @@
+diff --git a/src/org/mockito/internal/invocation/InvocationMatcher.java b/src/org/mockito/internal/invocation/InvocationMatcher.java
+index 203413fc9..0576432d4 100644
+--- a/src/org/mockito/internal/invocation/InvocationMatcher.java
++++ b/src/org/mockito/internal/invocation/InvocationMatcher.java
+@@ -95,6 +95,11 @@ public class InvocationMatcher implements PrintableInvocation, PrintingFriendlyI
+         Method m1 = invocation.getMethod();
+         Method m2 = candidate.getMethod();
+         
++        if (Iterable.class.isAssignableFrom(m1.getDeclaringClass()) && 
++            Iterable.class.isAssignableFrom(m2.getDeclaringClass()) &&
++            m1.getName().equals("iterator")) {
++            return true;
++        }
+         	/* Avoid unnecessary cloning */
+         return m1.equals(m2);
+     }
+@@ -126,4 +131,4 @@ public class InvocationMatcher implements PrintableInvocation, PrintingFriendlyI
+ 
+         return out;
+     }
+-}
+\ No newline at end of file
++}

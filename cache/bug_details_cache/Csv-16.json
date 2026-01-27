@@ -1,0 +1,16 @@
+{
+    "bug_id": 16,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Csv",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<[3]> but was:<[4]>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testIteratorSequenceBreaking() throws IOException {\n        final String fiveRows = \"1\\n2\\n3\\n4\\n5\\n\";\n\n        // Iterator hasNext() shouldn't break sequence\n        CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows));\n        int recordNumber = 0;\n        Iterator<CSVRecord> iter = parser.iterator();\n        recordNumber = 0;\n        while (iter.hasNext()) {\n            CSVRecord record = iter.next();\n            recordNumber++;\n            assertEquals(String.valueOf(recordNumber), record.get(0));\n            if (recordNumber >= 2) {\n                break;\n            }\n        }\n        iter.hasNext();\n        while (iter.hasNext()) {\n            CSVRecord record = iter.next();\n            recordNumber++;\n            assertEquals(String.valueOf(recordNumber), record.get(0));\n        }\n\n        // Consecutive enhanced for loops shouldn't break sequence\n        parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows));\n        recordNumber = 0;\n        for (CSVRecord record : parser) {\n            recordNumber++;\n            assertEquals(String.valueOf(recordNumber), record.get(0));\n            if (recordNumber >= 2) {\n                break;\n            }\n        }\n        for (CSVRecord record : parser) {\n            recordNumber++;\n            assertEquals(String.valueOf(recordNumber), record.get(0));\n        }\n\n        // Consecutive enhanced for loops with hasNext() peeking shouldn't break sequence\n        parser = CSVFormat.DEFAULT.parse(new StringReader(fiveRows));\n        recordNumber = 0;\n        for (CSVRecord record : parser) {\n            recordNumber++;\n            assertEquals(String.valueOf(recordNumber), record.get(0));\n            if (recordNumber >= 2) {\n                break;\n            }\n        }\n        parser.iterator().hasNext();\n        for (CSVRecord record : parser) {\n            recordNumber++;\n            assertEquals(String.valueOf(recordNumber), record.get(0));\n        }\n    }",
+    "test_line": "            assertEquals(String.valueOf(recordNumber), record.get(0));",
+    "test_name": "testIteratorSequenceBreaking",
+    "test_suite": "org.apache.commons.csv.CSVParserTest"
+}

@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/ADD_EVEN_AT_ODD.java b/src/main/java/humaneval/buggy/ADD_EVEN_AT_ODD.java
+index 9d1cbb8..cd81f35 100644
+--- a/src/main/java/humaneval/buggy/ADD_EVEN_AT_ODD.java
++++ b/src/main/java/humaneval/buggy/ADD_EVEN_AT_ODD.java
+@@ -7,10 +7,11 @@ Examples:
+ public class ADD_EVEN_AT_ODD {
+     public static int add_even_at_odd(int[] lst) {
+         int sum = 0;
+-        for (int i = 0; i < lst.length; i += 1) {
++        // Start from index 1 and step by 2 to directly get odd indices
++        for (int i = 1; i < lst.length; i += 2) {
+             if (lst[i] % 2 == 0)
+                 sum += lst[i];
+         }
+         return sum;
+     }
+-}
++}
+\ No newline at end of file

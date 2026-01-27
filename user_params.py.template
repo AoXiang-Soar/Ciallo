@@ -1,0 +1,20 @@
+import logging
+from pathlib import Path
+
+class UserParams:
+
+    ### Environment Variables ###
+    # Java home directory
+    JAVA_HOME = "/usr/lib/jvm/java-8-openjdk-amd64"
+    # Path to the directory where the Defects4J framework is located
+    D4J_PATH = "/d4j/defects4j/framework/bin"
+    # Path to the directory where the Defects4j bugs are checked out
+    D4J_TMP_DIR = "/tmp/d4j"
+    # Path to the directory where the HumanEval-Java root directory is located
+    HEJ_PATH = "/hej/human-eval-java"
+    # Path to the directory where the HumanEval-Java bugs are checked out
+    HEJ_TMP_DIR = "/tmp/hej"
+    # Your API key for the LLM API
+    API_KEY = "your_api_key"
+    # The model to use
+    MODEL = P.gpt4_model

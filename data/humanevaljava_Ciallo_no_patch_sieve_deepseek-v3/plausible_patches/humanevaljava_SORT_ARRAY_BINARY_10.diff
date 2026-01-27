@@ -1,0 +1,29 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java b/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
+index 7fe03f9..3efcbae 100644
+--- a/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
++++ b/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
+@@ -30,17 +30,14 @@ public class SORT_ARRAY_BINARY {
+       Collections.sort(arr, new Comparator<Integer>() {
+          @Override
+          public int compare(Integer o1, Integer o2) {
+-            int num_ones_o1 = number_ones(o1);
+-            int num_ones_o2 = number_ones(o2);
+-            if(num_ones_o1 == num_ones_o2) {
+-               if(o1 == o2) return 1;
+-               if(o1 < o2) return 0;
+-               if(o1 > o2) return -1;
++            int bitCount1 = number_ones(o1);
++            int bitCount2 = number_ones(o2);
++            if (bitCount1 != bitCount2) {
++                return Integer.compare(bitCount1, bitCount2);
+             }
+-            if(num_ones_o1 < num_ones_o2) return -1;
+-            else return 1;
++            return Integer.compare(o1, o2);
+          }
+       });
+       return arr;
+    }
+-}
++}
+\ No newline at end of file

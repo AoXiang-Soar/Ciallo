@@ -1,0 +1,94 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
+index fdfeecb2e..173cd303c 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
+@@ -10,11 +10,6 @@ import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
+ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+ import com.fasterxml.jackson.databind.util.ObjectBuffer;
+ 
+-/**
+- * Separate implementation for serializing String arrays (instead of
+- * using {@link ObjectArrayDeserializer}.
+- * Used if (and only if) no custom value deserializers are used.
+- */
+ @JacksonStdImpl
+ public final class StringArrayDeserializer
+     extends StdDeserializer<String[]>
+@@ -24,9 +19,6 @@ public final class StringArrayDeserializer
+ 
+     public final static StringArrayDeserializer instance = new StringArrayDeserializer();
+     
+-    /**
+-     * Value serializer to use, if not the standard one (which is inlined)
+-     */
+     protected JsonDeserializer<String> _elementDeserializer;
+ 
+     public StringArrayDeserializer() {
+@@ -63,7 +55,7 @@ public final class StringArrayDeserializer
+             if (t == JsonToken.VALUE_STRING) {
+                 value = jp.getText();
+             } else if (t == JsonToken.VALUE_NULL) {
+-                value = _elementDeserializer.getNullValue();
++                value = null;  // Simply use null instead of calling getNullValue()
+             } else {
+                 value = _parseString(jp, ctxt);
+             }
+@@ -78,9 +70,6 @@ public final class StringArrayDeserializer
+         return result;
+     }
+ 
+-    /**
+-     * Offlined version used when we do not use the default deserialization method.
+-     */
+     protected final String[] _deserializeCustom(JsonParser jp, DeserializationContext ctxt) throws IOException
+     {
+         final ObjectBuffer buffer = ctxt.leaseObjectBuffer();
+@@ -91,7 +80,6 @@ public final class StringArrayDeserializer
+         JsonToken t;
+         
+         while ((t = jp.nextToken()) != JsonToken.END_ARRAY) {
+-            // Ok: no need to convert Strings, but must recognize nulls
+             String value = (t == JsonToken.VALUE_NULL) ? null : deser.deserialize(jp, ctxt);
+             if (ix >= chunk.length) {
+                 chunk = buffer.appendCompletedChunk(chunk);
+@@ -111,9 +99,7 @@ public final class StringArrayDeserializer
+ 
+     private final String[] handleNonArray(JsonParser jp, DeserializationContext ctxt) throws IOException
+     {
+-        // [JACKSON-526]: implicit arrays from single values?
+         if (!ctxt.isEnabled(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)) {
+-            // [JACKSON-620] Empty String can become null...
+             if ((jp.getCurrentToken() == JsonToken.VALUE_STRING)
+                     && ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)) {
+                 String str = jp.getText();
+@@ -126,22 +112,16 @@ public final class StringArrayDeserializer
+         return new String[] { (jp.getCurrentToken() == JsonToken.VALUE_NULL) ? null : _parseString(jp, ctxt) };
+     }
+ 
+-    /**
+-     * Contextualization is needed to see whether we can "inline" deserialization
+-     * of String values, or if we have to use separate value deserializer.
+-     */
+     @Override
+     public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException
+     {
+         JsonDeserializer<?> deser = _elementDeserializer;
+-        // #125: May have a content converter
+         deser = findConvertingContentDeserializer(ctxt, property, deser);
+         if (deser == null) {
+             deser = ctxt.findContextualValueDeserializer(ctxt.constructType(String.class), property);
+-        } else { // if directly assigned, probably not yet contextual, so:
++        } else {
+             deser = ctxt.handleSecondaryContextualization(deser, property);
+         }
+-        // Ok ok: if all we got is the default String deserializer, can just forget about it
+         if (deser != null && this.isDefaultDeserializer(deser)) {
+             deser = null;
+         }
+@@ -150,4 +130,4 @@ public final class StringArrayDeserializer
+         }
+         return this;
+     }
+-}
++}
+\ No newline at end of file

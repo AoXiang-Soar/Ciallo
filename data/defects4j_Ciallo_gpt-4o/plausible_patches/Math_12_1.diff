@@ -1,0 +1,72 @@
+diff --git a/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java b/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java
+index 4d166c224..0347d8b71 100644
+--- a/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java
++++ b/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java
+@@ -1,33 +1,20 @@
+-/*
+- * Licensed to the Apache Software Foundation (ASF) under one or more
+- * contributor license agreements.  See the NOTICE file distributed with
+- * this work for additional information regarding copyright ownership.
+- * The ASF licenses this file to You under the Apache License, Version 2.0
+- * (the "License"); you may not use this file except in compliance with
+- * the License.  You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+ package org.apache.commons.math3.random;
+ 
+-
+ import org.apache.commons.math3.exception.NotStrictlyPositiveException;
+ import org.apache.commons.math3.util.FastMath;
++import java.io.Serializable;
+ 
+-/** Base class for random number generators that generates bits streams.
++/**
++ * Base class for random number generators that generate bit streams.
+  *
+  * @version $Id$
+  * @since 2.0
+  */
+-public abstract class BitsStreamGenerator
+-    implements RandomGenerator {
+-    /** Serializable version identifier */
++public abstract class BitsStreamGenerator implements RandomGenerator, Cloneable, Serializable {
++
++    /** Serializable version identifier. */
++    private static final long serialVersionUID = 1L;
++    
+     /** Next gaussian. */
+     private double nextGaussian;
+ 
+@@ -113,7 +100,6 @@ public abstract class BitsStreamGenerator
+         }
+ 
+         return random;
+-
+     }
+ 
+     /** {@inheritDoc} */
+@@ -167,4 +153,15 @@ public abstract class BitsStreamGenerator
+         nextGaussian = Double.NaN;
+     }
+ 
+-}
++    /** Clone this generator. */
++    @Override
++    public BitsStreamGenerator clone() {
++        try {
++            BitsStreamGenerator cloned = (BitsStreamGenerator) super.clone();
++            cloned.nextGaussian = this.nextGaussian;
++            return cloned;
++        } catch (CloneNotSupportedException e) {
++            throw new InternalError(e);
++        }
++    }
++}
+\ No newline at end of file

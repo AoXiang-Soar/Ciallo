@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/BY_LENGTH.java b/src/main/java/humaneval/buggy/BY_LENGTH.java
+index 0e33347..5359b34 100644
+--- a/src/main/java/humaneval/buggy/BY_LENGTH.java
++++ b/src/main/java/humaneval/buggy/BY_LENGTH.java
+@@ -41,11 +41,11 @@ public class BY_LENGTH {
+         digit_map.put(9, "Nine");
+         Collections.sort(a, Collections.reverseOrder());
+         ArrayList<String> result = new ArrayList<>();
+-        for(int num : a) {
+-            if(digit_map.get(num) != "") {
++        for(Integer num : a) {
++            if(digit_map.containsKey(num)) {
+                 result.add(digit_map.get(num));
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

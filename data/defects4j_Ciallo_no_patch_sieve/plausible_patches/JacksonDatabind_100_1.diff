@@ -1,0 +1,75 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java b/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
+index 9d2f74b35..ffe189bdd 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
++++ b/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
+@@ -352,28 +352,52 @@ public class TreeTraversingParser extends ParserMinimalBase
+      */
+ 
+     @Override
+-    public byte[] getBinaryValue(Base64Variant b64variant)
+-        throws IOException, JsonParseException
+-    {
+-        // Multiple possibilities...
+-        JsonNode n = currentNode();
+-        if (n != null) {
+-            // [databind#2096]: although `binaryValue()` works for real binary node
+-            // and embedded "POJO" node, coercion from TextNode may require variant, so:
+-            byte[] data = n.binaryValue();
+-            if (data != null) {
+-                return data;
+-            }
+-            if (n.isPojo()) {
+-                Object ob = ((POJONode) n).getPojo();
+-                if (ob instanceof byte[]) {
+-                    return (byte[]) ob;
+-                }
++public byte[] getBinaryValue(Base64Variant b64variant)
++    throws IOException, JsonParseException
++{
++    JsonNode n = currentNode();
++    if (n == null) {
++        return null;
++    }
++
++    // Handle BinaryNode directly
++    if (n.isBinary()) {
++        return n.binaryValue();
++    }
++
++    // Handle POJONode with byte array
++    if (n.isPojo()) {
++        Object pojo = ((POJONode) n).getPojo();
++        if (pojo instanceof byte[]) {
++            return (byte[]) pojo;
++        }
++        // Optionally handle other POJO cases here if needed
++        return null;
++    }
++
++    // Handle TextNode with Base64 decoding
++    if (n.isTextual()) {
++        String textValue = n.asText();
++        try {
++            return b64variant.decode(textValue);
++        } catch (IllegalArgumentException e) {
++            // Fallback to UTF-8 bytes if Base64 decoding fails
++            try {
++                return textValue.getBytes("UTF-8");
++            } catch (java.io.UnsupportedEncodingException e2) {
++                throw new JsonParseException(null,
++                    "Failed to decode TextNode contents as Base64 ("+b64variant.getName()+")");
+             }
+         }
+-        // otherwise return null to mark we have no binary content
++    }
++
++    // For other node types, attempt binaryValue() as last resort
++    try {
++        return n.binaryValue();
++    } catch (Exception e) {
+         return null;
+     }
++}
+ 
+ 
+     @Override

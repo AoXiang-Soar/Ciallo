@@ -1,0 +1,74 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index a90b0673d..a1f30cf78 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -1436,26 +1436,49 @@ public class StringUtils {
+      * @return the <code>true</code> if any of the chars are found,
+      * <code>false</code> if no match or null input
+      * @since 2.4
+-     */
+-	public static boolean containsAny(CharSequence cs, char[] searchChars) {
+-		if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
+-			return false;
+-		}
+-		int csLength = cs.length();
+-		int searchLength = searchChars.length;
+-		for (int i = 0; i < csLength; i++) {
+-			char ch = cs.charAt(i);
+-			for (int j = 0; j < searchLength; j++) {
+-				if (searchChars[j] == ch) {
+-						// ch is a supplementary character
+-						// ch is in the Basic Multilingual Plane
+-						return true;
+-				}
+-			}
+-		}
+-		return false;
+-	}
+-
++     */public static boolean containsAny(CharSequence cs, char[] searchChars) {
++    if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
++        return false;
++    }
++    int csLength = cs.length();
++    int searchLength = searchChars.length;
++    for (int i = 0; i < csLength; i++) {
++        char ch = cs.charAt(i);
++        // Check if the current character is a high surrogate
++        if (Character.isHighSurrogate(ch) && (i + 1) < csLength) {
++            char nextCh = cs.charAt(i + 1);
++            // Check for a valid low surrogate next character
++            if (Character.isLowSurrogate(nextCh)) {
++                int codePoint = Character.toCodePoint(ch, nextCh);
++                i++; // Increment i as we processed a surrogate pair
++                // Check code point against searchChars
++                for (int j = 0; j < searchLength; j++) {
++                    if (Character.codePointAt(searchChars, j) == codePoint) {
++                        return true;
++                    }
++                    // If we find a high surrogate, we skip the next character,
++                    // as it would be a part of another surrogate pair
++                    if (Character.isHighSurrogate(searchChars[j]) && j + 1 < searchLength && Character.isLowSurrogate(searchChars[j + 1])) {
++                        j++;
++                    }
++                }
++                continue;
++            }
++        }
++        
++        // Normal character comparison
++        for (int j = 0; j < searchLength; j++) {
++            if (searchChars[j] == ch) {
++                return true;
++            }
++            // Skip next character if part of a surrogate pair
++            if (Character.isHighSurrogate(searchChars[j]) && j + 1 < searchLength && Character.isLowSurrogate(searchChars[j + 1])) {
++                j++;
++            }
++        }
++    }
++    return false;
++}
+     /**
+      * <p>
+      * Checks if the CharSequence contains any character in the given set of characters.

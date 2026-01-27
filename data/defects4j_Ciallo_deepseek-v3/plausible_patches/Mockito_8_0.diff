@@ -1,0 +1,70 @@
+diff --git a/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java b/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java
+index 152e9424e..92b7620a4 100644
+--- a/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java
++++ b/src/org/mockito/internal/util/reflection/GenericMetadataSupport.java
+@@ -64,23 +64,48 @@ public abstract class GenericMetadataSupport {
+ 
+ 
+     protected void registerTypeVariablesOn(Type classType) {
+-        if (!(classType instanceof ParameterizedType)) {
+-            return;
+-        }
+-        ParameterizedType parameterizedType = (ParameterizedType) classType;
+-        TypeVariable[] typeParameters = ((Class<?>) parameterizedType.getRawType()).getTypeParameters();
+-        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+-        for (int i = 0; i < actualTypeArguments.length; i++) {
+-            TypeVariable typeParameter = typeParameters[i];
+-            Type actualTypeArgument = actualTypeArguments[i];
+-
+-            if (actualTypeArgument instanceof WildcardType) {
+-                contextualActualTypeParameters.put(typeParameter, boundsOf((WildcardType) actualTypeArgument));
+-            } else {
+-                contextualActualTypeParameters.put(typeParameter, actualTypeArgument);
+-            }
+-            // logger.log("For '" + parameterizedType + "' found type variable : { '" + typeParameter + "(" + System.identityHashCode(typeParameter) + ")" + "' : '" + actualTypeArgument + "(" + System.identityHashCode(typeParameter) + ")" + "' }");
+-        }
++if (!(classType instanceof ParameterizedType)) {
++    return;
++}
++ParameterizedType parameterizedType = (ParameterizedType) classType;
++Type rawType = parameterizedType.getRawType();
++
++// Handle cases where rawType might be a mock/proxy
++Class<?> rawClass;
++try {
++    rawClass = (Class<?>) rawType;
++} catch (ClassCastException e) {
++    // Skip if rawType is not a Class (e.g., mock/proxy)
++    return;
++}
++
++TypeVariable<?>[] typeParameters = rawClass.getTypeParameters();
++Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
++
++if (typeParameters.length != actualTypeArguments.length) {
++    return;
++}
++
++for (int i = 0; i < actualTypeArguments.length; i++) {
++    TypeVariable<?> typeParameter = typeParameters[i];
++    Type actualTypeArgument = actualTypeArguments[i];
++
++    try {
++        if (actualTypeArgument instanceof WildcardType) {
++            contextualActualTypeParameters.put(typeParameter, boundsOf((WildcardType) actualTypeArgument));
++        } else if (actualTypeArgument instanceof TypeVariable) {
++            // Handle type variables carefully
++            Type resolved = contextualActualTypeParameters.get(actualTypeArgument);
++            contextualActualTypeParameters.put(typeParameter, resolved != null ? resolved : actualTypeArgument);
++        } else if (actualTypeArgument instanceof Class || actualTypeArgument instanceof ParameterizedType) {
++            contextualActualTypeParameters.put(typeParameter, actualTypeArgument);
++        }
++        // Skip other cases (like mock/proxy types)
++    } catch (Exception e) {
++        // Skip any problematic type arguments
++        continue;
++    }
++}
+     }
+ 
+     protected void registerTypeParametersOn(TypeVariable[] typeParameters) {

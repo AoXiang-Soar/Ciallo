@@ -1,0 +1,46 @@
+diff --git a/src/main/java/org/apache/commons/cli/TypeHandler.java b/src/main/java/org/apache/commons/cli/TypeHandler.java
+index 93c0b73..6d2e4cf 100644
+--- a/src/main/java/org/apache/commons/cli/TypeHandler.java
++++ b/src/main/java/org/apache/commons/cli/TypeHandler.java
+@@ -89,7 +89,14 @@ public class TypeHandler
+         }
+         else if (PatternOptionBuilder.EXISTING_FILE_VALUE == clazz)
+         {
+-            return createFile(str);
++            try
++            {
++                return new FileInputStream(str);
++            }
++            catch (final FileNotFoundException e)
++            {
++                throw new ParseException("Unable to find file: " + str);
++            }
+         }
+         else if (PatternOptionBuilder.FILES_VALUE == clazz)
+         {
+@@ -224,14 +231,6 @@ public class TypeHandler
+         return new File(str);
+     }
+ 
+-    /**
+-     * Returns the opened FileInputStream represented by <code>str</code>.
+-     *
+-     * @param str the file location
+-     * @return The file input stream represented by <code>str</code>.
+-     * @throws ParseException if the file is not exist or not readable
+-     */
+-
+     /**
+      * Returns the File[] represented by <code>str</code>.
+      * <p>
+@@ -244,8 +243,6 @@ public class TypeHandler
+      */
+     public static File[] createFiles(final String str)
+     {
+-        // to implement/port:
+-        //        return FileW.findFiles(str);
+         throw new UnsupportedOperationException("Not yet implemented");
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 36,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testLenient() throws Exception\n    {\n        StdDateFormat f = StdDateFormat.instance;\n\n        // default should be lenient\n        assertTrue(f.isLenient());\n\n        StdDateFormat f2 = f.clone();\n        assertTrue(f2.isLenient());\n\n        f2.setLenient(false);\n        assertFalse(f2.isLenient());\n\n        f2.setLenient(true);\n        assertTrue(f2.isLenient());\n\n        // and for testing, finally, leave as non-lenient\n        f2.setLenient(false);\n        assertFalse(f2.isLenient());\n        StdDateFormat f3 = f2.clone();\n        assertFalse(f3.isLenient());\n\n        // first, legal dates are... legal\n        Date dt = f3.parse(\"2015-11-30\");\n        assertNotNull(dt);\n\n        // but as importantly, when not lenient, do not allow\n        try {\n            f3.parse(\"2015-11-32\");\n            fail(\"Should not pass\");\n        } catch (ParseException e) {\n            verifyException(e, \"can not parse date\");\n        }\n\n        // ... yet, with lenient, do allow\n        f3.setLenient(true);\n        dt = f3.parse(\"2015-11-32\");\n        assertNotNull(dt);\n    }",
+    "test_line": "        f2.setLenient(false);",
+    "test_name": "testLenient",
+    "test_suite": "com.fasterxml.jackson.databind.TestStdDateFormat"
+}

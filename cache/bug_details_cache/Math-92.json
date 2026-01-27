@@ -1,0 +1,16 @@
+{
+    "bug_id": 92,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: 48,22 expected:<27385657281648> but was:<27385657281647>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testBinomialCoefficientLarge() throws Exception {\n        // This tests all legal and illegal values for n <= 200.\n        for (int n = 0; n <= 200; n++) {\n            for (int k = 0; k <= n; k++) {\n                long ourResult = -1;\n                long exactResult = -1;\n                boolean shouldThrow = false;\n                boolean didThrow = false;\n                try {\n                    ourResult = MathUtils.binomialCoefficient(n, k);\n                } catch (ArithmeticException ex) {\n                    didThrow = true;\n                }\n                try {\n                    exactResult = binomialCoefficient(n, k);\n                } catch (ArithmeticException ex) {\n                    shouldThrow = true;\n                }\n                assertEquals(n+\",\"+k, shouldThrow, didThrow);\n                assertEquals(n+\",\"+k, exactResult, ourResult);\n                assertTrue(n+\",\"+k, (n > 66 || !didThrow));\n            }\n        }\n\n        long ourResult = MathUtils.binomialCoefficient(300, 3);\n        long exactResult = binomialCoefficient(300, 3);\n        assertEquals(exactResult, ourResult);\n\n        ourResult = MathUtils.binomialCoefficient(700, 697);\n        exactResult = binomialCoefficient(700, 697);\n        assertEquals(exactResult, ourResult);\n\n        // This one should throw\n        try {\n            MathUtils.binomialCoefficient(700, 300);\n            fail(\"Expecting ArithmeticException\");\n        } catch (ArithmeticException ex) {\n            // Expected\n        }\n\n        // Larger values cannot be computed directly by our\n        // test implementation because of stack limitations,\n        // so we make little jumps to fill the cache.\n        for (int i = 2000; i <= 10000; i += 2000) {\n            ourResult = MathUtils.binomialCoefficient(i, 3);\n            exactResult = binomialCoefficient(i, 3);\n            assertEquals(exactResult, ourResult);\n        }\n\n    }",
+    "test_line": "                assertEquals(n+\",\"+k, exactResult, ourResult);",
+    "test_name": "testBinomialCoefficientLarge",
+    "test_suite": "org.apache.commons.math.util.MathUtilsTest"
+}

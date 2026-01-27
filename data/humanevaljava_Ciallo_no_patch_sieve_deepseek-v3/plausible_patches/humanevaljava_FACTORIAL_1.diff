@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIAL.java b/src/main/java/humaneval/buggy/FACTORIAL.java
+index 0347b28..436a293 100644
+--- a/src/main/java/humaneval/buggy/FACTORIAL.java
++++ b/src/main/java/humaneval/buggy/FACTORIAL.java
+@@ -21,11 +21,9 @@ public class FACTORIAL {
+                 for(int j = 1; j <= i; j++) x *= j;
+                 ret.add(x);
+             } else {
+-                int x = 0;
+-                for(int j = 1; j <= i; i++) x -= j;
+-                ret.add(x);
++                ret.add(i * (i + 1) / 2);
+             }
+         }
+         return ret;
+     }
+-}
++}
+\ No newline at end of file

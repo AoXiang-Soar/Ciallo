@@ -1,0 +1,30 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
+index fdfeecb2e..3d424119a 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
+@@ -43,6 +43,9 @@ public final class StringArrayDeserializer
+     @Override
+     public String[] deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException
+     {
++        if (jp.getCurrentToken() == JsonToken.VALUE_NULL) {
++            return null;
++        }
+         // Ok: must point to START_ARRAY (or equivalent)
+         if (!jp.isExpectedStartArrayToken()) {
+             return handleNonArray(jp, ctxt);
+@@ -63,7 +66,7 @@ public final class StringArrayDeserializer
+             if (t == JsonToken.VALUE_STRING) {
+                 value = jp.getText();
+             } else if (t == JsonToken.VALUE_NULL) {
+-                value = _elementDeserializer.getNullValue();
++                value = null;
+             } else {
+                 value = _parseString(jp, ctxt);
+             }
+@@ -150,4 +153,4 @@ public final class StringArrayDeserializer
+         }
+         return this;
+     }
+-}
++}
+\ No newline at end of file

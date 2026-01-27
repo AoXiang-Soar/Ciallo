@@ -1,0 +1,52 @@
+diff --git a/src/main/java/humaneval/buggy/DECODE_CYCLIC.java b/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
+index 9ba739f..b719b77 100644
+--- a/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
++++ b/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
+@@ -4,29 +4,24 @@ import java.util.ArrayList;
+ 
+ public class DECODE_CYCLIC {
+     public static String decode_cyclic(String str) {
+-        class Cyclic {
+-            String encode_cyclic(String s) {
+-                ArrayList<String> groups = new ArrayList<String>();
+-
+-                for (int i = 0; i < s.length(); i += 3){
+-                    groups.add(s.substring(i, Math.min(s.length(), i + 3)));
+-                }
+-                int remain = s.length() % 3;
+-                
+-                String result = "";
+-                for (String group : groups){
+-                    result += group.substring(1) + group.substring(0, 1);
+-                }
+-
+-                if (remain > 0){
+-                    result += s.substring(s.length() - remain);
+-                }
+-
+-                return result;
++        ArrayList<String> groups = new ArrayList<String>();
++        
++        // Split into groups of 3
++        for (int i = 0; i < str.length(); i += 3) {
++            groups.add(str.substring(i, Math.min(str.length(), i + 3)));
++        }
++        
++        String decoded = "";
++        for (String group : groups) {
++            if (group.length() == 3) {
++                // Rotate last character to front (reverse of encode operation)
++                decoded += group.charAt(2) + group.substring(0, 2);
++            } else {
++                // Don't rotate last group if smaller than 3
++                decoded += group;
+             }
+         }
+         
+-        final Cyclic cyclic = new Cyclic();
+-        return cyclic.encode_cyclic(cyclic.encode_cyclic(str));
++        return decoded;
+     }
+-}
++}
+\ No newline at end of file

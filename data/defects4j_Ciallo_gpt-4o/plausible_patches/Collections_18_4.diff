@@ -1,0 +1,52 @@
+diff --git a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+index ce6926fa..c3285092 100644
+--- a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
++++ b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+@@ -225,22 +225,34 @@ public class ListOrderedSet<E>
+     }
+ 
+     @Override
+-    public boolean retainAll(Collection<?> coll) {
+-        boolean result = collection.retainAll(coll);
+-        if (result == false) {
+-            return false;
+-        }
+-        if (collection.size() == 0) {
+-            setOrder.clear();
+-        } else {
+-            for (Iterator<E> it = setOrder.iterator(); it.hasNext();) {
+-                if (!collection.contains(it.next())) {
+-                    it.remove();
+-                }
++public boolean retainAll(Collection<?> coll) {
++    // Convert the input collection to a HashSet for fast lookup
++    HashSet<?> collSet = new HashSet<Object>(coll);
++    
++    // Retain only those elements in the main collection that exist in collSet
++    boolean result = collection.retainAll(collSet);
++    
++    // If the collection hasn't changed, return false
++    if (!result) {
++        return false;
++    }
++
++    // If the collection is now empty, clear setOrder as well
++    if (collection.isEmpty()) {
++        setOrder.clear();
++    } else {
++        // Iterate over setOrder and remove elements not present in the retained collection
++        for (Iterator<E> it = setOrder.iterator(); it.hasNext();) {
++            E element = it.next();
++            if (!collection.contains(element)) {
++                it.remove();
+             }
+         }
+-        return result;
+     }
++    
++    // Since elements were retained and the collection changed, return true
++    return true;
++}
+ 
+     @Override
+     public Object[] toArray() {

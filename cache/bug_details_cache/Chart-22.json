@@ -1,0 +1,16 @@
+{
+    "bug_id": 22,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Chart",
+    "test_error_message": "org.jfree.data.UnknownKeyException: The key (C2) is not recognised.",
+    "test_framework": "defects4j",
+    "test_function": "    public void testRemoveColumnByKey() {\n        KeyedObjects2D data = new KeyedObjects2D();\n        data.setObject(\"Obj1\", \"R1\", \"C1\");\n        data.setObject(\"Obj2\", \"R2\", \"C2\");\n        data.removeColumn(\"C2\");\n        assertEquals(1, data.getColumnCount());\n        assertEquals(\"Obj1\", data.getObject(0, 0));\n        \n        // try unknown column key\n        boolean pass = false;\n        try {\n            data.removeColumn(\"XXX\");\n        }\n        catch (UnknownKeyException e) {\n            pass = true;\n        }\n        assertTrue(pass);\n        \n        // try null column key\n        pass = false;\n        try {\n            data.removeColumn(null);\n        }\n        catch (IllegalArgumentException e) {\n            pass = true;\n        }\n        assertTrue(pass);\n    }",
+    "test_line": "        data.removeColumn(\"C2\");",
+    "test_name": "testRemoveColumnByKey",
+    "test_suite": "org.jfree.data.junit.KeyedObjects2DTests"
+}

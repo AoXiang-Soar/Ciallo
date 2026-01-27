@@ -1,0 +1,24 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+index 7a409d65..4ff77b55 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+@@ -459,7 +459,18 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+             int read = 0;
+             while((ch = i.read()) != -1) {
+                 read++;
+-                if (ch == ' '){
++                if (ch == ' ' || ch == '\n') {
++                    // Check if we've read any digits yet
++                    if (read == 1) {
++                        // Only the space/newline was read - this is an empty line
++                        if (ch == '\n') {
++                            break;
++                        }
++                        throw new IOException("Invalid pax header format");
++                    }
++                    if (len <= 0) {
++                        throw new IOException("Invalid length in pax header");
++                    }
+                     // Get keyword
+                     final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+                     while((ch = i.read()) != -1) {

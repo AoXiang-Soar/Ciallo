@@ -1,0 +1,16 @@
+{
+    "bug_id": 15,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Chart",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testDrawWithNullDataset() {\n        JFreeChart chart = ChartFactory.createPieChart3D(\"Test\", null, true, \n                false, false);\n        boolean success = false;\n        try {\n            BufferedImage image = new BufferedImage(200 , 100, \n                    BufferedImage.TYPE_INT_RGB);\n            Graphics2D g2 = image.createGraphics();\n            chart.draw(g2, new Rectangle2D.Double(0, 0, 200, 100), null, null);\n            g2.dispose();\n            success = true;\n        }\n        catch (Exception e) {\n            success = false;\n        }\n        assertTrue(success);\n    }",
+    "test_line": "        assertTrue(success);",
+    "test_name": "testDrawWithNullDataset",
+    "test_suite": "org.jfree.chart.plot.junit.PiePlot3DTests"
+}

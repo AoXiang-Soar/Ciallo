@@ -1,0 +1,38 @@
+diff --git a/src/main/java/humaneval/buggy/ANY_INT.java b/src/main/java/humaneval/buggy/ANY_INT.java
+index 43f1286..3bbae86 100644
+--- a/src/main/java/humaneval/buggy/ANY_INT.java
++++ b/src/main/java/humaneval/buggy/ANY_INT.java
+@@ -1,24 +1,16 @@
+ package humaneval.buggy;
+ 
+-/* Create a function that takes 3 numbers.
+-Returns true if one of the numbers is equal to the sum of the other two, and all numbers (double) can be converted integers.
+-Returns false in any other cases.
+-
+-Examples
+-any_int(5, 2, 7) ➞ True
+-
+-any_int(3, 2, 2) ➞ False
+-
+-any_int(3, -2, 1) ➞ True
+-
+-any_int(3.6, -2.2, 2) ➞ False */
+-
+ public class ANY_INT {
+     public static boolean any_int(double x, double y, double z) {
+-        if ((int)x == x && (int)y == y) {
+-            if (x + y == z || x + z == y)
++        if (isInteger(x) && isInteger(y) && isInteger(z)) {
++            if (x + y == z || x + z == y || y + z == x) {
+                 return true;
++            }
+         }
+         return false;
+     }
+-}
++
++    private static boolean isInteger(double d) {
++        return (int)d == d;
++    }
++}
+\ No newline at end of file

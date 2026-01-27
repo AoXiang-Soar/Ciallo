@@ -1,0 +1,16 @@
+{
+    "bug_id": 67,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void handlesDeepStack() {\n        // inspired by http://sv.stargate.wikia.com/wiki/M2J and https://github.com/jhy/jsoup/issues/955\n        // I didn't put it in the integration tests, because explorer and intellij kept dieing trying to preview/index it\n\n        // Arrange\n        StringBuilder longBody = new StringBuilder(500000);\n        for (int i = 0; i < 25000; i++) {\n            longBody.append(i).append(\"<dl><dd>\");\n        }\n        for (int i = 0; i < 25000; i++) {\n            longBody.append(i).append(\"</dd></dl>\");\n        }\n\n        // Act\n        long start = System.currentTimeMillis();\n        Document doc = Parser.parseBodyFragment(longBody.toString(), \"\");\n\n        // Assert\n        assertEquals(2, doc.body().childNodeSize());\n        assertEquals(25000, doc.select(\"dd\").size());\n        assertTrue(System.currentTimeMillis() - start < 1000);\n    }",
+    "test_line": "        assertTrue(System.currentTimeMillis() - start < 1000);",
+    "test_name": "handlesDeepStack",
+    "test_suite": "org.jsoup.parser.HtmlParserTest"
+}

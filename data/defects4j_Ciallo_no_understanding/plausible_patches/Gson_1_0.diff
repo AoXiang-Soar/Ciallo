@@ -1,0 +1,94 @@
+diff --git a/gson/src/main/java/com/google/gson/TypeInfoFactory.java b/gson/src/main/java/com/google/gson/TypeInfoFactory.java
+index eaf3a101..3f7eba10 100644
+--- a/gson/src/main/java/com/google/gson/TypeInfoFactory.java
++++ b/gson/src/main/java/com/google/gson/TypeInfoFactory.java
+@@ -77,24 +77,12 @@ final class TypeInfoFactory {
+           TypeUtils.wrapWithArray(TypeUtils.toRawClass(actualType))
+           : new GenericArrayTypeImpl(actualType);
+     } else if (typeToEvaluate instanceof TypeVariable<?>) {
+-      if (parentType instanceof ParameterizedType) {
+-        // The class definition has the actual types used for the type variables.
+-        // Find the matching actual type for the Type Variable used for the field.
+-        // For example, class Foo<A> { A a; }
+-        // new Foo<Integer>(); defines the actual type of A to be Integer.
+-        // So, to find the type of the field a, we will have to look at the class'
+-        // actual type arguments.
+-        TypeVariable<?> fieldTypeVariable = (TypeVariable<?>) typeToEvaluate;
+-        TypeVariable<?>[] classTypeVariables = rawParentClass.getTypeParameters();
+-        ParameterizedType objParameterizedType = (ParameterizedType) parentType;
+-        int indexOfActualTypeArgument = getIndex(classTypeVariables, fieldTypeVariable);
+-        Type[] actualTypeArguments = objParameterizedType.getActualTypeArguments();
+-        return actualTypeArguments[indexOfActualTypeArgument];
+-
+-
++      TypeVariable<?> fieldTypeVariable = (TypeVariable<?>) typeToEvaluate;
++      Type resolvedType = resolveTypeVariable(fieldTypeVariable, parentType, rawParentClass);
++      if (resolvedType != null) {
++        return resolvedType;
+       }
+-
+-      throw new UnsupportedOperationException("Expecting parameterized type, got " + parentType
++      throw new UnsupportedOperationException("Cannot resolve type variable " + fieldTypeVariable 
+           + ".\n Are you missing the use of TypeToken idiom?\n See "
+           + "http://sites.google.com/site/gson/gson-user-guide#TOC-Serializing-and-Deserializing-Gener");
+     } else if (typeToEvaluate instanceof WildcardType) {
+@@ -106,11 +94,40 @@ final class TypeInfoFactory {
+     }
+   }
+ 
++  private static Type resolveTypeVariable(TypeVariable<?> typeVar, Type parentType, Class<?> rawParentClass) {
++    // Check if parentType is ParameterizedType
++    if (parentType instanceof ParameterizedType) {
++      ParameterizedType parameterizedType = (ParameterizedType) parentType;
++      Class<?> rawType = (Class<?>) parameterizedType.getRawType();
++      TypeVariable<?>[] typeParameters = rawType.getTypeParameters();
++      for (int i = 0; i < typeParameters.length; i++) {
++        if (typeVar.equals(typeParameters[i])) {
++          return parameterizedType.getActualTypeArguments()[i];
++        }
++      }
++    }
+ 
+-      // Evaluate type on this type
+-
++    // Check superclass if exists
++    Type genericSuperclass = rawParentClass.getGenericSuperclass();
++    if (genericSuperclass != null && !Object.class.equals(genericSuperclass)) {
++      Type resolvedType = resolveTypeVariable(typeVar, genericSuperclass, rawParentClass.getSuperclass());
++      if (resolvedType != null) {
++        return resolvedType;
++      }
++    }
+ 
++    // Check interfaces
++    Type[] genericInterfaces = rawParentClass.getGenericInterfaces();
++    for (Type genericInterface : genericInterfaces) {
++      Class<?> rawInterface = TypeUtils.toRawClass(genericInterface);
++      Type resolvedType = resolveTypeVariable(typeVar, genericInterface, rawInterface);
++      if (resolvedType != null) {
++        return resolvedType;
++      }
++    }
+ 
++    return null;
++  }
+ 
+   private static Type[] extractRealTypes(
+       Type[] actualTypeArguments, Type parentType, Class<?> rawParentClass) {
+@@ -122,14 +139,4 @@ final class TypeInfoFactory {
+     }
+     return retTypes;
+   }
+-
+-  private static int getIndex(TypeVariable<?>[] types, TypeVariable<?> type) {
+-    for (int i = 0; i < types.length; ++i) {
+-      if (type.equals(types[i])) {
+-        return i;
+-      }
+-    }
+-    throw new IllegalStateException(
+-        "How can the type variable not be present in the class declaration!");
+-  }
+-}
++}
+\ No newline at end of file

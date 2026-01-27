@@ -1,0 +1,49 @@
+diff --git a/src/main/java/humaneval/buggy/MATCH_PARENS.java b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+old mode 100644
+new mode 100755
+index 0d0da0a..715cf86
+--- a/src/main/java/humaneval/buggy/MATCH_PARENS.java
++++ b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+@@ -17,18 +17,32 @@ package humaneval.buggy;
+ 
+ public class MATCH_PARENS {
+     public static boolean check(String s) {
+-        int val = 0;
++        int balance = 0;
+         for(int i = 0; i < s.length(); i++) {
+-            if(s.charAt(i) == '(') val--;
+-            else val++;
+-            if(val < 0) return false;
++            if(s.charAt(i) == '(') {
++                balance++;
++            } else {
++                balance--;
++            }
++            if(balance < 0) {
++                return false;
++            }
+         }
+-        return val == 0;
++        return balance == 0;
+     }
++    
+     public static String match_parens(String[] lst) {
+-        String S1 = lst[0] + lst[1];
+-        String S2 = lst[1] + lst[0];
+-        if(check(S1) || check(S2)) return "Yes";
++        String s1 = lst[0];
++        String s2 = lst[1];
++        
++        // Check if concatenating s1 + s2 works
++        if(check(s1 + s2)) {
++            return "Yes";
++        }
++        // Check if concatenating s2 + s1 works
++        if(check(s2 + s1)) {
++            return "Yes";
++        }
+         return "No";
+     }
+-}
++}
+\ No newline at end of file

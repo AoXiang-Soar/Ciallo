@@ -1,0 +1,16 @@
+{
+    "bug_id": "SORT_EVEN",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SORT_EVEN.test_2:31",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_2() throws java.lang.Exception {\n        int[] result = humaneval.buggy.SORT_EVEN.sort_even(\n            new int[] {5, 8, -12, 4, 23, 2, 3, 11, 12, -10}\n        );\n        org.junit.Assert.assertTrue(\n            Arrays.equals(result, new int[] {-12, 8, 3, 4, 5, 2, 12, 11, 23, -10})\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertTrue(",
+    "test_name": "test_2",
+    "test_suite": "TEST_SORT_EVEN"
+}

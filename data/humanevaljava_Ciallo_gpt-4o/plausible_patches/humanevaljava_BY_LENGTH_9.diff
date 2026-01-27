@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/BY_LENGTH.java b/src/main/java/humaneval/buggy/BY_LENGTH.java
+index 0e33347..71b40f2 100644
+--- a/src/main/java/humaneval/buggy/BY_LENGTH.java
++++ b/src/main/java/humaneval/buggy/BY_LENGTH.java
+@@ -39,13 +39,24 @@ public class BY_LENGTH {
+         digit_map.put(7, "Seven");
+         digit_map.put(8, "Eight");
+         digit_map.put(9, "Nine");
+-        Collections.sort(a, Collections.reverseOrder());
+-        ArrayList<String> result = new ArrayList<>();
+-        for(int num : a) {
+-            if(digit_map.get(num) != "") {
+-                result.add(digit_map.get(num));
++        
++        // Filter only valid numbers (1 to 9)
++        ArrayList<Integer> validNumbers = new ArrayList<>();
++        for (int num : a) {
++            if (digit_map.containsKey(num)) {
++                validNumbers.add(num);
+             }
+         }
++        
++        // Sort and reverse the valid numbers
++        Collections.sort(validNumbers, Collections.reverseOrder());
++
++        // Map sorted and reversed numbers to their corresponding names
++        ArrayList<String> result = new ArrayList<>();
++        for (int num : validNumbers) {
++            result.add(digit_map.get(num));
++        }
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

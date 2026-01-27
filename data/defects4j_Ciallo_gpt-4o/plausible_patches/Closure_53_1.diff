@@ -1,0 +1,47 @@
+diff --git a/src/com/google/javascript/jscomp/InlineObjectLiterals.java b/src/com/google/javascript/jscomp/InlineObjectLiterals.java
+index 9061925db..f879f599c 100644
+--- a/src/com/google/javascript/jscomp/InlineObjectLiterals.java
++++ b/src/com/google/javascript/jscomp/InlineObjectLiterals.java
+@@ -312,14 +312,14 @@ class InlineObjectLiterals implements CompilerPass {
+            key = key.getNext()) {
+         String var = key.getString();
+         Node value = key.removeFirstChild();
+-        // TODO(user): Copy type information.
++        // TODO:user): Copy type information.
+         nodes.add(
+           new Node(Token.ASSIGN,
+                    Node.newString(Token.NAME, varmap.get(var)), value));
+         all.remove(var);
+       }
+ 
+-      // TODO(user): Better source information.
++      // TODO:user): Better source information.
+       for (String var : all) {
+         nodes.add(
+           new Node(Token.ASSIGN,
+@@ -328,11 +328,16 @@ class InlineObjectLiterals implements CompilerPass {
+       }
+ 
+       Node replacement;
++      if (nodes.size() == 0) {
++        replacement = new Node(Token.TRUE);
++      } else if (nodes.size() == 1) {
++        replacement = new Node(Token.COMMA, nodes.get(0), new Node(Token.TRUE));
++      } else {
+         // All assignments evaluate to true, so make sure that the
+         // expr statement evaluates to true in case it matters.
+         nodes.add(new Node(Token.TRUE));
+ 
+-        // Join these using COMMA.  A COMMA node must have 2 children, so we
++        // Join these using COMMA. A COMMA node must have 2 children, so we
+         // create a tree. In the tree the first child be the COMMA to match
+         // the parser, otherwise tree equality tests fail.
+         nodes = Lists.reverse(nodes);
+@@ -347,6 +352,7 @@ class InlineObjectLiterals implements CompilerPass {
+         }
+         cur.addChildToFront(nodes.get(i));
+         cur.addChildToFront(nodes.get(i + 1));
++      }
+ 
+       Node replace = ref.getParent();
+       replacement.copyInformationFromForTree(replace);

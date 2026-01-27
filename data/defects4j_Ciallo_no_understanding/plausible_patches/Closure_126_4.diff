@@ -1,0 +1,21 @@
+diff --git a/src/com/google/javascript/jscomp/MinimizeExitPoints.java b/src/com/google/javascript/jscomp/MinimizeExitPoints.java
+index 4146f1777..e6652fa1a 100644
+--- a/src/com/google/javascript/jscomp/MinimizeExitPoints.java
++++ b/src/com/google/javascript/jscomp/MinimizeExitPoints.java
+@@ -140,7 +140,15 @@ class MinimizeExitPoints
+        */
+       if (NodeUtil.hasFinally(n)) {
+         Node finallyBlock = n.getLastChild();
+-        tryMinimizeExits(finallyBlock, exitType, labelName);
++        // Don't minimize exits in finally blocks when the exit is BREAK or RETURN
++        // to avoid changing completion type
++        switch (exitType) {
++          case Token.BREAK:
++          case Token.RETURN:
++            break;
++          default:
++            tryMinimizeExits(finallyBlock, exitType, labelName);
++        }
+       }
+     }
+ 

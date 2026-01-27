@@ -1,0 +1,42 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/sym/ByteQuadsCanonicalizer.java b/src/main/java/com/fasterxml/jackson/core/sym/ByteQuadsCanonicalizer.java
+index f19acc72..4bc3d2b6 100644
+--- a/src/main/java/com/fasterxml/jackson/core/sym/ByteQuadsCanonicalizer.java
++++ b/src/main/java/com/fasterxml/jackson/core/sym/ByteQuadsCanonicalizer.java
+@@ -871,19 +871,26 @@ public final class ByteQuadsCanonicalizer
+         }
+     }
+ 
+-    private void _verifySharing()
+-    {
+-        if (_hashShared) {
+-            _hashArea = Arrays.copyOf(_hashArea, _hashArea.length);
+-            _names = Arrays.copyOf(_names, _names.length);
+-            _hashShared = false;
+-            // 09-Sep-2015, tatu: As per [jackson-core#216], also need to ensure
+-            //    we rehash as needed, as need-rehash flag is not copied from parent
+-        }
+-        if (_needRehash) {
+-            rehash();
++private void _verifySharing()
++{
++    if (_hashShared) {
++        // Make copies of both arrays
++        _hashArea = Arrays.copyOf(_hashArea, _hashArea.length);
++        _names = Arrays.copyOf(_names, _names.length);
++        _hashShared = false;
++        
++        // Since we're making a copy, we should check if rehashing is needed
++        // based on the current load factor. The original array might have been
++        // at capacity, so we should force a rehash if we're near capacity.
++        if (_count >= (_hashArea.length >> 3)) { // Check if over 12.5% full (same as HashMap)
++            _needRehash = true;
+         }
+     }
++    
++    if (_needRehash) {
++        rehash();
++    }
++}
+ 
+     /**
+      * Method called to find the location within hash table to add a new symbol in.

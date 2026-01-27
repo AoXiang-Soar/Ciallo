@@ -1,0 +1,16 @@
+{
+    "bug_id": 29,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<Hello[ there] now> but was:<Hello[",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void testTitles() {\n        Document noTitle = Jsoup.parse(\"<p>Hello</p>\");\n        Document withTitle = Jsoup.parse(\"<title>First</title><title>Ignore</title><p>Hello</p>\");\n        \n        assertEquals(\"\", noTitle.title());\n        noTitle.title(\"Hello\");\n        assertEquals(\"Hello\", noTitle.title());\n        assertEquals(\"Hello\", noTitle.select(\"title\").first().text());\n        \n        assertEquals(\"First\", withTitle.title());\n        withTitle.title(\"Hello\");\n        assertEquals(\"Hello\", withTitle.title());\n        assertEquals(\"Hello\", withTitle.select(\"title\").first().text());\n\n        Document normaliseTitle = Jsoup.parse(\"<title>   Hello\\nthere   \\n   now   \\n\");\n        assertEquals(\"Hello there now\", normaliseTitle.title());\n    }",
+    "test_line": "        assertEquals(\"Hello there now\", normaliseTitle.title());",
+    "test_name": "testTitles",
+    "test_suite": "org.jsoup.nodes.DocumentTest"
+}

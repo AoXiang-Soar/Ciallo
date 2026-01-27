@@ -1,0 +1,22 @@
+diff --git a/src/main/java/org/apache/commons/math3/dfp/Dfp.java b/src/main/java/org/apache/commons/math3/dfp/Dfp.java
+index 0f78330a5..3211fc216 100644
+--- a/src/main/java/org/apache/commons/math3/dfp/Dfp.java
++++ b/src/main/java/org/apache/commons/math3/dfp/Dfp.java
+@@ -1599,9 +1599,14 @@ public class Dfp implements FieldElement<Dfp> {
+      * @param x multiplicand
+      * @return product of this and x
+      */
+-    public Dfp multiply(final int x) {
+-            return multiplyFast(x);
+-    }
++public Dfp multiply(final int x) {
++    // Obtain the Dfp field
++    DfpField field = getField();
++    // Create a new Dfp object from the integer
++    Dfp xAsDfp = field.newDfp(x);
++    // Use the multiply method for Dfp
++    return multiply(xAsDfp);
++}
+ 
+     /** Multiply this by a single digit 0&lt;=x&lt;radix.
+      * There are speed advantages in this special case.

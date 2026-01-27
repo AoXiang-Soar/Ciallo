@@ -1,0 +1,80 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java b/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
+index 30807836d..bbf5d3c52 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
++++ b/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
+@@ -2,11 +2,6 @@ package com.fasterxml.jackson.databind.type;
+ 
+ import com.fasterxml.jackson.databind.JavaType;
+ 
+-/**
+- * Internal placeholder type used for self-references.
+- *
+- * @since 2.7
+- */
+ public class ResolvedRecursiveType extends TypeBase
+ {
+     private static final long serialVersionUID = 1L;
+@@ -17,17 +12,26 @@ public class ResolvedRecursiveType extends TypeBase
+         super(erasedType, bindings, null, null, 0, null, null, false);
+     }
+ 
+-    public void setReference(JavaType ref)
+-    {
+-        // sanity check; should not be called multiple times
++    public void setReference(JavaType ref) {
+         if (_referencedType != null) {
+             throw new IllegalStateException("Trying to re-set self reference; old value = "+_referencedType+", new = "+ref);
+         }
+         _referencedType = ref;
+     }
+-   
+ 
+-    public JavaType getSelfReferencedType() { return _referencedType; }
++    public JavaType getSelfReferencedType() { 
++        return _referencedType; 
++    }
++
++    @Override
++    public JavaType getSuperClass() {
++        if (_referencedType != null) {
++            JavaType superClass = _referencedType.getSuperClass();
++            // Return the referenced type's superclass if available, otherwise use default implementation
++            return superClass != null ? superClass : super.getSuperClass();
++        }
++        return super.getSuperClass();
++    }
+ 
+     @Override
+     public StringBuilder getGenericSignature(StringBuilder sb) {
+@@ -69,7 +73,7 @@ public class ResolvedRecursiveType extends TypeBase
+         return this;
+     }
+ 
+-    @Deprecated // since 2.7
++    @Deprecated
+     @Override
+     protected JavaType _narrow(Class<?> subclass) {
+         return this;
+@@ -93,8 +97,6 @@ public class ResolvedRecursiveType extends TypeBase
+         if (_referencedType == null) {
+             sb.append("UNRESOLVED");
+         } else {
+-            // [databind#1301]: Typically resolves to a loop so short-cut
+-            //   and only include type-erased class
+             sb.append(_referencedType.getRawClass().getName());
+         }
+         return sb.toString();
+@@ -104,11 +106,10 @@ public class ResolvedRecursiveType extends TypeBase
+     public boolean equals(Object o) {
+         if (o == this) return true;
+         if (o == null) return false;
+-        // Do NOT ever match unresolved references
+         if (_referencedType == null) {
+             return false;
+         }
+         return (o.getClass() == getClass()
+                 && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+     }
+-}
++}
+\ No newline at end of file

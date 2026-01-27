@@ -1,0 +1,30 @@
+diff --git a/src/com/google/javascript/jscomp/Compiler.java b/src/com/google/javascript/jscomp/Compiler.java
+index 118502116..384167261 100644
+--- a/src/com/google/javascript/jscomp/Compiler.java
++++ b/src/com/google/javascript/jscomp/Compiler.java
+@@ -223,7 +223,7 @@ public class Compiler extends AbstractCompiler {
+    * Initialize the compiler options. Only necessary if you're not doing
+    * a normal compile() job.
+    */
+-  public void initOptions(CompilerOptions options) {
++public void initOptions(CompilerOptions options) {
+     this.options = options;
+     if (errorManager == null) {
+       if (outStream == null) {
+@@ -272,6 +272,7 @@ public class Compiler extends AbstractCompiler {
+     // about missing variable declarations, we shut that specific
+     // error off.
+     if (!options.checkSymbols &&
++        !options.enables(DiagnosticGroups.CHECK_VARIABLES) &&
+         (warningsGuard == null || !warningsGuard.disables(
+             DiagnosticGroups.CHECK_VARIABLES))) {
+       guards.add(new DiagnosticGroupWarningsGuard(
+@@ -279,7 +280,7 @@ public class Compiler extends AbstractCompiler {
+     }
+ 
+     this.warningsGuard = new ComposeWarningsGuard(guards);
+-  }
++}
+ 
+   /**
+    * Initializes the instance state needed for a compile job.

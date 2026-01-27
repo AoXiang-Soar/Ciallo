@@ -1,0 +1,12 @@
+diff --git a/src/main/java/org/jsoup/parser/Parser.java b/src/main/java/org/jsoup/parser/Parser.java
+index da4bdcea..413f0912 100644
+--- a/src/main/java/org/jsoup/parser/Parser.java
++++ b/src/main/java/org/jsoup/parser/Parser.java
+@@ -145,6 +145,7 @@ public class Parser {
+         if (tag.isData()) {
+             String data = tq.chompTo("</" + tagName);
+             tq.chompTo(">");
++            if (data.length() > 0) tq.addFirst("</" + tagName + ">");
+             
+             Node dataNode;
+             if (tag.equals(titleTag) || tag.equals(textareaTag)) // want to show as text, but not contain inside tags (so not a data tag?)

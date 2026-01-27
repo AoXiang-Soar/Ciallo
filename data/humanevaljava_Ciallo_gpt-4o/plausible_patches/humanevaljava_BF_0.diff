@@ -1,0 +1,52 @@
+diff --git a/src/main/java/humaneval/buggy/BF.java b/src/main/java/humaneval/buggy/BF.java
+index dd3c22b..258efe6 100644
+--- a/src/main/java/humaneval/buggy/BF.java
++++ b/src/main/java/humaneval/buggy/BF.java
+@@ -3,20 +3,6 @@ package humaneval.buggy;
+ import java.util.ArrayList;
+ import java.util.Arrays;
+ 
+-/* There are eight planets in our solar system: the closerst to the Sun 
+-is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, 
+-Uranus, Neptune.
+-Write a function that takes two planet names as strings planet1 and planet2. 
+-The function should return a tuple containing all planets whose orbits are 
+-located between the orbit of planet1 and the orbit of planet2, sorted by 
+-the proximity to the sun. 
+-The function should return an empty tuple if planet1 or planet2
+-are not correct planet names. 
+-Examples
+-bf("Jupiter", "Neptune") ==> ("Saturn", "Uranus")
+-bf("Earth", "Mercury") ==> ("Venus")
+-bf("Mercury", "Uranus") ==> ("Venus", "Earth", "Mars", "Jupiter", "Saturn") */
+-
+ public class BF {
+     public static ArrayList<String> bf(String planet1, String planet2) {
+         ArrayList<String> planet_names = new ArrayList<String>(Arrays.asList(
+@@ -24,12 +10,22 @@ public class BF {
+         ));
+ 
+         ArrayList<String> result = new ArrayList<String>();
+-        if ((! planet_names.contains(planet1)) || (! planet_names.contains(planet2)))
++        if ((!planet_names.contains(planet1)) || (!planet_names.contains(planet2)))
+             return result;
++
+         int planet1_index = planet_names.indexOf(planet1);
+         int planet2_index = planet_names.indexOf(planet2);
+-        for (int i = planet1_index; i < planet2_index; i += 1)
++
++        // Ensure planet1_index is less than planet2_index
++        if (planet1_index > planet2_index) {
++            int temp = planet1_index;
++            planet1_index = planet2_index;
++            planet2_index = temp;
++        }
++
++        for (int i = planet1_index + 1; i < planet2_index; i += 1)
+             result.add(planet_names.get(i));
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,15 @@
+diff --git a/src/main/java/org/jsoup/helper/HttpConnection.java b/src/main/java/org/jsoup/helper/HttpConnection.java
+index a941e483..28f4320a 100644
+--- a/src/main/java/org/jsoup/helper/HttpConnection.java
++++ b/src/main/java/org/jsoup/helper/HttpConnection.java
+@@ -421,6 +421,10 @@ public class HttpConnection implements Connection {
+                     return false;
+                 }
+ 
++                // Check if there's enough space for the multibyte sequence
++                if (end >= input.length) {
++                    return false;
++                }
+ 
+                 while (i < end) {
+                     i++;

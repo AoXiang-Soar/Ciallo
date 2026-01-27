@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java b/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
+index 8d523c9..f969f7c 100644
+--- a/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
++++ b/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
+@@ -1,24 +1,25 @@
+ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+-
+-// Given two positive integers a and b, return the even digits between a
+-// and b, in ascending order.
+-
+-// For example:
+-// generate_integers(2, 8) => [2, 4, 6, 8]
+-// generate_integers(8, 2) => [2, 4, 6, 8]
+-// generate_integers(10, 14) => []
++import java.util.Collections;
+ 
+ public class GENERATE_INTEGERS {
+     public static ArrayList<Integer> generate_integers(int a, int b) {
+-        int lower = Math.max(2, a);
+-        int upper = Math.min(8, b);
++        // Determine the lower and upper bounds
++        int lower = Math.min(a, b);
++        int upper = Math.max(a, b);
+ 
+         ArrayList<Integer> result = new ArrayList<Integer>();
+-        for (int i = lower; i <= upper; i += 1) {
+-            if (i % 2 == 0) result.add(i);
++
++        // Iterate from 2 to 8 since the even numbers within this bound are specified
++        for (int i = 2; i <= 8; i += 2) {
++            // Check if the even number is in the range [lower, upper]
++            if (i >= lower && i <= upper) {
++                result.add(i);
++            }
+         }
++
++        // The result is naturally in ascending order due to the iteration order
+         return result;
+     }
+-}
++}
+\ No newline at end of file

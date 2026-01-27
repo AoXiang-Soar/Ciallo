@@ -1,0 +1,27 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+index f86ad36f..49315a37 100644
+--- a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
++++ b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+@@ -274,12 +274,17 @@ public final class $Gson$Types {
+    *
+    * @param supertype a superclass of, or interface implemented by, this.
+    */
+-  static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
+-      // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead
++static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
++    // Handle wildcard types by using their upper bound
++    Type contextType = context;
++    while (contextType instanceof WildcardType) {
++        contextType = ((WildcardType) contextType).getUpperBounds()[0];
++    }
++    
+     checkArgument(supertype.isAssignableFrom(contextRawType));
+-    return resolve(context, contextRawType,
+-        $Gson$Types.getGenericSupertype(context, contextRawType, supertype));
+-  }
++    Type genericSupertype = $Gson$Types.getGenericSupertype(contextType, contextRawType, supertype);
++    return resolve(contextType, contextRawType, genericSupertype);
++}
+ 
+   /**
+    * Returns the component type of this array type.

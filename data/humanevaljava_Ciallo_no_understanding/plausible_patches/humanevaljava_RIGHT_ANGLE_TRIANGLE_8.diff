@@ -1,0 +1,33 @@
+diff --git a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+old mode 100644
+new mode 100755
+index da0fd0a..923e7b7
+--- a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
++++ b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+@@ -1,15 +1,15 @@
+ package humaneval.buggy;
+ 
+-// Given the lengths of the three sides of a triangle. Return True if the three
+-// sides form a right-angled triangle, False otherwise.
+-// A right-angled triangle is a triangle in which one angle is right angle or 
+-// 90 degree.
+-// Example:
+-// right_angle_triangle(3, 4, 5) == True
+-// right_angle_triangle(1, 2, 3) == False
+-
+ public class RIGHT_ANGLE_TRIANGLE {
+     public static boolean right_angle_triangle(int a, int b, int c) {
+-        return a*a + b*b == c*c;
++        // Check all possible orderings of sides
++        boolean case1 = a*a + b*b == c*c;
++        boolean case2 = a*a + c*c == b*b;
++        boolean case3 = b*b + c*c == a*a;
++        
++        // Also verify triangle inequality
++        boolean validTriangle = a + b > c && a + c > b && b + c > a;
++        
++        return validTriangle && (case1 || case2 || case3);
+     }
+-}
++}
+\ No newline at end of file

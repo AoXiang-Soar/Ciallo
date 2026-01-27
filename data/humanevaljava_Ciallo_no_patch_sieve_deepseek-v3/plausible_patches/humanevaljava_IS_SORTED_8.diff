@@ -1,0 +1,66 @@
+diff --git a/src/main/java/humaneval/buggy/IS_SORTED.java b/src/main/java/humaneval/buggy/IS_SORTED.java
+index 173398c..5896fe1 100644
+--- a/src/main/java/humaneval/buggy/IS_SORTED.java
++++ b/src/main/java/humaneval/buggy/IS_SORTED.java
+@@ -2,37 +2,32 @@ package humaneval.buggy;
+ 
+ import java.util.HashMap;
+ 
+-/*
+- * Given a list of numbers, return whether or not they are sorted
+-    in ascending order. If list has more than 1 duplicate of the same
+-    number, return False. Assume no negative numbers and only integers.
+-
+-    Examples
+-    is_sorted([5]) ➞ True
+-    is_sorted([1, 2, 3, 4, 5]) ➞ True
+-    is_sorted([1, 3, 2, 4, 5]) ➞ False
+-    is_sorted([1, 2, 3, 4, 5, 6]) ➞ True
+-    is_sorted([1, 2, 3, 4, 5, 6, 7]) ➞ True
+-    is_sorted([1, 3, 2, 4, 5, 6, 7]) ➞ False
+-    is_sorted([1, 2, 2, 3, 3, 4]) ➞ True
+-    is_sorted([1, 2, 2, 2, 3, 4]) ➞ False
+- */
+-
+ public class IS_SORTED {
+     public static boolean is_sorted(int[] lst) {
++        // Handle empty array or single element case
++        if (lst.length <= 1) return true;
++        
+         HashMap<Integer, Integer> count_num = new HashMap<>();
+-        for(int i = 0; i < lst.length; i++) {
+-            count_num.put(lst[i], 0);
+-        }
+-        for(int i = 0; i < lst.length; i++) {
+-            count_num.put(lst[i], count_num.get(lst[i]) + 1);
+-        }
+-        for(int i = 0; i < lst.length; i++) {
+-            if(count_num.get(lst[i]) > 2) return false;
++        boolean hasMoreThanTwoDuplicates = false;
++        
++        // Check for ascending order first
++        boolean isAscending = true;
++        for (int i = 0; i < lst.length - 1; i++) {
++            if (lst[i] > lst[i + 1]) {
++                isAscending = false;
++                break;
++            }
+         }
+-        for(int i = 0; i < lst.length - 1; i++) {
+-            if(lst[i] <= lst[i + 1]) return false;
++        
++        // Then check for duplicates count
++        for (int num : lst) {
++            count_num.put(num, count_num.getOrDefault(num, 0) + 1);
++            if (count_num.get(num) > 2) {
++                hasMoreThanTwoDuplicates = true;
++                break;
++            }
+         }
+-        return true;
++        
++        return isAscending && !hasMoreThanTwoDuplicates;
+     }
+-}
++}
+\ No newline at end of file

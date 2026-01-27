@@ -1,0 +1,16 @@
+{
+    "bug_id": 44,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: going backard in time! (7.796578226186635 < 10.99)",
+    "test_framework": "defects4j",
+    "test_function": "    public void testIssue695() {\n\n        FirstOrderDifferentialEquations equation = new FirstOrderDifferentialEquations() {\n            \n            public int getDimension() {\n                return 1;\n            }\n            \n            public void computeDerivatives(double t, double[] y, double[] yDot) {\n                yDot[0] = 1.0;\n            }\n        };\n\n        DormandPrince853Integrator integrator = new DormandPrince853Integrator(0.001, 1000, 1.0e-14, 1.0e-14);\n        integrator.addEventHandler(new ResettingEvent(10.99), 0.1, 1.0e-9, 1000);\n        integrator.addEventHandler(new ResettingEvent(11.01), 0.1, 1.0e-9, 1000);\n        integrator.setInitialStepSize(3.0);\n\n        double target = 30.0;\n        double[] y = new double[1];\n        double tEnd = integrator.integrate(equation, 0.0, y, target, y);\n        Assert.assertEquals(target, tEnd, 1.0e-10);\n        Assert.assertEquals(32.0, y[0], 1.0e-10);\n\n    }",
+    "test_line": "            Assert.assertTrue(\"going backard in time! (\" + t + \" < \" + lastTriggerTime + \")\",",
+    "test_name": "testIssue695",
+    "test_suite": "org.apache.commons.math.ode.events.EventStateTest"
+}

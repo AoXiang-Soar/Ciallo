@@ -1,0 +1,75 @@
+diff --git a/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java b/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java
+index f8e3b1a..b878073 100644
+--- a/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java
++++ b/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java
+@@ -669,33 +669,49 @@ public class DOMNodePointer extends NodePointer {
+      * @param node Node to check
+      * @return String ns uri
+      */
+-    public static String getNamespaceURI(Node node) {
+-        if (node instanceof Document) {
+-            node = ((Document) node).getDocumentElement();
+-        }
+-
+-        Element element = (Element) node;
++public static String getNamespaceURI(Node node) {
++    // Handle null case first
++    if (node == null) {
++        return null;
++    }
+ 
+-        String uri = element.getNamespaceURI();
+-        if (uri == null) {
+-            String prefix = getPrefix(node);
+-            String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
+-    
+-            Node aNode = node;
+-            while (aNode != null) {
+-                if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+-                    Attr attr = ((Element) aNode).getAttributeNode(qname);
+-                    if (attr != null) {
+-                        return attr.getValue();
+-                    }
+-                }
+-                aNode = aNode.getParentNode();
+-            }
++    // For Document nodes, use the document element
++    if (node instanceof Document) {
++        node = ((Document) node).getDocumentElement();
++        if (node == null) {
+             return null;
+         }
++    }
++
++    // Skip non-element nodes
++    if (node.getNodeType() != Node.ELEMENT_NODE) {
++        return null;
++    }
++
++    // Try direct namespace URI first
++    Element element = (Element) node;
++    String uri = element.getNamespaceURI();
++    if (uri != null && !uri.isEmpty()) {
+         return uri;
+     }
+ 
++    // Fall back to xmlns attribute lookup
++    String prefix = getPrefix(node);
++    String qname = prefix == null || prefix.isEmpty() ? "xmlns" : "xmlns:" + prefix;
++
++    Node currentNode = node;
++    while (currentNode != null && currentNode.getNodeType() == Node.ELEMENT_NODE) {
++        Element currentElement = (Element) currentNode;
++        if (currentElement.hasAttribute(qname)) {
++            String nsUri = currentElement.getAttribute(qname);
++            return nsUri.isEmpty() ? null : nsUri;
++        }
++        currentNode = currentNode.getParentNode();
++    }
++
++    return null;
++}
++
+     public Object getValue() {
+         if (node.getNodeType() == Node.COMMENT_NODE) {
+             String text = ((Comment) node).getData();

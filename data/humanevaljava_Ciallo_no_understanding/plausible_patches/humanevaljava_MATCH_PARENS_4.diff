@@ -1,0 +1,61 @@
+diff --git a/src/main/java/humaneval/buggy/MATCH_PARENS.java b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+old mode 100644
+new mode 100755
+index 0d0da0a..f6f4ba5
+--- a/src/main/java/humaneval/buggy/MATCH_PARENS.java
++++ b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+@@ -4,11 +4,10 @@ package humaneval.buggy;
+  * You are given a list of two strings, both strings consist of open
+     parentheses '(' or close parentheses ')' only.
+     Your job is to check if it is possible to concatenate the two strings in
+-    some order, that the resulting string will be good.
+-    A string S is considered to be good if and only if all parentheses in S
+-    are balanced. For example: the string '(())()' is good, while the string
+-    '())' is not.
+-    Return 'Yes' if there's a way to make a good string, and return 'No' otherwise.
++    some order, and that the resulting string will be balanced (every opening
++    parenthesis has a matching closing one).
++    Return 'Yes' if it's possible to form a balanced string by concatenating
++    the two strings in some order, and 'No' otherwise.
+ 
+     Examples:
+     match_parens(['()(', ')']) == 'Yes'
+@@ -16,19 +15,25 @@ package humaneval.buggy;
+  */
+ 
+ public class MATCH_PARENS {
+-    public static boolean check(String s) {
+-        int val = 0;
+-        for(int i = 0; i < s.length(); i++) {
+-            if(s.charAt(i) == '(') val--;
+-            else val++;
+-            if(val < 0) return false;
++    private static boolean isBalanced(String s) {
++        int openCount = 0;
++        for (char c : s.toCharArray()) {
++            if (c == '(') {
++                openCount++;
++            } else {
++                if (openCount <= 0) {
++                    return false;
++                }
++                openCount--;
++            }
+         }
+-        return val == 0;
++        return openCount == 0;
+     }
++
+     public static String match_parens(String[] lst) {
+-        String S1 = lst[0] + lst[1];
+-        String S2 = lst[1] + lst[0];
+-        if(check(S1) || check(S2)) return "Yes";
+-        return "No";
++        String combo1 = lst[0] + lst[1];
++        String combo2 = lst[1] + lst[0];
++        
++        return (isBalanced(combo1) || isBalanced(combo2)) ? "Yes" : "No";
+     }
+-}
++}
+\ No newline at end of file

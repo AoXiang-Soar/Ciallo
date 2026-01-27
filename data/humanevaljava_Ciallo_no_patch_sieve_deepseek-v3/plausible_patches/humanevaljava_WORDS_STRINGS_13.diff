@@ -1,0 +1,48 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_STRINGS.java b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+index e98a5f0..6343e8d 100644
+--- a/src/main/java/humaneval/buggy/WORDS_STRINGS.java
++++ b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+@@ -1,31 +1,16 @@
+ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+-
+-/*
+- * You will be given a string of words separated by commas or spaces. Your task is
+- * to split the string into words and return an array of the words.
+- *
+- * For example:
+- * words_string("Hi, my name is John") == ["Hi", "my", "name", "is", "John"]
+- * words_string("One, two, three, four, five, six") == ["One", "two", "three", "four", "five", "six"]
+- */
++import java.util.Arrays;
++import java.util.List;
++import java.util.stream.Collectors;
+ 
+ public class WORDS_STRINGS {
+-	public static ArrayList<String> words_strings(String s) {
+-		ArrayList<String> result = new ArrayList<String>();
+-		String s_list = "";
+-		for(char c : s.toCharArray()) {
+-			if(c == ',') {
+-				s_list += ' ';
+-			} else {
+-				s_list += c;
+-			}
+-		}
+-		String[] result_array = s_list.trim().split("\\s+");
+-		for(String r : result_array) {
+-			result.add(r);
+-		}
+-		return result;
+-	}
+-}
++    public static ArrayList<String> words_strings(String s) {
++        // Split on both commas and whitespace, then filter out empty strings
++        String[] parts = s.split("[,\\s]+");
++        return Arrays.stream(parts)
++            .filter(word -> !word.isEmpty())
++            .collect(Collectors.toCollection(ArrayList::new));
++    }
++}
+\ No newline at end of file

@@ -1,0 +1,55 @@
+diff --git a/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java b/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
+index 6f3e88358..406f21faa 100644
+--- a/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
++++ b/src/main/java/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
+@@ -245,7 +245,9 @@ public abstract class EmbeddedRungeKuttaIntegrator
+           final double[] scale;
+           if (vecAbsoluteTolerance == null) {
+               scale = new double[y0.length];
+-              java.util.Arrays.fill(scale, scalAbsoluteTolerance);
++              for (int i = 0; i < scale.length; i++) {
++                scale[i] = Math.abs(y0[i]) * scalRelativeTolerance + scalAbsoluteTolerance;
++              }
+             } else {
+               scale = vecAbsoluteTolerance;
+             }
+@@ -258,7 +260,6 @@ public abstract class EmbeddedRungeKuttaIntegrator
+ 
+         // next stages
+         for (int k = 1; k < stages; ++k) {
+-
+           for (int j = 0; j < y0.length; ++j) {
+             double sum = a[k-1][0] * yDotK[0][j];
+             for (int l = 1; l < k; ++l) {
+@@ -268,7 +269,6 @@ public abstract class EmbeddedRungeKuttaIntegrator
+           }
+ 
+           computeDerivatives(stepStart + c[k-1] * stepSize, yTmp, yDotK[k]);
+-
+         }
+ 
+         // estimate the state at the end of the step
+@@ -283,7 +283,6 @@ public abstract class EmbeddedRungeKuttaIntegrator
+         // estimate the error at the end of the step
+         error = estimateError(yDotK, y, yTmp, stepSize);
+         if (error <= 1.0) {
+-
+           // discrete events handling
+           interpolator.storeTime(stepStart + stepSize);
+           if (manager.evaluateStep(interpolator)) {
+@@ -299,7 +298,6 @@ public abstract class EmbeddedRungeKuttaIntegrator
+             // accept the step
+             loop = false;
+           }
+-
+         } else {
+           // reject the step and attempt to reduce error by stepsize control
+           final double factor =
+@@ -355,7 +353,6 @@ public abstract class EmbeddedRungeKuttaIntegrator
+     final double stopTime = stepStart;
+     resetInternalState();
+     return stopTime;
+-
+   }
+ 
+   /** Get the minimal reduction factor for stepsize control.

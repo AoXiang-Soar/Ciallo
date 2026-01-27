@@ -1,0 +1,26 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ser/impl/WritableObjectId.java b/src/main/java/com/fasterxml/jackson/databind/ser/impl/WritableObjectId.java
+index af141e12a..b2ac286d4 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ser/impl/WritableObjectId.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ser/impl/WritableObjectId.java
+@@ -43,13 +43,16 @@ public final class WritableObjectId
+         return false;
+     }
+     
+-    public Object generateId(Object forPojo) {
+-        // 04-Jun-2016, tatu: As per [databind#1255], need to consider possibility of
+-        //    id being generated for "alwaysAsId", but not being written as POJO; regardless,
+-        //    need to use existing id if there is one:
+-            id = generator.generateId(forPojo);
++
++public Object generateId(Object forPojo) {
++    // If we already have an ID that hasn't been fully processed yet, reuse it
++    if (id != null) {
+         return id;
+     }
++    // Otherwise generate a new ID
++    id = generator.generateId(forPojo);
++    return id;
++}
+ 
+     /**
+      * Method called to output Object Id as specified.

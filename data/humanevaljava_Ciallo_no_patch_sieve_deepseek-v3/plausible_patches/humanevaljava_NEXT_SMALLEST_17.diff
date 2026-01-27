@@ -1,0 +1,47 @@
+diff --git a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+index 7791efd..1a01e76 100644
+--- a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
++++ b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+@@ -2,25 +2,23 @@ package humaneval.buggy;
+ 
+ import java.util.*;
+ 
+-/* You are given a list of integers.
+-Write a function next_smallest() that returns the 2nd smallest element of the list.
+-Return None if there is no such element.
+-
+-next_smallest([1, 2, 3, 4, 5]) == 2
+-next_smallest([5, 1, 4, 3, 2]) == 2
+-next_smallest([]) == None
+-next_smallest([1, 1]) == None */
+-
+ public class NEXT_SMALLEST {
+     public static Integer next_smallest(int[] lst) {
+-        List<Integer> numbers = new ArrayList<Integer>();
+-        for (Integer n : lst)
+-            numbers.add(n);
+-        Integer[] no_duplicate = numbers.toArray(new Integer[] {});
+-        Arrays.sort(no_duplicate);
+-
+-        if (no_duplicate.length < 2)
++        if (lst.length < 2)
++            return null;
++        
++        int[] copy = Arrays.copyOf(lst, lst.length);
++        Arrays.sort(copy);
++        
++        // Find the first element that is greater than the minimum
++        int first = copy[0];
++        int i = 1;
++        while (i < copy.length && copy[i] == first) {
++            i++;
++        }
++        
++        if (i >= copy.length)
+             return null;
+-        return no_duplicate[1];
++        return copy[i];
+     }
+-}
++}
+\ No newline at end of file

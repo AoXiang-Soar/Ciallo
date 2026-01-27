@@ -1,0 +1,16 @@
+{
+    "bug_id": 24,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: expected same:<[, One, 2, Three, null, 4, One, 5.0, 6.0, Seven, Eight, Nine, 10, 11, 12, Thirteen, 14, 15, 16]> was not:<[, One, 2, Three, null, 4, One, 5.0, 6.0, Seven, Eight, Nine, 10, 11, 12, Thirteen, 14, 15, 16]>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testDecorateFactory() {\n        final BoundedCollection<E> coll = makeFullCollection();\n        assertSame(coll, UnmodifiableBoundedCollection.unmodifiableBoundedCollection(coll));\n\n        try {\n            UnmodifiableBoundedCollection.unmodifiableBoundedCollection(null);\n            fail();\n        } catch (final IllegalArgumentException ex) {}\n    }",
+    "test_line": "        assertSame(coll, UnmodifiableBoundedCollection.unmodifiableBoundedCollection(coll));",
+    "test_name": "testDecorateFactory",
+    "test_suite": "org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest"
+}

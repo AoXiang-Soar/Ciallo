@@ -1,0 +1,44 @@
+diff --git a/src/main/java/org/apache/commons/csv/CSVRecord.java b/src/main/java/org/apache/commons/csv/CSVRecord.java
+index 7380d9fe..48fd20d2 100644
+--- a/src/main/java/org/apache/commons/csv/CSVRecord.java
++++ b/src/main/java/org/apache/commons/csv/CSVRecord.java
+@@ -166,23 +166,25 @@ public final class CSVRecord implements Serializable, Iterable<String> {
+      *
+      * @return an iterator over the values of this record.
+      */
+-    public Iterator<String> iterator() {
+-        return toList().iterator();
+-    }
++public Iterator<String> iterator() {
++    return Arrays.asList(values).iterator();
++}
+ 
+-    /**
+-     * Puts all values of this record into the given Map.
+-     *
+-     * @param map The Map to populate.
+-     * @return the given map.
+-     */
+-    <M extends Map<String, String>> M putIn(final M map) {
+-        for (final Entry<String, Integer> entry : mapping.entrySet()) {
+-            final int col = entry.getValue().intValue();
+-                map.put(entry.getKey(), values[col]);
++/**
++ * Puts all values of this record into the given Map.
++ *
++ * @param map The Map to populate.
++ * @return the given map.
++ */
++<M extends Map<String, String>> M putIn(final M map) {
++    for (final Entry<String, Integer> entry : mapping.entrySet()) {
++        final int col = entry.getValue().intValue();
++        if (col < values.length) {
++            map.put(entry.getKey(), values[col]);
+         }
+-        return map;
+     }
++    return map;
++}
+ 
+     /**
+      * Returns the number of values in this record.

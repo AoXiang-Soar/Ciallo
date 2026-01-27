@@ -1,0 +1,49 @@
+diff --git a/src/main/java/org/apache/commons/codec/language/Soundex.java b/src/main/java/org/apache/commons/codec/language/Soundex.java
+index 71d1f07f..1280ea20 100644
+--- a/src/main/java/org/apache/commons/codec/language/Soundex.java
++++ b/src/main/java/org/apache/commons/codec/language/Soundex.java
+@@ -180,22 +180,33 @@ public class Soundex implements StringEncoder {
+      * @throws IllegalArgumentException
+      *                  if the character is not mapped
+      */
+-    private char getMappingCode(final String str, final int index) {
+-        // map() throws IllegalArgumentException
+-        final char mappedChar = this.map(str.charAt(index));
+-        // HW rule check
+-        if (index > 1 && mappedChar != '0') {
+-            final char hwChar = str.charAt(index - 1);
+-            if ('H' == hwChar || 'W' == hwChar) {
+-                final char preHWChar = str.charAt(index - 2);
+-                final char firstCode = this.map(preHWChar);
+-                if (firstCode == mappedChar || 'H' == preHWChar || 'W' == preHWChar) {
++private char getMappingCode(final String str, final int index) {
++    final char mappedChar = this.map(str.charAt(index));
++    
++    // HW rule check
++    if (index > 1 && mappedChar != '0') {
++        char prevChar = str.charAt(index - 1);
++        if ('H' == prevChar || 'W' == prevChar) {
++            // Check previous characters skipping consecutive H/W
++            int prevPos = index - 2;
++            char prevNonHWChar = str.charAt(prevPos);
++            while (prevPos >= 0 && (prevNonHWChar == 'H' || prevNonHWChar == 'W')) {
++                prevPos--;
++                if (prevPos >= 0) {
++                    prevNonHWChar = str.charAt(prevPos);
++                }
++            }
++            
++            if (prevPos >= 0) {
++                final char firstCode = this.map(prevNonHWChar);
++                if (firstCode == mappedChar) {
+                     return 0;
+                 }
+             }
+         }
+-        return mappedChar;
+     }
++    return mappedChar;
++}
+ 
+     /**
+      * Returns the maxLength. Standard Soundex

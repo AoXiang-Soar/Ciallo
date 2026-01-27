@@ -1,0 +1,32 @@
+diff --git a/src/main/java/humaneval/buggy/ADD_ELEMENTS.java b/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
+index 359f8fb..8507d38 100644
+--- a/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
++++ b/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
+@@ -5,7 +5,7 @@ import java.util.ArrayList;
+ /*
+  * Given a non-empty array of integers arr and an integer k, return
+     the sum of the elements with at most two digits from the first k elements of arr.
+-    Assume that the negative sign counts as a digit, e.g. -5 has two digits
++    Assume that the negative sign counts as a digit, e.g. -5 has two digits.
+ 
+     Example:
+ 
+@@ -21,10 +21,14 @@ public class ADD_ELEMENTS {
+     public static int add_elements(ArrayList<Integer> arr, int k) {
+         int result = 0;
+         for(int i = 0; i < k; i++) {
+-            if(Integer.toString(arr.get(i)).length() >= 2) {
+-                result -= arr.get(i);
++            int num = arr.get(i);
++            // Convert the number to string and determine its length including sign
++            int len = Integer.toString(num).length();
++            // If the number has at most two digits (including the negative sign), add it to the result
++            if(len <= 2) {
++                result += num;
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

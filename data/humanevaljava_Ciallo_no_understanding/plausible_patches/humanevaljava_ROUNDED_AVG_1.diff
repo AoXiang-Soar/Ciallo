@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/ROUNDED_AVG.java b/src/main/java/humaneval/buggy/ROUNDED_AVG.java
+old mode 100644
+new mode 100755
+index 4f7aba3..ac13883
+--- a/src/main/java/humaneval/buggy/ROUNDED_AVG.java
++++ b/src/main/java/humaneval/buggy/ROUNDED_AVG.java
+@@ -19,13 +19,11 @@ public class ROUNDED_AVG {
+             summation += i;
+         }
+         double avg = ((double) summation)/((double) (m - n + 1));
+-        double rem = avg - Math.floor(avg);
+-        int avg_rounded = 0;
+-        if(rem <= 0.5) {
+-            avg_rounded = (int) Math.ceil(avg);
+-        } else {
+-            avg_rounded = (int) Math.ceil(avg);
++        int avg_rounded = (int) Math.round(avg);
++        // Special case for 0.5 rounding down
++        if (avg - Math.floor(avg) == 0.5) {
++            avg_rounded = (int) Math.floor(avg);
+         }
+         return Integer.toBinaryString(avg_rounded);
+     }
+-}
++}
+\ No newline at end of file

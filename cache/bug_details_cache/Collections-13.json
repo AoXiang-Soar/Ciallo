@@ -1,0 +1,16 @@
+{
+    "bug_id": 13,
+    "bug_type": "SH SF",
+    "buggy_lines": "            c.setProperty(s, props.getProperty(s));",
+    "code": "    public static ExtendedProperties convertProperties(Properties props) {\n        ExtendedProperties c = new ExtendedProperties();\n\n        for (Enumeration e = props.propertyNames(); e.hasMoreElements();) {\n            String s = (String) e.nextElement();\n            c.setProperty(s, props.getProperty(s));\n        }\n\n        return c;\n    }",
+    "fixed_code": "    public static ExtendedProperties convertProperties(Properties props) {\n        ExtendedProperties c = new ExtendedProperties();\n\n        for (Enumeration e = props.propertyNames(); e.hasMoreElements();) {\n            String s = (String) e.nextElement();\n            String value = props.getProperty(s);\n            if(value != null) {\n                c.setProperty(s, value);\n            }\n        }\n\n        return c;\n    }",
+    "fixed_lines": "            String value = props.getProperty(s);\n            if(value != null) {\n                c.setProperty(s, value);\n            }",
+    "masked_code": "    public static ExtendedProperties convertProperties(Properties props) {\n        ExtendedProperties c = new ExtendedProperties();\n\n        for (Enumeration e = props.propertyNames(); e.hasMoreElements();) {\n            String s = (String) e.nextElement();\n>>> [ INFILL ] <<<\n        }\n\n        return c;\n    }",
+    "project": "Collections",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCollections299() {\n        Properties defaults = new Properties();\n        defaults.put(\"objectTrue\", Boolean.TRUE);\n\n        Properties properties = new Properties(defaults);\n        properties.put(\"objectFalse\", Boolean.FALSE);\n\n        ExtendedProperties extended = ExtendedProperties.convertProperties(properties);\n\n        assertNull(extended.getString(\"objectTrue\"));\n        assertNull(extended.getString(\"objectFalse\"));\n\n        assertNull(extended.get(\"objectTrue\"));\n        assertNull(extended.get(\"objectFalse\"));\n    }",
+    "test_line": "        ExtendedProperties extended = ExtendedProperties.convertProperties(properties);",
+    "test_name": "testCollections299",
+    "test_suite": "org.apache.commons.collections.TestExtendedProperties"
+}

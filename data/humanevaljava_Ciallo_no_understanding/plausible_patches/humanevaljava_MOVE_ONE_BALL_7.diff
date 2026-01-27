@@ -1,0 +1,52 @@
+diff --git a/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java b/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
+old mode 100644
+new mode 100755
+index ce2ea8a..6c2cd03
+--- a/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
++++ b/src/main/java/humaneval/buggy/MOVE_ONE_BALL.java
+@@ -5,26 +5,29 @@ import java.util.Collections;
+ 
+ public class MOVE_ONE_BALL {
+     public static boolean move_one_ball(ArrayList<Integer> arr) {
+-        if(arr.size() == 0) return true;
++        if (arr.size() == 0) return true;
++        
+         ArrayList<Integer> sorted_arr = new ArrayList<>(arr);
+         Collections.sort(sorted_arr);
+-        int min_value = sorted_arr.get(sorted_arr.size() - 1);
+-        int min_index = 0;
+-        for(int i = 0; i < arr.size(); i++) {
+-            if(arr.get(i) == min_value) min_index = i;
+-        }
+-        ArrayList<Integer> arr_after_move = new ArrayList<>();
+-        for(int i = min_index; i < arr.size(); i++) {
+-            arr_after_move.add(arr.get(i));
+-        }
+-        for(int i = 0; i < min_index; i++) {
+-            arr_after_move.add(arr.get(i));
++        
++        // Find the starting point where the rotation could match the sorted array
++        int rotation_point = -1;
++        for (int i = 0; i < arr.size(); i++) {
++            if (arr.get(i) == sorted_arr.get(0)) {
++                rotation_point = i;
++                break;
++            }
+         }
+-        for(int i = 0; i < arr.size(); i++) {
+-            if(arr_after_move.get(i) != sorted_arr.get(i)) {
++        
++        if (rotation_point == -1) return false;
++        
++        // Check if rotating at this point matches the sorted array
++        for (int i = 0; i < arr.size(); i++) {
++            int original_index = (rotation_point + i) % arr.size();
++            if (!arr.get(original_index).equals(sorted_arr.get(i))) {
+                 return false;
+             }
+         }
+         return true;
+     }
+-}
++}
+\ No newline at end of file

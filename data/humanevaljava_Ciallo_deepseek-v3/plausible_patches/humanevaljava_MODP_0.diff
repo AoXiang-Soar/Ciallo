@@ -1,0 +1,38 @@
+diff --git a/src/main/java/humaneval/buggy/MODP.java b/src/main/java/humaneval/buggy/MODP.java
+index a8f7394..9fd1d1a 100644
+--- a/src/main/java/humaneval/buggy/MODP.java
++++ b/src/main/java/humaneval/buggy/MODP.java
+@@ -1,23 +1,16 @@
+ package humaneval.buggy;
+ 
+-/* Return 2^n modulo p (be aware of numerics).
+->>> modp(3, 5)
+-3
+->>> modp(1101, 101)
+-2
+->>> modp(0, 101)
+-1
+->>> modp(3, 11)
+-8
+->>> modp(100, 101)
+-1 */
+-
+ public class MODP {
+     public static int modp(int n, int p) {
+         int result = 1;
+-        for (int i = 0; i < n; i += 1){
+-            result = 2 * result;
++        int base = 2;
++        while (n > 0) {
++            if ((n % 2) == 1) {
++                result = (result * base) % p;
++            }
++            base = (base * base) % p;
++            n /= 2;
+         }
+-        return result % p;
++        return result;
+     }
+-}
++}
+\ No newline at end of file

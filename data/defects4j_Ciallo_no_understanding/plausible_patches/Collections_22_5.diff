@@ -1,0 +1,50 @@
+diff --git a/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java b/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java
+index 5892910e..20d48051 100644
+--- a/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java
++++ b/src/main/java/org/apache/commons/collections4/map/ListOrderedMap.java
+@@ -241,20 +241,33 @@ public class ListOrderedMap<K, V>
+      * @param index the index in the Map to start at.
+      * @param map the Map containing the entries to be added.
+      */
+-    public void putAll(int index, final Map<? extends K, ? extends V> map) {
+-        for (final Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+-            final V old = put(index, entry.getKey(), entry.getValue());
+-            if (old == null) {
+-            // The return value of put is null if the key did not exist OR the value was null
+-            // so it cannot be used to determine whether the key was added
+-                // if no key was replaced, increment the index
+-                index++;
+-            } else {
+-                // otherwise put the next item after the currently inserted key
+-                index = indexOf(entry.getKey()) + 1;
+-            }
++public void putAll(int index, final Map<? extends K, ? extends V> map) {
++    // Start from the minimum valid index if input index is too small
++    index = Math.max(0, index);
++    
++    for (final Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
++        // Check if index is beyond current size
++        if (index > size()) {
++            index = size();
++        }
++        
++        int keyIndex = indexOf(entry.getKey());
++        if (keyIndex != -1) {
++            // Key exists - remove it first to maintain order
++            remove(entry.getKey());
++            // Insert at the original key's position
++            index = keyIndex;
++        }
++        
++        // Insert the entry
++        put(index, entry.getKey(), entry.getValue());
++        
++        // Move index forward only if we're appending new entries
++        if (keyIndex == -1) {
++            index++;
+         }
+     }
++}
+ 
+     @Override
+     public V remove(final Object key) {

@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/INCR_LIST.java b/src/main/java/humaneval/buggy/INCR_LIST.java
+index 7471990..eea5c08 100644
+--- a/src/main/java/humaneval/buggy/INCR_LIST.java
++++ b/src/main/java/humaneval/buggy/INCR_LIST.java
+@@ -11,11 +11,15 @@ import java.util.List;
+ 
+ public class INCR_LIST {
+     public static List<Integer> incr_list(List<Integer> l) {
+-        List<Integer> result = new ArrayList<Integer>();
++        List<Integer> result = new ArrayList<>();
+ 
+         for (Integer n : l) {
+-            result.add(n - 1);
++            result.add(incrementByOne(n));
+         }
+         return result;
+     }
+-}
++
++    private static Integer incrementByOne(Integer n) {
++        return n + 1;
++    }
++}
+\ No newline at end of file

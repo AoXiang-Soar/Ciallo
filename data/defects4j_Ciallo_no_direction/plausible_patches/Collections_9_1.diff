@@ -1,0 +1,40 @@
+diff --git a/src/java/org/apache/commons/collections/ExtendedProperties.java b/src/java/org/apache/commons/collections/ExtendedProperties.java
+index 8c302f8e..2dfe2d9a 100644
+--- a/src/java/org/apache/commons/collections/ExtendedProperties.java
++++ b/src/java/org/apache/commons/collections/ExtendedProperties.java
+@@ -810,12 +810,31 @@ public class ExtendedProperties extends Hashtable {
+      *
+      * @param props  the properties to combine
+      */
+-    public void combine(ExtendedProperties props) {
+-        for (Iterator it = props.getKeys(); it.hasNext();) {
+-            String key = (String) it.next();
+-            setProperty(key, props.get(key));
++public void combine(ExtendedProperties props) {
++    for (Iterator it = props.getKeys(); it.hasNext();) {
++        String key = (String) it.next();
++        Object value = props.get(key);
++        if (value instanceof String) {
++            String strValue = (String) value;
++            // Only modify if the string contains backslashes to avoid unnecessary replacements
++            if (strValue.contains("\\")) {
++                StringBuilder sb = new StringBuilder();
++                for (int i = 0; i < strValue.length(); i++) {
++                    char c = strValue.charAt(i);
++                    if (c == '\\') {
++                        sb.append('\\');  // append an extra backslash
++                    }
++                    sb.append(c);
++                }
++                setProperty(key, sb.toString());
++            } else {
++                setProperty(key, value);
++            }
++        } else {
++            setProperty(key, value);
+         }
+     }
++}
+     
+     /**
+      * Clear a property in the configuration.

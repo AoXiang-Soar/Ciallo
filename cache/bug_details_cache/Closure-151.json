@@ -1,0 +1,16 @@
+{
+    "bug_id": 151,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "  public void testVersionFlag() {\n    args.add(\"--version\");\n    testSame(\"\");\n    assertEquals(\n        0,\n        new String(errReader.toByteArray()).indexOf(\n            \"Closure Compiler (http://code.google.com/p/closure/compiler)\\n\" +\n            \"Version: HEAD\\n\" +\n            \"Built on:\"));\n  }",
+    "test_line": "    assertTrue(runner.shouldRunCompiler());",
+    "test_name": "testVersionFlag",
+    "test_suite": "com.google.javascript.jscomp.CommandLineRunnerTest"
+}

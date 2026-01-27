@@ -1,0 +1,61 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+index fe2c1133..f9e80734 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+@@ -566,31 +566,39 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+      * @throws IOException on error
+      */
+     @Override
+-    public int read(byte[] buf, int offset, int numToRead) throws IOException {
+-    	int totalRead = 0;
++public int read(byte[] buf, int offset, int numToRead) throws IOException {
++    if (hasHitEOF || entryOffset >= entrySize) {
++        return -1;
++    }
+ 
+-        if (hasHitEOF || entryOffset >= entrySize) {
+-            return -1;
+-        }
++    if (currEntry == null) {
++        throw new IllegalStateException("No current tar entry");
++    }
+ 
+-        if (currEntry == null) {
+-            throw new IllegalStateException("No current tar entry");
+-        }
++    int totalRead = 0;
++    int bytesToRead = Math.min(numToRead, available());
+ 
+-        numToRead = Math.min(numToRead, available());
+-        
+-        totalRead = is.read(buf, offset, numToRead);
+-        count(totalRead);
+-        
+-        if (totalRead == -1) {
++    while (totalRead < bytesToRead) {
++        int bytesRead = is.read(buf, offset + totalRead, bytesToRead - totalRead);
++
++        // If the input stream returns -1, then an unexpected EOF is encountered.
++        if (bytesRead == -1) {
+             hasHitEOF = true;
+-        } else {
+-            entryOffset += totalRead;
++            throw new IOException("Unexpected end of entry");
+         }
+ 
+-        return totalRead;
++        totalRead += bytesRead;
++        entryOffset += bytesRead;
++
++        if (entryOffset > entrySize) {
++            throw new IOException("Truncated entry detected");
++        }
+     }
+ 
++    count(totalRead);
++    return totalRead;
++}
++
+     /**
+      * Whether this class is able to read the given entry.
+      *

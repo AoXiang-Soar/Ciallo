@@ -1,0 +1,56 @@
+diff --git a/src/main/java/humaneval/buggy/MATCH_PARENS.java b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+old mode 100644
+new mode 100755
+index 0d0da0a..e916f82
+--- a/src/main/java/humaneval/buggy/MATCH_PARENS.java
++++ b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+@@ -16,19 +16,37 @@ package humaneval.buggy;
+  */
+ 
+ public class MATCH_PARENS {
+-    public static boolean check(String s) {
+-        int val = 0;
+-        for(int i = 0; i < s.length(); i++) {
+-            if(s.charAt(i) == '(') val--;
+-            else val++;
+-            if(val < 0) return false;
++    public static boolean validateParentheses(String s) {
++        int balance = 0;
++        for (char c : s.toCharArray()) {
++            if (c == '(') {
++                balance++;
++            } else {
++                balance--;
++                if (balance < 0) {
++                    return false;
++                }
++            }
+         }
+-        return val == 0;
++        return balance == 0;
+     }
++    
+     public static String match_parens(String[] lst) {
+-        String S1 = lst[0] + lst[1];
+-        String S2 = lst[1] + lst[0];
+-        if(check(S1) || check(S2)) return "Yes";
++        // Check both possible concatenations first
++        String combo1 = lst[0] + lst[1];
++        String combo2 = lst[1] + lst[0];
++        
++        if (validateParentheses(combo1) || validateParentheses(combo2)) {
++            return "Yes";
++        }
++        
++        // Special case: when both strings are individually balanced but combined aren't
++        boolean s1Balanced = validateParentheses(lst[0]);
++        boolean s2Balanced = validateParentheses(lst[1]);
++        if (s1Balanced && s2Balanced) {
++            return "Yes";
++        }
++        
+         return "No";
+     }
+-}
++}
+\ No newline at end of file

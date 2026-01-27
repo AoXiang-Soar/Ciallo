@@ -1,0 +1,32 @@
+diff --git a/src/main/java/humaneval/buggy/GET_ROW.java b/src/main/java/humaneval/buggy/GET_ROW.java
+index 83f4169..e4d9697 100644
+--- a/src/main/java/humaneval/buggy/GET_ROW.java
++++ b/src/main/java/humaneval/buggy/GET_ROW.java
+@@ -17,18 +17,22 @@ public class GET_ROW {
+             }
+             return false;
+         }
++        @Override
++        public String toString() {
++            return "(" + x + ", " + y + ")";
++        }
+     } 
+ 
+     public static ArrayList<Tuple> get_row(ArrayList<ArrayList<Integer>> lst, int x) {
+         ArrayList<Tuple> result = new ArrayList<Tuple>();
+ 
+         for (int i = 0; i < lst.size(); i += 1) {
+-            for (int j = lst.get(0).size() - 1; j >= 0; j -= 1){
+-                if (lst.get(i).get(i) == x){
+-                    result.add(new GET_ROW().new Tuple(i, i));
++            for (int j = lst.get(i).size() - 1; j >= 0; j -= 1){
++                if (lst.get(i).get(j) == x){
++                    result.add(new GET_ROW().new Tuple(i, j));
+                 }
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

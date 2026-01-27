@@ -1,0 +1,64 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java b/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
+index 49fdf7f6..f9b340e0 100644
+--- a/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
++++ b/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
+@@ -30,6 +30,14 @@ import java.lang.reflect.Method;
+ public abstract class UnsafeAllocator {
+   public abstract <T> T newInstance(Class<T> c) throws Exception;
+ 
++  private static void validateInstantiable(Class<?> c) {
++    int modifiers = c.getModifiers();
++    if (java.lang.reflect.Modifier.isInterface(modifiers) || 
++        java.lang.reflect.Modifier.isAbstract(modifiers)) {
++      throw new UnsupportedOperationException("Cannot allocate " + c);
++    }
++  }
++
+   public static UnsafeAllocator create() {
+     // try JVM
+     // public class Unsafe {
+@@ -45,13 +53,14 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
++          validateInstantiable(c);
+           return (T) allocateInstance.invoke(unsafe, c);
+         }
+       };
+     } catch (Exception ignored) {
+     }
+ 
+-    // try dalvikvm, post-gingerbread
++    // try dalvikvm,post-gingerbread
+     // public class ObjectStreamClass {
+     //   private static native int getConstructorId(Class<?> c);
+     //   private static native Object newInstance(Class<?> instantiationClass, int methodId);
+@@ -68,6 +77,7 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
++          validateInstantiable(c);
+           return (T) newInstance.invoke(null, c, constructorId);
+         }
+       };
+@@ -87,6 +97,7 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
++          validateInstantiable(c);
+           return (T) newInstance.invoke(null, c, Object.class);
+         }
+       };
+@@ -101,10 +112,4 @@ public abstract class UnsafeAllocator {
+       }
+     };
+   }
+-
+-  /**
+-   * Check if the class can be instantiated by unsafe allocator. If the instance has interface or abstract modifiers
+-   * throw an {@link java.lang.UnsupportedOperationException}
+-   * @param c instance of the class to be checked
+-   */
+-}
++}
+\ No newline at end of file

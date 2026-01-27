@@ -1,0 +1,39 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Mockito,8,SL SH SF,0,556088,,52,274,861,
+defects4j,Mockito,12,SF,10,13940,8,6,0,22,
+defects4j,Mockito,20,SF,0,483130,,119,94,1520,
+defects4j,Mockito,28,SH SF,1,12294,9,2,9,12,
+defects4j,Mockito,33,SF,1,7958,5,0,5,5,
+defects4j,Mockito,1,SH SF,4,14327,6,6,2,17,
+defects4j,Mockito,2,BF,0,241985,,109,33,1477,
+defects4j,Mockito,3,BF,0,922030,,57,195,875,
+defects4j,Mockito,4,BF,,,,,,,Out of limited tokens. 
+defects4j,Mockito,5,SL SH SF,2,27910,30,12,16,32,
+defects4j,Mockito,6,BF,,,,,,,Out of limited tokens. 
+defects4j,Mockito,7,SL SH SF,0,398022,,122,96,1584,
+defects4j,Mockito,9,BF,2,66751,37,14,16,46,
+defects4j,Mockito,10,BF,4,115507,27,15,9,49,
+defects4j,Mockito,11,BF,12,21406,4,1,0,14,
+defects4j,Mockito,13,SF,4,24970,7,4,4,15,
+defects4j,Mockito,14,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Mockito,15,BF,6,60666,29,23,5,64,
+defects4j,Mockito,16,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Mockito,17,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Mockito,18,SH SF,0,789966,,127,228,1764,
+defects4j,Mockito,19,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Mockito,21,BF,7,24256,6,5,2,18,
+defects4j,Mockito,22,SH SF,4,425064,312,48,162,612,
+defects4j,Mockito,23,BF,3,253606,72,61,8,215,
+defects4j,Mockito,24,SL SH SF,6,10884,5,1,0,8,
+defects4j,Mockito,25,BF,0,1023862,,247,102,3169,
+defects4j,Mockito,26,SL SH SF,4,9960,5,0,0,4,
+defects4j,Mockito,27,SH SF,1,33543,35,4,29,24,
+defects4j,Mockito,29,SL SH SF,2,6107,5,2,1,6,
+defects4j,Mockito,30,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Mockito,31,BF,2,18990,4,2,3,7,
+defects4j,Mockito,32,BF,1,73731,32,6,19,30,
+defects4j,Mockito,34,SL SH SF,3,9033,5,0,0,3,
+defects4j,Mockito,35,BF,,,,,,,Out of limited tokens. 
+defects4j,Mockito,36,BF,1,237700,50,28,24,121,
+defects4j,Mockito,37,BF,3,43087,17,0,18,13,
+defects4j,Mockito,38,SL SH SF,4,7535,5,0,2,5,

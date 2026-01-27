@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/GET_ODD_COLLATZ.java b/src/main/java/humaneval/buggy/GET_ODD_COLLATZ.java
+old mode 100644
+new mode 100755
+index 33f1d5d..de1cbb0
+--- a/src/main/java/humaneval/buggy/GET_ODD_COLLATZ.java
++++ b/src/main/java/humaneval/buggy/GET_ODD_COLLATZ.java
+@@ -24,12 +24,12 @@ public class GET_ODD_COLLATZ {
+     public static ArrayList<Integer> get_odd_collatz(int n) {
+         ArrayList<Integer> result = new ArrayList<>();
+         if((n % 2) == 1) result.add(n);
+-        while(n >= 1) {
+-            if((n % 2) == 1) n /= 2;
++        while(n > 1) {
++            if((n % 2) == 0) n /= 2;
+             else n = 3 * n + 1;
+             if((n % 2) == 1) result.add(n);
+         }
+         Collections.sort(result);
+         return result;
+     }
+-}
++}
+\ No newline at end of file

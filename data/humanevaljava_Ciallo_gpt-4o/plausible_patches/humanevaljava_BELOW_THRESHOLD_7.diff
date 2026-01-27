@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/BELOW_THRESHOLD.java b/src/main/java/humaneval/buggy/BELOW_THRESHOLD.java
+index c7d15af..bb0a70b 100644
+--- a/src/main/java/humaneval/buggy/BELOW_THRESHOLD.java
++++ b/src/main/java/humaneval/buggy/BELOW_THRESHOLD.java
+@@ -8,10 +8,11 @@ False */
+ 
+ public class BELOW_THRESHOLD {
+     public static boolean below_threshold(int[] l, int t) {
+-        for (int i = 0; i < l.length; i += 1) {
+-            if (l[i] <= t)
+-                return true;
++        for (int i = 0; i < l.length; i++) {
++            if (l[i] >= t) {
++                return false;
++            }
+         }
+-        return false;
++        return true;
+     }
+-}
++}
+\ No newline at end of file

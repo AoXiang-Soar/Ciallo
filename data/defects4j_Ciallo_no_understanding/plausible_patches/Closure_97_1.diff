@@ -1,0 +1,14 @@
+diff --git a/src/com/google/javascript/jscomp/PeepholeFoldConstants.java b/src/com/google/javascript/jscomp/PeepholeFoldConstants.java
+index d6c194a34..bb3262f8f 100644
+--- a/src/com/google/javascript/jscomp/PeepholeFoldConstants.java
++++ b/src/com/google/javascript/jscomp/PeepholeFoldConstants.java
+@@ -696,6 +696,9 @@ public class PeepholeFoldConstants extends AbstractPeepholeOptimization {
+           // Java as an Java int can not represent the unsigned 32-bit number
+           // where JavaScript can so use a long here.
+           result = lvalInt >>> rvalInt;
++          if (rvalInt == 0) {
++            result = lvalInt & 0xFFFFFFFFL;
++          }
+           break;
+         default:
+           throw new AssertionError("Unknown shift operator: " +

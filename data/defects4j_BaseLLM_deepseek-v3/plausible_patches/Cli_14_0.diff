@@ -1,0 +1,19 @@
+diff --git a/src/java/org/apache/commons/cli2/option/GroupImpl.java b/src/java/org/apache/commons/cli2/option/GroupImpl.java
+index 781d0b6..ca02907 100644
+--- a/src/java/org/apache/commons/cli2/option/GroupImpl.java
++++ b/src/java/org/apache/commons/cli2/option/GroupImpl.java
+@@ -255,11 +255,12 @@ public class GroupImpl
+             if (commandLine.hasOption(option)) {
+                 if (++present > maximum) {
+                     unexpected = option;
+-
+                     break;
+                 }
+ 
+-                option.validate(commandLine);
++                if (!validate) {
++                    option.validate(commandLine);
++                }
+             }
+         }
+ 

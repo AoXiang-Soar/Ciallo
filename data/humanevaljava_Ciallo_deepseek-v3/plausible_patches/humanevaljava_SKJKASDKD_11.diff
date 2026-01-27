@@ -1,0 +1,68 @@
+diff --git a/src/main/java/humaneval/buggy/SKJKASDKD.java b/src/main/java/humaneval/buggy/SKJKASDKD.java
+index 4fd1548..309ac02 100644
+--- a/src/main/java/humaneval/buggy/SKJKASDKD.java
++++ b/src/main/java/humaneval/buggy/SKJKASDKD.java
+@@ -1,36 +1,40 @@
+ package humaneval.buggy;
+ 
+-// You are given a list of integers.
+-// You need to find the largest prime value and return the sum of its digits.
+-
+-// Examples:
+-// For lst = [0,3,2,1,3,5,7,4,5,5,5,2,181,32,4,32,3,2,32,324,4,3] the output should be 10
+-// For lst = [1,0,1,8,2,4597,2,1,3,40,1,2,1,2,4,2,5,1] the output should be 25
+-// For lst = [1,3,1,32,5107,34,83278,109,163,23,2323,32,30,1,9,3] the output should be 13
+-// For lst = [0,724,32,71,99,32,6,0,5,91,83,0,5,6] the output should be 11
+-// For lst = [0,81,12,3,1,21] the output should be 3
+-// For lst = [0,8,1,2,1,7] the output should be 7
+-
+ public class SKJKASDKD {
++    
++    // Improved prime checking function
+     public static boolean is_prime(int n) {
+-        for (int i = 2; i < (int)Math.pow(n, 0.5) + 1; i += 1) {
+-            if (n % i == 0) return false;
++        if (n <= 1) return false;          // 0 and 1 are not prime numbers
++        if (n <= 3) return true;           // 2 and 3 are prime numbers
++        if (n % 2 == 0 || n % 3 == 0) return false; // Check divisibility by 2 and 3
++
++        // Check divisibility from 5 to the square root of n
++        for (int i = 5; i * i <= n; i += 6) {
++            if (n % i == 0 || n % (i + 2) == 0) return false;
+         }
+         return true;
+     }
+ 
+     public static int skjkasdkd(int[] lst) {
+-        int max = 0;
+-        int i = 0;
+-        while(i < lst.length) {
+-            if (lst[i] > max && is_prime(lst[i]))
+-                max = lst[i];
+-            i += 1;
++        Integer maxPrime = null; // Use null to identify if no prime found
++
++        for (int num : lst) {
++            if (is_prime(num)) {
++                if (maxPrime == null || num > maxPrime) {
++                    maxPrime = num;
++                }
++            }
+         }
++
++        // If no prime is found, return 0
++        if (maxPrime == null) return 0;
++
++        // Calculate the sum of digits of the maximum prime number
+         int result = 0;
+-        for (char c : (max + "").toCharArray()) {
+-            result += (int) c;
++        while (maxPrime > 0) {
++            result += maxPrime % 10;
++            maxPrime /= 10;
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

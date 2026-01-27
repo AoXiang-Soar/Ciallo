@@ -1,0 +1,59 @@
+diff --git a/src/main/java/humaneval/buggy/FIND_ZERO.java b/src/main/java/humaneval/buggy/FIND_ZERO.java
+index 9e2c137..44e129c 100644
+--- a/src/main/java/humaneval/buggy/FIND_ZERO.java
++++ b/src/main/java/humaneval/buggy/FIND_ZERO.java
+@@ -12,22 +12,42 @@ public class FIND_ZERO {
+     }
+ 
+     public static double find_zero(List<Double> xs){
+-        double begin = -1.;
+-        double end = 1.;
++        double begin = -1.0;
++        double end = 1.0;
++        double poly_begin = poly(xs, begin);
++        double poly_end = poly(xs, end);
+ 
+-        while (poly(xs, begin) * poly(xs, end) > 0) {
+-            begin *= 2.;
+-            end *= 2.;
++        // Find suitable initial bounds by growing outward in both directions
++        while (poly_begin * poly_end > 0) {
++            begin *= 2.0;
++            poly_begin = poly(xs, begin);
++            if (poly_begin * poly_end <= 0) break;
++            
++            end *= 2.0;
++            poly_end = poly(xs, end);
+         }
++
++        // Adjust bounds if necessary to ensure they bracket the root
++        if (poly_begin == 0) return begin;
++        if (poly_end == 0) return end;
++
++        // Bisection search
+         while (end - begin > 1e-10) {
+-            double center = (begin + end) / 2.;
++            double center = (begin + end) / 2;
++            double poly_center = poly(xs, center);
++
++            if (poly_center == 0) {
++                return center;
++            }
+             
+-            if (poly(xs, begin) * poly(xs, end) < 0) {
+-                begin = center;
+-            } else {
++            if (poly_begin * poly_center < 0) {
+                 end = center;
++                poly_end = poly_center;
++            } else {
++                begin = center;
++                poly_begin = poly_center;
+             }
+         }
+-        return begin;
++        return (begin + end) / 2;
+     }
+-}
++}
+\ No newline at end of file

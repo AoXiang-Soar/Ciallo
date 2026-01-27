@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/lang3/math/NumberUtils.java b/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
+index fd03ab8f8..436dbee9a 100644
+--- a/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
++++ b/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
+@@ -471,7 +471,7 @@ public class NumberUtils {
+         String dec;
+         String exp;
+         int decPos = str.indexOf('.');
+-        int expPos = str.indexOf('e') + str.indexOf('E') + 1;
++        int expPos = str.indexOf('e') > -1 ? str.indexOf('e') : str.indexOf('E');
+ 
+         if (decPos > -1) {
+ 

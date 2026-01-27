@@ -1,0 +1,84 @@
+diff --git a/src/main/java/org/apache/commons/math/optimization/univariate/MultiStartUnivariateRealOptimizer.java b/src/main/java/org/apache/commons/math/optimization/univariate/MultiStartUnivariateRealOptimizer.java
+index 1200544d7..5006b4826 100644
+--- a/src/main/java/org/apache/commons/math/optimization/univariate/MultiStartUnivariateRealOptimizer.java
++++ b/src/main/java/org/apache/commons/math/optimization/univariate/MultiStartUnivariateRealOptimizer.java
+@@ -1,25 +1,7 @@
+-/*
+- * Licensed to the Apache Software Foundation (ASF) under one or more
+- * contributor license agreements.  See the NOTICE file distributed with
+- * this work for additional information regarding copyright ownership.
+- * The ASF licenses this file to You under the Apache License, Version 2.0
+- * (the "License"); you may not use this file except in compliance with
+- * the License.  You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+ package org.apache.commons.math.optimization.univariate;
+ 
+ import java.util.Arrays;
+ import java.util.Comparator;
+-
+ import org.apache.commons.math.FunctionEvaluationException;
+ import org.apache.commons.math.analysis.UnivariateRealFunction;
+ import org.apache.commons.math.exception.MathIllegalStateException;
+@@ -143,7 +125,7 @@ public class MultiStartUnivariateRealOptimizer<FUNC extends UnivariateRealFuncti
+                                                  final GoalType goal,
+                                                  final double min, final double max)
+         throws FunctionEvaluationException {
+-        return optimize(f, goal, min, max, 0);
++        return optimize(f, goal, min, max, min + 0.5 * (max - min)); // Default to mid-point
+     }
+ 
+     /** {@inheritDoc} */
+@@ -157,9 +139,8 @@ public class MultiStartUnivariateRealOptimizer<FUNC extends UnivariateRealFuncti
+         // Multi-start loop.
+         for (int i = 0; i < starts; ++i) {
+             try {
+-                final double bound1 = (i == 0) ? min : min + generator.nextDouble() * (max - min);
+-                final double bound2 = (i == 0) ? max : min + generator.nextDouble() * (max - min);
+-                optima[i] = optimizer.optimize(f, goal, FastMath.min(bound1, bound2), FastMath.max(bound1, bound2));
++                final double start = (i == 0) ? startValue : min + generator.nextDouble() * (max - min);
++                optima[i] = optimizer.optimize(f, goal, min, max, start);
+             } catch (FunctionEvaluationException fee) {
+                 optima[i] = null;
+             } catch (ConvergenceException ce) {
+@@ -189,18 +170,18 @@ public class MultiStartUnivariateRealOptimizer<FUNC extends UnivariateRealFuncti
+      */
+     private void sortPairs(final GoalType goal) {
+         Arrays.sort(optima, new Comparator<UnivariateRealPointValuePair>() {
+-                public int compare(final UnivariateRealPointValuePair o1,
+-                                   final UnivariateRealPointValuePair o2) {
+-                    if (o1 == null) {
+-                        return (o2 == null) ? 0 : 1;
+-                    } else if (o2 == null) {
+-                        return -1;
+-                    }
+-                    final double v1 = o1.getValue();
+-                    final double v2 = o2.getValue();
+-                    return (goal == GoalType.MINIMIZE) ?
+-                        Double.compare(v1, v2) : Double.compare(v2, v1);
++            public int compare(final UnivariateRealPointValuePair o1,
++                               final UnivariateRealPointValuePair o2) {
++                if (o1 == null) {
++                    return (o2 == null) ? 0 : 1;
++                } else if (o2 == null) {
++                    return -1;
+                 }
+-            });
++                final double v1 = o1.getValue();
++                final double v2 = o2.getValue();
++                return (goal == GoalType.MINIMIZE) ?
++                    Double.compare(v1, v2) : Double.compare(v2, v1);
++            }
++        });
+     }
+-}
++}
+\ No newline at end of file

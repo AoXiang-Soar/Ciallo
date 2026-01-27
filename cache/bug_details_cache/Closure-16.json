@@ -1,0 +1,16 @@
+{
+    "bug_id": 16,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: Expected no warnings or errors",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIssue772() throws Exception {\n    CompilerOptions options = createCompilerOptions();\n    options.closurePass = true;\n    options.checkTypes = true;\n    test(\n        options,\n        \"/** @const */ var a = {};\" +\n        \"/** @const */ a.b = {};\" +\n        \"/** @const */ a.b.c = {};\" +\n        \"goog.scope(function() {\" +\n        \"  var b = a.b;\" +\n        \"  var c = b.c;\" +\n        \"  /** @typedef {string} */\" +\n        \"  c.MyType;\" +\n        \"  /** @param {c.MyType} x The variable. */\" +\n        \"  c.myFunc = function(x) {};\" +\n        \"});\",\n        \"/** @const */ var a = {};\" +\n        \"/** @const */ a.b = {};\" +\n        \"/** @const */ a.b.c = {};\" +\n        \"a.b.c.MyType;\" +\n        \"a.b.c.myFunc = function(x) {};\");\n  }",
+    "test_line": "    assertEquals(\"Expected no warnings or errors\\n\" +",
+    "test_name": "testIssue772",
+    "test_suite": "com.google.javascript.jscomp.IntegrationTest"
+}

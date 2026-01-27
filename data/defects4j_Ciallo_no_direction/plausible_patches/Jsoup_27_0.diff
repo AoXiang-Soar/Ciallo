@@ -1,0 +1,33 @@
+diff --git a/src/main/java/org/jsoup/helper/DataUtil.java b/src/main/java/org/jsoup/helper/DataUtil.java
+index f978141e..dc10e0d4 100644
+--- a/src/main/java/org/jsoup/helper/DataUtil.java
++++ b/src/main/java/org/jsoup/helper/DataUtil.java
+@@ -124,16 +124,20 @@ public class DataUtil {
+      * @param contentType e.g. "text/html; charset=EUC-JP"
+      * @return "EUC-JP", or null if not found. Charset is trimmed and uppercased.
+      */
+-    static String getCharsetFromContentType(String contentType) {
+-        if (contentType == null) return null;
+-        Matcher m = charsetPattern.matcher(contentType);
+-        if (m.find()) {
+-            String charset = m.group(1).trim();
+-            charset = charset.toUpperCase(Locale.ENGLISH);
+-            return charset;
++static String getCharsetFromContentType(String contentType) {
++    if (contentType == null) return null;
++    Matcher m = charsetPattern.matcher(contentType);
++    if (m.find()) {
++        String charset = m.group(1).trim();
++        // Return null for any "invalid" charset values (case insensitive)
++        if (charset.equalsIgnoreCase("unknown") || 
++            charset.equalsIgnoreCase("unsupported")) {
++            return null;
+         }
+-        return null;
++        return charset;
+     }
++    return null;
++}
+     
+     
+ }

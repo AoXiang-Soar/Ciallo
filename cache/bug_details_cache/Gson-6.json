@@ -1,0 +1,16 @@
+{
+    "bug_id": 6,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "  static TypeAdapter<?> getTypeAdapter(ConstructorConstructor constructorConstructor, Gson gson,\n      TypeToken<?> fieldType, JsonAdapter annotation) {\n    Class<?> value = annotation.value();\n    TypeAdapter<?> typeAdapter;\n    if (TypeAdapter.class.isAssignableFrom(value)) {\n      Class<TypeAdapter<?>> typeAdapterClass = (Class<TypeAdapter<?>>) value;\n      typeAdapter = constructorConstructor.get(TypeToken.get(typeAdapterClass)).construct();\n    } else if (TypeAdapterFactory.class.isAssignableFrom(value)) {\n      Class<TypeAdapterFactory> typeAdapterFactory = (Class<TypeAdapterFactory>) value;\n      typeAdapter = constructorConstructor.get(TypeToken.get(typeAdapterFactory))\n          .construct()\n          .create(gson, fieldType);\n    } else {\n      throw new IllegalArgumentException(\n          \"@JsonAdapter value must be TypeAdapter or TypeAdapterFactory reference.\");\n    }\n      typeAdapter = typeAdapter.nullSafe();\n    return typeAdapter;\n  }",
+    "fixed_code": "",
+    "fixed_lines": "    if (typeAdapter != null) {\n    }",
+    "masked_code": "",
+    "project": "Gson",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "  public void testNullSafeBugDeserialize() throws Exception {\n    Device device = gson.fromJson(\"{'id':'ec57803e2'}\", Device.class);\n    assertEquals(\"ec57803e2\", device.id);\n  }",
+    "test_line": "        return (TypeAdapter) gson.getDelegateAdapter(this, type);",
+    "test_name": "testNullSafeBugDeserialize",
+    "test_suite": "com.google.gson.regression.JsonAdapterNullSafeTest"
+}

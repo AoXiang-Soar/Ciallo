@@ -1,0 +1,41 @@
+diff --git a/src/main/java/org/jsoup/nodes/Attribute.java b/src/main/java/org/jsoup/nodes/Attribute.java
+index 4ff695de..e5055657 100644
+--- a/src/main/java/org/jsoup/nodes/Attribute.java
++++ b/src/main/java/org/jsoup/nodes/Attribute.java
+@@ -84,17 +84,28 @@ public class Attribute implements Map.Entry<String, String>, Cloneable  {
+      Set the attribute value.
+      @param val the new attribute value; must not be null
+      */
+-    public String setValue(String val) {
+-        String oldVal = parent.get(this.key);
+-        if (parent != null) {
+-            int i = parent.indexOfKey(this.key);
+-            if (i != Attributes.NotFound)
+-                parent.vals[i] = val;
++public String setValue(String val) {
++    String oldVal = this.val; // Start by assuming the current value
++
++    // Only attempt to update the parent values if we have a valid parent reference
++    if (parent != null) {
++        // Retrieve the old value from the parent using the key
++        oldVal = parent.get(this.key);
++
++        // Check if the key exists in the parent's list and update it
++        int i = parent.indexOfKey(this.key);
++        if (i != Attributes.NotFound) {
++            parent.vals[i] = val;
+         }
+-        this.val = val;
+-        return Attributes.checkNotNull(oldVal);
+     }
+ 
++    // Update this object's value after attempting to update the parent
++    this.val = val;
++
++    // Return the old value, ensuring it's not null
++    return oldVal != null ? oldVal : ""; // Use an empty string as a default if null
++}
++
+     /**
+      Get the HTML representation of this attribute; e.g. {@code href="index.html"}.
+      @return HTML

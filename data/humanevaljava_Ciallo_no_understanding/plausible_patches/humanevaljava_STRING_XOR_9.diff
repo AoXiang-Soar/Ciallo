@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/STRING_XOR.java b/src/main/java/humaneval/buggy/STRING_XOR.java
+old mode 100644
+new mode 100755
+index a57100f..6bd6b86
+--- a/src/main/java/humaneval/buggy/STRING_XOR.java
++++ b/src/main/java/humaneval/buggy/STRING_XOR.java
+@@ -3,11 +3,10 @@ package humaneval.buggy;
+ public class STRING_XOR {
+     public static String string_xor(String a, String b){
+         String result = "";
+-        for (int i = 0; i < a.length(); i += 1){
+-            if (a.charAt(i) == b.charAt(i)){
+-                result += "0";
+-            }
++        int length = Math.min(a.length(), b.length());
++        for (int i = 0; i < length; i += 1){
++            result += (a.charAt(i) ^ b.charAt(i)) != 0 ? "1" : "0";
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

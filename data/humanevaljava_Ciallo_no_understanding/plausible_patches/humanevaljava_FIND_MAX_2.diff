@@ -1,0 +1,42 @@
+diff --git a/src/main/java/humaneval/buggy/FIND_MAX.java b/src/main/java/humaneval/buggy/FIND_MAX.java
+old mode 100644
+new mode 100755
+index a44725f..18f0973
+--- a/src/main/java/humaneval/buggy/FIND_MAX.java
++++ b/src/main/java/humaneval/buggy/FIND_MAX.java
+@@ -16,17 +16,22 @@ import java.util.HashSet;
+ 
+ public class FIND_MAX {
+     public static String find_max(String[] words) {
+-        ArrayList<String> words_list = new ArrayList<String>(Arrays.asList(words));
+-        Collections.sort(
+-            words_list,
+-            (w1, w2) -> {
+-                Character[] c1 = ((String) w1).chars().mapToObj(c -> (char)c).toArray(Character[]::new);
+-                HashSet<Character> s1 = new HashSet<Character>(Arrays.asList(c1));
+-                Character[] c2 = ((String) w2).chars().mapToObj(c -> (char)c).toArray(Character[]::new);
+-                HashSet<Character> s2 = new HashSet<Character>(Arrays.asList(c2));
+-                return s1.size() - s2.size();
++        String max_word = "";
++        int max_unique = -1;
++        
++        for (String word : words) {
++            HashSet<Character> unique_chars = new HashSet<Character>();
++            for (char c : word.toCharArray()) {
++                unique_chars.add(c);
+             }
+-        );
+-        return words_list.get(0);
++            int unique_count = unique_chars.size();
++            
++            if (unique_count > max_unique || 
++                (unique_count == max_unique && word.compareTo(max_word) < 0)) {
++                max_unique = unique_count;
++                max_word = word;
++            }
++        }
++        return max_word;
+     }
+-}
++}
+\ No newline at end of file

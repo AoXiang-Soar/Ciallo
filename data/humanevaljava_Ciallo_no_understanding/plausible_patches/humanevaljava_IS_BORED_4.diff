@@ -1,0 +1,29 @@
+diff --git a/src/main/java/humaneval/buggy/IS_BORED.java b/src/main/java/humaneval/buggy/IS_BORED.java
+old mode 100644
+new mode 100755
+index 56b1db3..afedf60
+--- a/src/main/java/humaneval/buggy/IS_BORED.java
++++ b/src/main/java/humaneval/buggy/IS_BORED.java
+@@ -2,7 +2,7 @@ package humaneval.buggy;
+ 
+ /* You'll be given a string of words, and your task is to count the number
+ of boredoms. A boredom is a sentence that starts with the word "I".
+-Sentences are delimited by '.', '?' or '!'.
++Sentences are delimated by '.', '?' or '!'.
+ 
+ For example:
+ >>> is_bored("Hello world")
+@@ -15,9 +15,10 @@ public class IS_BORED {
+         String[] sentences = S.split("\\.|\\?|!");
+         int result = 0;
+         for (String sentence : sentences) {
+-            if (sentence.length() >= 2 && sentence.subSequence(0, 2).equals("I "))
++            sentence = sentence.trim();
++            if (sentence.startsWith("I ") || sentence.equals("I"))
+                 result += 1;
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

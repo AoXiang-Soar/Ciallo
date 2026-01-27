@@ -1,0 +1,36 @@
+diff --git a/src/com/google/javascript/jscomp/CommandLineRunner.java b/src/com/google/javascript/jscomp/CommandLineRunner.java
+index 93b354757..ec2e279d9 100644
+--- a/src/com/google/javascript/jscomp/CommandLineRunner.java
++++ b/src/com/google/javascript/jscomp/CommandLineRunner.java
+@@ -803,7 +803,7 @@ public class CommandLineRunner extends
+   }
+ 
+   @Override
+-  protected CompilerOptions createOptions() {
++protected CompilerOptions createOptions() {
+     CompilerOptions options = new CompilerOptions();
+     if (flags.processJqueryPrimitives) {
+       options.setCodingConvention(new JqueryCodingConvention());
+@@ -850,19 +850,13 @@ public class CommandLineRunner extends
+         throw new RuntimeException("Reading XTB file", e);
+       }
+     } else if (CompilationLevel.ADVANCED_OPTIMIZATIONS == level) {
+-      // In SIMPLE or WHITESPACE mode, if the user hasn't specified a
+-      // translations file, they might reasonably try to write their own
+-      // implementation of goog.getMsg that makes the substitution at
+-      // run-time.
+-      //
+-      // In ADVANCED mode, goog.getMsg is going to be renamed anyway,
+-      // so we might as well inline it. But shut off the i18n warnings,
+-      // because the user didn't really ask for i18n.
+       options.messageBundle = new EmptyMessageBundle();
++      // Disable i18n-related warnings
++      options.setWarningLevel(JsMessageVisitor.MSG_CONVENTIONS, CheckLevel.OFF);
+     }
+ 
+     return options;
+-  }
++}
+ 
+   @Override
+   protected Compiler createCompiler() {

@@ -1,0 +1,120 @@
+diff --git a/src/com/google/javascript/rhino/jstype/ArrowType.java b/src/com/google/javascript/rhino/jstype/ArrowType.java
+index 1c900acd9..5b98ed09a 100644
+--- a/src/com/google/javascript/rhino/jstype/ArrowType.java
++++ b/src/com/google/javascript/rhino/jstype/ArrowType.java
+@@ -77,81 +77,59 @@ final class ArrowType extends JSType {
+   }
+ 
+   @Override
+-  public boolean isSubtype(JSType other) {
++public boolean isSubtype(JSType other) {
+     if (!(other instanceof ArrowType)) {
+-      return false;
++        return false;
+     }
+ 
+     ArrowType that = (ArrowType) other;
+ 
+-    // This is described in Draft 2 of the ES4 spec,
+-    // Section 3.4.7: Subtyping Function Types.
+-
+-    // this.returnType <: that.returnType (covariant)
++    // Check return type covariance
+     if (!this.returnType.isSubtype(that.returnType)) {
+-      return false;
++        return false;
+     }
+ 
+-    // that.paramType[i] <: this.paramType[i] (contravariant)
+-    //
+-    // If this.paramType[i] is required,
+-    // then that.paramType[i] is required.
+-    //
+-    // In theory, the "required-ness" should work in the other direction as
+-    // well. In other words, if we have
+-    //
+-    // function f(number, number) {}
+-    // function g(number) {}
+-    //
+-    // Then f *should* not be a subtype of g, and g *should* not be
+-    // a subtype of f. But in practice, we do not implement it this way.
+-    // We want to support the use case where you can pass g where f is
+-    // expected, and pretend that g ignores the second argument.
+-    // That way, you can have a single "no-op" function, and you don't have
+-    // to create a new no-op function for every possible type signature.
+-    //
+-    // So, in this case, g < f, but f !< g
++    // Check parameter contravariance
+     Node thisParam = parameters.getFirstChild();
+     Node thatParam = that.parameters.getFirstChild();
+     while (thisParam != null && thatParam != null) {
+-      JSType thisParamType = thisParam.getJSType();
+-      JSType thatParamType = thatParam.getJSType();
+-      if (thisParamType != null) {
+-        if (thatParamType == null ||
+-            !thatParamType.isSubtype(thisParamType)) {
+-          return false;
++        JSType thisParamType = thisParam.getJSType();
++        JSType thatParamType = thatParam.getJSType();
++        
++        // Note: contravariant check - thatParamType must be subtype of thisParamType
++        if (thisParamType != null) {
++            if (thatParamType == null || !thatParamType.isSubtype(thisParamType)) {
++                return false;
++            }
+         }
+-      }
+ 
+-      boolean thisIsVarArgs = thisParam.isVarArgs();
+-      boolean thatIsVarArgs = thatParam.isVarArgs();
++        boolean thisIsVarArgs = thisParam.isVarArgs();
++        boolean thatIsVarArgs = thatParam.isVarArgs();
+ 
+-      // "that" can't be a supertype, because it's missing a required argument.
+-        // NOTE(nicksantos): In our type system, we use {function(...?)} and
+-        // {function(...NoType)} to to indicate that arity should not be
+-        // checked. Strictly speaking, this is not a correct formulation,
+-        // because now a sub-function can required arguments that are var_args
+-        // in the super-function. So we special-case this.
++        // Stop checking if either has var args unless both have var args
++        if (thisIsVarArgs && thatIsVarArgs) {
++            break;
++        }
++        
++        if (!thisIsVarArgs) {
++            thisParam = thisParam.getNext();
++        }
++        if (!thatIsVarArgs) {
++            thatParam = thatParam.getNext();
++        }
++    }
+ 
+-      // don't advance if we have variable arguments
+-      if (!thisIsVarArgs) {
++    // Check that we don't have leftover required parameters
++    // that weren't matched in the supertype
++    while (thisParam != null) {
++        if (!thisParam.isVarArgs() && !thisParam.isOptionalArg()) {
++            return false;
++        }
+         thisParam = thisParam.getNext();
+-      }
+-      if (!thatIsVarArgs) {
+-        thatParam = thatParam.getNext();
+-      }
+-
+-      // both var_args indicates the end
+-      if (thisIsVarArgs && thatIsVarArgs) {
+-        thisParam = null;
+-        thatParam = null;
+-      }
+     }
+ 
+-    // "that" can't be a supertype, because it's missing a required arguement.
+-
+     return true;
+-  }
++}
+ 
+   /**
+    * @return True if our parameter spec is equal to {@code that}'s parameter

@@ -1,0 +1,45 @@
+diff --git a/src/main/java/org/apache/commons/codec/language/Soundex.java b/src/main/java/org/apache/commons/codec/language/Soundex.java
+index 71d1f07f..3a38584a 100644
+--- a/src/main/java/org/apache/commons/codec/language/Soundex.java
++++ b/src/main/java/org/apache/commons/codec/language/Soundex.java
+@@ -180,22 +180,29 @@ public class Soundex implements StringEncoder {
+      * @throws IllegalArgumentException
+      *                  if the character is not mapped
+      */
+-    private char getMappingCode(final String str, final int index) {
+-        // map() throws IllegalArgumentException
+-        final char mappedChar = this.map(str.charAt(index));
+-        // HW rule check
+-        if (index > 1 && mappedChar != '0') {
+-            final char hwChar = str.charAt(index - 1);
+-            if ('H' == hwChar || 'W' == hwChar) {
+-                final char preHWChar = str.charAt(index - 2);
+-                final char firstCode = this.map(preHWChar);
+-                if (firstCode == mappedChar || 'H' == preHWChar || 'W' == preHWChar) {
++private char getMappingCode(final String str, final int index) {
++    final char mappedChar = this.map(str.charAt(index));
++    
++    // HW rule check
++    if (index > 0 && mappedChar != '0') {
++        char prevChar = str.charAt(index - 1);
++        if ('H' == prevChar || 'W' == prevChar) {
++            // Find the previous non-H/W character
++            int prevNonHW = index - 2;
++            while (prevNonHW >= 0 && (str.charAt(prevNonHW) == 'H' || str.charAt(prevNonHW) == 'W')) {
++                prevNonHW--;
++            }
++            
++            if (prevNonHW >= 0) {
++                final char prevMapped = this.map(str.charAt(prevNonHW));
++                if (prevMapped == mappedChar) {
+                     return 0;
+                 }
+             }
+         }
+-        return mappedChar;
+     }
++    return mappedChar;
++}
+ 
+     /**
+      * Returns the maxLength. Standard Soundex

@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/UNIQUE.java b/src/main/java/humaneval/buggy/UNIQUE.java
+index 8e621ef..d2451f0 100644
+--- a/src/main/java/humaneval/buggy/UNIQUE.java
++++ b/src/main/java/humaneval/buggy/UNIQUE.java
+@@ -9,10 +9,12 @@ public class UNIQUE {
+         List<Integer> result = new ArrayList<Integer>();
+ 
+         for (Integer n : l){
+-            result.add(n);
++            if (!result.contains(n)) {
++                result.add(n);
++            }
+         }
+         Collections.sort(result);
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

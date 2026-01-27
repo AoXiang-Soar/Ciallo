@@ -1,0 +1,20 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java b/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
+index 30807836d..80f72e73b 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
++++ b/src/main/java/com/fasterxml/jackson/databind/type/ResolvedRecursiveType.java
+@@ -14,7 +14,7 @@ public class ResolvedRecursiveType extends TypeBase
+     protected JavaType _referencedType;
+ 
+     public ResolvedRecursiveType(Class<?> erasedType, TypeBindings bindings) {
+-        super(erasedType, bindings, null, null, 0, null, null, false);
++        super(erasedType, bindings, TypeFactory.unknownType(), null, 0, null, null, false);
+     }
+ 
+     public void setReference(JavaType ref)
+@@ -111,4 +111,4 @@ public class ResolvedRecursiveType extends TypeBase
+         return (o.getClass() == getClass()
+                 && _referencedType.equals(((ResolvedRecursiveType) o).getSelfReferencedType()));
+     }
+-}
++}
+\ No newline at end of file

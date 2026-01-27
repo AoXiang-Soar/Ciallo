@@ -1,0 +1,16 @@
+{
+    "bug_id": 54,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<0.0> but was:<-Infinity>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testIssue567() {\n        DfpField field = new DfpField(100);\n        Assert.assertEquals(0.0, field.getZero().toDouble(), MathUtils.SAFE_MIN);\n        Assert.assertEquals(0.0, field.newDfp(0.0).toDouble(), MathUtils.SAFE_MIN);\n        Assert.assertEquals(-1, FastMath.copySign(1, field.newDfp(-0.0).toDouble()), MathUtils.EPSILON);\n        Assert.assertEquals(+1, FastMath.copySign(1, field.newDfp(+0.0).toDouble()), MathUtils.EPSILON);\n    }",
+    "test_line": "        Assert.assertEquals(0.0, field.getZero().toDouble(), MathUtils.SAFE_MIN);",
+    "test_name": "testIssue567",
+    "test_suite": "org.apache.commons.math.dfp.DfpTest"
+}

@@ -1,0 +1,42 @@
+diff --git a/src/java/org/apache/commons/cli/CommandLine.java b/src/java/org/apache/commons/cli/CommandLine.java
+index af1118d..76aae19 100644
+--- a/src/java/org/apache/commons/cli/CommandLine.java
++++ b/src/java/org/apache/commons/cli/CommandLine.java
+@@ -66,7 +66,20 @@ public class CommandLine {
+      */
+     public boolean hasOption(String opt)
+     {
+-        return options.containsKey(opt);
++        opt = Util.stripLeadingHyphens(opt);
++        
++        if (options.containsKey(opt))
++        {
++            return true;
++        }
++        
++        // check for long option
++        if (names.containsKey(opt))
++        {
++            return options.containsKey(names.get(opt));
++        }
++        
++        return false;
+     }
+ 
+     /** 
+@@ -163,7 +176,7 @@ public class CommandLine {
+ 
+     /**
+      * <p>Retrieves the option object given the long or short option as a String</p>
+-     * @param opt short or long name of the option
++     * @param opt short or long nameของoption
+      * @return Canonicalized option
+      */
+ 
+@@ -313,4 +326,4 @@ public class CommandLine {
+         // return the array
+         return (Option[]) processed.toArray(optionsArray);
+     }
+-}
++}
+\ No newline at end of file

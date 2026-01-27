@@ -1,0 +1,56 @@
+diff --git a/src/main/java/org/apache/commons/cli/DefaultParser.java b/src/main/java/org/apache/commons/cli/DefaultParser.java
+index 4bff7f3..9f5d7c3 100644
+--- a/src/main/java/org/apache/commons/cli/DefaultParser.java
++++ b/src/main/java/org/apache/commons/cli/DefaultParser.java
+@@ -296,21 +296,39 @@ public class DefaultParser implements CommandLineParser
+      * 
+      * @param token
+      */
+-    private boolean isShortOption(String token)
+-    {
+-        // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+-        if (!token.startsWith("-") || token.length() == 1)
+-        {
+-            return false;
+-        }
++private boolean isShortOption(String token) {
++    // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
++    if (!token.startsWith("-") || token.length() == 1) {
++        return false;
++    }
+ 
+-        // remove leading "-" and "=value"
+-        int pos = token.indexOf("=");
+-        String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
+-        return options.hasShortOption(optName);
+-        // check for several concatenated short options
++    // remove leading "-" and "=value"
++    int pos = token.indexOf("=");
++    String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
++
++    // First check if the entire optName is a valid option (e.g., -S or -SV)
++    if (options.hasShortOption(optName)) {
++        return true;
+     }
+ 
++    // Then check for concatenated single-character options (e.g., -abc where a, b, c are individual options)
++    if (optName.length() > 1) {
++        // Fast check before processing each character
++        if (options.hasShortOption(optName.substring(0, 1))) {
++            // If the first character is valid and remaining are empty (unlikely) 
++            // or the rest is also valid when checked individually
++            for (int i = 0; i < optName.length(); i++) {
++                if (!options.hasShortOption(optName.substring(i, i + 1))) {
++                    return false;
++                }
++            }
++            return true;
++        }
++    }
++
++    return false;
++}
++
+     /**
+      * Tells if the token looks like a long option.
+      *

@@ -1,0 +1,16 @@
+{
+    "bug_id": 3,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testStringArray() throws Exception\n    {\n        final String[] STRS = new String[] {\n            \"a\", \"b\", \"abcd\", \"\", \"???\", \"\\\"quoted\\\"\", \"lf: \\n\",\n        };\n        StringWriter sw = new StringWriter();\n        JsonGenerator jg = MAPPER.getFactory().createGenerator(sw);\n        jg.writeStartArray();\n        for (String str : STRS) {\n            jg.writeString(str);\n        }\n        jg.writeEndArray();\n        jg.close();\n\n        String[] result = MAPPER.readValue(sw.toString(), String[].class);\n        assertNotNull(result);\n\n        assertEquals(STRS.length, result.length);\n        for (int i = 0; i < STRS.length; ++i) {\n            assertEquals(STRS[i], result[i]);\n        }\n\n        // [#479]: null handling was busted in 2.4.0\n        result = MAPPER.readValue(\" [ null ]\", String[].class);\n        assertNotNull(result);\n        assertEquals(1, result.length);\n        assertNull(result[0]);\n    }",
+    "test_line": "        result = MAPPER.readValue(\" [ null ]\", String[].class);",
+    "test_name": "testStringArray",
+    "test_suite": "com.fasterxml.jackson.databind.deser.TestArrayDeserialization"
+}

@@ -1,0 +1,38 @@
+diff --git a/src/main/java/humaneval/buggy/PRIME_FIB.java b/src/main/java/humaneval/buggy/PRIME_FIB.java
+old mode 100644
+new mode 100755
+index 68ba00e..b7bd65c
+--- a/src/main/java/humaneval/buggy/PRIME_FIB.java
++++ b/src/main/java/humaneval/buggy/PRIME_FIB.java
+@@ -14,17 +14,22 @@ public class PRIME_FIB {
+     }
+ 
+     public static int prime_fib(int n){
++        if (n == 1) return 2; // Special case: first prime Fibonacci number
++        
+         ArrayList<Integer> fib = new ArrayList<Integer>();
+         fib.add(0);
+         fib.add(1);
+-
++        
++        int primeCount = 0;
+         while (true) {
+-            int len = fib.size();
+-            fib.add(fib.get(len - 1) + fib.get(len));
+-            if (is_prime(fib.get(len - 1)))
+-                n -= 1;
+-            if (n == 0)
+-                return fib.get(fib.size() - 1);
++            int nextFib = fib.get(fib.size() - 1) + fib.get(fib.size() - 2);
++            fib.add(nextFib);
++            if (is_prime(nextFib)) {
++                primeCount++;
++                if (primeCount == n) {
++                    return nextFib;
++                }
++            }
+         }
+     }
+-}
++}
+\ No newline at end of file

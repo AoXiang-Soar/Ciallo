@@ -1,0 +1,12 @@
+diff --git a/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java b/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
+index bf6dd65d5..f0ec1ff40 100644
+--- a/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
++++ b/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
+@@ -1416,6 +1416,7 @@ public class DSCompiler {
+         }
+ 
+         // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
++        if (Double.isNaN(x[xOffset]) || Double.isNaN(y[yOffset])) { result[resultOffset] = Double.NaN; } else if (x[xOffset] == 0 && y[yOffset] == 0) { result[resultOffset] = (Double.doubleToRawLongBits(y[yOffset]) >>> 63 == 1 ? -1 : 1) * ((Double.doubleToRawLongBits(x[xOffset]) >>> 63 == 1 ? FastMath.PI : 0)); }
+ 
+     }
+ 

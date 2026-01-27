@@ -1,0 +1,16 @@
+{
+    "bug_id": 33,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.JsonMappingException: No serializer found for class com.fasterxml.jackson.databind.struct.TestUnwrapped",
+    "test_framework": "defects4j",
+    "test_function": "    public void testUnwrappedAsPropertyIndicator() throws Exception\n    {\n        Inner inner = new Inner();\n        inner.animal = \"Zebra\";\n\n        Outer outer = new Outer();\n        outer.inner = inner;\n\n        String actual = MAPPER.writeValueAsString(outer);\n\n        assertTrue(actual.contains(\"animal\"));\n        assertTrue(actual.contains(\"Zebra\"));\n        assertFalse(actual.contains(\"inner\"));\n    }",
+    "test_line": "        String actual = MAPPER.writeValueAsString(outer);",
+    "test_name": "testUnwrappedAsPropertyIndicator",
+    "test_suite": "com.fasterxml.jackson.databind.struct.TestUnwrapped"
+}

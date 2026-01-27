@@ -1,0 +1,16 @@
+{
+    "bug_id": "WORDS_IN_SENTENCE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_WORDS_IN_SENTENCE.test_0:7 expected:<is[ a]> but was:<is[]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        String result = humaneval.buggy.WORDS_IN_SENTENCE.words_in_sentence(\"This is a test\");\n        org.junit.Assert.assertEquals(\n            result, \"is\"\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_WORDS_IN_SENTENCE"
+}

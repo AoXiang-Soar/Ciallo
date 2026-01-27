@@ -1,0 +1,16 @@
+{
+    "bug_id": 175,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<NO> but was:<YES>",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIssue1101a() {\n    helperCanInlineReferenceToFunction(CanInlineResult.NO,\n        \"function foo(a){return modifiyX() + a;} foo(x);\", \"foo\",\n        INLINE_DIRECT);\n  }",
+    "test_line": "        assertEquals(expectedResult, result);",
+    "test_name": "testIssue1101a",
+    "test_suite": "com.google.javascript.jscomp.FunctionInjectorTest"
+}

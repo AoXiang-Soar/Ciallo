@@ -1,0 +1,16 @@
+{
+    "bug_id": 19,
+    "bug_type": "SH SF",
+    "buggy_lines": "",
+    "code": "    private JavaType _mapType(Class<?> rawClass)\n    {\n        // 28-May-2015, tatu: Properties are special, as per [databind#810]\n        JavaType[] typeParams = findTypeParameters(rawClass, Map.class);\n        // ok to have no types (\"raw\")\n        if (typeParams == null) {\n            return MapType.construct(rawClass, _unknownType(), _unknownType());\n        }\n        // but exactly 2 types if any found\n        if (typeParams.length != 2) {\n            throw new IllegalArgumentException(\"Strange Map type \"+rawClass.getName()+\": can not determine type parameters\");\n        }\n        return MapType.construct(rawClass, typeParams[0], typeParams[1]);\n    }",
+    "fixed_code": "",
+    "fixed_lines": "        if (rawClass == Properties.class) {\n            return MapType.construct(rawClass, CORE_TYPE_STRING, CORE_TYPE_STRING);\n        }",
+    "masked_code": "    private JavaType _mapType(Class<?> rawClass)\n    {\n        // 28-May-2015, tatu: Properties are special, as per [databind#810]\n>>> [ INFILL ] <<<\n        JavaType[] typeParams = findTypeParameters(rawClass, Map.class);\n        // ok to have no types (\"raw\")\n        if (typeParams == null) {\n            return MapType.construct(rawClass, _unknownType(), _unknownType());\n        }\n        // but exactly 2 types if any found\n        if (typeParams.length != 2) {\n            throw new IllegalArgumentException(\"Strange Map type \"+rawClass.getName()+\": can not determine type parameters\");\n        }\n        return MapType.construct(rawClass, typeParams[0], typeParams[1]);\n    }",
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<129> but was:<null>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testMapToProperties() throws Exception\n    {\n        Bean bean = new Bean();\n        bean.A = 129;\n        bean.B = \"13\";\n        Properties props = MAPPER.convertValue(bean, Properties.class);\n\n        assertEquals(2, props.size());\n\n        assertEquals(\"13\", props.getProperty(\"B\"));\n        // should coercce non-Strings to Strings\n        assertEquals(\"129\", props.getProperty(\"A\"));\n    }",
+    "test_line": "        assertEquals(\"129\", props.getProperty(\"A\"));",
+    "test_name": "testMapToProperties",
+    "test_suite": "com.fasterxml.jackson.databind.convert.TestMapConversions"
+}

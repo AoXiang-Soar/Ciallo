@@ -1,0 +1,17 @@
+diff --git a/src/java/org/apache/commons/codec/binary/Base64.java b/src/java/org/apache/commons/codec/binary/Base64.java
+index 19a69594..4de1fb93 100644
+--- a/src/java/org/apache/commons/codec/binary/Base64.java
++++ b/src/java/org/apache/commons/codec/binary/Base64.java
+@@ -666,9 +666,9 @@ public class Base64 implements BinaryEncoder, BinaryDecoder {
+      * @return String containing Base64 characters.
+      * @since 1.4
+      */    
+-    public static String encodeBase64String(byte[] binaryData) {
+-        return StringUtils.newStringUtf8(encodeBase64(binaryData, true));
+-    }
++public static String encodeBase64String(byte[] binaryData) {
++    return StringUtils.newStringUtf8(encodeBase64(binaryData, false));
++}
+     
+     /**
+      * Encodes binary data using a URL-safe variation of the base64 algorithm but does not chunk the output. The

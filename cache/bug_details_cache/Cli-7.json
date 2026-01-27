@@ -1,0 +1,16 @@
+{
+    "bug_id": 7,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Cli",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<[[-h]]> but was:<[-c <arg>]>",
+    "test_framework": "defects4j",
+    "test_function": "\tpublic void testRequiredOptions(){\n\t\tPatternBuilder builder = new PatternBuilder();\n\t\tbuilder.withPattern(\"hc!<\");\n\t\tOption option = builder.create();\n\t\tassertTrue(option instanceof GroupImpl);\n\t\t\n\t\tGroupImpl group = (GroupImpl)option;\n\t\tIterator i = group.getOptions().iterator();\n\t\tassertEquals(\"[-h]\",i.next().toString());\n\t\tassertEquals(\"-c <arg>\",i.next().toString());\n\t\tassertFalse(i.hasNext());\n\t}",
+    "test_line": "\t\tassertEquals(\"[-h]\",i.next().toString());",
+    "test_name": "testRequiredOptions",
+    "test_suite": "org.apache.commons.cli2.bug.Bug27575Test"
+}

@@ -1,0 +1,16 @@
+{
+    "bug_id": "HOW_MANY_TIMES",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_HOW_MANY_TIMES.test_1:15 expected:<3> but was:<4>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        int result = humaneval.buggy.HOW_MANY_TIMES.how_many_times(\"xyxyxyx\", \"x\");\n        org.junit.Assert.assertEquals(\n            result, 4\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_HOW_MANY_TIMES"
+}

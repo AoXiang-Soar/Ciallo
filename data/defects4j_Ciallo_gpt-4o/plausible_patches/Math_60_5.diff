@@ -1,0 +1,54 @@
+diff --git a/src/main/java/org/apache/commons/math/distribution/NormalDistributionImpl.java b/src/main/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
+index 0e124d852..f59cf6d16 100644
+--- a/src/main/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
++++ b/src/main/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
+@@ -121,21 +121,35 @@ public class NormalDistributionImpl extends AbstractContinuousDistribution
+      * @return CDF evaluated at {@code x}.
+      * @throws MathException if the algorithm fails to converge
+      */
+-    public double cumulativeProbability(double x) throws MathException {
+-        final double dev = x - mean;
+-        try {
+-        return 0.5 * (1.0 + Erf.erf((dev) /
+-                    (standardDeviation * FastMath.sqrt(2.0))));
+-        } catch (MaxIterationsExceededException ex) {
+-            if (x < (mean - 20 * standardDeviation)) { // JDK 1.5 blows at 38
+-                return 0;
+-            } else if (x > (mean + 20 * standardDeviation)) {
+-                return 1;
+-            } else {
+-                throw ex;
+-            }
+-        }
++public double cumulativeProbability(double x) throws MathException {
++    // Handle infinite values explicitly
++    if (Double.isInfinite(x)) {
++        return x < 0 ? 0 : 1;
++    }
++    
++    // Handle NaN input explicitly
++    if (Double.isNaN(x)) {
++        throw new MathException("Input cannot be NaN");
++    }
++
++    final double dev = x - mean;
++    final double threshold = 10 * standardDeviation; // Use a reasonable threshold for stability
++
++    // Handle extremes based on calculated threshold
++    if (dev < -threshold) {
++        return 0;
++    } else if (dev > threshold) {
++        return 1;
++    }
++
++    try {
++        // Calculation of the cumulative probability using error function
++        return 0.5 * (1.0 + Erf.erf(dev / (standardDeviation * FastMath.sqrt(2.0))));
++    } catch (MaxIterationsExceededException ex) {
++        // Handle exceptions gracefully, maybe with a custom limit check
++        throw new MathException("Convergence failed for x: " + x, ex);
+     }
++}
+ 
+     /**
+      * Return the absolute accuracy setting of the solver used to estimate

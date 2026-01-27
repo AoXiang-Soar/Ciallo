@@ -1,0 +1,22 @@
+diff --git a/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java b/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java
+index e30c35090..c2c472306 100644
+--- a/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java
++++ b/src/com/google/javascript/jscomp/parsing/JsDocInfoParser.java
+@@ -1905,7 +1905,16 @@ public final class JsDocInfoParser {
+    * For expressions on the right hand side of a this: or new:
+    */
+   private Node parseContextTypeExpression(JsDocToken token) {
+-          return parseTypeName(token);
++          Node typeExpr = null;
++          try {
++              typeExpr = parseTypeExpression(token);
++          } catch (Exception e) {
++              // Fall through to try parseTypeName
++          }
++          if (typeExpr == null) {
++              typeExpr = parseTypeName(token);
++          }
++          return typeExpr;
+   }
+ 
+   /**

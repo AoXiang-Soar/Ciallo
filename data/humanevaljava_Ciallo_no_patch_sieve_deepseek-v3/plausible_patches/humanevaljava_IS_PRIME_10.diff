@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/IS_PRIME.java b/src/main/java/humaneval/buggy/IS_PRIME.java
+index e55a04c..e6da7ea 100644
+--- a/src/main/java/humaneval/buggy/IS_PRIME.java
++++ b/src/main/java/humaneval/buggy/IS_PRIME.java
+@@ -1,13 +1,23 @@
+ package humaneval.buggy;
+ 
+ public class IS_PRIME {
+-    public static boolean is_prime(int n){
+-        if (n < 2)
++    public static boolean is_prime(int n) {
++        if (n < 2) {
+             return false;
+-        for (int k = 0; k < n; k += 1){
+-            if (n % k == 0)
++        }
++        if (n == 2) {
++            return true;
++        }
++        if (n % 2 == 0) {
++            return false;
++        }
++        // Only need to check up to square root of n, and skip even numbers
++        int sqrtN = (int) Math.sqrt(n) + 1;
++        for (int k = 3; k < sqrtN; k += 2) {
++            if (n % k == 0) {
+                 return false;
++            }
+         }
+         return true;
+     }
+-}
++}
+\ No newline at end of file

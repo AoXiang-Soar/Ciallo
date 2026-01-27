@@ -1,0 +1,44 @@
+diff --git a/src/main/java/org/apache/commons/collections/list/SetUniqueList.java b/src/main/java/org/apache/commons/collections/list/SetUniqueList.java
+index 57e54121..1873984e 100644
+--- a/src/main/java/org/apache/commons/collections/list/SetUniqueList.java
++++ b/src/main/java/org/apache/commons/collections/list/SetUniqueList.java
+@@ -224,20 +224,28 @@ public class SetUniqueList<E> extends AbstractSerializableListDecorator<E> {
+      * @return the previous object
+      */
+     @Override
+-    public E set(final int index, final E object) {
+-        final int pos = indexOf(object);
+-        final E removed = super.set(index, object);
+-
+-        if (pos != -1 && pos != index) {
+-            // the object is already in the uniq list
+-            // (and it hasn't been swapped with itself)
+-            super.remove(pos); // remove the duplicate by index
++public E set(final int index, final E object) {
++    final int pos = indexOf(object);
++    final E removed = super.set(index, object);
++
++    // Check if the object existed elsewhere in the list
++    if (pos != -1 && pos != index) {
++        // Find and remove the first occurrence that's not at our new index
++        for (int i = 0; i < size(); i++) {
++            if (i != index && object.equals(get(i))) {
++                super.remove(i);
++                break;
++            }
+         }
+-        set.add(object); 
+-        set.remove(removed);
+-        return removed; // return the item deleted by the set
+     }
+ 
++    // Update set contents
++    set.remove(removed);
++    set.add(object);
++    
++    return removed;
++}
++
+     @Override
+     public boolean remove(final Object object) {
+         final boolean result = set.remove(object);

@@ -1,0 +1,53 @@
+diff --git a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+index ba94200..1f19f95 100644
+--- a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
++++ b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+@@ -4,7 +4,7 @@ import java.util.HashMap;
+ 
+ // Given a dictionary, return True if all keys are strings in lower 
+ // case or all keys are strings in upper case, else return False.
+-// The function should return False is the given dictionary is empty.
++// The function should return False when the given dictionary is empty.
+ // Examples:
+ // check_dict_case({"a":"apple", "b":"banana"}) should return True.
+ // check_dict_case({"a":"apple", "A":"banana", "B":"banana"}) should return False.
+@@ -17,28 +17,21 @@ public class CHECK_DICT_CASE {
+         if (dict.size() == 0)
+             return false;
+         else {
+-            String state = "start";
++            boolean allUpperCase = true;
++            boolean allLowerCase = true;
+             for (Object key : dict.keySet()) {
+                 if (!(key instanceof String)) {
+-                    state = "mixed";
+-                    break;
++                    return false;
+                 }
+                 String str_key = (String) key;
+-                if (state.equals("start")) {
+-                    if (str_key.toUpperCase().equals(str_key))
+-                        state = "upper";
+-                    else if (str_key.toLowerCase().equals(str_key))
+-                        state = "lower";
+-                    else {
+-                        state = "mixed";
+-                        break;
+-                    }
+-                } else if (state.equals("upper") && !str_key.toUpperCase().equals(str_key)) {
+-                    state = "mixed";
+-                    break;
++                if (!str_key.toUpperCase().equals(str_key)) {
++                    allUpperCase = false;
++                }
++                if (!str_key.toLowerCase().equals(str_key)) {
++                    allLowerCase = false;
+                 }
+             }
+-            return (state.equals("upper")) || (state.equals("lower"));
++            return allUpperCase || allLowerCase;
+         }
+     }
+-}
++}
+\ No newline at end of file

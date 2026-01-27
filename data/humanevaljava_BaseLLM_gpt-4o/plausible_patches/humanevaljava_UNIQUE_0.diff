@@ -1,0 +1,39 @@
+diff --git a/src/main/java/humaneval/buggy/UNIQUE.java b/src/main/java/humaneval/buggy/UNIQUE.java
+index 8e621ef..204734b 100644
+--- a/src/main/java/humaneval/buggy/UNIQUE.java
++++ b/src/main/java/humaneval/buggy/UNIQUE.java
+@@ -1,18 +1,25 @@
+ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
++import java.util.Arrays;
+ import java.util.Collections;
++import java.util.HashSet;
+ import java.util.List;
++import java.util.Set;
+ 
+ public class UNIQUE {
+     public static List<Integer> unique(List<Integer> l) {
+-        List<Integer> result = new ArrayList<Integer>();
++        Set<Integer> resultSet = new HashSet<Integer>(l);
++        List<Integer> resultList = new ArrayList<Integer>(resultSet);
++        Collections.sort(resultList);
+ 
+-        for (Integer n : l){
+-            result.add(n);
+-        }
+-        Collections.sort(result);
+-
+-        return result;
++        return resultList;
++    }
++    
++    public static void main(String[] args) throws java.lang.Exception {
++        List<Integer> result = UNIQUE.unique(
++            new ArrayList<Integer>(Arrays.asList(5, 3, 5, 2, 3, 3, 9, 0, 123))
++        );
++        System.out.println(result); // Should print [0, 2, 3, 5, 9, 123]
+     }
+-}
++}
+\ No newline at end of file

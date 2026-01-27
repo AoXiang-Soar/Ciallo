@@ -1,0 +1,14 @@
+diff --git a/src/main/java/org/apache/commons/lang3/RandomStringUtils.java b/src/main/java/org/apache/commons/lang3/RandomStringUtils.java
+index a79905754..2dc8a8f58 100644
+--- a/src/main/java/org/apache/commons/lang3/RandomStringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/RandomStringUtils.java
+@@ -243,6 +243,9 @@ public class RandomStringUtils {
+                 }
+             }
+         }
++        if (end <= start) {
++            throw new IllegalArgumentException("'start' (" + start + ") must be less than 'end' (" + end + ").");
++        }
+ 
+         char[] buffer = new char[count];
+         int gap = end - start;

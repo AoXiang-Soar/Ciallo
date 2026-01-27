@@ -1,0 +1,51 @@
+diff --git a/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java b/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
+old mode 100644
+new mode 100755
+index 8d523c9..c5983e1
+--- a/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
++++ b/src/main/java/humaneval/buggy/GENERATE_INTEGERS.java
+@@ -2,23 +2,29 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ 
+-// Given two positive integers a and b, return the even digits between a
+-// and b, in ascending order.
+-
+-// For example:
+-// generate_integers(2, 8) => [2, 4, 6, 8]
+-// generate_integers(8, 2) => [2, 4, 6, 8]
+-// generate_integers(10, 14) => []
+-
+ public class GENERATE_INTEGERS {
+     public static ArrayList<Integer> generate_integers(int a, int b) {
+-        int lower = Math.max(2, a);
+-        int upper = Math.min(8, b);
+-
+         ArrayList<Integer> result = new ArrayList<Integer>();
+-        for (int i = lower; i <= upper; i += 1) {
+-            if (i % 2 == 0) result.add(i);
++        
++        // Determine the actual range between a and b
++        int start = Math.min(a, b);
++        int end = Math.max(a, b);
++        
++        // Check if the range overlaps with [2,8]
++        if (end < 2 || start > 8) {
++            return result;
++        }
++        
++        // Calculate adjusted bounds within [2,8]
++        int lower = Math.max(2, start);
++        int upper = Math.min(8, end);
++        
++        // Add all even numbers in the adjusted range
++        if (lower % 2 != 0) lower++; // start from next even if odd
++        for (int i = lower; i <= upper; i += 2) {
++            result.add(i);
+         }
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

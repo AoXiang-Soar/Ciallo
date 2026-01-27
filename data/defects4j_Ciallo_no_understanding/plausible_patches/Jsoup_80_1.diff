@@ -1,0 +1,21 @@
+diff --git a/src/main/java/org/jsoup/parser/XmlTreeBuilder.java b/src/main/java/org/jsoup/parser/XmlTreeBuilder.java
+index 75374e4e..0095a865 100644
+--- a/src/main/java/org/jsoup/parser/XmlTreeBuilder.java
++++ b/src/main/java/org/jsoup/parser/XmlTreeBuilder.java
+@@ -87,10 +87,14 @@ public class XmlTreeBuilder extends TreeBuilder {
+             // so we do a bit of a hack and parse the data as an element to pull the attributes out
+             String data = comment.getData();
+             if (data.length() > 1 && (data.startsWith("!") || data.startsWith("?"))) {
+-                Document doc = Jsoup.parse("<" + data.substring(1, data.length() -1) + ">", baseUri, Parser.xmlParser());
++                try {
++                    Document doc = Jsoup.parse("<" + data.substring(1, data.length() -1) + ">", baseUri, Parser.xmlParser());
+                     Element el = doc.child(0);
+-                    insert = new XmlDeclaration(settings.normalizeTag(el.tagName()), data.startsWith("!"));
++                    insert = new XmlDeclaration(settings.normalizeTag(el.tagName()),data.startsWith("!"));
+                     insert.attributes().addAll(el.attributes());
++                } catch (IndexOutOfBoundsException e) {
++                    // fall through to regular comment processing
++                }
+             }
+         }
+         insertNode(insert);

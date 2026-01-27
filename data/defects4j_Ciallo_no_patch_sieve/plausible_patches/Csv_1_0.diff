@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/csv/ExtendedBufferedReader.java b/src/main/java/org/apache/commons/csv/ExtendedBufferedReader.java
+index 563ece1b..72ab38c7 100644
+--- a/src/main/java/org/apache/commons/csv/ExtendedBufferedReader.java
++++ b/src/main/java/org/apache/commons/csv/ExtendedBufferedReader.java
+@@ -55,7 +55,7 @@ class ExtendedBufferedReader extends BufferedReader {
+     @Override
+     public int read() throws IOException {
+         int current = super.read();
+-        if (current == '\n') {
++        if (current == '\n' || (current == '\r' && lookAhead() != '\n')) {
+             lineCounter++;
+         }
+         lastChar = current;

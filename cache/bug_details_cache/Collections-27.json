@@ -1,0 +1,16 @@
+{
+    "bug_id": 27,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: unsafe clazz accepted when de-serializing MultiValueMap",
+    "test_framework": "defects4j",
+    "test_function": "    public void testUnsafeDeSerialization() throws Exception {\n        MultiValueMap map1 = MultiValueMap.multiValueMap(new HashMap(), ArrayList.class);\n        byte[] bytes = serialize(map1);\n        Object result = deserialize(bytes);\n        assertEquals(map1, result);\n        \n        MultiValueMap map2 = MultiValueMap.multiValueMap(new HashMap(), (Class) String.class);\n        bytes = serialize(map2);\n        try {\n            result = deserialize(bytes);\n            fail(\"unsafe clazz accepted when de-serializing MultiValueMap\");\n        } catch (UnsupportedOperationException ex) {\n            // expected\n        }\n    }",
+    "test_line": "            fail(\"unsafe clazz accepted when de-serializing MultiValueMap\");",
+    "test_name": "testUnsafeDeSerialization",
+    "test_suite": "org.apache.commons.collections4.map.MultiValueMapTest"
+}

@@ -1,0 +1,37 @@
+diff --git a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+index 7791efd..b789f1b 100644
+--- a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
++++ b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+@@ -1,6 +1,7 @@
+ package humaneval.buggy;
+ 
+ import java.util.*;
++import java.util.stream.*;
+ 
+ /* You are given a list of integers.
+ Write a function next_smallest() that returns the 2nd smallest element of the list.
+@@ -13,14 +14,13 @@ next_smallest([1, 1]) == None */
+ 
+ public class NEXT_SMALLEST {
+     public static Integer next_smallest(int[] lst) {
+-        List<Integer> numbers = new ArrayList<Integer>();
+-        for (Integer n : lst)
+-            numbers.add(n);
+-        Integer[] no_duplicate = numbers.toArray(new Integer[] {});
+-        Arrays.sort(no_duplicate);
+-
+-        if (no_duplicate.length < 2)
+-            return null;
+-        return no_duplicate[1];
++        // Convert to IntStream, make distinct, sort, and box to Integer
++        List<Integer> distinctSorted = Arrays.stream(lst)
++            .distinct()
++            .sorted()
++            .boxed()
++            .collect(Collectors.toList());
++            
++        return distinctSorted.size() >= 2 ? distinctSorted.get(1) : null;
+     }
+-}
++}
+\ No newline at end of file

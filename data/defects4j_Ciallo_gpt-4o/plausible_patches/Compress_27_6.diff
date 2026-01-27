@@ -1,0 +1,18 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index 4cf32d6f..5a799e62 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -130,9 +130,11 @@ public class TarUtils {
+             end--;
+             trailer = buffer[end - 1];
+         }
++        // If start equals end, it means we have only encountered spaces/wrong characters 
++        // and no valid octal digits.
+         if (start == end) {
+-            throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, start, trailer));
++            // Return 0 if no valid octal digits are found
++            return 0L;
+         }
+ 
+         for ( ;start < end; start++) {

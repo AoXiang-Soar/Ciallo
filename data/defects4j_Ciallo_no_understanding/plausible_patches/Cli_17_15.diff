@@ -1,0 +1,64 @@
+diff --git a/src/java/org/apache/commons/cli/PosixParser.java b/src/java/org/apache/commons/cli/PosixParser.java
+index cafcede..637c5ed 100644
+--- a/src/java/org/apache/commons/cli/PosixParser.java
++++ b/src/java/org/apache/commons/cli/PosixParser.java
+@@ -279,33 +279,39 @@ public class PosixParser extends Parser {
+      * @param stopAtNonOption Specifies whether to stop processing
+      * at the first non-Option encountered.
+      */
+-    protected void burstToken(String token, boolean stopAtNonOption)
++protected void burstToken(String token, boolean stopAtNonOption)
++{
++    for (int i = 1; i < token.length(); i++)
+     {
+-        for (int i = 1; i < token.length(); i++)
++        String ch = String.valueOf(token.charAt(i));
++
++        if (options.hasOption(ch))
+         {
+-            String ch = String.valueOf(token.charAt(i));
++            tokens.add("-" + ch);
++            currentOption = options.getOption(ch);
+ 
+-            if (options.hasOption(ch))
++            if (currentOption.hasArg() && (token.length() != (i + 1)))
+             {
+-                tokens.add("-" + ch);
+-                currentOption = options.getOption(ch);
+-
+-                if (currentOption.hasArg() && (token.length() != (i + 1)))
+-                {
+-                    tokens.add(token.substring(i + 1));
+-
++                tokens.add(token.substring(i + 1));
++                // Only continue processing if we're not stopping at non-options
++                if (stopAtNonOption) {
++                    i++; // Skip the argument we just added
++                } else {
+                     break;
+                 }
+             }
+-            else if (stopAtNonOption)
+-            {
+-                process(token.substring(i));
+-            }
+-            else
+-            {
+-                tokens.add(token);
+-                break;
+-            }
++        }
++        else if (stopAtNonOption)
++        {
++            // Add the remaining part as a single token
++            tokens.add(token.substring(i));
++            break;
++        }
++        else
++        {
++            tokens.add(token);
++            break;
+         }
+     }
+ }
++}

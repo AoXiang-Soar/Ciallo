@@ -1,0 +1,71 @@
+diff --git a/src/main/java/org/jsoup/helper/W3CDom.java b/src/main/java/org/jsoup/helper/W3CDom.java
+index f58a9255..a3a72f2b 100644
+--- a/src/main/java/org/jsoup/helper/W3CDom.java
++++ b/src/main/java/org/jsoup/helper/W3CDom.java
+@@ -19,6 +19,7 @@ import javax.xml.transform.dom.DOMSource;
+ import javax.xml.transform.stream.StreamResult;
+ import java.io.StringWriter;
+ import java.util.HashMap;
++import java.util.LinkedList;
+ 
+ /**
+  * Helper class to transform a {@link org.jsoup.nodes.Document} to a {@link org.w3c.dom.Document org.w3c.dom.Document},
+@@ -70,7 +71,7 @@ public class W3CDom {
+         private static final String xmlnsPrefix = "xmlns:";
+ 
+         private final Document doc;
+-        private final HashMap<String, String> namespaces = new HashMap<>();
++        private final LinkedList<HashMap<String, String>> namespacesStack = new LinkedList<>();
+         private Element dest;
+ 
+         public W3CBuilder(Document doc) {
+@@ -78,11 +79,17 @@ public class W3CDom {
+         }
+ 
+         public void head(org.jsoup.nodes.Node source, int depth) {
++            HashMap<String, String> currentNamespaces = new HashMap<>();
++            if (!namespacesStack.isEmpty()) {
++                currentNamespaces.putAll(namespacesStack.peek());
++            }
++            namespacesStack.push(currentNamespaces);
++
+             if (source instanceof org.jsoup.nodes.Element) {
+                 org.jsoup.nodes.Element sourceEl = (org.jsoup.nodes.Element) source;
+ 
+                 String prefix = updateNamespaces(sourceEl);
+-                String namespace = namespaces.get(prefix);
++                String namespace = namespacesStack.peek().get(prefix);
+ 
+                 Element el = doc.createElementNS(namespace, sourceEl.tagName());
+                 copyAttributes(sourceEl, el);
+@@ -113,6 +120,7 @@ public class W3CDom {
+             if (source instanceof org.jsoup.nodes.Element && dest.getParentNode() instanceof Element) {
+                 dest = (Element) dest.getParentNode(); // undescend. cromulent.
+             }
++            namespacesStack.pop();
+         }
+ 
+         private void copyAttributes(org.jsoup.nodes.Node source, Element el) {
+@@ -141,14 +149,13 @@ public class W3CDom {
+                 } else {
+                     continue;
+                 }
+-                namespaces.put(prefix, attr.getValue());
++                namespacesStack.peek().put(prefix, attr.getValue());
+             }
+ 
+             // get the element prefix if any
+             int pos = el.tagName().indexOf(":");
+             return pos > 0 ? el.tagName().substring(0, pos) : "";
+         }
+-
+     }
+ 
+     /**
+@@ -169,4 +176,4 @@ public class W3CDom {
+             throw new IllegalStateException(e);
+         }
+     }
+-}
++}
+\ No newline at end of file

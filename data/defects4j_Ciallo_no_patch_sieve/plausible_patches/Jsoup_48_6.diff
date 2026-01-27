@@ -1,0 +1,23 @@
+diff --git a/src/main/java/org/jsoup/helper/HttpConnection.java b/src/main/java/org/jsoup/helper/HttpConnection.java
+index f8fd9dd7..c41f7d11 100644
+--- a/src/main/java/org/jsoup/helper/HttpConnection.java
++++ b/src/main/java/org/jsoup/helper/HttpConnection.java
+@@ -770,8 +770,16 @@ public class HttpConnection implements Connection {
+                             cookie(cookieName, cookieVal);
+                     }
+                 } else { // combine same header names with comma: http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
+-                    if (!values.isEmpty())
+-                        header(name, values.get(0));
++                    StringBuilder combined = new StringBuilder();
++                    for (String value : values) {
++                        if (value == null)
++                            continue;
++                        if (combined.length() > 0)
++                            combined.append(", ");
++                        combined.append(value);
++                    }
++                    if (combined.length() > 0)
++                        header(name, combined.toString());
+                 }
+             }
+         }

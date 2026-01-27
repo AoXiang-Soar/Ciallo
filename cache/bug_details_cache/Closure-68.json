@@ -1,0 +1,16 @@
+{
+    "bug_id": 68,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: extra warning: Unexpected end of file",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIssue477() throws Exception {\n    parse(\"@type function */\",\n        \"Bad type annotation. missing opening (\");\n  }",
+    "test_line": "    jsdocParser.parse();",
+    "test_name": "testIssue477",
+    "test_suite": "com.google.javascript.jscomp.parsing.JsDocInfoParserTest"
+}

@@ -1,0 +1,73 @@
+diff --git a/src/com/google/javascript/jscomp/NodeUtil.java b/src/com/google/javascript/jscomp/NodeUtil.java
+index a31b17a2c..c0092cda9 100644
+--- a/src/com/google/javascript/jscomp/NodeUtil.java
++++ b/src/com/google/javascript/jscomp/NodeUtil.java
+@@ -317,7 +317,7 @@ public final class NodeUtil {
+    * @param val The value being assigned.
+    * @param defines The list of names of existing defines.
+    */
+-  static boolean isValidDefineValue(Node val, Set<String> defines) {
++static boolean isValidDefineValue(Node val, Set<String> defines) {
+     switch (val.getType()) {
+       case Token.STRING:
+       case Token.NUMBER:
+@@ -325,26 +325,54 @@ public final class NodeUtil {
+       case Token.FALSE:
+         return true;
+ 
+-      // Binary operators are only valid if both children are valid.
++      // Binary operators are valid if both operands are valid
+       case Token.BITAND:
+-      case Token.BITNOT:
+       case Token.BITOR:
+       case Token.BITXOR:
++      case Token.ADD:
++      case Token.SUB:
++      case Token.MUL:
++      case Token.DIV:
++      case Token.MOD:
++      case Token.LSH:
++      case Token.RSH:
++      case Token.URSH:
++      case Token.EQ:
++      case Token.NE:
++      case Token.LT:
++      case Token.LE:
++      case Token.GT:
++      case Token.GE:
++        Node left = val.getFirstChild();
++        Node right = left.getNext();
++        return isValidDefineValue(left, defines) && isValidDefineValue(right, defines);
+ 
+-      // Uniary operators are valid if the child is valid.
++      // Unary operators are valid if the operand is valid
++      case Token.BITNOT:
+       case Token.NOT:
+       case Token.NEG:
++      case Token.POS:
+         return isValidDefineValue(val.getFirstChild(), defines);
+ 
+-      // Names are valid if and only if they are defines themselves.
++      // Names are valid if and only if they are defines themselves
+       case Token.NAME:
+       case Token.GETPROP:
+         if (val.isQualifiedName()) {
+           return defines.contains(val.getQualifiedName());
+         }
++        break;
++        
++      // Handle other cases like comma operator or conditional if needed
++      case Token.COMMA:
++        for (Node child = val.getFirstChild(); child != null; child = child.getNext()) {
++          if (!isValidDefineValue(child, defines)) {
++            return false;
++          }
++        }
++        return true;
+     }
+     return false;
+-  }
++}
+ 
+   /**
+    * Returns whether this a BLOCK node with no children.

@@ -1,0 +1,76 @@
+diff --git a/src/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java b/src/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java
+index 06697e527..b49298e10 100644
+--- a/src/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java
++++ b/src/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java
+@@ -78,43 +78,39 @@ public class ReturnsEmptyValues implements Answer<Object>, Serializable {
+         Class<?> returnType = invocation.getMethod().getReturnType();
+         return returnValueFor(returnType);
+     }
+-    
+     Object returnValueFor(Class<?> type) {
+-        if (Primitives.isPrimitiveOrWrapper(type)) {
+-            return Primitives.defaultValueForPrimitiveOrWrapper(type);
+-            //new instances are used instead of Collections.emptyList(), etc.
+-            //to avoid UnsupportedOperationException if code under test modifies returned collection
+-        } else if (type == Collection.class) {
+-            return new LinkedList<Object>();
+-        } else if (type == Set.class) {
+-            return new HashSet<Object>();
+-        } else if (type == HashSet.class) {
++    if (Primitives.isPrimitiveOrWrapper(type)) {
++        return Primitives.defaultValueForPrimitiveOrWrapper(type);
++    }
++    
++    // Handle Collection types
++    if (Iterable.class.isAssignableFrom(type)) {
++        if (Set.class.isAssignableFrom(type)) {
++            if (SortedSet.class.isAssignableFrom(type) || type == TreeSet.class) {
++                return new TreeSet<Object>();
++            } else if (type == LinkedHashSet.class) {
++                return new LinkedHashSet<Object>();
++            }
+             return new HashSet<Object>();
+-        } else if (type == SortedSet.class) {
+-            return new TreeSet<Object>();
+-        } else if (type == TreeSet.class) {
+-            return new TreeSet<Object>();
+-        } else if (type == LinkedHashSet.class) {
+-            return new LinkedHashSet<Object>();
+-        } else if (type == List.class) {
+-            return new LinkedList<Object>();
+-        } else if (type == LinkedList.class) {
++        } else if (List.class.isAssignableFrom(type)) {
++            if (type == ArrayList.class) {
++                return new ArrayList<Object>();
++            }
+             return new LinkedList<Object>();
+-        } else if (type == ArrayList.class) {
+-            return new ArrayList<Object>();
+-        } else if (type == Map.class) {
+-            return new HashMap<Object, Object>();
+-        } else if (type == HashMap.class) {
+-            return new HashMap<Object, Object>();
+-        } else if (type == SortedMap.class) {
+-            return new TreeMap<Object, Object>();
+-        } else if (type == TreeMap.class) {
++        }
++        return new LinkedList<Object>(); // default for Collection/Iterable
++    }
++    
++    // Handle Map types
++    if (Map.class.isAssignableFrom(type)) {
++        if (SortedMap.class.isAssignableFrom(type) || type == TreeMap.class) {
+             return new TreeMap<Object, Object>();
+         } else if (type == LinkedHashMap.class) {
+             return new LinkedHashMap<Object, Object>();
+         }
+-        //Let's not care about the rest of collections.
+-        return null;
++        return new HashMap<Object, Object>();
+     }
+-
++    
++    return null;
+ }
++}
+\ No newline at end of file

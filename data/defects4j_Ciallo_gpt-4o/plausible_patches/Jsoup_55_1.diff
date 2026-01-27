@@ -1,0 +1,12 @@
+diff --git a/src/main/java/org/jsoup/parser/TokeniserState.java b/src/main/java/org/jsoup/parser/TokeniserState.java
+index 3a2ac1f9..a65e6bcf 100644
+--- a/src/main/java/org/jsoup/parser/TokeniserState.java
++++ b/src/main/java/org/jsoup/parser/TokeniserState.java
+@@ -880,6 +880,7 @@ enum TokeniserState {
+                     break;
+                 default:
+                     t.error(this);
++                    if (c != '/') t.tagPending.newAttribute(); r.unconsume(); // bypassing '/' and preparing for attribute processing
+                     t.transition(BeforeAttributeName);
+             }
+         }

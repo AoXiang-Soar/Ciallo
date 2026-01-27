@@ -1,0 +1,50 @@
+diff --git a/src/main/java/org/apache/commons/math/stat/descriptive/SummaryStatistics.java b/src/main/java/org/apache/commons/math/stat/descriptive/SummaryStatistics.java
+index 1203d516c..7109be567 100644
+--- a/src/main/java/org/apache/commons/math/stat/descriptive/SummaryStatistics.java
++++ b/src/main/java/org/apache/commons/math/stat/descriptive/SummaryStatistics.java
+@@ -146,15 +146,18 @@ public class SummaryStatistics implements StatisticalSummary, Serializable {
+      * Add a value to the data
+      * @param value the value to add
+      */
+-    public void addValue(double value) {
+-        sumImpl.increment(value);
+-        sumsqImpl.increment(value);
+-        minImpl.increment(value);
+-        maxImpl.increment(value);
+-        sumLogImpl.increment(value);
+-        secondMoment.increment(value);
+-        // If mean, variance or geomean have been overridden,
+-        // need to increment these
++public void addValue(double value) {
++    // Increment core implementations
++    sumImpl.increment(value);
++    sumsqImpl.increment(value);
++    minImpl.increment(value);
++    maxImpl.increment(value);
++    sumLogImpl.increment(value);
++    secondMoment.increment(value);
++
++    // Special handling for overridden implementations
++    if (!(meanImpl instanceof Mean && varianceImpl instanceof Variance && geoMeanImpl instanceof GeometricMean)) {
++        // Only increment if at least one of them is overridden
+         if (!(meanImpl instanceof Mean)) {
+             meanImpl.increment(value);
+         }
+@@ -164,9 +167,16 @@ public class SummaryStatistics implements StatisticalSummary, Serializable {
+         if (!(geoMeanImpl instanceof GeometricMean)) {
+             geoMeanImpl.increment(value);
+         }
+-        n++;
++    } else {
++        // If all are default implementations, use standard increment
++        meanImpl.increment(value);
++        varianceImpl.increment(value);
++        geoMeanImpl.increment(value);
+     }
+ 
++    n++;
++}
++
+     /**
+      * Returns the number of available values
+      * @return The number of available values

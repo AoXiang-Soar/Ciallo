@@ -1,0 +1,16 @@
+{
+    "bug_id": 10,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "java.io.InvalidClassException: org.apache.commons.collections.map.MultiValueMap; class invalid for deserialization",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEmptyMapCompatibility() throws Exception {\n        Map map = makeEmptyMap();\n        Map map2 = (Map) readExternalFormFromDisk(getCanonicalEmptyCollectionName(map));\n        assertEquals(\"Map is empty\", 0, map2.size());\n    }",
+    "test_line": "        Map map2 = (Map) readExternalFormFromDisk(getCanonicalEmptyCollectionName(map));",
+    "test_name": "testEmptyMapCompatibility",
+    "test_suite": "org.apache.commons.collections.map.TestMultiValueMap"
+}

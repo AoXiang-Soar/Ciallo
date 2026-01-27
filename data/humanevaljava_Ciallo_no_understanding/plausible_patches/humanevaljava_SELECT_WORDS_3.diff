@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/SELECT_WORDS.java b/src/main/java/humaneval/buggy/SELECT_WORDS.java
+old mode 100644
+new mode 100755
+index 4c2e032..8e9390c
+--- a/src/main/java/humaneval/buggy/SELECT_WORDS.java
++++ b/src/main/java/humaneval/buggy/SELECT_WORDS.java
+@@ -26,7 +26,7 @@ public class SELECT_WORDS {
+             for(int j = 0; j < words[i].length(); j++) {
+                 boolean consonant = true;
+                 for(int k = 0; k < vowels.length; k++) {
+-                    if(vowels[k] == words[i].charAt(j)) {
++                    if(Character.toLowerCase(vowels[k]) == Character.toLowerCase(words[i].charAt(j))) {
+                         consonant = false;
+                         break;
+                     }
+@@ -37,4 +37,4 @@ public class SELECT_WORDS {
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

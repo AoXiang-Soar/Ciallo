@@ -1,0 +1,16 @@
+{
+    "bug_id": 3,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JxPath",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testBadFactoryImplementation() {\n        try {\n            context.createPath(\"foo/bar\");\n            fail(\"should fail with JXPathException caused by JXPathAbstractFactoryException\");\n        } catch (JXPathException e) {\n            assertTrue(e.getCause() instanceof JXPathAbstractFactoryException);\n        }\n    }",
+    "test_line": "            assertTrue(e.getCause() instanceof JXPathAbstractFactoryException);",
+    "test_name": "testBadFactoryImplementation",
+    "test_suite": "org.apache.commons.jxpath.ri.model.beans.BadlyImplementedFactoryTest"
+}

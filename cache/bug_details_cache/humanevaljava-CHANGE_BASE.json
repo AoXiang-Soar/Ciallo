@@ -1,0 +1,16 @@
+{
+    "bug_id": "CHANGE_BASE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_CHANGE_BASE.test_0:6 \u00bb TestTimedOut test timed out after 3000 millisecond...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        String result = humaneval.buggy.CHANGE_BASE.change_base(8, 3);\n        org.junit.Assert.assertEquals(\n            result, \"22\"\n        );\n    }",
+    "test_line": "        String result = humaneval.buggy.CHANGE_BASE.change_base(8, 3);",
+    "test_name": "test_0",
+    "test_suite": "TEST_CHANGE_BASE"
+}

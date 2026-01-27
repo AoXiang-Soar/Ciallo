@@ -1,0 +1,16 @@
+diff --git a/src/main/java/org/jsoup/nodes/Element.java b/src/main/java/org/jsoup/nodes/Element.java
+index 7906822f..53605040 100644
+--- a/src/main/java/org/jsoup/nodes/Element.java
++++ b/src/main/java/org/jsoup/nodes/Element.java
+@@ -1135,7 +1135,10 @@ public class Element extends Node {
+     @Override
+     public Element clone() {
+         Element clone = (Element) super.clone();
+-        clone.classNames();
++        clone.classNames = new HashSet<String>();
++        if (this.classNames != null) {
++            clone.classNames.addAll(this.classNames);
++        }
+         return clone;
+     }
+ }

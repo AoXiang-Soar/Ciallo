@@ -1,0 +1,18 @@
+diff --git a/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java b/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java
+index 8142b5edb..bc79b50e2 100644
+--- a/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java
++++ b/src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java
+@@ -133,6 +133,13 @@ public class BrentSolver extends UnivariateRealSolverImpl {
+             return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+         }
+ 
++        // verify bracketing condition - root must be bracketed by min and max
++        if (yMin * yMax >= 0 && yInitial * yMin >= 0 && yInitial * yMax >= 0) {
++            throw new IllegalArgumentException(
++                "Function values at endpoints and initial guess must bracket the root " +
++                "(have different signs). Found f(min)=" + yMin + ", f(max)=" + yMax + 
++                ", f(initial)=" + yInitial);
++        }
+ 
+         // full Brent algorithm starting with provided initial guess
+         return solve(f, min, yMin, max, yMax, initial, yInitial);

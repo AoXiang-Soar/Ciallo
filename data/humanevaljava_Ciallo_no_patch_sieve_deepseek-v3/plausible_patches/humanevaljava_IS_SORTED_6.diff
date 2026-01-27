@@ -1,0 +1,39 @@
+diff --git a/src/main/java/humaneval/buggy/IS_SORTED.java b/src/main/java/humaneval/buggy/IS_SORTED.java
+index 173398c..3ecae04 100644
+--- a/src/main/java/humaneval/buggy/IS_SORTED.java
++++ b/src/main/java/humaneval/buggy/IS_SORTED.java
+@@ -20,19 +20,21 @@ import java.util.HashMap;
+ 
+ public class IS_SORTED {
+     public static boolean is_sorted(int[] lst) {
+-        HashMap<Integer, Integer> count_num = new HashMap<>();
+-        for(int i = 0; i < lst.length; i++) {
+-            count_num.put(lst[i], 0);
++        // First check for duplicates
++        HashMap<Integer, Integer> count_map = new HashMap<>();
++        for (int num : lst) {
++            count_map.put(num, count_map.getOrDefault(num, 0) + 1);
++            if (count_map.get(num) > 2) {
++                return false;
++            }
+         }
+-        for(int i = 0; i < lst.length; i++) {
+-            count_num.put(lst[i], count_num.get(lst[i]) + 1);
+-        }
+-        for(int i = 0; i < lst.length; i++) {
+-            if(count_num.get(lst[i]) > 2) return false;
+-        }
+-        for(int i = 0; i < lst.length - 1; i++) {
+-            if(lst[i] <= lst[i + 1]) return false;
++        
++        // Then check sorting order
++        for (int i = 0; i < lst.length - 1; i++) {
++            if (lst[i] > lst[i + 1]) {
++                return false;
++            }
+         }
+         return true;
+     }
+-}
++}
+\ No newline at end of file

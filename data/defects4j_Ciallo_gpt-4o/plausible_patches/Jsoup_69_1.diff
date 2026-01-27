@@ -1,0 +1,36 @@
+diff --git a/src/main/java/org/jsoup/nodes/FormElement.java b/src/main/java/org/jsoup/nodes/FormElement.java
+index e498975d..2dd98b6e 100644
+--- a/src/main/java/org/jsoup/nodes/FormElement.java
++++ b/src/main/java/org/jsoup/nodes/FormElement.java
+@@ -46,7 +46,6 @@ public class FormElement extends Element {
+         return this;
+     }
+ 
+-
+     /**
+      * Prepare to submit this form. A Connection object is created with the request set up from the form values. You
+      * can then set up other options (like user-agent, timeout, cookies), then execute it.
+@@ -75,6 +74,7 @@ public class FormElement extends Element {
+ 
+         // iterate the form control elements and accumulate their values
+         for (Element el: elements) {
++            if (el.parent() == null) continue; // Validation check: Skip elements no longer attached to the document
+             if (!el.tag().isFormSubmittable()) continue; // contents are form listable, superset of submitable
+             if (el.hasAttr("disabled")) continue; // skip disabled form inputs
+             String name = el.attr("name");
+@@ -96,7 +96,7 @@ public class FormElement extends Element {
+             } else if ("checkbox".equalsIgnoreCase(type) || "radio".equalsIgnoreCase(type)) {
+                 // only add checkbox or radio if they have the checked attribute
+                 if (el.hasAttr("checked")) {
+-                    final String val = el.val().length() >  0 ? el.val() : "on";
++                    final String val = el.val().length() > 0 ? el.val() : "on";
+                     data.add(HttpConnection.KeyVal.create(name, val));
+                 }
+             } else {
+@@ -105,4 +105,4 @@ public class FormElement extends Element {
+         }
+         return data;
+     }
+-}
++}
+\ No newline at end of file

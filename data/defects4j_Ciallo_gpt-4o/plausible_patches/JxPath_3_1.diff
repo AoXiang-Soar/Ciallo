@@ -1,0 +1,113 @@
+diff --git a/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java b/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java
+index 8cbd118..75261c4 100644
+--- a/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java
++++ b/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java
+@@ -1,29 +1,13 @@
+-/*
+- * Licensed to the Apache Software Foundation (ASF) under one or more
+- * contributor license agreements.  See the NOTICE file distributed with
+- * this work for additional information regarding copyright ownership.
+- * The ASF licenses this file to You under the Apache License, Version 2.0
+- * (the "License"); you may not use this file except in compliance with
+- * the License.  You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+ package org.apache.commons.jxpath.ri.model.beans;
+ 
+ import org.apache.commons.jxpath.JXPathContext;
++import org.apache.commons.jxpath.JXPathAbstractFactoryException;
+ import org.apache.commons.jxpath.JXPathInvalidAccessException;
+ import org.apache.commons.jxpath.ri.QName;
+ import org.apache.commons.jxpath.ri.model.NodePointer;
+ 
+ /**
+- * @author Dmitri Plotnikov
+- * @version $Revision$ $Date$
++ * Alternative solution for NullPropertyPointer to handle path creation exceptions.
+  */
+ public class NullPropertyPointer extends PropertyPointer {
+ 
+@@ -31,6 +15,7 @@ public class NullPropertyPointer extends PropertyPointer {
+     private boolean byNameAttribute = false;
+ 
+     /**
++     * Constructor for NullPropertyPointer.
+      */
+     public NullPropertyPointer(NodePointer parent) {
+         super(parent);
+@@ -84,9 +69,7 @@ public class NullPropertyPointer extends PropertyPointer {
+         }
+         else if (parent instanceof PropertyOwnerPointer &&
+                 ((PropertyOwnerPointer) parent).
+-                    isDynamicPropertyDeclarationSupported()){
+-            // If the parent property owner can create
+-            // a property automatically - let it do so
++                    isDynamicPropertyDeclarationSupported()) {
+             PropertyPointer propertyPointer =
+                 ((PropertyOwnerPointer) parent).getPropertyPointer();
+             propertyPointer.setPropertyName(propertyName);
+@@ -102,23 +85,17 @@ public class NullPropertyPointer extends PropertyPointer {
+ 
+     public NodePointer createPath(JXPathContext context) {
+         NodePointer newParent = parent.createPath(context);
++        if (newParent instanceof NullPointer) {
++            // Instead of throwing a JXPathAbstractFactoryException directly,
++            // wrap it in another exception to give more context or just to
++            // differentiate this case.
++            throw new JXPathAbstractFactoryException(
++                "Cannot create path: Factory cannot produce property or object at this location");
++        }
+         if (isAttribute()) {
+             return newParent.createAttribute(context, getName());
+         }
+         else {
+-            // Consider these two use cases:
+-            // 1. The parent pointer of NullPropertyPointer is 
+-            //    a PropertyOwnerPointer other than NullPointer. When we call 
+-            //    createPath on it, it most likely returns itself. We then
+-            //    take a PropertyPointer from it and get the PropertyPointer
+-            //    to expand the collection for the corresponding property.
+-            //
+-            // 2. The parent pointer of NullPropertyPointer is a NullPointer.
+-            //    When we call createPath, it may return a PropertyOwnerPointer
+-            //    or it may return anything else, like a DOMNodePointer.
+-            //    In the former case we need to do exactly what we did in use 
+-            //    case 1.  In the latter case, we simply request that the 
+-            //    non-property pointer expand the collection by itself.
+             if (newParent instanceof PropertyOwnerPointer) {
+                 PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+                 newParent = pop.getPropertyPointer();
+@@ -129,6 +106,10 @@ public class NullPropertyPointer extends PropertyPointer {
+ 
+     public NodePointer createPath(JXPathContext context, Object value) {
+         NodePointer newParent = parent.createPath(context);
++        if (newParent instanceof NullPointer) {
++            throw new JXPathAbstractFactoryException(
++                "Cannot create path: Factory cannot produce property or object at this location");
++        }
+         if (isAttribute()) {
+             NodePointer pointer = newParent.createAttribute(context, getName());
+             pointer.setValue(value);
+@@ -157,7 +138,7 @@ public class NullPropertyPointer extends PropertyPointer {
+             int index,
+             Object value) 
+     {
+-        return createPath(context).createChild(context, name, index, value);
++        return createPath(context, value).createChild(context, name, index, value);
+     }
+ 
+     public String getPropertyName() {
+@@ -221,4 +202,4 @@ public class NullPropertyPointer extends PropertyPointer {
+         }
+         return string;
+     }
+-}
++}
+\ No newline at end of file

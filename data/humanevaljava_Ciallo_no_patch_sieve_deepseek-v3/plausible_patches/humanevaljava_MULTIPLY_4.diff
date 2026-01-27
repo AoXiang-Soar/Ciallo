@@ -1,0 +1,16 @@
+diff --git a/src/main/java/humaneval/buggy/MULTIPLY.java b/src/main/java/humaneval/buggy/MULTIPLY.java
+index 7ea427a..99dfb9a 100644
+--- a/src/main/java/humaneval/buggy/MULTIPLY.java
++++ b/src/main/java/humaneval/buggy/MULTIPLY.java
+@@ -11,6 +11,8 @@ package humaneval.buggy;
+ 
+ public class MULTIPLY {
+     public static int multiply(int a, int b) {
+-        return (a % 10) * (b % 10);
++        int unitA = Math.abs(a % 10);
++        int unitB = Math.abs(b % 10);
++        return unitA * unitB;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": "WILL_IT_FLY",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_WILL_IT_FLY.test_0:6 \u00bb TestTimedOut test timed out after 3000 millisecond...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        boolean result = humaneval.buggy.WILL_IT_FLY.will_it_fly(new int[] {3, 2, 3}, 9);\n        org.junit.Assert.assertEquals(\n            result, true\n        );\n    }",
+    "test_line": "        boolean result = humaneval.buggy.WILL_IT_FLY.will_it_fly(new int[] {3, 2, 3}, 9);",
+    "test_name": "test_0",
+    "test_suite": "TEST_WILL_IT_FLY"
+}

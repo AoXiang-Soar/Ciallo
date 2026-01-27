@@ -1,0 +1,24 @@
+diff --git a/src/main/java/org/apache/commons/compress/utils/ChecksumCalculatingInputStream.java b/src/main/java/org/apache/commons/compress/utils/ChecksumCalculatingInputStream.java
+index 10c7d68d..98638a2c 100644
+--- a/src/main/java/org/apache/commons/compress/utils/ChecksumCalculatingInputStream.java
++++ b/src/main/java/org/apache/commons/compress/utils/ChecksumCalculatingInputStream.java
+@@ -30,13 +30,13 @@ public class ChecksumCalculatingInputStream extends InputStream {
+     private final InputStream in;
+     private final Checksum checksum;
+ 
+-    public ChecksumCalculatingInputStream(final Checksum checksum, final InputStream in) {
+-
+-
+-
+-        this.checksum = checksum;
+-        this.in = in;
++public ChecksumCalculatingInputStream(final Checksum checksum, final InputStream in) {
++    if (checksum == null || in == null) {
++        throw new NullPointerException("Checksum and InputStream cannot be null");
+     }
++    this.checksum = checksum;
++    this.in = in;
++}
+ 
+     /**
+      * Reads a single byte from the stream

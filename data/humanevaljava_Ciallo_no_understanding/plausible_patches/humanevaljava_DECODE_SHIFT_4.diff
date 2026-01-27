@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/DECODE_SHIFT.java b/src/main/java/humaneval/buggy/DECODE_SHIFT.java
+index c8aba74..e78a24c 100644
+--- a/src/main/java/humaneval/buggy/DECODE_SHIFT.java
++++ b/src/main/java/humaneval/buggy/DECODE_SHIFT.java
+@@ -7,8 +7,11 @@ public class DECODE_SHIFT {
+     public static String encode_shift(String string){
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            c = (char)((((int) c + 5 - (int)('a')) % 26) + (int)('a'));
+-            sb.append(c);
++            int shifted = (int) c + 5;
++            if (shifted > 'z') {
++                shifted -= 26;
++            }
++            sb.append((char) shifted);
+         }
+         return sb.toString();
+     }
+@@ -16,9 +19,12 @@ public class DECODE_SHIFT {
+     public static String decode_shift(String string) {
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            c = (char)((((int) c - 5 - (int)('a')) % 26) + (int)('a'));
+-            sb.append(c);
++            int shifted = (int) c - 5;
++            if (shifted < 'a') {
++                shifted += 26;
++            }
++            sb.append((char) shifted);
+         }
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

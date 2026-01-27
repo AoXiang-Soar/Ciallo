@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java b/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
+index 094f5de..b4ed101 100644
+--- a/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
++++ b/src/main/java/humaneval/buggy/STRANGE_SORT_LIST.java
+@@ -16,15 +16,23 @@ strange_sort_list([]) == [] */
+ public class STRANGE_SORT_LIST {
+     public static List<Integer> strange_sort_list(List<Integer> lst) {
+         List<Integer> result = new ArrayList<Integer>();
+-
+-        boolean switched = true;
+-        while (lst.size() > 0) {
+-            if (switched) {
+-                result.add(Collections.min(lst));
++        List<Integer> sorted = new ArrayList<Integer>(lst);
++        Collections.sort(sorted);
++        
++        int left = 0;
++        int right = sorted.size() - 1;
++        boolean takeMin = true;
++        
++        while (left <= right) {
++            if (takeMin) {
++                result.add(sorted.get(left));
++                left++;
+             } else {
+-                result.add(Collections.max(lst));
++                result.add(sorted.get(right));
++                right--;
+             }
++            takeMin = !takeMin;
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

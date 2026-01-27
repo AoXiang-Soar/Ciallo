@@ -1,0 +1,36 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index a90b0673d..ade0f6831 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -1436,8 +1436,7 @@ public class StringUtils {
+      * @return the <code>true</code> if any of the chars are found,
+      * <code>false</code> if no match or null input
+      * @since 2.4
+-     */
+-	public static boolean containsAny(CharSequence cs, char[] searchChars) {
++     */	public static boolean containsAny(CharSequence cs, char[] searchChars) {
+ 		if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
+ 			return false;
+ 		}
+@@ -1447,15 +1446,18 @@ public class StringUtils {
+ 			char ch = cs.charAt(i);
+ 			for (int j = 0; j < searchLength; j++) {
+ 				if (searchChars[j] == ch) {
+-						// ch is a supplementary character
+-						// ch is in the Basic Multilingual Plane
++					if (Character.isHighSurrogate(ch)) {
++						if (i < csLength - 1 && searchChars[j] == cs.charAt(i + 1)) {
++							return true;
++						}
++					} else {
+ 						return true;
++					}
+ 				}
+ 			}
+ 		}
+ 		return false;
+ 	}
+-
+     /**
+      * <p>
+      * Checks if the CharSequence contains any character in the given set of characters.

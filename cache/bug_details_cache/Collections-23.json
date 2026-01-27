@@ -1,0 +1,16 @@
+{
+    "bug_id": 23,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: UnmodifiableTrie shall not be decorated expected same:<Trie[0]={",
+    "test_framework": "defects4j",
+    "test_function": "    public void testUnmodifiableTrie() {\n        Trie<String, Object> trie = TrieUtils.unmodifiableTrie(new PatriciaTrie<Object>());\n        assertTrue(\"Returned object should be an UnmodifiableTrie.\",\n            trie instanceof UnmodifiableTrie);\n        try {\n            TrieUtils.unmodifiableTrie(null);\n            fail(\"Expecting IllegalArgumentException for null trie.\");\n        } catch (final IllegalArgumentException ex) {\n            // expected\n        }\n        \n        assertSame(\"UnmodifiableTrie shall not be decorated\", trie, TrieUtils.unmodifiableTrie(trie));\n    }",
+    "test_line": "        assertSame(\"UnmodifiableTrie shall not be decorated\", trie, TrieUtils.unmodifiableTrie(trie));",
+    "test_name": "testUnmodifiableTrie",
+    "test_suite": "org.apache.commons.collections4.TrieUtilsTest"
+}

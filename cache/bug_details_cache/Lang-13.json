@@ -1,0 +1,16 @@
+{
+    "bug_id": 13,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Lang",
+    "test_error_message": "org.apache.commons.lang3.SerializationException: ClassNotFoundException while reading cloned object data",
+    "test_framework": "defects4j",
+    "test_function": "    public void testPrimitiveTypeClassSerialization() {\n        Class<?>[] primitiveTypes = { byte.class, short.class, int.class, long.class, float.class, double.class,\n                boolean.class, char.class, void.class };\n\n        for (Class<?> primitiveType : primitiveTypes) {\n            Class<?> clone = SerializationUtils.clone(primitiveType);\n            assertEquals(primitiveType, clone);\n        }\n    }",
+    "test_line": "            Class<?> clone = SerializationUtils.clone(primitiveType);",
+    "test_name": "testPrimitiveTypeClassSerialization",
+    "test_suite": "org.apache.commons.lang3.SerializationUtilsTest"
+}

@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+old mode 100644
+new mode 100755
+index da0fd0a..2d45b0f
+--- a/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
++++ b/src/main/java/humaneval/buggy/RIGHT_ANGLE_TRIANGLE.java
+@@ -10,6 +10,14 @@ package humaneval.buggy;
+ 
+ public class RIGHT_ANGLE_TRIANGLE {
+     public static boolean right_angle_triangle(int a, int b, int c) {
+-        return a*a + b*b == c*c;
++        int max = Math.max(Math.max(a, b), c);
++        int min = Math.min(Math.min(a, b), c);
++        int mid = a + b + c - max - min;
++        
++        // Check triangle inequality first
++        if (min + mid <= max) {
++            return false;
++        }
++        return min*min + mid*mid == max*max;
+     }
+-}
++}
+\ No newline at end of file

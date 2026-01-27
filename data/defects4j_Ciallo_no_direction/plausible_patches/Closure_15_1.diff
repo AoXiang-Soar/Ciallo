@@ -1,0 +1,69 @@
+diff --git a/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java b/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java
+index a8e92fcca..d2f28cce9 100644
+--- a/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java
++++ b/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java
+@@ -81,32 +81,42 @@ class FlowSensitiveInlineVariables extends AbstractPostOrderCallback
+   private static final Predicate<Node> SIDE_EFFECT_PREDICATE =
+     new Predicate<Node>() {
+       @Override
+-      public boolean apply(Node n) {
+-        // When the node is null it means, we reached the implicit return
+-        // where the function returns (possibly without an return statement)
+-        if (n == null) {
+-          return false;
+-        }
+-
+-        // TODO(user): We only care about calls to functions that
+-        // passes one of the dependent variable to a non-side-effect free
+-        // function.
+-        if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) {
+-          return true;
+-        }
+-
+-        if (n.isNew() && NodeUtil.constructorCallHasSideEffects(n)) {
+-          return true;
+-        }
++public boolean apply(Node n) {
++    // When the node is null it means, we reached the implicit return
++    // where the function returns (possibly without an return statement)
++    if (n == null) {
++        return false;
++    }
+ 
++    // First check if current node has side effects
++    if (checkForSideEffects(n)) {
++        return true;
++    }
+ 
+-        for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
+-          if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {
++    // Then recursively check children
++    for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
++        if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {
+             return true;
+-          }
+         }
+-        return false;
+-      }
++    }
++    return false;
++}
++
++private boolean checkForSideEffects(Node n) {
++    if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) {
++        return true;
++    }
++    if (n.isNew() && NodeUtil.constructorCallHasSideEffects(n)) {
++        return true;
++    }
++    if (n.isDelProp()) {  // Handle property deletion which has side effects
++        return true;
++    }
++    if (n.isInc() || n.isDec()) {  // Handle increment/decrement operations
++        return true;
++    }
++    return false;
++}
+   };
+ 
+   public FlowSensitiveInlineVariables(AbstractCompiler compiler) {

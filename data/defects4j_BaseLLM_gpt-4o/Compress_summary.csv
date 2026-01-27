@@ -1,0 +1,48 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Compress,1,SL SH SF,0,16847,,21,1,22,
+defects4j,Compress,2,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,3,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,4,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,5,SH SF,1,4712,4,1,2,4,
+defects4j,Compress,6,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,7,SF,1,639,1,0,0,1,
+defects4j,Compress,8,SF,0,29054,,21,1,22,
+defects4j,Compress,9,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,10,SF,0,26027,,4,18,22,
+defects4j,Compress,11,SF,1,21226,16,15,0,16,
+defects4j,Compress,12,SH SF,1,5459,6,0,5,6,
+defects4j,Compress,13,SH SF,1,464,1,0,0,1,
+defects4j,Compress,14,SH SF,1,3385,4,1,2,4,
+defects4j,Compress,15,SF,1,965,1,0,0,1,
+defects4j,Compress,16,SF,0,30600,,21,1,22,
+defects4j,Compress,17,SF,1,12144,12,11,0,12,
+defects4j,Compress,18,SF,0,30882,,20,2,22,
+defects4j,Compress,19,SL SH SF,1,737,1,0,0,1,
+defects4j,Compress,20,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,21,SF,1,507,1,0,0,1,
+defects4j,Compress,22,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,23,SL SH SF,1,591,1,0,0,1,
+defects4j,Compress,24,SF,0,28559,,22,0,22,
+defects4j,Compress,25,SL SH SF,1,9020,17,4,12,17,
+defects4j,Compress,26,SH SF,1,981,2,1,0,2,
+defects4j,Compress,27,SH SF,1,989,1,0,0,1,
+defects4j,Compress,28,SF,1,2745,4,3,0,4,
+defects4j,Compress,29,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,30,SH SF,1,841,1,0,0,1,
+defects4j,Compress,31,SH SF,1,781,1,0,0,1,
+defects4j,Compress,32,SF,1,1263,1,0,0,1,
+defects4j,Compress,33,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,34,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,35,SF,1,5962,9,7,1,9,
+defects4j,Compress,36,SH SF,0,14008,,1,21,22,
+defects4j,Compress,37,SH SF,0,19398,,18,4,22,
+defects4j,Compress,38,SL SH SF,1,2319,5,4,0,5,
+defects4j,Compress,39,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,40,SF,0,21754,,20,2,22,
+defects4j,Compress,41,SF,0,50022,,21,1,22,
+defects4j,Compress,42,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,43,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Compress,44,SF,1,329,1,0,0,1,
+defects4j,Compress,45,SF,1,808,1,0,0,1,
+defects4j,Compress,46,SH SF,1,1828,1,0,0,1,
+defects4j,Compress,47,BF,,,,,,,"Not SL, SH or SF bug. "

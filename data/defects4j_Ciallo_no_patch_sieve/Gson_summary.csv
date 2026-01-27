@@ -1,0 +1,19 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Gson,1,BF,1,77888,16,13,5,32,
+defects4j,Gson,2,BF,,,,,,,Out of limited tokens. 
+defects4j,Gson,3,BF,2,94559,12,8,7,25,
+defects4j,Gson,4,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Gson,5,SL SH SF,11,38549,7,3,0,17,
+defects4j,Gson,6,SF,0,513319,,0,305,305,
+defects4j,Gson,7,BF,,,,,,,Out of limited tokens. 
+defects4j,Gson,8,BF,18,58821,7,1,0,20,
+defects4j,Gson,9,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Gson,10,SH SF,1,21227,23,12,15,40,
+defects4j,Gson,11,SL SH SF,1,8670,7,0,6,7,
+defects4j,Gson,12,SF,9,14456,7,2,0,13,
+defects4j,Gson,13,SL SH SF,3,26488,12,11,0,25,
+defects4j,Gson,14,BF,,,,,,,Out of limited tokens. 
+defects4j,Gson,15,SL SH SF,6,8770,6,0,1,7,
+defects4j,Gson,16,SF,10,41681,8,3,4,20,
+defects4j,Gson,17,SH SF,1,157960,147,39,32,268,
+defects4j,Gson,18,SF,3,165185,137,113,29,602,

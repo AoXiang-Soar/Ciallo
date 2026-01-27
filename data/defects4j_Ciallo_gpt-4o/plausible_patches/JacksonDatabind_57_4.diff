@@ -1,0 +1,48 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+index 10fddc4d6..0e41a91a7 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+@@ -1432,16 +1432,35 @@ public class ObjectReader
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.
+      */
+-    public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
+-        throws IOException, JsonProcessingException
+-    {
+-        if (_dataFormatReaders != null) {
+-            return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
+-        }
+-        return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-                true));
++public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
++    throws IOException, JsonProcessingException
++{
++    if (src == null) {
++        throw new IllegalArgumentException("Input byte array 'src' must not be null.");
++    }
++
++    if (offset < 0 || length < 0) {
++        throw new IndexOutOfBoundsException("Offset and length must be non-negative.");
+     }
+ 
++    if (offset + length > src.length) {
++        throw new IndexOutOfBoundsException("Offset and length must be within the bounds of the source array.");
++    }
++
++    JsonParser parser = null;
++    try {
++        parser = _parserFactory.createParser(src, offset, length);
++    } catch (IOException e) {
++        throw new IOException("Error creating JSON parser from byte array: " + e.getMessage(), e);
++    }
++
++    if (_dataFormatReaders != null) {
++        return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
++    }
++
++    return _bindAndReadValues(_considerFilter(parser, true));
++}
++
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.
+      */

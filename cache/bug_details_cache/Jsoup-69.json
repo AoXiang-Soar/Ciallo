@@ -1,0 +1,16 @@
+{
+    "bug_id": 69,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<2> but was:<3>",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void removeFormElement() {\n        String html = \"<html>\\n\" +\n                \"  <body> \\n\" +\n                \"      <form action=\\\"/hello.php\\\" method=\\\"post\\\">\\n\" +\n                \"      User:<input type=\\\"text\\\" name=\\\"user\\\" />\\n\" +\n                \"      Password:<input type=\\\"password\\\" name=\\\"pass\\\" />\\n\" +\n                \"      <input type=\\\"submit\\\" name=\\\"login\\\" value=\\\"login\\\" />\\n\" +\n                \"   </form>\\n\" +\n                \"  </body>\\n\" +\n                \"</html>  \";\n        Document doc = Jsoup.parse(html);\n        FormElement form = (FormElement) doc.selectFirst(\"form\");\n        Element pass = form.selectFirst(\"input[name=pass]\");\n        pass.remove();\n\n        List<Connection.KeyVal> data = form.formData();\n        assertEquals(2, data.size());\n        assertEquals(\"user\", data.get(0).key());\n        assertEquals(\"login\", data.get(1).key());\n        assertEquals(null, doc.selectFirst(\"input[name=pass]\"));\n    }",
+    "test_line": "        assertEquals(2, data.size());",
+    "test_name": "removeFormElement",
+    "test_suite": "org.jsoup.nodes.FormElementTest"
+}

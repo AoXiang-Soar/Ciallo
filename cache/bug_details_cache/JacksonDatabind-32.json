@@ -1,0 +1,16 @@
+{
+    "bug_id": 32,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of java.lang.Object out of END_OBJECT token",
+    "test_framework": "defects4j",
+    "test_function": "    public void testNestedUntyped989() throws IOException\n    {\n        Untyped989 pojo;\n        ObjectReader r = MAPPER.readerFor(Untyped989.class);\n\n        pojo = r.readValue(\"[]\");\n        assertTrue(pojo.value instanceof List);\n        pojo = r.readValue(\"[{}]\");\n        assertTrue(pojo.value instanceof List);\n        \n        pojo = r.readValue(\"{}\");\n        assertTrue(pojo.value instanceof Map);\n        pojo = r.readValue(\"{\\\"a\\\":[]}\");\n        assertTrue(pojo.value instanceof Map);\n    }",
+    "test_line": "        pojo = r.readValue(\"{}\");",
+    "test_name": "testNestedUntyped989",
+    "test_suite": "com.fasterxml.jackson.databind.deser.TestUntypedDeserialization"
+}

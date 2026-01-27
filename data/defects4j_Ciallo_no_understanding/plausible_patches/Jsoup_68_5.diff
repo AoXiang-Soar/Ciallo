@@ -1,0 +1,62 @@
+diff --git a/src/main/java/org/jsoup/parser/HtmlTreeBuilder.java b/src/main/java/org/jsoup/parser/HtmlTreeBuilder.java
+index 08444ef0..9a538dbc 100644
+--- a/src/main/java/org/jsoup/parser/HtmlTreeBuilder.java
++++ b/src/main/java/org/jsoup/parser/HtmlTreeBuilder.java
+@@ -463,28 +463,38 @@ public class HtmlTreeBuilder extends TreeBuilder {
+         return inSpecificScope(specificScopeTarget, baseTypes, extraTypes);
+     }
+ 
+-    private boolean inSpecificScope(String[] targetNames, String[] baseTypes, String[] extraTypes) {
+-        // https://html.spec.whatwg.org/multipage/parsing.html#has-an-element-in-the-specific-scope
+-        int bottom = stack.size() -1;
+-        if (bottom > MaxScopeSearchDepth) {
+-            bottom = MaxScopeSearchDepth;
+-        }
+-        final int top = bottom > MaxScopeSearchDepth ? bottom - MaxScopeSearchDepth : 0;
+-        // don't walk too far up the tree
+-
+-        for (int pos = bottom; pos >= top; pos--) {
+-            final String elName = stack.get(pos).nodeName();
+-            if (inSorted(elName, targetNames))
+-                return true;
+-            if (inSorted(elName, baseTypes))
+-                return false;
+-            if (extraTypes != null && inSorted(elName, extraTypes))
+-                return false;
+-        }
+-        //Validate.fail("Should not be reachable"); // would end up false because hitting 'html' at root (basetypes)
++private boolean inSpecificScope(String[] targetNames, String[] baseTypes, String[] extraTypes) {
++    // https://html.spec.whatwg.org/multipage/parsing.html#has-an-element-in-the-specific-scope
++    if (stack.isEmpty()) {
+         return false;
+     }
+ 
++    // Limit the search depth to prevent stack overflow
++    final int searchDepth = 256; // Reasonable limit for HTML nesting
++    int bottom = stack.size() - 1;
++    int top = Math.max(0, bottom - searchDepth + 1); // Ensure top is not negative
++
++    for (int pos = bottom; pos >= top; pos--) {
++        final String elName = stack.get(pos).nodeName();
++        if (inSorted(elName, targetNames))
++            return true;
++        if (inSorted(elName, baseTypes))
++            return false;
++        if (extraTypes != null && inSorted(elName, extraTypes))
++            return false;
++    }
++    
++    // If we exited loop without finding any base types, check if we have more elements above
++    if (top > 0) {
++        // Verify the topmost element is a base type as last resort
++        final String topEl = stack.get(0).nodeName();
++        return !inSorted(topEl, baseTypes) && 
++               !(extraTypes != null && inSorted(topEl, extraTypes));
++    }
++    
++    return false;
++}
++
+     boolean inScope(String[] targetNames) {
+         return inSpecificScope(targetNames, TagsSearchInScope, null);
+     }

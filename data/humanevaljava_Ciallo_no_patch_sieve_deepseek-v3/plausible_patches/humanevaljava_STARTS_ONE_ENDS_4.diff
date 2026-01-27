@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java b/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java
+index b8a4679..565ccf6 100644
+--- a/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java
++++ b/src/main/java/humaneval/buggy/STARTS_ONE_ENDS.java
+@@ -1,12 +1,15 @@
+ package humaneval.buggy;
+ 
+-/* Given a positive integer n, return the count of the numbers of n-digit
+-positive integers that start or end with 1. */
+-
+ public class STARTS_ONE_ENDS {
+     public static int starts_one_ends(int n) {
+         if (n == 1)
+             return 1;
+-        return (int) ((10 + 9) * Math.pow(10, n - 2));
++        // Total numbers starting with 1: 1 followed by any n-1 digits -> 10^(n-1)
++        int startsWithOne = (int) Math.pow(10, n - 1);
++        // Total numbers ending with 1: first digit 2-9, middle any digits, last digit 1 -> 9*10^(n-2)
++        int endsWithOne = 9 * (int) Math.pow(10, n - 2);
++        // Numbers that both start and end with 1 are counted twice above, so subtract them once
++        int both = 1 * (int) Math.pow(10, n - 2);
++        return startsWithOne + endsWithOne - both;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/MAKE_A_PILE.java b/src/main/java/humaneval/buggy/MAKE_A_PILE.java
+index f77ee2a..0a502b6 100644
+--- a/src/main/java/humaneval/buggy/MAKE_A_PILE.java
++++ b/src/main/java/humaneval/buggy/MAKE_A_PILE.java
+@@ -19,9 +19,18 @@ import java.util.ArrayList;
+ public class MAKE_A_PILE {
+ 	public static ArrayList<Integer> make_a_pile(int n) {
+ 		ArrayList<Integer> pile = new ArrayList<Integer>();
++		int currentCount = n;
++		
+ 		for(int i = 0; i < n; i++) {
+-			pile.add(n - 2 * i);
++			pile.add(currentCount);
++			
++			// Determine the increment: next odd or even number
++			if (currentCount % 2 == 0) {
++				currentCount += 2; // next even number
++			} else {
++				currentCount += 2; // next odd number
++			}
+ 		}
+ 		return pile;
+ 	}
+-}
++}
+\ No newline at end of file

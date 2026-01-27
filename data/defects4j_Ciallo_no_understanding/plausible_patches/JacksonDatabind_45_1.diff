@@ -1,0 +1,16 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ser/std/DateTimeSerializerBase.java b/src/main/java/com/fasterxml/jackson/databind/ser/std/DateTimeSerializerBase.java
+index eec386efa..2e2bb08e2 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ser/std/DateTimeSerializerBase.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ser/std/DateTimeSerializerBase.java
+@@ -60,7 +60,10 @@ public abstract class DateTimeSerializerBase<T>
+                     return withFormat(Boolean.TRUE, null);
+                 }
+ 
+-                if (format.getShape() == JsonFormat.Shape.STRING) {
++                // Handle cases where we need custom formatting:
++                // - Explicit STRING shape specified
++                // - Or any format override is present (pattern, locale, timezone)
++                if (shape == JsonFormat.Shape.STRING || !format.equals(JsonFormat.Value.empty())) {
+                     TimeZone tz = format.getTimeZone();
+                     final String pattern = format.hasPattern()
+                                     ? format.getPattern()

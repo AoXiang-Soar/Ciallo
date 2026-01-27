@@ -1,0 +1,16 @@
+{
+    "bug_id": 38,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        if (getName().endsWith(\"/\")) {",
+    "code": "    public boolean isDirectory() {\n        if (file != null) {\n            return file.isDirectory();\n        }\n\n        if (linkFlag == LF_DIR) {\n            return true;\n        }\n\n        if (getName().endsWith(\"/\")) {\n            return true;\n        }\n\n        return false;\n    }",
+    "fixed_code": "    public boolean isDirectory() {\n        if (file != null) {\n            return file.isDirectory();\n        }\n\n        if (linkFlag == LF_DIR) {\n            return true;\n        }\n\n        if (!isPaxHeader() && !isGlobalPaxHeader() && getName().endsWith(\"/\")) {\n            return true;\n        }\n\n        return false;\n    }",
+    "fixed_lines": "        if (!isPaxHeader() && !isGlobalPaxHeader() && getName().endsWith(\"/\")) {",
+    "masked_code": "    public boolean isDirectory() {\n        if (file != null) {\n            return file.isDirectory();\n        }\n\n        if (linkFlag == LF_DIR) {\n            return true;\n        }\n\n>>> [ INFILL ] <<<\n            return true;\n        }\n\n        return false;\n    }",
+    "project": "Compress",
+    "test_error_message": "java.io.IOException: Error detected parsing the header",
+    "test_framework": "defects4j",
+    "test_function": "    public void survivesPaxHeaderWithNameEndingInSlash() throws Exception {\n        final TarArchiveInputStream is = getTestStream(\"/COMPRESS-356.tar\");\n        try {\n            final TarArchiveEntry entry = is.getNextTarEntry();\n            assertEquals(\"package/package.json\", entry.getName());\n            assertNull(is.getNextTarEntry());\n        } finally {\n            is.close();\n        }\n    }",
+    "test_line": "            final TarArchiveEntry entry = is.getNextTarEntry();",
+    "test_name": "survivesPaxHeaderWithNameEndingInSlash",
+    "test_suite": "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest"
+}

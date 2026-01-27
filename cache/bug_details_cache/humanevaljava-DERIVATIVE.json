@@ -1,0 +1,16 @@
+{
+    "bug_id": "DERIVATIVE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_DERIVATIVE.test_0:12 expected:<[3, 1, 2, 4, 5]> but was:<[1, 4, 12, 20]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        List<Integer> result = humaneval.buggy.DERIVATIVE.derivative(\n            Arrays.asList(3, 1, 2, 4, 5)\n        );\n        org.junit.Assert.assertEquals(\n            result, Arrays.asList(1, 4, 12, 20)\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_DERIVATIVE"
+}

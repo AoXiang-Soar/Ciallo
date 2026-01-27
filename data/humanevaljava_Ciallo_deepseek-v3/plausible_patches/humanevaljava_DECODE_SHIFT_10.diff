@@ -1,0 +1,46 @@
+diff --git a/src/main/java/humaneval/buggy/DECODE_SHIFT.java b/src/main/java/humaneval/buggy/DECODE_SHIFT.java
+index c8aba74..fcc7684 100644
+--- a/src/main/java/humaneval/buggy/DECODE_SHIFT.java
++++ b/src/main/java/humaneval/buggy/DECODE_SHIFT.java
+@@ -4,10 +4,14 @@ package humaneval.buggy;
+ decode_shift(): takes as input string encoded with encode_shift function. Returns decoded string. */
+ 
+ public class DECODE_SHIFT {
+-    public static String encode_shift(String string){
++    public static String encode_shift(String string) {
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            c = (char)((((int) c + 5 - (int)('a')) % 26) + (int)('a'));
++            if (Character.isLowerCase(c)) {
++                c = shiftCharacterWithinBounds(c, 5, 'a', 'z');
++            } else if (Character.isUpperCase(c)) {
++                c = shiftCharacterWithinBounds(c, 5, 'A', 'Z');
++            }
+             sb.append(c);
+         }
+         return sb.toString();
+@@ -16,9 +20,21 @@ public class DECODE_SHIFT {
+     public static String decode_shift(String string) {
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            c = (char)((((int) c - 5 - (int)('a')) % 26) + (int)('a'));
++            if (Character.isLowerCase(c)) {
++                c = shiftCharacterWithinBounds(c, -5, 'a', 'z');
++            } else if (Character.isUpperCase(c)) {
++                c = shiftCharacterWithinBounds(c, -5, 'A', 'Z');
++            }
+             sb.append(c);
+         }
+         return sb.toString();
+     }
+-}
++
++    private static char shiftCharacterWithinBounds(char c, int shift, char lowerBound, char upperBound) {
++        int offset = (c - lowerBound + shift) % (upperBound - lowerBound + 1);
++        if (offset < 0) {
++            offset += (upperBound - lowerBound + 1);
++        }
++        return (char) (lowerBound + offset);
++    }
++}
+\ No newline at end of file

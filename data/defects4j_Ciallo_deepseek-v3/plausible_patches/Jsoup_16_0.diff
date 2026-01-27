@@ -1,0 +1,59 @@
+diff --git a/src/main/java/org/jsoup/nodes/DocumentType.java b/src/main/java/org/jsoup/nodes/DocumentType.java
+index f9f77dad..c0526908 100644
+--- a/src/main/java/org/jsoup/nodes/DocumentType.java
++++ b/src/main/java/org/jsoup/nodes/DocumentType.java
+@@ -1,23 +1,26 @@
+ package org.jsoup.nodes;
+ 
+ import org.jsoup.helper.StringUtil;
++import org.jsoup.helper.Validate;
+ 
+ /**
+- * A {@code <!DOCTPYE>} node.
++ * A {@code <!DOCTYPE>} node.
+  */
+ public class DocumentType extends Node {
+     // todo: quirk mode from publicId and systemId
+ 
+     /**
+      * Create a new doctype element.
+-     * @param name the doctype's name
++     * @param name the doctype's name (must not be null or empty)
+      * @param publicId the doctype's public ID
+      * @param systemId the doctype's system ID
+      * @param baseUri the doctype's base URI
++     * @throws IllegalArgumentException if name is null or empty
+      */
+     public DocumentType(String name, String publicId, String systemId, String baseUri) {
+         super(baseUri);
+-
++        Validate.notEmpty(name, "DocumentType name must not be empty");
++        
+         attr("name", name);
+         attr("publicId", publicId);
+         attr("systemId", systemId);
+@@ -30,15 +33,18 @@ public class DocumentType extends Node {
+ 
+     @Override
+     void outerHtmlHead(StringBuilder accum, int depth, Document.OutputSettings out) {
+-        accum.append("<!DOCTYPE html");
+-        if (!StringUtil.isBlank(attr("publicId")))
++        accum.append("<!DOCTYPE ").append(attr("name"));
++        if (!StringUtil.isBlank(attr("publicId"))) {
+             accum.append(" PUBLIC \"").append(attr("publicId")).append("\"");
+-        if (!StringUtil.isBlank(attr("systemId")))
+-            accum.append(' ').append(attr("systemId")).append("\"");
++            if (!StringUtil.isBlank(attr("systemId")))
++                accum.append(" \"").append(attr("systemId")).append("\"");
++        } else if (!StringUtil.isBlank(attr("systemId"))) {
++            accum.append(" \"").append(attr("systemId")).append("\"");
++        }
+         accum.append('>');
+     }
+ 
+     @Override
+     void outerHtmlTail(StringBuilder accum, int depth, Document.OutputSettings out) {
+     }
+-}
++}
+\ No newline at end of file

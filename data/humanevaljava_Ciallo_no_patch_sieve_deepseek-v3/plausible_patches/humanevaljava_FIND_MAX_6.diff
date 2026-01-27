@@ -1,0 +1,57 @@
+diff --git a/src/main/java/humaneval/buggy/FIND_MAX.java b/src/main/java/humaneval/buggy/FIND_MAX.java
+index a44725f..1f9bbeb 100644
+--- a/src/main/java/humaneval/buggy/FIND_MAX.java
++++ b/src/main/java/humaneval/buggy/FIND_MAX.java
+@@ -2,31 +2,29 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ import java.util.Arrays;
+-import java.util.Collections;
+ import java.util.HashSet;
+ 
+-// Write a function that accepts a list of strings.
+-// The list contains different words. Return the word with maximum number
+-// of unique characters. If multiple strings have maximum number of unique
+-// characters, return the one which comes first in lexicographical order.
+-
+-// find_max(["name", "of", "string"]) == "string"
+-// find_max(["name", "enam", "game"]) == "enam"
+-// find_max(["aaaaaaa", "bb" ,"cc"]) == "aaaaaaa"
+-
+ public class FIND_MAX {
+     public static String find_max(String[] words) {
+-        ArrayList<String> words_list = new ArrayList<String>(Arrays.asList(words));
+-        Collections.sort(
+-            words_list,
+-            (w1, w2) -> {
+-                Character[] c1 = ((String) w1).chars().mapToObj(c -> (char)c).toArray(Character[]::new);
+-                HashSet<Character> s1 = new HashSet<Character>(Arrays.asList(c1));
+-                Character[] c2 = ((String) w2).chars().mapToObj(c -> (char)c).toArray(Character[]::new);
+-                HashSet<Character> s2 = new HashSet<Character>(Arrays.asList(c2));
+-                return s1.size() - s2.size();
++        String max_word = words[0];
++        int max_unique = new HashSet<Character>(
++            Arrays.asList(
++                words[0].chars().mapToObj(c -> (char)c).toArray(Character[]::new)
++            )
++        ).size();
++        
++        for (int i = 1; i < words.length; i++) {
++            HashSet<Character> unique_chars = new HashSet<>();
++            for (char c : words[i].toCharArray()) {
++                unique_chars.add(c);
++            }
++            
++            if (unique_chars.size() > max_unique || 
++                (unique_chars.size() == max_unique && words[i].compareTo(max_word) < 0)) {
++                max_word = words[i];
++                max_unique = unique_chars.size();
+             }
+-        );
+-        return words_list.get(0);
++        }
++        return max_word;
+     }
+-}
++}
+\ No newline at end of file

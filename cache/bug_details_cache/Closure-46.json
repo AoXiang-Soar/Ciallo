@@ -1,0 +1,16 @@
+{
+    "bug_id": 46,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: Expected: ({a: number, b: string}|{b: string, c: string, e: number})",
+    "test_framework": "defects4j",
+    "test_function": "  public void testRecordTypeLeastSuperType2() {\n    RecordTypeBuilder builder = new RecordTypeBuilder(registry);\n    builder.addProperty(\"e\", NUMBER_TYPE, null);\n    builder.addProperty(\"b\", STRING_TYPE, null);\n    builder.addProperty(\"c\", STRING_TYPE, null);\n    JSType otherRecordType = builder.build();\n\n    assertTypeEquals(\n        registry.createUnionType(recordType, otherRecordType),\n        recordType.getLeastSupertype(otherRecordType));\n  }",
+    "test_line": "    assertTypeEquals(",
+    "test_name": "testRecordTypeLeastSuperType2",
+    "test_suite": "com.google.javascript.rhino.jstype.JSTypeTest"
+}

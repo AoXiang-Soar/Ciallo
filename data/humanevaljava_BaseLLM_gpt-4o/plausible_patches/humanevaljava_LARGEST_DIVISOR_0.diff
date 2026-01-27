@@ -1,0 +1,17 @@
+diff --git a/src/main/java/humaneval/buggy/LARGEST_DIVISOR.java b/src/main/java/humaneval/buggy/LARGEST_DIVISOR.java
+index e93b282..1a94a5f 100644
+--- a/src/main/java/humaneval/buggy/LARGEST_DIVISOR.java
++++ b/src/main/java/humaneval/buggy/LARGEST_DIVISOR.java
+@@ -2,10 +2,10 @@ package humaneval.buggy;
+ 
+ public class LARGEST_DIVISOR {
+     public static int largest_divisor(int n) {
+-        for (int i = n; i >= 0; i -= 1){
++        for (int i = n - 1; i > 0; i--) {
+             if (n % i == 0)
+                 return i;
+         }
+-        return 1;
++        return 1; // Return 1 if no greater divisor is found
+     }
+ }

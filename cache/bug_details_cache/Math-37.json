@@ -1,0 +1,16 @@
+{
+    "bug_id": 37,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<1.0> but was:<NaN>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testTanhInf() {\n        TestUtils.assertSame(Complex.NaN, oneInf.tanh());\n        TestUtils.assertSame(Complex.NaN, oneNegInf.tanh());\n        TestUtils.assertSame(Complex.valueOf(1.0, 0.0), infOne.tanh());\n        TestUtils.assertSame(Complex.valueOf(-1.0, 0.0), negInfOne.tanh());\n        TestUtils.assertSame(Complex.NaN, infInf.tanh());\n        TestUtils.assertSame(Complex.NaN, infNegInf.tanh());\n        TestUtils.assertSame(Complex.NaN, negInfInf.tanh());\n        TestUtils.assertSame(Complex.NaN, negInfNegInf.tanh());\n    }",
+    "test_line": "        TestUtils.assertSame(Complex.valueOf(1.0, 0.0), infOne.tanh());",
+    "test_name": "testTanhInf",
+    "test_suite": "org.apache.commons.math.complex.ComplexTest"
+}

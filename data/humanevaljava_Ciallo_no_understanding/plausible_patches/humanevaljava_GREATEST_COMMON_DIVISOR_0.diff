@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/GREATEST_COMMON_DIVISOR.java b/src/main/java/humaneval/buggy/GREATEST_COMMON_DIVISOR.java
+old mode 100644
+new mode 100755
+index f92fc88..c686013
+--- a/src/main/java/humaneval/buggy/GREATEST_COMMON_DIVISOR.java
++++ b/src/main/java/humaneval/buggy/GREATEST_COMMON_DIVISOR.java
+@@ -3,9 +3,10 @@ package humaneval.buggy;
+ public class GREATEST_COMMON_DIVISOR {
+     public static int greatest_common_divisor(int a, int b){
+         while (b > 0) {
++            int temp = a;
+             a = b;
+-            b = a % b;
++            b = temp % b;
+         }
+         return a;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,25 @@
+diff --git a/src/main/java/humaneval/buggy/SPECIAL_FILTER.java b/src/main/java/humaneval/buggy/SPECIAL_FILTER.java
+index eab06ca..ad2b0ae 100644
+--- a/src/main/java/humaneval/buggy/SPECIAL_FILTER.java
++++ b/src/main/java/humaneval/buggy/SPECIAL_FILTER.java
+@@ -17,11 +17,16 @@ public class SPECIAL_FILTER {
+         for (Integer num : nums) {
+             if (num > 10) {
+                 String number_as_string = num + "";
+-                if (odd_digits.contains(number_as_string.charAt(0))
+-                        && odd_digits.contains(number_as_string.charAt(number_as_string.length())))
++                
++                // Obtain the first and last digit as integer values.
++                int first_digit = Character.getNumericValue(number_as_string.charAt(0));
++                int last_digit = Character.getNumericValue(number_as_string.charAt(number_as_string.length() - 1));
++                
++                if (odd_digits.contains(first_digit) && odd_digits.contains(last_digit)) {
+                     count += 1;
++                }
+             }
+         }
+         return count;
+     }
+-}
++}
+\ No newline at end of file

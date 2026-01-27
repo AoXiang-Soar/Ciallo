@@ -1,0 +1,16 @@
+{
+    "bug_id": "MIN_PATH",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MIN_PATH.test_4:37 arrays first differed at element [1]; expected:<7> but was:<13>\nTEST_MIN_PATH.test_0:7 \u00bb ArrayIndexOutOfBounds Index -1 out of bounds for leng...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_4() throws java.lang.Exception {\n        int[][] input = {{8, 14, 9, 2}, {6, 4, 13, 15}, {5, 7, 1, 12}, {3, 10, 11, 16}};\n        int[] result = humaneval.buggy.MIN_PATH.min_path(input, 5);\n        int[] desired = {1, 7, 1, 7, 1};\n        org.junit.Assert.assertArrayEquals(desired, result);\n    }",
+    "test_line": "        int[] result = humaneval.buggy.MIN_PATH.min_path(input, 10);",
+    "test_name": "test_4",
+    "test_suite": "TEST_MIN_PATH"
+}

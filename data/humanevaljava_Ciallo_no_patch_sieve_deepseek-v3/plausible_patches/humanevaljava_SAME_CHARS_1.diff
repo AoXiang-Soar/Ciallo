@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/SAME_CHARS.java b/src/main/java/humaneval/buggy/SAME_CHARS.java
+index 9367e85..ec65389 100644
+--- a/src/main/java/humaneval/buggy/SAME_CHARS.java
++++ b/src/main/java/humaneval/buggy/SAME_CHARS.java
+@@ -18,15 +18,15 @@ False */
+ 
+ public class SAME_CHARS {
+     public static boolean same_chars(String s0, String s1) {
+-        ArrayList<Character> set0 = new ArrayList<Character>();
+-        ArrayList<Character> set1 = new ArrayList<Character>();
++        HashMap<Character, Integer> map0 = new HashMap<Character, Integer>();
++        HashMap<Character, Integer> map1 = new HashMap<Character, Integer>();
+ 
+         for (char c0 : s0.toCharArray()) {
+-            set0.add(c0);
++            map0.put(c0, map0.getOrDefault(c0, 0) + 1);
+         }
+         for (char c1 : s1.toCharArray()) {
+-            set1.add(c1);
++            map1.put(c1, map1.getOrDefault(c1, 0) + 1);
+         }
+-        return set0.equals(set1);
++        return map0.keySet().equals(map1.keySet());
+     }
+-}
++}
+\ No newline at end of file

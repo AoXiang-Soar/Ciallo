@@ -1,0 +1,18 @@
+diff --git a/src/java/org/apache/commons/collections/map/CaseInsensitiveMap.java b/src/java/org/apache/commons/collections/map/CaseInsensitiveMap.java
+index d0ebdb6a..2f636789 100644
+--- a/src/java/org/apache/commons/collections/map/CaseInsensitiveMap.java
++++ b/src/java/org/apache/commons/collections/map/CaseInsensitiveMap.java
+@@ -118,7 +118,12 @@ public class CaseInsensitiveMap extends AbstractHashedMap implements Serializabl
+      */
+     protected Object convertKey(Object key) {
+         if (key != null) {
+-            return key.toString().toLowerCase();
++            String str = key.toString();
++            // Handle Greek sigma characters
++            if (str.equals("\u03C2") || str.equals("\u03A3") || str.equals("\u03C3")) {
++                return "\u03C3";
++            }
++            return str.toLowerCase(java.util.Locale.ENGLISH);
+         } else {
+             return AbstractHashedMap.NULL;
+         }

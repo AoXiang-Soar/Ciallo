@@ -1,0 +1,59 @@
+diff --git a/src/java/org/apache/commons/cli/OptionGroup.java b/src/java/org/apache/commons/cli/OptionGroup.java
+index dd474cc..b770705 100644
+--- a/src/java/org/apache/commons/cli/OptionGroup.java
++++ b/src/java/org/apache/commons/cli/OptionGroup.java
+@@ -83,27 +83,34 @@ public class OptionGroup implements Serializable
+      * @throws AlreadySelectedException if an option from this group has 
+      * already been selected.
+      */
+-    public void setSelected(Option option) throws AlreadySelectedException
+-    {
+-        if (option == null)
+-        {
+-            // reset the option previously selected
+-            selected = null;
+-            return;
+-        }
+-        
+-        // if no option has already been selected or the 
+-        // same option is being reselected then set the
+-        // selected member variable
+-        if (selected == null || selected.equals(option.getOpt()))
+-        {
+-            selected = option.getOpt();
+-        }
+-        else
+-        {
+-            throw new AlreadySelectedException(this, option);
+-        }
++public void setSelected(Option option) throws AlreadySelectedException {
++    if (option == null) {
++        // reset the option previously selected
++        selected = null;
++        return;
+     }
++    
++    String opt = option.getOpt();
++    String longOpt = option.getLongOpt();
++    
++    // if no option has already been selected
++    if (selected == null) {
++        selected = (opt != null) ? opt : longOpt;
++        return;
++    }
++    
++    // check if the option is being reselected (either by short or long form)
++    boolean isSameOption = (opt != null && opt.equals(selected)) || 
++                          (longOpt != null && longOpt.equals(selected));
++    
++    if (isSameOption) {
++        // maintain current selection (could be either short or long form)
++        return;
++    }
++    
++    // if we're selecting a new option and there's already a selection
++    throw new AlreadySelectedException(this, option);
++}
+ 
+     /**
+      * @return the selected option name

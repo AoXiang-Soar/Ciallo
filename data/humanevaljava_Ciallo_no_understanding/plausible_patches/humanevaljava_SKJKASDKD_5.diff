@@ -1,0 +1,50 @@
+diff --git a/src/main/java/humaneval/buggy/SKJKASDKD.java b/src/main/java/humaneval/buggy/SKJKASDKD.java
+old mode 100644
+new mode 100755
+index 4fd1548..4aa561a
+--- a/src/main/java/humaneval/buggy/SKJKASDKD.java
++++ b/src/main/java/humaneval/buggy/SKJKASDKD.java
+@@ -13,24 +13,30 @@ package humaneval.buggy;
+ 
+ public class SKJKASDKD {
+     public static boolean is_prime(int n) {
+-        for (int i = 2; i < (int)Math.pow(n, 0.5) + 1; i += 1) {
++        if (n <= 1) return false;
++        if (n == 2) return true;
++        if (n % 2 == 0) return false;
++        for (int i = 3; i * i <= n; i += 2) {
+             if (n % i == 0) return false;
+         }
+         return true;
+     }
+ 
+     public static int skjkasdkd(int[] lst) {
+-        int max = 0;
+-        int i = 0;
+-        while(i < lst.length) {
+-            if (lst[i] > max && is_prime(lst[i]))
+-                max = lst[i];
+-            i += 1;
++        int max_prime = -1;
++        for (int num : lst) {
++            if (is_prime(num) && num > max_prime) {
++                max_prime = num;
++            }
+         }
+-        int result = 0;
+-        for (char c : (max + "").toCharArray()) {
+-            result += (int) c;
++        if (max_prime == -1) return 0; // handle case where no primes exist
++        
++        int sum = 0;
++        int n = max_prime;
++        while (n > 0) {
++            sum += n % 10;
++            n /= 10;
+         }
+-        return result;
++        return sum;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 61,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "org.apache.commons.math.MathRuntimeException$4: the Poisson mean must be positive (-1)",
+    "test_framework": "defects4j",
+    "test_function": "    public void testMean() {\n        PoissonDistribution dist;\n        try {\n            dist = new PoissonDistributionImpl(-1);\n            fail(\"negative mean: NotStrictlyPositiveException expected\");\n        } catch(NotStrictlyPositiveException ex) {\n            // Expected.\n        }\n\n        dist = new PoissonDistributionImpl(10.0);\n        assertEquals(10.0, dist.getMean(), 0.0);\n    }",
+    "test_line": "            dist = new PoissonDistributionImpl(-1);",
+    "test_name": "testMean",
+    "test_suite": "org.apache.commons.math.distribution.PoissonDistributionTest"
+}

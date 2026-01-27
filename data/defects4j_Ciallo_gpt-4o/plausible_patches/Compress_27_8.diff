@@ -1,0 +1,17 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index 4cf32d6f..00f32381 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -130,9 +130,9 @@ public class TarUtils {
+             end--;
+             trailer = buffer[end - 1];
+         }
+-        if (start == end) {
+-            throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, start, trailer));
++        // If there are no valid octal digits between start and end, return 0.
++        if (start >= end) {
++            return 0L;
+         }
+ 
+         for ( ;start < end; start++) {

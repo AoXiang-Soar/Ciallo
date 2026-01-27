@@ -1,0 +1,34 @@
+diff --git a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+index 0cc8226d8..c6d9b6500 100644
+--- a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
++++ b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+@@ -19,11 +19,20 @@ public class ConstructorInstantiator implements Instantiator {
+ 
+     private <T> T withOuterClass(Class<T> cls) {
+         try {
+-            //this is kind of overengineered because we don't need to support more params
+-            //however, I know we will be needing it :)
+             Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass());
+             return c.newInstance(outerClassInstance);
+         } catch (Exception e) {
++            // Fallback mechanism: attempt to find a constructor with superclass of the outer class instance
++            Class<?> superClass = outerClassInstance.getClass().getSuperclass();
++            while (superClass != null) {
++                try {
++                    Constructor<T> c = cls.getDeclaredConstructor(superClass);
++                    return c.newInstance(outerClassInstance);
++                } catch (Exception ignored) {
++                    // continue searching in the superclass hierarchy
++                    superClass = superClass.getSuperclass();
++                }
++            }
+             throw paramsException(cls, e);
+         }
+     }
+@@ -42,4 +51,4 @@ public class ConstructorInstantiator implements Instantiator {
+                     + cls.getSimpleName() + "'.\nPlease ensure it has parameter-less constructor.", e);
+         }
+     }
+-}
++}
+\ No newline at end of file

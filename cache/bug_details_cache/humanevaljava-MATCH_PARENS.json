@@ -1,0 +1,16 @@
+{
+    "bug_id": "MATCH_PARENS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MATCH_PARENS.test_4:32 expected:<[Yes]> but was:<[No]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_4() throws java.lang.Exception {\n        String[] input = {\"(())))\", \"(()())((\"};\n        String result = humaneval.buggy.MATCH_PARENS.match_parens(input);\n        org.junit.Assert.assertEquals(\"Yes\", result);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(\"Yes\", result);",
+    "test_name": "test_4",
+    "test_suite": "TEST_MATCH_PARENS"
+}

@@ -1,0 +1,31 @@
+diff --git a/src/com/google/javascript/jscomp/CodeGenerator.java b/src/com/google/javascript/jscomp/CodeGenerator.java
+index 54eb5cf84..9c2c3d01e 100644
+--- a/src/com/google/javascript/jscomp/CodeGenerator.java
++++ b/src/com/google/javascript/jscomp/CodeGenerator.java
+@@ -103,7 +103,6 @@ class CodeGenerator {
+   void add(Node n) {
+     add(n, Context.OTHER);
+   }
+-
+   void add(Node n, Context context) {
+     if (!cc.continueProcessing()) {
+       return;
+@@ -281,9 +280,7 @@ class CodeGenerator {
+ 
+       case Token.HOOK: {
+         Preconditions.checkState(childCount == 3);
+-        int p = NodeUtil.precedence(type);
+-        Context rhsContext = Context.OTHER;
+-        addExpr(first, p + 1, context);
++        int p = NodeUtil.precedence(type);        Context rhsContext = getContextForNoInOperator(context);        addExpr(first, p + 1, context);
+         cc.addOp("?", true);
+         addExpr(first.getNext(), 1, rhsContext);
+         cc.addOp(":", true);
+@@ -769,7 +766,6 @@ class CodeGenerator {
+ 
+     cc.endSourceMapping(n);
+   }
+-
+   /**
+    * We could use addList recursively here, but sometimes we produce
+    * very deeply nested operators and run out of stack space, so we

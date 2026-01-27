@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/CHECK_IF_LAST_CHAR_IS_A_LETTER.java b/src/main/java/humaneval/buggy/CHECK_IF_LAST_CHAR_IS_A_LETTER.java
+index 1ac3068..9266ae2 100644
+--- a/src/main/java/humaneval/buggy/CHECK_IF_LAST_CHAR_IS_A_LETTER.java
++++ b/src/main/java/humaneval/buggy/CHECK_IF_LAST_CHAR_IS_A_LETTER.java
+@@ -16,12 +16,23 @@ package humaneval.buggy;
+ 
+ public class CHECK_IF_LAST_CHAR_IS_A_LETTER {
+     public static boolean check_if_last_char_is_a_letter(String txt) {
++        if (txt.isEmpty()) {
++            return false;
++        }
++        
++        char lastChar = txt.charAt(txt.length() - 1);
++        if (lastChar == ' ') {
++            return false;
++        }
++        
+         String[] parts = txt.split(" ");
+-        String last = " ";
+-        last = parts[parts.length - 1];
+-        if(txt.charAt(txt.length() - 1) == ' ') last = " ";
+-        if(txt.length() == 1) last = " ";
+-        int last_char_pos = Character.toUpperCase(last.charAt(0)) - 'a';
+-        return (last.length() == 1) || (0 <= last_char_pos || last_char_pos <= 25);
++        String lastPart = parts[parts.length - 1];
++        
++        if (lastPart.length() != 1) {
++            return false;
++        }
++        
++        char c = lastPart.charAt(0);
++        return Character.isLetter(c);
+     }
+-}
++}
+\ No newline at end of file

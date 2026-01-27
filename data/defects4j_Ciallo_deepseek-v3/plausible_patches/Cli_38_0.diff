@@ -1,0 +1,43 @@
+diff --git a/src/main/java/org/apache/commons/cli/DefaultParser.java b/src/main/java/org/apache/commons/cli/DefaultParser.java
+index 4bff7f3..5850959 100644
+--- a/src/main/java/org/apache/commons/cli/DefaultParser.java
++++ b/src/main/java/org/apache/commons/cli/DefaultParser.java
+@@ -296,20 +296,27 @@ public class DefaultParser implements CommandLineParser
+      * 
+      * @param token
+      */
+-    private boolean isShortOption(String token)
++private boolean isShortOption(String token)
++{
++    // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
++    if (!token.startsWith("-") || token.length() == 1)
+     {
+-        // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+-        if (!token.startsWith("-") || token.length() == 1)
+-        {
+-            return false;
+-        }
++        return false;
++    }
+ 
+-        // remove leading "-" and "=value"
+-        int pos = token.indexOf("=");
+-        String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
+-        return options.hasShortOption(optName);
+-        // check for several concatenated short options
++    // remove leading "-"
++    String opt = token.substring(1);
++    // check for value part
++    int pos = opt.indexOf("=");
++    String optName = pos == -1 ? opt : opt.substring(0, pos);
++    
++    // if option is multi-char but not concatenated singles (like "t1")
++    if (optName.length() > 1 && !options.hasShortOption(optName)) {
++        return options.hasShortOption(optName.substring(0, 1));
+     }
++    
++    return options.hasShortOption(optName);
++}
+ 
+     /**
+      * Tells if the token looks like a long option.

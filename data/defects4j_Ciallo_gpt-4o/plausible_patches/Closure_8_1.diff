@@ -1,0 +1,68 @@
+diff --git a/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java b/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
+index f2d36f54f..781636395 100644
+--- a/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
++++ b/src/com/google/javascript/jscomp/CollapseVariableDeclarations.java
+@@ -1,19 +1,3 @@
+-/*
+- * Copyright 2006 The Closure Compiler Authors.
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+ package com.google.javascript.jscomp;
+ 
+ import com.google.common.base.Preconditions;
+@@ -199,16 +183,25 @@ class CollapseVariableDeclarations implements CompilerPass {
+       }
+ 
+       Var var = s.getVar(lhs.getString());
++
++      // Exclude function parameters from being redeclared
++      if (var != null && isFunctionParameter(var)) {
++        return false;
++      }
++
+       return var != null
+           && var.getScope() == s
+           && !blacklistedVars.contains(var);
+     }
+-  }
+ 
++    private boolean isFunctionParameter(Var var) {
++      Node parent = var.getParentNode();
++      return parent != null && parent.isParamList();
++    }
++  }
+ 
+   private void applyCollapses() {
+     for (Collapse collapse : collapses) {
+-
+       Node var = new Node(Token.VAR);
+       var.copyInformationFrom(collapse.startNode);
+       collapse.parent.addChildBefore(var, collapse.startNode);
+@@ -221,7 +214,7 @@ class CollapseVariableDeclarations implements CompilerPass {
+         collapse.parent.removeChildAfter(var);
+ 
+         if (n.isVar()) {
+-          while(n.hasChildren()) {
++          while (n.hasChildren()) {
+             var.addChildToBack(n.removeFirstChild());
+           }
+         } else {
+@@ -243,4 +236,4 @@ class CollapseVariableDeclarations implements CompilerPass {
+       }
+     }
+   }
+-}
++}
+\ No newline at end of file

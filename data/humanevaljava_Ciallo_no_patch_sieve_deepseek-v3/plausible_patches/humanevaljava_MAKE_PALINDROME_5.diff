@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+index 05f44d8..9430569 100644
+--- a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+@@ -13,13 +13,18 @@ public class MAKE_PALINDROME {
+         if (str.length() == 0)
+             return "";
+ 
+-        int beginning_of_suffix = 0;
+-        while (! is_palindrome(str.substring(beginning_of_suffix))){
+-            beginning_of_suffix += 1;
++        int longest_palindrome_length = 0;
++        // Find the length of the longest palindrome suffix
++        for (int i = 0; i < str.length(); i++) {
++            String suffix = str.substring(i);
++            if (is_palindrome(suffix)) {
++                longest_palindrome_length = suffix.length();
++                break;
++            }
+         }
+         
+-        String result = str;
+-        result += str.substring(0, beginning_of_suffix);
+-        return result;
++        String prefix = str.substring(0, str.length() - longest_palindrome_length);
++        String reversed_prefix = new StringBuilder(prefix).reverse().toString();
++        return str + reversed_prefix;
+     }
+-}
++}
+\ No newline at end of file

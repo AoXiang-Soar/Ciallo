@@ -1,0 +1,48 @@
+diff --git a/src/main/java/humaneval/buggy/WORDS_STRINGS.java b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+index e98a5f0..55da342 100644
+--- a/src/main/java/humaneval/buggy/WORDS_STRINGS.java
++++ b/src/main/java/humaneval/buggy/WORDS_STRINGS.java
+@@ -1,6 +1,7 @@
+ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
++import java.util.Arrays;
+ 
+ /*
+  * You will be given a string of words separated by commas or spaces. Your task is
+@@ -12,20 +13,17 @@ import java.util.ArrayList;
+  */
+ 
+ public class WORDS_STRINGS {
+-	public static ArrayList<String> words_strings(String s) {
+-		ArrayList<String> result = new ArrayList<String>();
+-		String s_list = "";
+-		for(char c : s.toCharArray()) {
+-			if(c == ',') {
+-				s_list += ' ';
+-			} else {
+-				s_list += c;
+-			}
+-		}
+-		String[] result_array = s_list.trim().split("\\s+");
+-		for(String r : result_array) {
+-			result.add(r);
+-		}
+-		return result;
+-	}
+-}
++    public static ArrayList<String> words_strings(String s) {
++        ArrayList<String> result = new ArrayList<String>();
++        
++        // Remove leading/trailing spaces and replace commas with spaces
++        s = s.trim().replace(',', ' ');
++        
++        if (!s.isEmpty()) {
++            // Split using regex for space as delimiter and filter out empty strings
++            result.addAll(Arrays.asList(s.split("\\s+")));
++        }
++        
++        return result;
++    }
++}
+\ No newline at end of file

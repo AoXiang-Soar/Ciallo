@@ -1,0 +1,57 @@
+diff --git a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+index 0cc8226d8..d4197d6b3 100644
+--- a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
++++ b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+@@ -19,21 +19,40 @@ public class ConstructorInstantiator implements Instantiator {
+ 
+     private <T> T withOuterClass(Class<T> cls) {
+         try {
+-            //this is kind of overengineered because we don't need to support more params
+-            //however, I know we will be needing it :)
+-            Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass());
+-            return c.newInstance(outerClassInstance);
++            // First try constructor with exact outer class type
++            try {
++                Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass());
++                c.setAccessible(true);
++                return c.newInstance(outerClassInstance);
++            } catch (NoSuchMethodException e1) {
++                // Try constructor with superclass of outer instance
++                try {
++                    Constructor<T> c = cls.getDeclaredConstructor(getOuterClass(cls));
++                    c.setAccessible(true);
++                    return c.newInstance(outerClassInstance);
++                } catch (NoSuchMethodException e2) {
++                    // Fall back to parameter-less constructor
++                    return noArgConstructor(cls);
++                }
++            }
+         } catch (Exception e) {
+             throw paramsException(cls, e);
+         }
+     }
+ 
++    private Class<?> getOuterClass(Class<?> innerClass) {
++        Class<?> outerClass = innerClass.getDeclaringClass();
++        if (outerClass == null) {
++            throw new IllegalArgumentException("Given class is not an inner class");
++        }
++        return outerClass;
++    }
++
+     private static <T> InstantationException paramsException(Class<T> cls, Exception e) {
+         return new InstantationException("Unable to create mock instance of '"
+                 + cls.getSimpleName() + "'.\nPlease ensure that the outer instance has correct type and that the target class has parameter-less constructor.", e);
+     }
+ 
+-
+     private static <T> T noArgConstructor(Class<T> cls) {
+         try {
+             return cls.newInstance();
+@@ -42,4 +61,4 @@ public class ConstructorInstantiator implements Instantiator {
+                     + cls.getSimpleName() + "'.\nPlease ensure it has parameter-less constructor.", e);
+         }
+     }
+-}
++}
+\ No newline at end of file

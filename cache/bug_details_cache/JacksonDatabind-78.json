@@ -1,0 +1,16 @@
+{
+    "bug_id": 78,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError: Expected an exception with one of substrings ([Illegal type]): got one with message \"N/A",
+    "test_framework": "defects4j",
+    "test_function": "    public void testIssue1599() throws Exception\n    {\n        final String JSON = aposToQuotes(\n \"{'id': 124,\\n\"\n+\" 'obj':[ 'com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl',\\n\"\n+\"  {\\n\"\n+\"    'transletBytecodes' : [ 'AAIAZQ==' ],\\n\"\n+\"    'transletName' : 'a.b',\\n\"\n+\"    'outputProperties' : { }\\n\"\n+\"  }\\n\"\n+\" ]\\n\"\n+\"}\"\n        );\n        ObjectMapper mapper = new ObjectMapper();\n        mapper.enableDefaultTyping();\n        try {\n            mapper.readValue(JSON, Bean1599.class);\n            fail(\"Should not pass\");\n        } catch (JsonMappingException e) {\n            verifyException(e, \"Illegal type\");\n            verifyException(e, \"to deserialize\");\n            verifyException(e, \"prevented for security reasons\");\n        }\n    }",
+    "test_line": "",
+    "test_name": "testIssue1599",
+    "test_suite": "com.fasterxml.jackson.databind.interop.IllegalTypesCheckTest"
+}

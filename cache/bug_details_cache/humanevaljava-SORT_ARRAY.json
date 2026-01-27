@@ -1,0 +1,16 @@
+{
+    "bug_id": "SORT_ARRAY",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SORT_ARRAY.test_3:39 arrays first differed at element [4]; expected:<4> but was:<2>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_3() throws java.lang.Exception {\n        int[] result = humaneval.buggy.SORT_ARRAY.sort_array(\n            new int[] {2, 4, 3, 0, 1, 5, 6}\n        );\n        org.junit.Assert.assertArrayEquals(\n            result, new int[] {6, 5, 4, 3, 2, 1, 0}\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertArrayEquals(",
+    "test_name": "test_3",
+    "test_suite": "TEST_SORT_ARRAY"
+}

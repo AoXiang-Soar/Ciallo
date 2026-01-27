@@ -1,0 +1,50 @@
+diff --git a/src/main/java/humaneval/buggy/COMMON.java b/src/main/java/humaneval/buggy/COMMON.java
+index f818c29..7484316 100644
+--- a/src/main/java/humaneval/buggy/COMMON.java
++++ b/src/main/java/humaneval/buggy/COMMON.java
+@@ -10,21 +10,32 @@ import java.util.*;
+ 
+ public class COMMON {
+     public static int[] common(int[] l1, int[] l2) {
+-        ArrayList<Integer> common = new ArrayList<Integer>();
++        // Use a HashSet to store common elements and avoid duplicates
++        HashSet<Integer> commonSet = new HashSet<Integer>();
+         
+-        for (int i = 0; i < l1.length; i += 1){
+-            for (int j = 0; j < l2.length; j += 1){
+-                if (l1[i] == l2[j])
+-                    common.add(l1[i]);
++        // Create a HashSet from the second list for faster lookup
++        HashSet<Integer> l2Set = new HashSet<Integer>();
++        for (int num : l2) {
++            l2Set.add(num);
++        }
++        
++        // Check for common elements
++        for (int num : l1) {
++            if (l2Set.contains(num)) {
++                commonSet.add(num);
+             }
+         }
+-        int[] result = new int[common.size()];
+-        int index = 0;
+-        for (Integer c : common) {
+-            result[index] = c;
+-            index += 1;
++        
++        // Convert HashSet to an array and sort it
++        ArrayList<Integer> commonList = new ArrayList<>(commonSet);
++        Collections.sort(commonList);
++
++        // Convert the list to an array
++        int[] result = new int[commonList.size()];
++        for (int i = 0; i < commonList.size(); i++) {
++            result[i] = commonList.get(i);
+         }
+-        Arrays.sort(result);
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

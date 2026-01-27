@@ -1,0 +1,60 @@
+diff --git a/src/java/org/apache/commons/cli2/builder/PatternBuilder.java b/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
+index 6910017..8a15c17 100644
+--- a/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
++++ b/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
+@@ -16,11 +16,11 @@
+  */
+ package org.apache.commons.cli2.builder;
+ 
+-import java.util.HashSet;
+-import java.util.Iterator;
+-import java.util.Set;
++import java.util.ArrayList;
++import java.util.List;
+ 
+ import org.apache.commons.cli2.Argument;
++import java.util.Iterator;
+ import org.apache.commons.cli2.Option;
+ import org.apache.commons.cli2.validation.ClassValidator;
+ import org.apache.commons.cli2.validation.DateValidator;
+@@ -54,7 +54,7 @@ public class PatternBuilder {
+      * @param gbuilder the GroupBuilder to use
+      * @param obuilder the DefaultOptionBuilder to use
+      * @param abuilder the ArgumentBuilder to use
+-     */
++ */
+     public PatternBuilder(
+         final GroupBuilder gbuilder,
+         final DefaultOptionBuilder obuilder,
+@@ -64,7 +64,7 @@ public class PatternBuilder {
+         this.abuilder = abuilder;
+     }
+ 
+-    private final Set options = new HashSet();
++    private final List<Option> options = new ArrayList<Option>();
+ 
+     /**
+      * Creates a new Option instance.
+@@ -74,12 +74,12 @@ public class PatternBuilder {
+         final Option option;
+ 
+         if (options.size() == 1) {
+-            option = (Option)options.iterator().next();
++            option = options.get(0);
+         }
+         else {
+             gbuilder.reset();
+-            for (final Iterator i = options.iterator(); i.hasNext();) {
+-                gbuilder.withOption((Option)i.next());
++            for (final Iterator<Option> i = options.iterator(); i.hasNext();) {
++                gbuilder.withOption(i.next());
+             }
+             option = gbuilder.create();
+         }
+@@ -199,4 +199,4 @@ public class PatternBuilder {
+                 return null;
+         }
+     }
+-}
++}
+\ No newline at end of file

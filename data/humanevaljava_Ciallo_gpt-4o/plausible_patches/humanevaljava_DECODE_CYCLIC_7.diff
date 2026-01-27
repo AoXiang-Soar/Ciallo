@@ -1,0 +1,39 @@
+diff --git a/src/main/java/humaneval/buggy/DECODE_CYCLIC.java b/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
+index 9ba739f..d523d53 100644
+--- a/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
++++ b/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
+@@ -8,18 +8,20 @@ public class DECODE_CYCLIC {
+             String encode_cyclic(String s) {
+                 ArrayList<String> groups = new ArrayList<String>();
+ 
++                // Divide the string into groups of 3 characters
+                 for (int i = 0; i < s.length(); i += 3){
+                     groups.add(s.substring(i, Math.min(s.length(), i + 3)));
+                 }
+-                int remain = s.length() % 3;
+-                
++
+                 String result = "";
+                 for (String group : groups){
+-                    result += group.substring(1) + group.substring(0, 1);
+-                }
+-
+-                if (remain > 0){
+-                    result += s.substring(s.length() - remain);
++                    // If the group has exactly 3 characters, rotate it
++                    if (group.length() == 3) {
++                        result += group.substring(1) + group.charAt(0);
++                    } else {
++                        // Keep the last group as is, if it has fewer than 3 characters
++                        result += group;
++                    }
+                 }
+ 
+                 return result;
+@@ -29,4 +31,4 @@ public class DECODE_CYCLIC {
+         final Cyclic cyclic = new Cyclic();
+         return cyclic.encode_cyclic(cyclic.encode_cyclic(str));
+     }
+-}
++}
+\ No newline at end of file

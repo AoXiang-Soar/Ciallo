@@ -1,0 +1,66 @@
+diff --git a/src/main/java/humaneval/buggy/REVERSE_DELETE.java b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+index 93117a1..971cc42 100644
+--- a/src/main/java/humaneval/buggy/REVERSE_DELETE.java
++++ b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+@@ -3,7 +3,7 @@ package humaneval.buggy;
+ import java.util.ArrayList;
+ 
+ /*
+- * We are given two strings s and c, you have to deleted all the characters in s that are equal to any character in c
++ * We are given two strings s and c, you have to delete all the characters in s that are equal to any character in c
+     then check if the result string is palindrome.
+     A string is called palindrome if it reads the same backward as forward.
+     You should return a tuple containing the result string and True/False for the check.
+@@ -15,19 +15,41 @@ import java.util.ArrayList;
+ 
+ public class REVERSE_DELETE {
+     public static ArrayList<Object> reverse_delete(String s, String c) {
+-        String new_s = "";
++        // Use StringBuilder to efficiently create the new string
++        StringBuilder new_s = new StringBuilder();
++
++        // Iterate over the characters in s
+         for(int i = 0; i < s.length(); i++) {
+-            if(c.indexOf(s.charAt(i)) != -1) {
+-                new_s += s.charAt(i);
++            // Append the character if it is not present in c
++            if(c.indexOf(s.charAt(i)) == -1) {
++                new_s.append(s.charAt(i));
+             }
+         }
+-        String reverse_s = "";
+-        for(int i = new_s.length() - 1; i >= 0; i--) {
+-            reverse_s += new_s.charAt(i);
+-        }
++
++        // Convert the StringBuilder to a String
++        String new_s_str = new_s.toString();
++        
++        // Check if the string is a palindrome
++        boolean isPalindrome = isPalindrome(new_s_str);
++
++        // Prepare and return the result
+         ArrayList<Object> res = new ArrayList<>();
+-        res.add(new_s);
+-        res.add(reverse_s.equals(new_s));
++        res.add(new_s_str);
++        res.add(isPalindrome);
+         return res;
+     }
+-}
++    
++    // Helper function to check if a string is a palindrome
++    private static boolean isPalindrome(String str) {
++        int left = 0;
++        int right = str.length() - 1;
++        while (left < right) {
++            if (str.charAt(left) != str.charAt(right)) {
++                return false;
++            }
++            left++;
++            right--;
++        }
++        return true;
++    }
++}
+\ No newline at end of file

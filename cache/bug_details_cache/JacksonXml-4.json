@@ -1,0 +1,16 @@
+{
+    "bug_id": 4,
+    "bug_type": "SF",
+    "buggy_lines": "            _initWithRootName((ToXmlGenerator) jgen, ROOT_NAME_FOR_NULL);",
+    "code": "    protected void _serializeXmlNull(JsonGenerator jgen) throws IOException\n    {\n        // 14-Nov-2016, tatu: As per [dataformat-xml#213], we may have explicitly\n        //    configured root name...\n        if (jgen instanceof ToXmlGenerator) {\n            _initWithRootName((ToXmlGenerator) jgen, ROOT_NAME_FOR_NULL);\n        }\n        super.serializeValue(jgen, null);\n    }",
+    "fixed_code": "    protected void _serializeXmlNull(JsonGenerator jgen) throws IOException\n    {\n        // 14-Nov-2016, tatu: As per [dataformat-xml#213], we may have explicitly\n        //    configured root name...\n        QName rootName = _rootNameFromConfig();\n        if (rootName == null) {\n            rootName = ROOT_NAME_FOR_NULL;\n        }\n        if (jgen instanceof ToXmlGenerator) {\n            _initWithRootName((ToXmlGenerator) jgen, rootName);\n        }\n        super.serializeValue(jgen, null);\n    }",
+    "fixed_lines": "        QName rootName = _rootNameFromConfig();\n        if (rootName == null) {\n            rootName = ROOT_NAME_FOR_NULL;\n        }\n            _initWithRootName((ToXmlGenerator) jgen, rootName);",
+    "masked_code": "    protected void _serializeXmlNull(JsonGenerator jgen) throws IOException\n    {\n        // 14-Nov-2016, tatu: As per [dataformat-xml#213], we may have explicitly\n        //    configured root name...\n        if (jgen instanceof ToXmlGenerator) {\n>>> [ INFILL ] <<<\n        }\n        super.serializeValue(jgen, null);\n    }",
+    "project": "JacksonXml",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<<[rudy]/>> but was:<<[null]/>>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testDynamicRootName() throws IOException\n    {\n        String xml;\n\n        ObjectWriter w = _xmlMapper.writer().withRootName(\"rudy\");\n\n        xml = w.writeValueAsString(new StringBean(\"foo\"));\n        assertEquals(\"<rudy><text>foo</text></rudy>\", xml);\n\n        xml = w.writeValueAsString(new StringBean(null));\n        assertEquals(\"<rudy><text/></rudy>\", xml);\n\n        // and even with null will respect configured root name\n        xml = w.writeValueAsString(null);\n        assertEquals(\"<rudy/>\", xml);\n    }",
+    "test_line": "        assertEquals(\"<rudy/>\", xml);",
+    "test_name": "testDynamicRootName",
+    "test_suite": "com.fasterxml.jackson.dataformat.xml.misc.RootNameTest"
+}

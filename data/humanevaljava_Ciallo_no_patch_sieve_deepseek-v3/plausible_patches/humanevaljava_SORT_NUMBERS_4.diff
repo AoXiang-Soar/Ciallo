@@ -1,0 +1,80 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_NUMBERS.java b/src/main/java/humaneval/buggy/SORT_NUMBERS.java
+index 7063e12..92b579d 100644
+--- a/src/main/java/humaneval/buggy/SORT_NUMBERS.java
++++ b/src/main/java/humaneval/buggy/SORT_NUMBERS.java
+@@ -3,21 +3,55 @@ package humaneval.buggy;
+ import java.util.*;
+ 
+ public class SORT_NUMBERS {
+-    public static String sort_numbers(String numbers) {
+-        final HashMap<String, Integer> value_map = new HashMap<String, Integer>();
+-        value_map.put("zero", 0);
+-        value_map.put("one", 1);
+-        value_map.put("two", 2);
+-        value_map.put("three", 3);
+-        value_map.put("four", 4);
+-        value_map.put("five", 5);
+-        value_map.put("six", 6);
+-        value_map.put("seven", 7);
+-        value_map.put("eight", 8);
+-        value_map.put("nine", 9);
++    private enum NumberWord {
++        ZERO("zero", 0),
++        ONE("one", 1),
++        TWO("two", 2),
++        THREE("three", 3),
++        FOUR("four", 4),
++        FIVE("five", 5),
++        SIX("six", 6),
++        SEVEN("seven", 7),
++        EIGHT("eight", 8),
++        NINE("nine", 9);
++
++        private final String word;
++        private final int value;
++
++        NumberWord(String word, int value) {
++            this.word = word;
++            this.value = value;
++        }
++
++        public String getWord() {
++            return word;
++        }
+ 
++        public int getValue() {
++            return value;
++        }
++
++        public static NumberWord fromString(String text) {
++            for (NumberWord nw : NumberWord.values()) {
++                if (nw.word.equals(text)) {
++                    return nw;
++                }
++            }
++            throw new IllegalArgumentException("Unknown number word: " + text);
++        }
++    }
++
++    public static String sort_numbers(String numbers) {
+         ArrayList<String> number_array = new ArrayList<String>(Arrays.asList(numbers.split(" ")));
+-        Collections.sort(number_array);
++        Collections.sort(number_array, new Comparator<String>() {
++            @Override
++            public int compare(String a, String b) {
++                return Integer.compare(
++                    NumberWord.fromString(a).getValue(),
++                    NumberWord.fromString(b).getValue()
++                );
++            }
++        });
+         
+         String result = "";
+         for (String number : number_array){
+@@ -25,4 +59,4 @@ public class SORT_NUMBERS {
+         }
+         return result.trim();
+     }
+-}
++}
+\ No newline at end of file

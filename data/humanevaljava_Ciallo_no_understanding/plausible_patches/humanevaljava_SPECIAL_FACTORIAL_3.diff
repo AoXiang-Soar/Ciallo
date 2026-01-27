@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/SPECIAL_FACTORIAL.java b/src/main/java/humaneval/buggy/SPECIAL_FACTORIAL.java
+old mode 100644
+new mode 100755
+index d2af5e4..1a17e1d
+--- a/src/main/java/humaneval/buggy/SPECIAL_FACTORIAL.java
++++ b/src/main/java/humaneval/buggy/SPECIAL_FACTORIAL.java
+@@ -16,11 +16,13 @@ package humaneval.buggy;
+ 
+ public class SPECIAL_FACTORIAL {
+     public static long special_factorial(long n) {
+-        long fact_i = 1, special_fact = 1;
+-        for(long i = n; i >= 1; i--) {
+-            fact_i *= i * fact_i;
+-            special_fact += i * fact_i;
++        long special_fact = 1;
++        long current_fact = 1;
++        
++        for (long i = 1; i <= n; i++) {
++            current_fact *= i;
++            special_fact *= current_fact;
+         }
+         return special_fact;
+     }
+-}
++}
+\ No newline at end of file

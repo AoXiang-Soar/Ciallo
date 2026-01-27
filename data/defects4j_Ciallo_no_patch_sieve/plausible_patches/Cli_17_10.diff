@@ -1,0 +1,60 @@
+diff --git a/src/java/org/apache/commons/cli/PosixParser.java b/src/java/org/apache/commons/cli/PosixParser.java
+index cafcede..4accb74 100644
+--- a/src/java/org/apache/commons/cli/PosixParser.java
++++ b/src/java/org/apache/commons/cli/PosixParser.java
+@@ -279,33 +279,33 @@ public class PosixParser extends Parser {
+      * @param stopAtNonOption Specifies whether to stop processing
+      * at the first non-Option encountered.
+      */
+-    protected void burstToken(String token, boolean stopAtNonOption)
++protected void burstToken(String token, boolean stopAtNonOption)
++{
++    for (int i = 1; i < token.length(); i++)
+     {
+-        for (int i = 1; i < token.length(); i++)
+-        {
+-            String ch = String.valueOf(token.charAt(i));
+-
+-            if (options.hasOption(ch))
+-            {
+-                tokens.add("-" + ch);
+-                currentOption = options.getOption(ch);
++        String ch = String.valueOf(token.charAt(i));
+ 
+-                if (currentOption.hasArg() && (token.length() != (i + 1)))
+-                {
+-                    tokens.add(token.substring(i + 1));
++        if (options.hasOption(ch))
++        {
++            tokens.add("-" + ch);
++            currentOption = options.getOption(ch);
+ 
+-                    break;
+-                }
+-            }
+-            else if (stopAtNonOption)
+-            {
+-                process(token.substring(i));
+-            }
+-            else
++            if (currentOption.hasArg() && (token.length() != (i + 1)))
+             {
+-                tokens.add(token);
+-                break;
++                tokens.add(token.substring(i + 1));
++                return; // Exit completely after processing argument
+             }
+         }
++        else if (stopAtNonOption)
++        {
++            tokens.add(token.substring(i));
++            return; // Exit completely after adding remaining token
++        }
++        else
++        {
++            tokens.add(token);
++            return; // Exit completely without further processing
++        }
+     }
+ }
++}

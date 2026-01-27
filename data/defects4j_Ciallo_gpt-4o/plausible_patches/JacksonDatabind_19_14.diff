@@ -1,0 +1,49 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/type/TypeFactory.java b/src/main/java/com/fasterxml/jackson/databind/type/TypeFactory.java
+index 8ebffc886..10a1e5728 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/type/TypeFactory.java
++++ b/src/main/java/com/fasterxml/jackson/databind/type/TypeFactory.java
+@@ -1014,22 +1014,30 @@ public final class TypeFactory
+          */
+         return _constructType(type.getUpperBounds()[0], context);
+     }
+-
+-    private JavaType _mapType(Class<?> rawClass)
+-    {
+-        // 28-May-2015, tatu: Properties are special, as per [databind#810]
+-        JavaType[] typeParams = findTypeParameters(rawClass, Map.class);
+-        // ok to have no types ("raw")
+-        if (typeParams == null) {
+-            return MapType.construct(rawClass, _unknownType(), _unknownType());
+-        }
+-        // but exactly 2 types if any found
+-        if (typeParams.length != 2) {
+-            throw new IllegalArgumentException("Strange Map type "+rawClass.getName()+": can not determine type parameters");
+-        }
+-        return MapType.construct(rawClass, typeParams[0], typeParams[1]);
++private JavaType _mapType(Class<?> rawClass)
++{
++    // Special handling for java.util.Properties
++    if (Properties.class == rawClass) {
++        // For java.util.Properties, both key and value are Strings
++        return MapType.construct(rawClass, _constructType(String.class), _constructType(String.class));
++    }
++    
++    // Determine if the class is a subtype of Map
++    JavaType[] typeParams = findTypeParameters(rawClass, Map.class);
++    
++    // Handle Map types without explicit type parameters (e.g., raw types)
++    if (typeParams == null || typeParams.length != 2) {
++        return MapType.construct(rawClass, _unknownType(), _unknownType());
+     }
++    
++    // Use the determined type parameters for the Map
++    return MapType.construct(rawClass, typeParams[0], typeParams[1]);
++}
+ 
++private JavaType _constructType(Class<?> cls) {
++    // Helper method to construct JavaType instance from a class
++    return TypeFactory.defaultInstance().constructType(cls);
++}
+     private JavaType _collectionType(Class<?> rawClass)
+     {
+         JavaType[] typeParams = findTypeParameters(rawClass, Collection.class);

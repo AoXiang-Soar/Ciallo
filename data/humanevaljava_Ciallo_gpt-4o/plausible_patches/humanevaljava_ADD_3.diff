@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/ADD.java b/src/main/java/humaneval/buggy/ADD.java
+index 186aae7..44b4715 100644
+--- a/src/main/java/humaneval/buggy/ADD.java
++++ b/src/main/java/humaneval/buggy/ADD.java
+@@ -1,13 +1,8 @@
+ package humaneval.buggy;
+ 
+-/* Add two numbers x and y
+->>> add(2, 3)
+-5
+->>> add(5, 7)
+-12 */
+-
+ public class ADD {
+     public static int add(int x, int y) {
+-        return x | y;
++        // Simple addition should solve the problem
++        return x + y;
+     }
+-}
++}
+\ No newline at end of file

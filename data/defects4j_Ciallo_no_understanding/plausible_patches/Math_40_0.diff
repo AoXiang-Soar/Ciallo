@@ -1,0 +1,22 @@
+diff --git a/src/main/java/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java b/src/main/java/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java
+index 93dd3bbdd..8d38d6c69 100644
+--- a/src/main/java/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java
++++ b/src/main/java/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java
+@@ -272,11 +272,15 @@ public class BracketingNthOrderBrentSolver
+ 
+             } while (Double.isNaN(nextX) && (end - start > 1));
+ 
+-            if (Double.isNaN(nextX)) {
+-                // fall back to bisection
++            if (Double.isNaN(nextX) || (agingA > 2) || (agingB > 2)) {
++                // fall back to bisection when:
++                // 1) interpolation fails OR
++                // 2) we're aging too much on one side (slow convergence)
+                 nextX = xA + 0.5 * (xB - xA);
+                 start = signChangeIndex - 1;
+                 end   = signChangeIndex;
++                agingA = 0;
++                agingB = 0;
+             }
+ 
+             // evaluate the function at the guessed root

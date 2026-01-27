@@ -1,0 +1,35 @@
+diff --git a/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java b/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
+index 558a5864..cfd31c5f 100644
+--- a/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
++++ b/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
+@@ -2537,17 +2537,22 @@ public class DateTimeFormatterBuilder {
+             return MAX_LENGTH;
+         }
+ 
+-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+-            String str = text.substring(position);
+-            for (String id : ALL_IDS) {
+-                if (str.startsWith(id)) {
+-                    bucket.setZone(DateTimeZone.forID(id));
+-                    return position + id.length();
+-                }
++public int parseInto(DateTimeParserBucket bucket, String text, int position) {
++    String str = text.substring(position).trim();
++    for (String id : ALL_IDS) {
++        // Try to match against all possible timezone IDs
++        if (str.startsWith(id)) {
++            // If the matched ID is followed by whitespace or end of string,
++            // or if it exactly matches a known timezone ID, then accept it
++            if (str.length() == id.length() || Character.isWhitespace(str.charAt(id.length()))) {
++                bucket.setZone(DateTimeZone.forID(id));
++                return position + id.length();
+             }
+-            return ~position;
+         }
+     }
++    return ~position;
++}
++    }
+ 
+     //-----------------------------------------------------------------------
+     static class Composite

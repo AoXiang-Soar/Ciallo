@@ -1,0 +1,16 @@
+{
+    "bug_id": 17,
+    "bug_type": "SH SF",
+    "buggy_lines": "        Object clone = createCopy(0, getItemCount() - 1);",
+    "code": "    public Object clone() throws CloneNotSupportedException {\n        Object clone = createCopy(0, getItemCount() - 1);\n        return clone;\n    }",
+    "fixed_code": "    public Object clone() throws CloneNotSupportedException {\n        TimeSeries clone = (TimeSeries) super.clone();\n        clone.data = (List) ObjectUtilities.deepClone(this.data);\n        return clone;\n    }",
+    "fixed_lines": "        TimeSeries clone = (TimeSeries) super.clone();\n        clone.data = (List) ObjectUtilities.deepClone(this.data);",
+    "masked_code": "    public Object clone() throws CloneNotSupportedException {\n>>> [ INFILL ] <<<\n        return clone;\n    }",
+    "project": "Chart",
+    "test_error_message": "java.lang.IllegalArgumentException: Requires start <= end.",
+    "test_framework": "defects4j",
+    "test_function": "    public void testBug1832432() {\n        TimeSeries s1 = new TimeSeries(\"Series\");\n        TimeSeries s2 = null;\n        try {\n            s2 = (TimeSeries) s1.clone();\n        }\n        catch (CloneNotSupportedException e) {\n            e.printStackTrace();\n        }\n        assertTrue(s1 != s2);\n        assertTrue(s1.getClass() == s2.getClass());\n        assertTrue(s1.equals(s2));\n\n        // test independence\n        s1.add(new Day(1, 1, 2007), 100.0);\n        assertFalse(s1.equals(s2));    \t\n    }",
+    "test_line": "            s2 = (TimeSeries) s1.clone();",
+    "test_name": "testBug1832432",
+    "test_suite": "org.jfree.data.time.junit.TimeSeriesTests"
+}

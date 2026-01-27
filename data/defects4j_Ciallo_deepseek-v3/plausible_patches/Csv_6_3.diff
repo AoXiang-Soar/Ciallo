@@ -1,0 +1,56 @@
+diff --git a/src/main/java/org/apache/commons/csv/CSVRecord.java b/src/main/java/org/apache/commons/csv/CSVRecord.java
+index 7380d9fe..e64a3adb 100644
+--- a/src/main/java/org/apache/commons/csv/CSVRecord.java
++++ b/src/main/java/org/apache/commons/csv/CSVRecord.java
+@@ -166,23 +166,37 @@ public final class CSVRecord implements Serializable, Iterable<String> {
+      *
+      * @return an iterator over the values of this record.
+      */
+-    public Iterator<String> iterator() {
+-        return toList().iterator();
+-    }
++@Override
++public Iterator<String> iterator() {
++    return Arrays.asList(values).iterator();
++}
+ 
+-    /**
+-     * Puts all values of this record into the given Map.
+-     *
+-     * @param map The Map to populate.
+-     * @return the given map.
+-     */
+-    <M extends Map<String, String>> M putIn(final M map) {
+-        for (final Entry<String, Integer> entry : mapping.entrySet()) {
+-            final int col = entry.getValue().intValue();
+-                map.put(entry.getKey(), values[col]);
++/**
++ * Puts all values of this record into the given Map.
++ * Only includes entries where the column index is valid for this record's values.
++ *
++ * @param map The Map to populate.
++ * @return the given map.
++ */
++<M extends Map<String, String>> M putIn(final M map) {
++    for (final Entry<String, Integer> entry : mapping.entrySet()) {
++        final int col = entry.getValue();
++        // Only process if column is within bounds of values array
++        if (isValidColumn(col)) {
++            map.put(entry.getKey(), values[col]);
+         }
+-        return map;
+     }
++    return map;
++}
++
++/**
++ * Checks if a column index is valid for this record.
++ * @param col the column index to check
++ * @return true if the index is valid, false otherwise
++ */
++private boolean isValidColumn(int col) {
++    return col >= 0 && col < values.length;
++}
+ 
+     /**
+      * Returns the number of values in this record.

@@ -1,0 +1,18 @@
+diff --git a/src/java/org/apache/commons/lang/StringEscapeUtils.java b/src/java/org/apache/commons/lang/StringEscapeUtils.java
+index 4fda091d4..21a60bda4 100644
+--- a/src/java/org/apache/commons/lang/StringEscapeUtils.java
++++ b/src/java/org/apache/commons/lang/StringEscapeUtils.java
+@@ -233,6 +233,13 @@ public class StringEscapeUtils {
+                         out.write('\\');
+                         out.write('\\');
+                         break;
++                    case '/':
++                        // Escape forward slash to prevent XSS and </script> tag closing in JavaScript
++                        if (escapeSingleQuote || ch == '/') {
++                            out.write('\\');
++                        }
++                        out.write('/');
++                        break;
+                     default :
+                         out.write(ch);
+                         break;

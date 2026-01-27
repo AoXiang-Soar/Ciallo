@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/CIRCULAR_SHIFT.java b/src/main/java/humaneval/buggy/CIRCULAR_SHIFT.java
+index 9131a1c..f36ae8b 100644
+--- a/src/main/java/humaneval/buggy/CIRCULAR_SHIFT.java
++++ b/src/main/java/humaneval/buggy/CIRCULAR_SHIFT.java
+@@ -13,12 +13,9 @@ public class CIRCULAR_SHIFT {
+         String s = x + "";
+ 
+         if (shift > s.length()) {
+-            StringBuilder sb = new StringBuilder();
+-            for (int i = s.length() - 1; i >= 0; i -= 1)
+-                sb.append(s.charAt(i));
+-            return sb.toString();
++            return new StringBuilder(s).reverse().toString();
+         } else {
+-            return s.substring(s.length() - shift + 1) + s.substring(0, s.length() - shift - 1);
++            return s.substring(s.length() - shift) + s.substring(0, s.length() - shift);
+         }
+     }
+-}
++}
+\ No newline at end of file

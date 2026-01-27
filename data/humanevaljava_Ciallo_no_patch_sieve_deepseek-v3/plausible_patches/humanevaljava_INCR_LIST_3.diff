@@ -1,0 +1,17 @@
+diff --git a/src/main/java/humaneval/buggy/INCR_LIST.java b/src/main/java/humaneval/buggy/INCR_LIST.java
+index 7471990..2761805 100644
+--- a/src/main/java/humaneval/buggy/INCR_LIST.java
++++ b/src/main/java/humaneval/buggy/INCR_LIST.java
+@@ -14,8 +14,9 @@ public class INCR_LIST {
+         List<Integer> result = new ArrayList<Integer>();
+ 
+         for (Integer n : l) {
+-            result.add(n - 1);
++            Integer incremented = n + 1;
++            result.add(incremented);
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,22 @@
+diff --git a/src/com/google/javascript/jscomp/PeepholeFoldConstants.java b/src/com/google/javascript/jscomp/PeepholeFoldConstants.java
+index c5ef4b0f8..0a7bc9ff7 100644
+--- a/src/com/google/javascript/jscomp/PeepholeFoldConstants.java
++++ b/src/com/google/javascript/jscomp/PeepholeFoldConstants.java
+@@ -708,15 +708,13 @@ class PeepholeFoldConstants extends AbstractPeepholeOptimization {
+         break;
+       case Token.MOD:
+         if (rval == 0) {
+-          error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
+-          return null;
++          return null; // Return unchanged expression for modulus by zero
+         }
+         result = lval % rval;
+         break;
+       case Token.DIV:
+         if (rval == 0) {
+-          error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
+-          return null;
++          return null; // Return unchanged expression for division by zero
+         }
+         result = lval / rval;
+         break;

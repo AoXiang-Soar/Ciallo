@@ -1,0 +1,165 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/filter/FilteringParserDelegate.java b/src/main/java/com/fasterxml/jackson/core/filter/FilteringParserDelegate.java
+index e6558fd0..081de187 100644
+--- a/src/main/java/com/fasterxml/jackson/core/filter/FilteringParserDelegate.java
++++ b/src/main/java/com/fasterxml/jackson/core/filter/FilteringParserDelegate.java
+@@ -223,28 +223,23 @@ public class FilteringParserDelegate extends JsonParserDelegate
+     /**********************************************************
+      */
+ 
+-    @Override
+-    public JsonToken nextToken() throws IOException
++    @Override    public JsonToken nextToken() throws IOException
+     {
+-        // 23-May-2017, tatu: To be honest, code here is rather hairy and I don't like all
+-        //    conditionals; and it seems odd to return `null` but NOT considering input
+-        //    as closed... would love a rewrite to simplify/clear up logic here.
+-        
+         // Check for _allowMultipleMatches - false and at least there is one token - which is _currToken
+         // check for no buffered context _exposedContext - null
+         // If all the conditions matches then check for scalar / non-scalar property
+         if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
+             //if not scalar and ended successfully, and !includePath, then return null
+-                if (_currToken.isStructEnd()) {
+-                    if (_headContext.isStartHandled()) {
+-                        return (_currToken = null);
+-                    }
+-                } else if (_currToken.isScalarValue()) {
+-                    //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-                    // then return null 
+-                    if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
+-                        return (_currToken = null);
+-                    }
++            if (_currToken.isStructEnd()) {
++                if (_headContext.isStartHandled() && !_includePath) {
++                    return (_currToken = null);
++                }
++            } else if (_currToken.isScalarValue()) {
++                //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
++                // then return null 
++                if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
++                    return (_currToken = null);
++                }
+             }
+         }
+         // Anything buffered?
+@@ -262,21 +257,9 @@ public class FilteringParserDelegate extends JsonParserDelegate
+                     _exposedContext = null;
+                     if (ctxt.inArray()) {
+                         t = delegate.getCurrentToken();
+-// Is this guaranteed to work without further checks?
+-//                        if (t != JsonToken.START_ARRAY) {
+                         _currToken = t;
+                         return t;
+                     }
+-
+-                    // Almost! Most likely still have the current token;
+-                    // with the sole exception of 
+-                    /*
+-                    t = delegate.getCurrentToken();
+-                    if (t != JsonToken.FIELD_NAME) {
+-                        _currToken = t;
+-                        return t;
+-                    }
+-                    */
+                     break;
+                 }
+                 // If not, traverse down the context chain
+@@ -306,11 +289,10 @@ public class FilteringParserDelegate extends JsonParserDelegate
+                 _headContext = _headContext.createChildArrayContext(f, true);
+                 return (_currToken = t);
+             }
+-            if (f == null) { // does this occur?
++            if (f == null) {
+                 delegate.skipChildren();
+                 break;
+             }
+-            // Otherwise still iffy, need to check
+             f = _headContext.checkValue(f);
+             if (f == null) {
+                 delegate.skipChildren();
+@@ -326,7 +308,6 @@ public class FilteringParserDelegate extends JsonParserDelegate
+             }
+             _headContext = _headContext.createChildArrayContext(f, false);
+             
+-            // Also: only need buffering if parent path to be included
+             if (_includePath) {
+                 t = _nextTokenWithBuffering(_headContext);
+                 if (t != null) {
+@@ -342,11 +323,10 @@ public class FilteringParserDelegate extends JsonParserDelegate
+                 _headContext = _headContext.createChildObjectContext(f, true);
+                 return (_currToken = t);
+             }
+-            if (f == null) { // does this occur?
++            if (f == null) {
+                 delegate.skipChildren();
+                 break;
+             }
+-            // Otherwise still iffy, need to check
+             f = _headContext.checkValue(f);
+             if (f == null) {
+                 delegate.skipChildren();
+@@ -361,7 +341,6 @@ public class FilteringParserDelegate extends JsonParserDelegate
+                 return (_currToken = t);
+             }
+             _headContext = _headContext.createChildObjectContext(f, false);
+-            // Also: only need buffering if parent path to be included
+             if (_includePath) {
+                 t = _nextTokenWithBuffering(_headContext);
+                 if (t != null) {
+@@ -369,14 +348,12 @@ public class FilteringParserDelegate extends JsonParserDelegate
+                     return t;
+                 }
+             }
+-            // note: inclusion of surrounding Object handled separately via
+-            // FIELD_NAME
+             break;
+ 
+         case ID_END_ARRAY:
+         case ID_END_OBJECT:
+             {
+-                boolean returnEnd = _headContext.isStartHandled();
++                boolean returnEnd = _headContext.isStartHandled() || _includePath;
+                 f = _headContext.getFilter();
+                 if ((f != null) && (f != TokenFilter.INCLUDE_ALL)) {
+                     f.filterFinishArray();
+@@ -392,15 +369,12 @@ public class FilteringParserDelegate extends JsonParserDelegate
+         case ID_FIELD_NAME:
+             {
+                 final String name = delegate.getCurrentName();
+-                // note: this will also set 'needToHandleName'
+                 f = _headContext.setFieldName(name);
+                 if (f == TokenFilter.INCLUDE_ALL) {
+                     _itemFilter = f;
+                     if (!_includePath) {
+-                        // Minor twist here: if parent NOT included, may need to induce output of
+-                        // surrounding START_OBJECT/END_OBJECT
+                         if (_includeImmediateParent && !_headContext.isStartHandled()) {
+-                            t = _headContext.nextTokenToRead(); // returns START_OBJECT but also marks it handled
++                            t = _headContext.nextTokenToRead();
+                             _exposedContext = _headContext;
+                         }
+                     }
+@@ -433,7 +407,7 @@ public class FilteringParserDelegate extends JsonParserDelegate
+                 break;
+             }
+ 
+-        default: // scalar value
++        default:
+             f = _itemFilter;
+             if (f == TokenFilter.INCLUDE_ALL) {
+                 return (_currToken = t);
+@@ -445,14 +419,11 @@ public class FilteringParserDelegate extends JsonParserDelegate
+                     return (_currToken = t);
+                 }
+             }
+-            // Otherwise not included (leaves must be explicitly included)
+             break;
+         }
+ 
+-        // We get here if token was not yet found; offlined handling
+         return _nextToken2();
+     }
+-
+     /**
+      * Offlined handling for cases where there was no buffered token to
+      * return, and the token read next could not be returned as-is,

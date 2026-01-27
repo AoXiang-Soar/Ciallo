@@ -1,0 +1,25 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java b/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
+index 9419871d8..4577c4fba 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
+@@ -108,7 +108,7 @@ public class PropertyBuilder
+         
+         switch (inclusion) {
+         case NON_DEFAULT:
+-            // 11-Nov-2015, tatu: This is tricky because semantics differ between cases,
++            // 11-Nov-201pecially tricky because semantics differ between cases,
+             //    so that if enclosing class has this, we may need to values of property,
+             //    whereas for global defaults OR per-property overrides, we have more
+             //    static definition. Sigh.
+@@ -128,10 +128,9 @@ public class PropertyBuilder
+ 
+             break;
+         case NON_ABSENT: // new with 2.6, to support Guava/JDK8 Optionals
+-            // always suppress nulls
+             suppressNulls = true;
+             // and for referential types, also "empty", which in their case means "absent"
+-            if (declaredType.isReferenceType()) {
++            if (actualType.isReferenceType()) {
+                 valueToSuppress = BeanPropertyWriter.MARKER_FOR_EMPTY;
+             }
+             break;

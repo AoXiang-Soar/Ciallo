@@ -1,0 +1,32 @@
+diff --git a/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java b/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
+index fba3afc..88d3e5c 100644
+--- a/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
++++ b/src/main/java/humaneval/buggy/SORTED_LIST_SUM.java
+@@ -19,7 +19,7 @@ assert list_sort(["ab", "a", "aaa", "cd"]) => ["ab", "cd"] */
+ 
+ public class SORTED_LIST_SUM {
+     public static ArrayList<String> sorted_list_sum(ArrayList<String> lst) {
+-        ArrayList<String> result = new ArrayList<String>();
++        ArrayList<String> result = new ArrayList<>();
+         for (String str : lst) {
+             if (str.length() % 2 == 1) continue;
+             result.add(str);
+@@ -27,9 +27,15 @@ public class SORTED_LIST_SUM {
+ 
+         Collections.sort(
+             result,
+-            (s1, s2) -> s1.length() - s2.length()
++            (s1, s2) -> {
++                if (s1.length() != s2.length()) {
++                    return Integer.compare(s1.length(), s2.length());
++                } else {
++                    return s1.compareTo(s2);
++                }
++            }
+         );
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

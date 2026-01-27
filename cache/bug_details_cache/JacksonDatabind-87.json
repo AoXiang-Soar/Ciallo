@@ -1,0 +1,16 @@
+{
+    "bug_id": 87,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<Wed Dec 31 16:00:00 PST 1969> but was:<Wed Dec 31 18:00:00 PST 1969>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testDateUtilISO8601NoTimezoneNonDefault() throws Exception\n    {\n        // In first case, no timezone -> SHOULD use configured timezone\n        ObjectReader r = MAPPER.readerFor(Date.class);\n        TimeZone tz = TimeZone.getTimeZone(\"GMT-2\");\n        Date date1 = r.with(tz)\n                .readValue(quote(\"1970-01-01T00:00:00.000\"));\n        // Second case, should use specified timezone, not configured\n        Date date2 = r.with(TimeZone.getTimeZone(\"GMT+5\"))\n                .readValue(quote(\"1970-01-01T00:00:00.000-02:00\"));\n        assertEquals(date1, date2);\n\n        // also verify actual value, in GMT\n        Calendar c = Calendar.getInstance(TimeZone.getTimeZone(\"GMT\"));\n        c.setTime(date1);\n        assertEquals(1970, c.get(Calendar.YEAR));\n        assertEquals(Calendar.JANUARY, c.get(Calendar.MONTH));\n        assertEquals(1, c.get(Calendar.DAY_OF_MONTH));\n        assertEquals(2, c.get(Calendar.HOUR_OF_DAY));\n    }",
+    "test_line": "        assertEquals(date1, date2);",
+    "test_name": "testDateUtilISO8601NoTimezoneNonDefault",
+    "test_suite": "com.fasterxml.jackson.databind.deser.TestDateDeserialization"
+}

@@ -1,0 +1,59 @@
+diff --git a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+index ce6926fa..ed683151 100644
+--- a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
++++ b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+@@ -225,22 +225,40 @@ public class ListOrderedSet<E>
+     }
+ 
+     @Override
+-    public boolean retainAll(Collection<?> coll) {
+-        boolean result = collection.retainAll(coll);
+-        if (result == false) {
+-            return false;
+-        }
+-        if (collection.size() == 0) {
+-            setOrder.clear();
+-        } else {
+-            for (Iterator<E> it = setOrder.iterator(); it.hasNext();) {
+-                if (!collection.contains(it.next())) {
+-                    it.remove();
+-                }
+-            }
++public boolean retainAll(Collection<?> coll) {
++    if (coll == null) {
++        throw new NullPointerException();
++    }
++
++    boolean modified = false;
++    if (collection.isEmpty()) {
++        return modified;
++    }
++
++    // First check if the collection needs modification
++    boolean foundCommon = false;
++    Iterator<?> checkIt = coll.iterator();
++    while (!foundCommon && checkIt.hasNext()) {
++        if (collection.contains(checkIt.next())) {
++            foundCommon = true;
+         }
+-        return result;
+     }
++    
++    if (!foundCommon) {
++        modified = !collection.isEmpty();
++        collection.clear();
++        setOrder.clear();
++        return modified;
++    }
++
++    // Only perform retain operation if needed
++    modified = collection.retainAll(coll);
++    if (modified) {
++        // Optimized removal from setOrder by checking against new collection
++        setOrder.retainAll(collection);
++    }
++    return modified;
++}
+ 
+     @Override
+     public Object[] toArray() {

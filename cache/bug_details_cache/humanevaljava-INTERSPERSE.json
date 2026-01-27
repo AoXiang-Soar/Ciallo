@@ -1,0 +1,16 @@
+{
+    "bug_id": "INTERSPERSE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_INTERSPERSE.test_1:21 array lengths differed, expected.length=9 actual.length=7; arrays first differed at element [7]; expected:<8> but was:<end of array>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        List<Integer> result = humaneval.buggy.INTERSPERSE.intersperse(\n            new ArrayList<Integer>(Arrays.asList(5, 6, 3, 2)), 8\n        );\n        org.junit.Assert.assertArrayEquals(\n            result.toArray(), \n            new ArrayList<Integer>(Arrays.asList(5, 8, 6, 8, 3, 8, 2)).toArray()\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertArrayEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_INTERSPERSE"
+}

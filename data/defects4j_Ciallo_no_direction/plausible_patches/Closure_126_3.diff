@@ -1,0 +1,16 @@
+diff --git a/src/com/google/javascript/jscomp/MinimizeExitPoints.java b/src/com/google/javascript/jscomp/MinimizeExitPoints.java
+index 4146f1777..e8995480c 100644
+--- a/src/com/google/javascript/jscomp/MinimizeExitPoints.java
++++ b/src/com/google/javascript/jscomp/MinimizeExitPoints.java
+@@ -139,8 +139,10 @@ class MinimizeExitPoints
+        * block. See ECMA 262 Sections 8.9 & 12.14
+        */
+       if (NodeUtil.hasFinally(n)) {
++        // Do not minimize exits in finally block to preserve completion type
++        // as specified in ECMA 262 Sections 8.9 & 12.14
+         Node finallyBlock = n.getLastChild();
+-        tryMinimizeExits(finallyBlock, exitType, labelName);
++        // Skip processing of the finally block entirely
+       }
+     }
+ 

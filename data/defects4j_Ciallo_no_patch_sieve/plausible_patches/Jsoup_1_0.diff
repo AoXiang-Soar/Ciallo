@@ -1,0 +1,19 @@
+diff --git a/src/main/java/org/jsoup/nodes/Document.java b/src/main/java/org/jsoup/nodes/Document.java
+index bc0f650d..efc49115 100644
+--- a/src/main/java/org/jsoup/nodes/Document.java
++++ b/src/main/java/org/jsoup/nodes/Document.java
+@@ -122,8 +122,7 @@ public class Document extends Element {
+ 
+         for (Node node: toMove) {
+             element.removeChild(node);
+-            body().appendChild(new TextNode(" ", ""));
+-            body().appendChild(node);
++            body().prependChild(node);
+         }
+     }
+ 
+@@ -148,4 +147,3 @@ public class Document extends Element {
+         return "#document";
+     }
+ }
+-

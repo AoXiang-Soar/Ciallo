@@ -1,0 +1,70 @@
+diff --git a/src/com/google/javascript/jscomp/TypeInference.java b/src/com/google/javascript/jscomp/TypeInference.java
+index 7e218d888..c8f24c844 100644
+--- a/src/com/google/javascript/jscomp/TypeInference.java
++++ b/src/com/google/javascript/jscomp/TypeInference.java
+@@ -1032,35 +1032,47 @@ class TypeInference
+     }
+   }
+ 
+-  private FlowScope traverseNew(Node n, FlowScope scope) {
+-
++private FlowScope traverseNew(Node n, FlowScope scope) {
+     Node constructor = n.getFirstChild();
+     scope = traverse(constructor, scope);
+     JSType constructorType = constructor.getJSType();
+     JSType type = null;
+     if (constructorType != null) {
+-      constructorType = constructorType.restrictByNotNullOrUndefined();
+-      if (constructorType.isUnknownType()) {
+-        type = getNativeType(UNKNOWN_TYPE);
+-      } else {
+-        FunctionType ct = constructorType.toMaybeFunctionType();
+-        if (ct == null && constructorType instanceof FunctionType) {
+-          // If constructorType is a NoObjectType, then toMaybeFunctionType will
+-          // return null. But NoObjectType implements the FunctionType
+-          // interface, precisely because it can validly construct objects.
+-          ct = (FunctionType) constructorType;
+-        }
+-        if (ct != null && ct.isConstructor()) {
+-          type = ct.getInstanceType();
++        constructorType = constructorType.restrictByNotNullOrUndefined();
++        if (constructorType.isUnknownType()) {
++            type = getNativeType(UNKNOWN_TYPE);
++        } else {
++            FunctionType ct = constructorType.toMaybeFunctionType();
++            if (ct == null && constructorType instanceof FunctionType) {
++                ct = (FunctionType) constructorType;
++            }
++            if (ct != null && ct.isConstructor()) {
++                type = ct.getInstanceType();
++                // Handle constructor arguments
++                Node args = constructor.getNext();
++                if (args != null && ct.getParametersNode() != null) {
++                    Node params = ct.getParametersNode().getFirstChild();
++                    while (args != null && params != null) {
++                        JSType paramType = params.getJSType();
++                        if (paramType != null) {
++                            scope = traverse(args, scope);
++                            inferPropertyTypesToMatchConstraint(
++                                args.getJSType(), paramType);
++                        }
++                        args = args.getNext();
++                        params = params.getNext();
++                    }
++                }
++            }
+         }
+-      }
+     }
+     n.setJSType(type);
++    // Traverse remaining arguments that weren't matched with parameters
+     for (Node arg = constructor.getNext(); arg != null; arg = arg.getNext()) {
+-      scope = traverse(arg, scope);
++        scope = traverse(arg, scope);
+     }
+     return scope;
+-  }
++}
+ 
+   private BooleanOutcomePair traverseAnd(Node n, FlowScope scope) {
+     return traverseShortCircuitingBinOp(n, scope, true);

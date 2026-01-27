@@ -1,0 +1,50 @@
+diff --git a/src/com/google/javascript/jscomp/CollapseProperties.java b/src/com/google/javascript/jscomp/CollapseProperties.java
+index ab2d2c7cf..f9370fa63 100644
+--- a/src/com/google/javascript/jscomp/CollapseProperties.java
++++ b/src/com/google/javascript/jscomp/CollapseProperties.java
+@@ -158,14 +158,20 @@ class CollapseProperties implements CompilerPass {
+    *    inlineable.
+    * @see InlineVariables
+    */
+-  private void inlineAliases(GlobalNamespace namespace) {
++private void inlineAliases(GlobalNamespace namespace) {
+     // Invariant: All the names in the worklist meet condition (a).
+     Deque<Name> workList = new ArrayDeque<Name>(namespace.getNameForest());
+     while (!workList.isEmpty()) {
+       Name name = workList.pop();
+ 
+-      // Don't attempt to inline a getter or setter property as a variable.
+-      if (name.type == Name.Type.GET || name.type == Name.Type.SET) {
++      if (name == null) {
++        continue;
++      }
++
++      // Don't attempt to inline getters, setters, or special names
++      if (name.type == Name.Type.GET || 
++          name.type == Name.Type.SET ||
++          (name.getFullName() != null && name.getFullName().equals("arguments"))) {
+         continue;
+       }
+ 
+@@ -175,7 +181,7 @@ class CollapseProperties implements CompilerPass {
+         // and try to inline them.
+         List<Ref> refs = Lists.newArrayList(name.getRefs());
+         for (Ref ref : refs) {
+-          if (ref.type == Type.ALIASING_GET && ref.scope.isLocal()) {
++          if (ref != null && ref.type == Type.ALIASING_GET && ref.scope != null && ref.scope.isLocal()) {
+             // {@code name} meets condition (c). Try to inline it.
+             if (inlineAliasIfPossible(ref, namespace)) {
+               name.removeRef(ref);
+@@ -191,7 +197,11 @@ class CollapseProperties implements CompilerPass {
+           name.aliasingGets == 0 && name.props != null) {
+         // All of {@code name}'s children meet condition (a), so they can be
+         // added to the worklist.
+-        workList.addAll(name.props);
++        for (Name prop : name.props) {
++          if (prop != null) {
++            workList.add(prop);
++          }
++        }
+       }
+     }
+   }

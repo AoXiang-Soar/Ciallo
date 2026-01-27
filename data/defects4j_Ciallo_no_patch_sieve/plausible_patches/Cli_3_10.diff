@@ -1,0 +1,14 @@
+diff --git a/src/java/org/apache/commons/cli/TypeHandler.java b/src/java/org/apache/commons/cli/TypeHandler.java
+index addf90b..43c231a 100644
+--- a/src/java/org/apache/commons/cli/TypeHandler.java
++++ b/src/java/org/apache/commons/cli/TypeHandler.java
+@@ -158,7 +158,8 @@ public class TypeHandler {
+     {
+         try
+         {
+-            return org.apache.commons.lang.math.NumberUtils.createNumber(str);
++            Double d = org.apache.commons.lang.math.NumberUtils.createNumber(str).doubleValue();
++            return d;
+         }
+         catch (NumberFormatException nfe)
+         {

@@ -1,0 +1,47 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
+index fdfeecb2e..6b7b5d219 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringArrayDeserializer.java
+@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.*;
+ import com.fasterxml.jackson.databind.*;
+ import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
+ import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
++import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
+ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+ import com.fasterxml.jackson.databind.util.ObjectBuffer;
+ 
+@@ -31,13 +32,17 @@ public final class StringArrayDeserializer
+ 
+     public StringArrayDeserializer() {
+         super(String[].class);
+-        _elementDeserializer = null;
++        _elementDeserializer = StringDeserializer.instance; // Default non-null deserializer
+     }
+ 
+     @SuppressWarnings("unchecked")
+     protected StringArrayDeserializer(JsonDeserializer<?> deser) {
+         super(String[].class);
+-        _elementDeserializer = (JsonDeserializer<String>) deser;
++        if (deser == null) {
++            _elementDeserializer = StringDeserializer.instance;
++        } else {
++            _elementDeserializer = (JsonDeserializer<String>) deser;
++        }
+     }
+    
+     @Override
+@@ -143,11 +148,11 @@ public final class StringArrayDeserializer
+         }
+         // Ok ok: if all we got is the default String deserializer, can just forget about it
+         if (deser != null && this.isDefaultDeserializer(deser)) {
+-            deser = null;
++            deser = StringDeserializer.instance;
+         }
+         if (_elementDeserializer != deser) {
+             return new StringArrayDeserializer(deser);
+         }
+         return this;
+     }
+-}
++}
+\ No newline at end of file

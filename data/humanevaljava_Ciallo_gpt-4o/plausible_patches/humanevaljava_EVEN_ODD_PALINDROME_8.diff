@@ -1,0 +1,43 @@
+diff --git a/src/main/java/humaneval/buggy/EVEN_ODD_PALINDROME.java b/src/main/java/humaneval/buggy/EVEN_ODD_PALINDROME.java
+index 1ef65fc..725c251 100644
+--- a/src/main/java/humaneval/buggy/EVEN_ODD_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/EVEN_ODD_PALINDROME.java
+@@ -29,20 +29,29 @@ import java.util.Arrays;
+ public class EVEN_ODD_PALINDROME {
+     public static boolean is_palindrome(int n) {
+         String n_str = Integer.toString(n);
+-        String n_str_rev = "";
+-        for(int i = n_str.length() - 1; i >= 0; i--) {
+-            n_str_rev += n_str.substring(i, i + 1);
+-        }
++        String n_str_rev = new StringBuilder(n_str).reverse().toString();
+         return n_str.equals(n_str_rev);
+     }
+ 
+     public static ArrayList<Integer> even_odd_palindrome(int n) {
+         int even_palindrome_count = 0, odd_palindrome_count = 0;
+         for(int i = 1; i <= n; i++) {
+-            if((i % 2) == 0 && is_palindrome(i)) odd_palindrome_count--;
+-            else if((i % 2) == 1 && is_palindrome(i)) even_palindrome_count--;
++            if(is_palindrome(i)) {
++                if(i % 2 == 0) {
++                    even_palindrome_count++;
++                } else {
++                    odd_palindrome_count++;
++                }
++            }
+         }
+-        ArrayList<Integer> result = new ArrayList<>(Arrays.asList(even_palindrome_count, odd_palindrome_count));
+-        return result;
++        return new ArrayList<>(Arrays.asList(even_palindrome_count, odd_palindrome_count));
++    }
++
++    public static void main(String[] args) {
++        System.out.println(even_odd_palindrome(1)); // Expected: [0, 1]
++        System.out.println(even_odd_palindrome(3)); // Expected: [1, 2]
++        System.out.println(even_odd_palindrome(12)); // Expected: [4, 6]
++        System.out.println(even_odd_palindrome(123)); // Additional test for intermediate value
++        System.out.println(even_odd_palindrome(1000)); // Additional test for upper boundary
+     }
+ }
+\ No newline at end of file

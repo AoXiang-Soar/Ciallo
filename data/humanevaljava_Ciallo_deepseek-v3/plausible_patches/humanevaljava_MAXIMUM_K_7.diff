@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/MAXIMUM_K.java b/src/main/java/humaneval/buggy/MAXIMUM_K.java
+index 4f3e095..44c4fa0 100644
+--- a/src/main/java/humaneval/buggy/MAXIMUM_K.java
++++ b/src/main/java/humaneval/buggy/MAXIMUM_K.java
+@@ -30,11 +30,18 @@ import java.util.Collections;
+ 
+ public class MAXIMUM_K {
+     public static ArrayList<Integer> maximum_k(ArrayList<Integer> arr, int k) {
++        // Sort array so that largest elements will be at the end
+         Collections.sort(arr);
+         ArrayList<Integer> result = new ArrayList<>();
+-        for(int i = arr.size() - 1; i >= arr.size() - k; i--) {
++        
++        // Collect the largest k elements
++        for (int i = arr.size() - k; i < arr.size(); i++) {
+             result.add(arr.get(i));
+         }
++        
++        // Sort the result in ascending order before returning
++        Collections.sort(result);
++        
+         return result;
+     }
+-}
++}
+\ No newline at end of file

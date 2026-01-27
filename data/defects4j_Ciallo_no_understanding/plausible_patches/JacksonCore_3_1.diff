@@ -1,0 +1,49 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/json/UTF8StreamJsonParser.java b/src/main/java/com/fasterxml/jackson/core/json/UTF8StreamJsonParser.java
+index f89e661d..fb4e5383 100644
+--- a/src/main/java/com/fasterxml/jackson/core/json/UTF8StreamJsonParser.java
++++ b/src/main/java/com/fasterxml/jackson/core/json/UTF8StreamJsonParser.java
+@@ -110,21 +110,29 @@ public class UTF8StreamJsonParser
+     /**********************************************************
+      */
+ 
+-    public UTF8StreamJsonParser(IOContext ctxt, int features, InputStream in,
+-            ObjectCodec codec, BytesToNameCanonicalizer sym,
+-            byte[] inputBuffer, int start, int end,
+-            boolean bufferRecyclable)
+-    {
+-        super(ctxt, features);
+-        _inputStream = in;
+-        _objectCodec = codec;
+-        _symbols = sym;
+-        _inputBuffer = inputBuffer;
+-        _inputPtr = start;
+-        _inputEnd = end;
+-        // If we have offset, need to omit that from byte offset, so:
+-        _bufferRecyclable = bufferRecyclable;
+-    }
++public UTF8StreamJsonParser(IOContext ctxt, int features, InputStream in,
++        ObjectCodec codec, BytesToNameCanonicalizer sym,
++        byte[] inputBuffer, int start, int end,
++        boolean bufferRecyclable)
++{
++    super(ctxt, features);
++    _inputStream = in;
++    _objectCodec = codec;
++    _symbols = sym;
++    _inputBuffer = inputBuffer;
++    _inputPtr = start;
++    _inputEnd = end;
++    _bufferRecyclable = bufferRecyclable;
++    
++    // Reset byte offset to account for the buffer's starting offset
++    resetPositionTracking(start);
++}
++
++protected void resetPositionTracking(int startOffset) {
++    _currInputProcessed = -startOffset;
++    _currInputRow = 1;
++    _currInputRowStart = startOffset;
++}
+ 
+     @Override
+     public ObjectCodec getCodec() {

@@ -1,0 +1,61 @@
+diff --git a/src/main/java/humaneval/buggy/IS_NESTED.java b/src/main/java/humaneval/buggy/IS_NESTED.java
+index 28b9704..72b4a35 100644
+--- a/src/main/java/humaneval/buggy/IS_NESTED.java
++++ b/src/main/java/humaneval/buggy/IS_NESTED.java
+@@ -1,38 +1,25 @@
+ package humaneval.buggy;
+ 
+-import java.util.ArrayList;
+-import java.util.Collections;
+-
+-/*
+- * Create a function that takes a string as input which contains only square brackets.
+-    The function should return True if and only if there is a valid subsequence of brackets 
+-    where at least one bracket in the subsequence is nested.
+-
+-    is_nested('[[]]') ➞ True
+-    is_nested('[]]]]]]][[[[[]') ➞ False
+-    is_nested('[][]') ➞ False
+-    is_nested('[]') ➞ False
+-    is_nested('[[][]]') ➞ True
+-    is_nested('[[]][[') ➞ True
+-
+- */
++import java.util.Stack;
+ 
+ public class IS_NESTED {
+     public static boolean is_nested(String brackets) {
+-        ArrayList<Integer> opening_brackets = new ArrayList<>();
+-        ArrayList<Integer> closing_brackets = new ArrayList<>();
+-        for(int i = 0; i < brackets.length(); i++) {
+-            if(brackets.charAt(i) == '[') opening_brackets.add(i);
+-            else closing_brackets.add(i);
+-        }
+-        Collections.reverse(opening_brackets);
+-        int cnt = 0, i = 0, l = opening_brackets.size();
+-        for(int idx : closing_brackets) {
+-            if(i < l || idx >= opening_brackets.get(i)) {
+-                i++;
+-                cnt++;
++        Stack<Integer> stack = new Stack<>();
++        boolean hasNested = false;
++        
++        for (int i = 0; i < brackets.length(); i++) {
++            if (brackets.charAt(i) == '[') {
++                stack.push(i);
++            } else {
++                if (!stack.isEmpty()) {
++                    int start = stack.pop();
++                    // Check if there's at least one character between matching brackets
++                    if (i - start > 1) {
++                        hasNested = true;
++                    }
++                }
+             }
+         }
+-        return cnt >= 2;
++        return hasNested;
+     }
+-}
++}
+\ No newline at end of file

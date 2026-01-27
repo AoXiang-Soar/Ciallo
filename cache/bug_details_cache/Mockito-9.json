@@ -1,0 +1,16 @@
+{
+    "bug_id": 9,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Mockito",
+    "test_error_message": "org.mockito.exceptions.base.MockitoException: \nCannot call abstract real method on java object!\nCalling real methods is only possible when mocking non abstract method.\n  //correct example:\n  when(mockOfConcreteClass.nonAbstractMethod()).thenCallRealMethod();",
+    "test_framework": "defects4j",
+    "test_function": "    public void abstractMethodStubbed() {\n    \tAbstractThing thing = spy(AbstractThing.class);\n    \twhen(thing.name()).thenReturn(\"me\");\n    \tassertEquals(\"abstract me\", thing.fullName());\n    }",
+    "test_line": "    \twhen(thing.name()).thenReturn(\"me\");",
+    "test_name": "abstractMethodStubbed",
+    "test_suite": "org.mockitousage.constructor.CreatingMocksWithConstructorTest"
+}

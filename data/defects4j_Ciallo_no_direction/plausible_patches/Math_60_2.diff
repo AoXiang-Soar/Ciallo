@@ -1,0 +1,58 @@
+diff --git a/src/main/java/org/apache/commons/math/distribution/NormalDistributionImpl.java b/src/main/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
+index 0e124d852..e62891403 100644
+--- a/src/main/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
++++ b/src/main/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
+@@ -121,21 +121,40 @@ public class NormalDistributionImpl extends AbstractContinuousDistribution
+      * @return CDF evaluated at {@code x}.
+      * @throws MathException if the algorithm fails to converge
+      */
+-    public double cumulativeProbability(double x) throws MathException {
+-        final double dev = x - mean;
+-        try {
+-        return 0.5 * (1.0 + Erf.erf((dev) /
+-                    (standardDeviation * FastMath.sqrt(2.0))));
+-        } catch (MaxIterationsExceededException ex) {
+-            if (x < (mean - 20 * standardDeviation)) { // JDK 1.5 blows at 38
+-                return 0;
+-            } else if (x > (mean + 20 * standardDeviation)) {
+-                return 1;
+-            } else {
+-                throw ex;
+-            }
++public double cumulativeProbability(double x) throws MathException {
++    // Handle infinite cases first
++    if (x == Double.POSITIVE_INFINITY) {
++        return 1.0;
++    }
++    if (x == Double.NEGATIVE_INFINITY) {
++        return 0.0;
++    }
++    
++    // Handle extremely large magnitude values that could cause numerical issues
++    final double dev = x - mean;
++    final double zScore = dev / standardDeviation;
++    
++    // Check extreme values for high z-scores (similar to original 20 SD threshold)
++    if (zScore > 20) {
++        return 1.0;
++    }
++    if (zScore < -20) {
++        return 0.0;
++    }
++    
++    try {
++        return 0.5 * (1.0 + Erf.erf(zScore / FastMath.sqrt(2.0)));
++    } catch (MaxIterationsExceededException ex) {
++        // Fallback checks if Erf calculation fails
++        if (zScore > 20) {
++            return 1.0;
++        }
++        if (zScore < -20) {
++            return 0.0;
+         }
++        throw ex;
+     }
++}
+ 
+     /**
+      * Return the absolute accuracy setting of the solver used to estimate

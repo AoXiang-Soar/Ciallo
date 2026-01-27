@@ -1,0 +1,41 @@
+diff --git a/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java b/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java
+index 67b368deb..d3f7a87c5 100644
+--- a/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java
++++ b/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java
+@@ -48,6 +48,9 @@ public class ElitisticListPopulation extends ListPopulation {
+                                    final int populationLimit,
+                                    final double elitismRate) {
+         super(chromosomes, populationLimit);
++        if (elitismRate < 0 || elitismRate > 1) {
++            throw new OutOfRangeException(LocalizedFormats.ELITISM_RATE, elitismRate, 0, 1);
++        }
+         this.elitismRate = elitismRate;
+     }
+ 
+@@ -58,13 +61,17 @@ public class ElitisticListPopulation extends ListPopulation {
+      * @param populationLimit maximal size of the population
+      * @param elitismRate how many best chromosomes will be directly transferred to the
+      *                    next generation [in %]
+-     * @throws OutOfRangeException if the elitism rate is outside the [0, 1] range
++     * @throws OutOfRangeException if the elitism rate is outside the [极， 1] range
+      */
+     public ElitisticListPopulation(final int populationLimit, final double elitismRate) {
+         super(populationLimit);
++        if (elitismRate < 0 || elitismRate > 1) {
++            throw new OutOfRangeException(LocalizedFormats.ELITISM_RATE, elitismRate, 0, 1);
++        }
+         this.elitismRate = elitismRate;
+     }
+ 
++    // Rest of the class remains unchanged...
+     /**
+      * Start the population for the next generation. The <code>{@link #elitismRate}</code>
+      * percents of the best chromosomes are directly copied to the next generation.
+@@ -108,5 +115,4 @@ public class ElitisticListPopulation extends ListPopulation {
+     public double getElitismRate() {
+         return this.elitismRate;
+     }
+-
+-}
++}
+\ No newline at end of file

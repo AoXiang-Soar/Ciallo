@@ -1,0 +1,48 @@
+diff --git a/src/java/org/apache/commons/cli2/builder/PatternBuilder.java b/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
+index 6910017..2d37cee 100644
+--- a/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
++++ b/src/java/org/apache/commons/cli2/builder/PatternBuilder.java
+@@ -16,9 +16,9 @@
+  */
+ package org.apache.commons.cli2.builder;
+ 
+-import java.util.HashSet;
+-import java.util.Iterator;
++import java.util.LinkedHashSet;
+ import java.util.Set;
++import java.util.Iterator;
+ 
+ import org.apache.commons.cli2.Argument;
+ import org.apache.commons.cli2.Option;
+@@ -64,7 +64,7 @@ public class PatternBuilder {
+         this.abuilder = abuilder;
+     }
+ 
+-    private final Set options = new HashSet();
++    private final Set<Option> options = new LinkedHashSet<Option>();
+ 
+     /**
+      * Creates a new Option instance.
+@@ -74,12 +74,12 @@ public class PatternBuilder {
+         final Option option;
+ 
+         if (options.size() == 1) {
+-            option = (Option)options.iterator().next();
++            option = options.iterator().next();
+         }
+         else {
+             gbuilder.reset();
+-            for (final Iterator i = options.iterator(); i.hasNext();) {
+-                gbuilder.withOption((Option)i.next());
++            for (final Iterator<Option> i = options.iterator(); i.hasNext();) {
++                gbuilder.withOption(i.next());
+             }
+             option = gbuilder.create();
+         }
+@@ -199,4 +199,4 @@ public class PatternBuilder {
+                 return null;
+         }
+     }
+-}
++}
+\ No newline at end of file

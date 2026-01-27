@@ -1,0 +1,16 @@
+{
+    "bug_id": "SUM_SQUARED_NUMS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SUM_SQUARED_NUMS.test_0:7 expected:<14> but was:<3>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        double[] input = {1,2,3};\n        org.junit.Assert.assertEquals(14, humaneval.buggy.SUM_SQUARED_NUMS.sum_squared_nums(input));\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(2, humaneval.buggy.SUM_SQUARED_NUMS.sum_squared_nums(input));",
+    "test_name": "test_0",
+    "test_suite": "TEST_SUM_SQUARED_NUMS"
+}

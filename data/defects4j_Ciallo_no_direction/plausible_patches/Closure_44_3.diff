@@ -1,0 +1,52 @@
+diff --git a/src/com/google/javascript/jscomp/CodeConsumer.java b/src/com/google/javascript/jscomp/CodeConsumer.java
+index 475566526..bf8422f5a 100644
+--- a/src/com/google/javascript/jscomp/CodeConsumer.java
++++ b/src/com/google/javascript/jscomp/CodeConsumer.java
+@@ -178,28 +178,34 @@ abstract class CodeConsumer {
+   void endCaseBody() {
+   }
+ 
+-  void add(String newcode) {
++void add(String newcode) {
+     maybeEndStatement();
+ 
+     if (newcode.length() == 0) {
+-      return;
++        return;
+     }
+ 
+     char c = newcode.charAt(0);
+-    if ((isWordChar(c) || c == '\\') &&
+-        isWordChar(getLastChar())) {
+-      // need space to separate. This is not pretty printing.
+-      // For example: "return foo;"
+-      append(" ");
+-      // Do not allow a forward slash to appear after a DIV.
+-      // For example,
+-      // REGEXP DIV REGEXP
+-      // is valid and should print like
+-      // / // / /
++    char lastChar = getLastChar();
++    
++    boolean needsSpace = false;
++    
++    // Cases where we need a space:
++    // 1. Between word characters
++    if ((isWordChar(c) || c == '\\') && isWordChar(lastChar)) {
++        needsSpace = true;
++    }
++    // 2. Between consecutive forward slashes (regex context)
++    if (c == '/' && lastChar == '/') {
++        needsSpace = true;
++    }
++    
++    if (needsSpace) {
++        append(" ");
+     }
+ 
+     append(newcode);
+-  }
++}
+ 
+   void appendOp(String op, boolean binOp) {
+     append(op);

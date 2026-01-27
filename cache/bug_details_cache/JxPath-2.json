@@ -1,0 +1,16 @@
+{
+    "bug_id": 2,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JxPath",
+    "test_error_message": "junit.framework.AssertionFailedError: Evaluating value iterator <test:nodeSet()> expected:<[Nested: Name 1, Nested: Name 2]> but was:<[[/beans[1], /beans[2]]]>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testNodeSetReturn() {\n        assertXPathValueIterator(\n            context,\n            \"test:nodeSet()/name\",\n            list(\"Name 1\", \"Name 2\"));\n\n        assertXPathValueIterator(\n            context,\n            \"test:nodeSet()\",\n            list(testBean.getBeans()[0], testBean.getBeans()[1]));\n\n        assertXPathPointerIterator(\n            context,\n            \"test:nodeSet()/name\",\n            list(\"/beans[1]/name\", \"/beans[2]/name\"));\n            \n        assertXPathValueAndPointer(\n            context,\n            \"test:nodeSet()/name\",\n            \"Name 1\",\n            \"/beans[1]/name\");        \n\n        assertXPathValueAndPointer(\n            context,\n            \"test:nodeSet()/@name\",\n            \"Name 1\",\n            \"/beans[1]/@name\");\n    }",
+    "test_line": "        assertXPathValueIterator(",
+    "test_name": "testNodeSetReturn",
+    "test_suite": "org.apache.commons.jxpath.ri.compiler.ExtensionFunctionTest"
+}

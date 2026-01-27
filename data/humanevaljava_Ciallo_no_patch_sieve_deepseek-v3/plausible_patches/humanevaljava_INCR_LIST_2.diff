@@ -1,0 +1,29 @@
+diff --git a/src/main/java/humaneval/buggy/INCR_LIST.java b/src/main/java/humaneval/buggy/INCR_LIST.java
+index 7471990..4c24604 100644
+--- a/src/main/java/humaneval/buggy/INCR_LIST.java
++++ b/src/main/java/humaneval/buggy/INCR_LIST.java
+@@ -2,6 +2,7 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
++import java.util.stream.Collectors;
+ 
+ /* Return list with elements incremented by 1.
+ >>> incr_list([1, 2, 3])
+@@ -11,11 +12,8 @@ import java.util.List;
+ 
+ public class INCR_LIST {
+     public static List<Integer> incr_list(List<Integer> l) {
+-        List<Integer> result = new ArrayList<Integer>();
+-
+-        for (Integer n : l) {
+-            result.add(n - 1);
+-        }
+-        return result;
++        return l.stream()
++            .map(n -> n + 1)
++            .collect(Collectors.toList());
+     }
+-}
++}
+\ No newline at end of file

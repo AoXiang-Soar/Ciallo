@@ -1,0 +1,17 @@
+diff --git a/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java b/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
+index bf6dd65d5..675637952 100644
+--- a/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
++++ b/src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
+@@ -1416,6 +1416,12 @@ public class DSCompiler {
+         }
+ 
+         // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
++        // handle special cases (like ±0/±0 and ±infinity)
++        if (Double.isInfinite(x[xOffset]) || Double.isInfinite(y[yOffset]) || (x[xOffset] == 0.0 && y[yOffset] == 0.0)) {
++            result[resultOffset] = FastMath.atan2(y[yOffset], x[xOffset]);
++            Arrays.fill(result, resultOffset + 1, resultOffset + getSize(), 0.0);
++            return;
++        }
+ 
+     }
+ 

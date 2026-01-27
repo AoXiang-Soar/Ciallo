@@ -1,0 +1,37 @@
+diff --git a/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java b/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java
+index 148daad0d..51839a5b9 100644
+--- a/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java
++++ b/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java
+@@ -20,6 +20,7 @@ import java.io.Serializable;
+ 
+ import org.apache.commons.math.MathException;
+ import org.apache.commons.math.MathRuntimeException;
++import org.apache.commons.math.exception.NotStrictlyPositiveException;
+ import org.apache.commons.math.exception.util.LocalizedFormats;
+ import org.apache.commons.math.special.Gamma;
+ import org.apache.commons.math.util.MathUtils;
+@@ -91,7 +92,7 @@ public class PoissonDistributionImpl extends AbstractIntegerDistribution
+      */
+     public PoissonDistributionImpl(double p, double epsilon, int maxIterations) {
+         if (p <= 0) {
+-            throw MathRuntimeException.createIllegalArgumentException(LocalizedFormats.NOT_POSITIVE_POISSON_MEAN, p);
++            throw new NotStrictlyPositiveException(LocalizedFormats.NOT_POSITIVE_POISSON_MEAN, p);
+         }
+         mean = p;
+         normal = new NormalDistributionImpl(p, FastMath.sqrt(p));
+@@ -198,7 +199,7 @@ public class PoissonDistributionImpl extends AbstractIntegerDistribution
+      * <ul><li> For small means, uses simulation of a Poisson process
+      * using Uniform deviates, as described
+      * <a href="http://irmi.epfl.ch/cmos/Pmmi/interactive/rng7.htm"> here.</a>
+-     * The Poisson process (and hence value returned) is bounded by 1000 * mean.</li><
++     * The Poisson process (and hence value returned) is bounded by 1000 * mean.</li>
+      *
+      * <li> For large means, uses the rejection algorithm described in <br/>
+      * Devroye, Luc. (1981).<i>The Computer Generation of Poisson Random Variables</i>
+@@ -238,4 +239,4 @@ public class PoissonDistributionImpl extends AbstractIntegerDistribution
+     protected int getDomainUpperBound(double p) {
+         return Integer.MAX_VALUE;
+     }
+-}
++}
+\ No newline at end of file

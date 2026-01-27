@@ -1,0 +1,16 @@
+{
+    "bug_id": "FIND_ZERO",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_FIND_ZERO.test_0:12",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        List<Double> xs = new ArrayList<Double>(Arrays.asList(1., 2., 3., 4.));\n        double result = humaneval.buggy.FIND_ZERO.find_zero(xs);\n        org.junit.Assert.assertTrue(\n            Math.abs(humaneval.buggy.FIND_ZERO.poly(xs, result)) < 1.e-4\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertTrue(",
+    "test_name": "test_0",
+    "test_suite": "TEST_FIND_ZERO"
+}

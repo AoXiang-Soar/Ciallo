@@ -1,0 +1,69 @@
+diff --git a/src/main/java/org/jsoup/nodes/Node.java b/src/main/java/org/jsoup/nodes/Node.java
+index 5e6eb8ff..a169c9e5 100644
+--- a/src/main/java/org/jsoup/nodes/Node.java
++++ b/src/main/java/org/jsoup/nodes/Node.java
+@@ -153,30 +153,45 @@ public abstract class Node implements Cloneable {
+      * @see #attr
+      * @see java.net.URL#URL(java.net.URL, String)
+      */
+-    public String absUrl(String attributeKey) {
+-        Validate.notEmpty(attributeKey);
+-
+-        String relUrl = attr(attributeKey);
+-        if (!hasAttr(attributeKey)) {
+-            return ""; // nothing to make absolute with
+-        } else {
+-            URL base;
++public String absUrl(String attributeKey) {
++    Validate.notEmpty(attributeKey);
++
++    String relUrl = attr(attributeKey);
++    if (!hasAttr(attributeKey)) {
++        return ""; // nothing to make absolute with
++    } else {
++        URL base;
++        try {
+             try {
+-                try {
+-                    base = new URL(baseUri);
+-                } catch (MalformedURLException e) {
+-                    // the base is unsuitable, but the attribute may be abs on its own, so try that
+-                    URL abs = new URL(relUrl);
+-                    return abs.toExternalForm();
+-                }
+-                // workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
+-                URL abs = new URL(base, relUrl);
+-                return abs.toExternalForm();
++                base = new URL(baseUri);
+             } catch (MalformedURLException e) {
+-                return "";
++                // the base is unsuitable, but the attribute may be abs on its own, so try that
++                URL abs = new URL(relUrl);
++                return abs.toExternalForm();
++            }
++
++            // Fix for relative query paths - ensure path isn't dropped
++            if (relUrl.startsWith("?")) {
++                String path = base.getPath();
++                if (path == null || path.isEmpty()) {
++                    path = "/";
++                }
++                relUrl = path + relUrl;
++            } else if (relUrl.startsWith("#")) {
++                String path = base.getPath();
++                if (path == null || path.isEmpty()) {
++                    path = "/";
++                }
++                relUrl = path + relUrl;
+             }
++
++            URL abs = new URL(base, relUrl);
++            return abs.toExternalForm();
++        } catch (MalformedURLException e) {
++            return "";
+         }
+     }
++}
+ 
+     /**
+      Get a child node by index

@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java b/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java
+index 885eb35..4289c7f 100644
+--- a/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java
++++ b/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java
+@@ -22,14 +22,16 @@ import java.util.Arrays;
+ public class GET_CLOSET_VOWEL {
+     public static String get_closet_vowel(String word) {
+         if(word.length() < 3) return "";
+-        ArrayList<Character> vowels = new ArrayList<Character>(Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'));
+-        for(int i = word.length() - 2; i >= 0; i--) {
++        ArrayList<Character> vowels = new ArrayList<>(Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'));
++        // Traverse the word from the end towards the beginning, ignoring the last character
++        for(int i = word.length() - 2; i > 0; i--) {
+             if(vowels.contains(word.charAt(i))) {
+-                if(!vowels.contains(word.charAt(i + 1)) && !vowels.contains(word.charAt(i - 1))) {
+-                    return word.substring(i, i + 1);
++                // Check that both i+1 and i-1 are valid indices and contain consonants
++                if (!vowels.contains(word.charAt(i + 1)) && !vowels.contains(word.charAt(i - 1))) {
++                    return String.valueOf(word.charAt(i));
+                 }
+             }
+         }
+         return "";
+     }
+-}
++}
+\ No newline at end of file

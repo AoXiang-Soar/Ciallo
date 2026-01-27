@@ -1,0 +1,41 @@
+diff --git a/src/main/java/humaneval/buggy/SELECT_WORDS.java b/src/main/java/humaneval/buggy/SELECT_WORDS.java
+old mode 100644
+new mode 100755
+index 4c2e032..7d67d59
+--- a/src/main/java/humaneval/buggy/SELECT_WORDS.java
++++ b/src/main/java/humaneval/buggy/SELECT_WORDS.java
+@@ -1,6 +1,7 @@
+ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
++import java.util.regex.Pattern;
+ 
+ /*
+  * Given a string s and a natural number n, you have been tasked to implement 
+@@ -20,21 +21,16 @@ public class SELECT_WORDS {
+     public static ArrayList<String> select_words(String s, int n) {
+         ArrayList<String> result = new ArrayList<>();
+         String[] words = s.split(" ");
++        Pattern vowelPattern = Pattern.compile("[aeiouAEIOU]");
+         for(int i = 0; i < words.length; i++) {
+             int num_consonants = 0;
+-            char[] vowels = {'a', 'e', 'i', 'o', 'u'};
+             for(int j = 0; j < words[i].length(); j++) {
+-                boolean consonant = true;
+-                for(int k = 0; k < vowels.length; k++) {
+-                    if(vowels[k] == words[i].charAt(j)) {
+-                        consonant = false;
+-                        break;
+-                    }
++                if (!vowelPattern.matcher(words[i].substring(j, j+1)).matches()) {
++                    num_consonants++;
+                 }
+-                if(consonant) num_consonants++;
+             }
+             if(num_consonants == n) result.add(words[i]);
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

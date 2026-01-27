@@ -1,0 +1,32 @@
+diff --git a/src/main/java/humaneval/buggy/IS_HAPPY.java b/src/main/java/humaneval/buggy/IS_HAPPY.java
+old mode 100644
+new mode 100755
+index 4c6720d..7c8a450
+--- a/src/main/java/humaneval/buggy/IS_HAPPY.java
++++ b/src/main/java/humaneval/buggy/IS_HAPPY.java
+@@ -1,5 +1,8 @@
+ package humaneval.buggy;
+ 
++import java.util.HashSet;
++import java.util.Set;
++
+ // You are given a string s.
+ // Your task is to check if the string is happy or not.
+ // A string is happy if its length is at least 3 and every 3 consecutive letters are distinct
+@@ -16,9 +19,13 @@ public class IS_HAPPY {
+         if (s.length() < 3)
+             return false;
+         for (int i = 0; i < s.length() - 2; i += 1) {
+-            if (s.charAt(i) == s.charAt(i + 1) || s.charAt(i + 1) == s.charAt(i + 2))
++            Set<Character> chars = new HashSet<>();
++            chars.add(s.charAt(i));
++            chars.add(s.charAt(i + 1));
++            chars.add(s.charAt(i + 2));
++            if (chars.size() != 3)
+                 return false;
+         }
+         return true;
+     }
+-}
++}
+\ No newline at end of file

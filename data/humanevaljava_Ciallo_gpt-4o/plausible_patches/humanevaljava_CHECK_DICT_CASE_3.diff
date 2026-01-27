@@ -1,0 +1,37 @@
+diff --git a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+index ba94200..a6b6032 100644
+--- a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
++++ b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+@@ -4,7 +4,7 @@ import java.util.HashMap;
+ 
+ // Given a dictionary, return True if all keys are strings in lower 
+ // case or all keys are strings in upper case, else return False.
+-// The function should return False is the given dictionary is empty.
++// The function should return False if the given dictionary is empty.
+ // Examples:
+ // check_dict_case({"a":"apple", "b":"banana"}) should return True.
+ // check_dict_case({"a":"apple", "A":"banana", "B":"banana"}) should return False.
+@@ -28,7 +28,7 @@ public class CHECK_DICT_CASE {
+                     if (str_key.toUpperCase().equals(str_key))
+                         state = "upper";
+                     else if (str_key.toLowerCase().equals(str_key))
+-                        state = "lower";
++                        state = "lower";  // Add Lowercase Transition
+                     else {
+                         state = "mixed";
+                         break;
+@@ -36,9 +36,12 @@ public class CHECK_DICT_CASE {
+                 } else if (state.equals("upper") && !str_key.toUpperCase().equals(str_key)) {
+                     state = "mixed";
+                     break;
++                } else if (state.equals("lower") && !str_key.toLowerCase().equals(str_key)) {
++                    state = "mixed";
++                    break;
+                 }
+             }
+             return (state.equals("upper")) || (state.equals("lower"));
+         }
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_NUMBERS.java b/src/main/java/humaneval/buggy/SORT_NUMBERS.java
+index 7063e12..2d47361 100644
+--- a/src/main/java/humaneval/buggy/SORT_NUMBERS.java
++++ b/src/main/java/humaneval/buggy/SORT_NUMBERS.java
+@@ -16,13 +16,12 @@ public class SORT_NUMBERS {
+         value_map.put("eight", 8);
+         value_map.put("nine", 9);
+ 
+-        ArrayList<String> number_array = new ArrayList<String>(Arrays.asList(numbers.split(" ")));
+-        Collections.sort(number_array);
++        List<String> number_list = Arrays.asList(numbers.split(" "));
++        List<String> sorted_list = new ArrayList<>(number_list);
+         
+-        String result = "";
+-        for (String number : number_array){
+-            result += number + " ";
+-        }
+-        return result.trim();
++        // Sort based on numerical value rather than string comparison
++        sorted_list.sort(Comparator.comparingInt(s -> value_map.get(s)));
++        
++        return String.join(" ", sorted_list);
+     }
+-}
++}
+\ No newline at end of file

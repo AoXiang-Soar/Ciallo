@@ -1,0 +1,42 @@
+diff --git a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+index 05f44d8..4910331 100644
+--- a/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/MAKE_PALINDROME.java
+@@ -1,25 +1,28 @@
+ package humaneval.buggy;
+ 
+ public class MAKE_PALINDROME {
+-    public static boolean is_palindrome(String str){
+-        for (int i = 0; i < str.length(); i += 1){
++    public static boolean is_palindrome(String str) {
++        for (int i = 0; i < str.length() / 2; i++) {
+             if (str.charAt(i) != str.charAt(str.length() - 1 - i))
+                 return false;
+         }
+         return true;
+     }
+ 
+-    public static String make_palindrome(String str){
++    public static String make_palindrome(String str) {
+         if (str.length() == 0)
+             return "";
+ 
+         int beginning_of_suffix = 0;
+-        while (! is_palindrome(str.substring(beginning_of_suffix))){
++        while (!is_palindrome(str.substring(beginning_of_suffix))) {
+             beginning_of_suffix += 1;
+         }
++
++        // Instead of reversing manually, use StringBuilder's reverse method
++        String prefixToBeReversed = str.substring(0, beginning_of_suffix);
++        StringBuilder reversedPrefix = new StringBuilder(prefixToBeReversed);
++        reversedPrefix.reverse();
+         
+-        String result = str;
+-        result += str.substring(0, beginning_of_suffix);
+-        return result;
++        return str + reversedPrefix.toString();
+     }
+-}
++}
+\ No newline at end of file

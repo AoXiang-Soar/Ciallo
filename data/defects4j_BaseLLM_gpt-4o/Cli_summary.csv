@@ -1,0 +1,40 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Cli,1,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,2,SF,0,14498,,22,0,22,
+defects4j,Cli,3,SH SF,1,386,1,0,0,1,
+defects4j,Cli,4,SH SF,0,11616,,22,0,22,
+defects4j,Cli,5,SH SF,1,424,1,0,0,1,
+defects4j,Cli,7,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,8,SL SH SF,1,8745,17,16,0,17,
+defects4j,Cli,9,SF,1,646,1,0,0,1,
+defects4j,Cli,10,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,11,SL SH SF,1,489,1,0,0,1,
+defects4j,Cli,12,SF,1,1006,1,0,0,1,
+defects4j,Cli,13,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,14,SF,1,2141,2,1,0,2,
+defects4j,Cli,15,SF,0,14938,,18,4,22,
+defects4j,Cli,16,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,17,SL SH SF,1,1799,3,2,0,3,
+defects4j,Cli,18,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,19,SF,0,10469,,0,22,22,
+defects4j,Cli,20,SF,0,22655,,21,1,22,
+defects4j,Cli,21,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,22,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,23,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,24,SH SF,1,951,1,0,0,1,
+defects4j,Cli,25,SL SH SF,0,17107,,20,2,22,
+defects4j,Cli,26,SF,0,13800,,12,10,22,
+defects4j,Cli,27,SF,0,10664,,13,9,22,
+defects4j,Cli,28,SL SH SF,1,920,1,0,0,1,
+defects4j,Cli,29,SF,0,11299,,22,0,22,
+defects4j,Cli,30,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,31,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,32,SH SF,1,5897,8,7,0,8,
+defects4j,Cli,33,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,34,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,35,SH SF,1,463,1,0,0,1,
+defects4j,Cli,36,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,37,SF,1,513,1,0,0,1,
+defects4j,Cli,38,SF,1,4409,7,6,0,7,
+defects4j,Cli,39,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Cli,40,SL SH SF,1,603,1,0,0,1,

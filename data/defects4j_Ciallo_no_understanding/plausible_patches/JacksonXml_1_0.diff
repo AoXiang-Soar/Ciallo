@@ -1,0 +1,35 @@
+diff --git a/src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java b/src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java
+index 91b14ddc..0423a338 100644
+--- a/src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java
++++ b/src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java
+@@ -509,8 +509,12 @@ public class FromXmlParser
+             // Simple, except that if this is a leaf, need to suppress end:
+             if (_mayBeLeaf) {
+                 _mayBeLeaf = false;
+-                    // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                    //    expose as empty Object, not null
++                if (_parsingContext.inArray()) {
++                    _currToken = JsonToken.START_OBJECT;
++                    _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
++                    _nextToken = JsonToken.END_OBJECT;
++                    return _currToken;
++                }
+                 return (_currToken = JsonToken.VALUE_NULL);
+             }
+             _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+@@ -544,12 +548,9 @@ public class FromXmlParser
+                 _xmlTokens.skipEndElement();
+                 if (_parsingContext.inArray()) {
+                     if (_isEmpty(_currText)) {
+-                        // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                        //    expose as empty Object, not null (or, worse, as used to
+-                        //    be done, by swallowing the token)
+-                        _currToken = JsonToken.END_ARRAY;
+-                        _parsingContext = _parsingContext.getParent();
+-                        _namesToWrap = _parsingContext.getNamesToWrap();
++                        _currToken = JsonToken.START_OBJECT;
++                        _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
++                        _nextToken = JsonToken.END_OBJECT;
+                         return _currToken;
+                     }
+                 }

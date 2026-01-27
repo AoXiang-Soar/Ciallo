@@ -1,0 +1,16 @@
+{
+    "bug_id": "UNIQUE",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_UNIQUE.test_0:13 array lengths differed, expected.length=9 actual.length=6; arrays first differed at element [3]; expected:<3> but was:<5>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        List<Integer> result = humaneval.buggy.UNIQUE.unique(\n            new ArrayList<Integer>(Arrays.asList(5, 3, 5, 2, 3, 3, 9, 0, 123))\n        );\n        org.junit.Assert.assertArrayEquals(\n            result.toArray(), Arrays.asList(0, 2, 3, 5, 9, 123).toArray()\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertArrayEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_UNIQUE"
+}

@@ -1,0 +1,14 @@
+diff --git a/src/java/org/apache/commons/cli/TypeHandler.java b/src/java/org/apache/commons/cli/TypeHandler.java
+index addf90b..67cb9c9 100644
+--- a/src/java/org/apache/commons/cli/TypeHandler.java
++++ b/src/java/org/apache/commons/cli/TypeHandler.java
+@@ -158,6 +158,9 @@ public class TypeHandler {
+     {
+         try
+         {
++            if (str.contains(".") || str.toLowerCase().contains("e")) {
++                return Double.valueOf(str);
++            }
+             return org.apache.commons.lang.math.NumberUtils.createNumber(str);
+         }
+         catch (NumberFormatException nfe)

@@ -1,0 +1,67 @@
+diff --git a/src/main/java/org/jsoup/parser/Token.java b/src/main/java/org/jsoup/parser/Token.java
+index 7dcfa2ba..91df364e 100644
+--- a/src/main/java/org/jsoup/parser/Token.java
++++ b/src/main/java/org/jsoup/parser/Token.java
+@@ -97,29 +97,41 @@ abstract class Token {
+             return this;
+         }
+ 
+-        final void newAttribute() {
+-            if (attributes == null)
+-                attributes = new Attributes();
++final void newAttribute() {
++    if (attributes == null)
++        attributes = new Attributes();
++
++    if (pendingAttributeName != null) {
++        // The tokeniser has skipped whitespace control chars, but trimming could collapse to empty for other control codes;
++        // Instead of throwing an error, handle empty attribute name separately
++
++        pendingAttributeName = pendingAttributeName.trim();
++        if (pendingAttributeName.length() > 0) { // Proceed only if attribute name is non-empty after trimming
++            Attribute attribute;
++
++            if (hasPendingAttributeValue)
++                attribute = new Attribute(pendingAttributeName,
++                    pendingAttributeValue.length() > 0 ? pendingAttributeValue.toString() : pendingAttributeValueS);
++            else if (hasEmptyAttributeValue)
++                attribute = new Attribute(pendingAttributeName, "");
++            else
++                attribute = new BooleanAttribute(pendingAttributeName);
+ 
+-            if (pendingAttributeName != null) {
+-                // the tokeniser has skipped whitespace control chars, but trimming could collapse to empty for other control codes, so verify here
+-                pendingAttributeName = pendingAttributeName.trim();
+-                    Attribute attribute;
+-                    if (hasPendingAttributeValue)
+-                        attribute = new Attribute(pendingAttributeName,
+-                            pendingAttributeValue.length() > 0 ? pendingAttributeValue.toString() : pendingAttributeValueS);
+-                    else if (hasEmptyAttributeValue)
+-                        attribute = new Attribute(pendingAttributeName, "");
+-                    else
+-                        attribute = new BooleanAttribute(pendingAttributeName);
+-                    attributes.put(attribute);
+-            }
+-            pendingAttributeName = null;
+-            hasEmptyAttributeValue = false;
+-            hasPendingAttributeValue = false;
+-            reset(pendingAttributeValue);
+-            pendingAttributeValueS = null;
++            attributes.put(attribute);
++        } else {
++            // Handle the case where attribute name is empty due to trimming, 
++            // possibly logging a warning or simply not adding an attribute.
++            System.out.println("Warning: Attribute name is empty, not adding attribute.");
+         }
++    }
++
++    // Rest state for next attribute
++    pendingAttributeName = null;
++    hasEmptyAttributeValue = false;
++    hasPendingAttributeValue = false;
++    reset(pendingAttributeValue);
++    pendingAttributeValueS = null;
++}
+ 
+         final void finaliseTag() {
+             // finalises for emit

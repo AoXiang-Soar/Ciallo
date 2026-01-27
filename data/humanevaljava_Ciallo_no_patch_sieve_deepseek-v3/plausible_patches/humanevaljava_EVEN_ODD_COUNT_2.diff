@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/EVEN_ODD_COUNT.java b/src/main/java/humaneval/buggy/EVEN_ODD_COUNT.java
+index c396d73..72539dd 100644
+--- a/src/main/java/humaneval/buggy/EVEN_ODD_COUNT.java
++++ b/src/main/java/humaneval/buggy/EVEN_ODD_COUNT.java
+@@ -11,10 +11,11 @@ public class EVEN_ODD_COUNT {
+         int even_count = 0;
+         int odd_count = 0;
+ 
+-        for (char c : (num + "").toCharArray()) {
+-            if ((int)c % 2 == 0) even_count += 1;
+-            if ((int)c % 2 == 1) odd_count += 1;
++        for (char c : (Math.abs(num) + "").toCharArray()) {
++            int digit = c - '0';
++            if (digit % 2 == 0) even_count += 1;
++            else odd_count += 1;
+         }
+         return new int[] {even_count, odd_count};
+     }
+-}
++}
+\ No newline at end of file

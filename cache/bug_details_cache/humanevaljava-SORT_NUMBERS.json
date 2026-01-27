@@ -1,0 +1,16 @@
+{
+    "bug_id": "SORT_NUMBERS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SORT_NUMBERS.test_2:23 expected:<[five nine thre]e> but was:<[three five nin]e>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_2() throws java.lang.Exception {\n        String result = humaneval.buggy.SORT_NUMBERS.sort_numbers(\"three five nine\");\n        org.junit.Assert.assertEquals(\n            result, \"three five nine\"\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_2",
+    "test_suite": "TEST_SORT_NUMBERS"
+}

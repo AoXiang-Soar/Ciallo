@@ -1,0 +1,16 @@
+{
+    "bug_id": 8,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Lang",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<9:24AM [IC]T> but was:<9:24AM [PS]T>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCalendarTimezoneRespected() {\n        String[] availableZones = TimeZone.getAvailableIDs();\n        TimeZone currentZone = TimeZone.getDefault();\n        \n        TimeZone anotherZone = null;\n        for (String zone : availableZones) {\n            if (!zone.equals(currentZone.getID())) {\n                anotherZone = TimeZone.getTimeZone(zone);\n            }\n        }\n        \n        assertNotNull(\"Cannot find another timezone\", anotherZone);\n        \n        final String pattern = \"h:mma z\";\n        final Calendar cal = Calendar.getInstance(anotherZone);\n        \n        SimpleDateFormat sdf = new SimpleDateFormat(pattern);\n        sdf.setTimeZone(anotherZone);\n        String expectedValue = sdf.format(cal.getTime());\n        String actualValue = FastDateFormat.getInstance(pattern).format(cal);\n        assertEquals(expectedValue, actualValue);\n    }",
+    "test_line": "        assertEquals(expectedValue, actualValue);",
+    "test_name": "testCalendarTimezoneRespected",
+    "test_suite": "org.apache.commons.lang3.time.FastDatePrinterTest"
+}

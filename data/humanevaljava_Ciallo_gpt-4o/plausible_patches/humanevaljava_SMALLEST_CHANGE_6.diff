@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java b/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
+index 4ab2c82..7ae559f 100644
+--- a/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
++++ b/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
+@@ -1,22 +1,25 @@
+ package humaneval.buggy;
+ 
+-// Given an array arr of integers, find the minimum number of elements that
+-// need to be changed to make the array palindromic. A palindromic array is an array that
+-// is read the same backwards and forwards. In one change, you can change one element to any other element.
+-
+-// For example:
+-// smallest_change([1,2,3,5,4,7,9,6]) == 4
+-// smallest_change([1, 2, 3, 4, 3, 2, 2]) == 1
+-// smallest_change([1, 2, 3, 2, 1]) == 0
+-
++// This function calculates the minimum number of changes needed to make an array palindromic.
+ public class SMALLEST_CHANGE {
+     public static int smallest_change(int[] arr) {
++        if (arr == null || arr.length <= 1) {
++            return 0; // An empty array or a single element array is already palindromic
++        }
++
+         int result = 0;
+-        for (int i = 0; i < arr.length; i += 1) {
+-            if (arr[i] != arr[arr.length - i])
+-                result += 1;
++        int left = 0;
++        int right = arr.length - 1;
++
++        while (left < right) {
++            // If the elements at the mirror positions are not equal, increment the result
++            if (arr[left] != arr[right]) {
++                result++;
++            }
++            left++;
++            right--;
+         }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

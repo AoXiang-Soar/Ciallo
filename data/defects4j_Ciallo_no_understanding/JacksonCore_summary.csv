@@ -1,0 +1,27 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,JacksonCore,1,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonCore,2,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonCore,3,SF,3,9582,8,5,1,13,
+defects4j,JacksonCore,4,SF,2,6461,6,5,0,12,
+defects4j,JacksonCore,5,SL SH SF,3,5552,5,1,1,6,
+defects4j,JacksonCore,6,SH SF,14,10670,5,0,0,14,
+defects4j,JacksonCore,7,SH SF,2,17875,19,6,8,18,
+defects4j,JacksonCore,8,SL SH SF,7,6040,5,0,0,7,
+defects4j,JacksonCore,9,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonCore,10,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonCore,11,SL SH SF,1,14954,20,13,1,28,
+defects4j,JacksonCore,12,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonCore,13,BF,8,59942,10,6,3,21,
+defects4j,JacksonCore,14,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonCore,15,SF,1,192087,43,28,7,87,
+defects4j,JacksonCore,16,BF,1,23412,5,7,0,15,
+defects4j,JacksonCore,17,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonCore,18,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonCore,19,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonCore,20,SH SF,4,22784,13,18,11,46,
+defects4j,JacksonCore,21,SF,1,40031,6,3,5,9,
+defects4j,JacksonCore,22,BF,,,,,,,Out of limited tokens. 
+defects4j,JacksonCore,23,SH SF,1,3320,4,3,3,9,
+defects4j,JacksonCore,24,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonCore,25,SL SH SF,6,11353,6,1,0,8,
+defects4j,JacksonCore,26,SL SH SF,0,384601,,108,19,1544,

@@ -1,0 +1,16 @@
+{
+    "bug_id": 18,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.JsonMappingException: Can not instantiate value of type [simple type, class com.fasterxml.jackson.databind.seq.ReadRecoveryTest$Bean] from Integral number (1); no single-int-arg constructor/factory method",
+    "test_framework": "defects4j",
+    "test_function": "    public void testSimpleRootRecovery() throws Exception\n    {\n        final String JSON = aposToQuotes(\"{'a':3}{'a':27,'foo':[1,2],'b':{'x':3}}  {'a':1,'b':2} \");\n\n        MappingIterator<Bean> it = MAPPER.readerFor(Bean.class).readValues(JSON);\n        Bean bean = it.nextValue();\n\n        assertNotNull(bean);\n        assertEquals(3, bean.a);\n\n        // second one problematic\n        try {\n            it.nextValue();\n        } catch (JsonMappingException e) {\n            verifyException(e, \"Unrecognized field \\\"foo\\\"\");\n        }\n\n        // but should recover nicely\n        bean = it.nextValue();\n        assertNotNull(bean);\n        assertEquals(1, bean.a);\n        assertEquals(2, bean.b);\n\n        assertFalse(it.hasNextValue());\n        \n        it.close();\n    }",
+    "test_line": "",
+    "test_name": "testSimpleRootRecovery",
+    "test_suite": "com.fasterxml.jackson.databind.seq.ReadRecoveryTest"
+}

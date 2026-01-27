@@ -1,0 +1,22 @@
+diff --git a/src/main/java/org/apache/commons/lang3/math/Fraction.java b/src/main/java/org/apache/commons/lang3/math/Fraction.java
+index b36a156a4..f6f9c03d5 100644
+--- a/src/main/java/org/apache/commons/lang3/math/Fraction.java
++++ b/src/main/java/org/apache/commons/lang3/math/Fraction.java
+@@ -579,6 +579,17 @@ public final class Fraction extends Number implements Comparable<Fraction> {
+      * @return the greatest common divisor, never zero
+      */
+     private static int greatestCommonDivisor(int u, int v) {
++        // Handle MIN_VALUE cases
++        if (u == Integer.MIN_VALUE) {
++            if (v == Integer.MIN_VALUE) {
++                throw new ArithmeticException("overflow: gcd is 2^31");
++            }
++            return 1 << Integer.numberOfTrailingZeros(Math.abs(v));
++        }
++        if (v == Integer.MIN_VALUE) {
++            return 1 << Integer.numberOfTrailingZeros(Math.abs(u));
++        }
++        
+         // From Commons Math:
+         //if either operand is abs 1, return 1:
+         if (Math.abs(u) <= 1 || Math.abs(v) <= 1) {

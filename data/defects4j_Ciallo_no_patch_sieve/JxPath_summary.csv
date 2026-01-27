@@ -1,0 +1,23 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,JxPath,1,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JxPath,2,BF,0,1203634,,159,156,2392,
+defects4j,JxPath,3,BF,0,1804957,,195,215,2828,
+defects4j,JxPath,4,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JxPath,5,SH SF,13,23485,10,2,2,19,
+defects4j,JxPath,6,SF,0,512666,,175,79,2405,
+defects4j,JxPath,7,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JxPath,8,SF,5,20248,8,8,0,21,
+defects4j,JxPath,9,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JxPath,10,SL SH SF,1,154260,130,44,63,273,
+defects4j,JxPath,11,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JxPath,12,SH SF,1,104634,61,52,7,156,
+defects4j,JxPath,13,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JxPath,14,BF,,,,,,,Out of limited tokens. 
+defects4j,JxPath,15,BF,2,28206,10,2,9,15,
+defects4j,JxPath,16,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JxPath,17,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JxPath,18,BF,0,856374,,93,49,1465,
+defects4j,JxPath,19,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JxPath,20,BF,4,165796,42,34,7,96,
+defects4j,JxPath,21,SH SF,2,213202,224,49,138,398,
+defects4j,JxPath,22,SF,4,23043,16,14,1,33,

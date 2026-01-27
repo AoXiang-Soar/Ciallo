@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/MONOTONIC.java b/src/main/java/humaneval/buggy/MONOTONIC.java
+index f56e3bd..df4fc05 100644
+--- a/src/main/java/humaneval/buggy/MONOTONIC.java
++++ b/src/main/java/humaneval/buggy/MONOTONIC.java
+@@ -12,11 +12,9 @@ import java.util.Arrays;
+ 
+ public class MONOTONIC {
+     public static boolean monotonic(int[] l) {
+-        int[] sorted = new int[l.length];
++        int[] sorted = l.clone();
+         int[] reverse_sorted = new int[l.length];
+ 
+-        sorted = l;
+-        
+         Arrays.sort(sorted);
+         
+         for (int i = 0; i < l.length; i += 1)
+@@ -26,4 +24,4 @@ public class MONOTONIC {
+             return true;
+         return false;
+     }
+-}
++}
+\ No newline at end of file

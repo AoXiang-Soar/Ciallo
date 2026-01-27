@@ -1,0 +1,45 @@
+diff --git a/src/org/mockito/internal/invocation/Invocation.java b/src/org/mockito/internal/invocation/Invocation.java
+index 94d4612f5..647e75cf0 100644
+--- a/src/org/mockito/internal/invocation/Invocation.java
++++ b/src/org/mockito/internal/invocation/Invocation.java
+@@ -5,9 +5,9 @@
+ package org.mockito.internal.invocation;
+ 
+ import java.util.*;
+-
+ import org.hamcrest.Matcher;
+ import org.mockito.exceptions.PrintableInvocation;
++import org.mockito.exceptions.base.MockitoException;
+ import org.mockito.internal.debugging.Location;
+ import org.mockito.internal.invocation.realmethod.RealMethod;
+ import org.mockito.internal.matchers.*;
+@@ -73,6 +73,18 @@ public class Invocation implements PrintableInvocation, InvocationOnMock, Printi
+         return newArgs;
+     }
+ 
++    public Object callRealMethod() throws Throwable {
++        if (realMethod == null) {
++            throw new MockitoException("Cannot call abstract real method on interface mock.");
++        }
++        try {
++            return realMethod.invoke(mock, rawArguments);
++        } catch (NoSuchMethodError e) {
++            throw new MockitoException("Cannot call real method on interface mock.", e);
++        }
++    }
++
++    // ... rest of the methods remain exactly the same ...
+     public Object getMock() {
+         return mock;
+     }
+@@ -198,10 +210,6 @@ public class Invocation implements PrintableInvocation, InvocationOnMock, Printi
+         return this.rawArguments;
+     }
+ 
+-    public Object callRealMethod() throws Throwable {
+-        return realMethod.invoke(mock, rawArguments);
+-    }
+-
+     public String toString(PrintSettings printSettings) {
+         return toString(argumentsToMatchers(), printSettings);
+     }

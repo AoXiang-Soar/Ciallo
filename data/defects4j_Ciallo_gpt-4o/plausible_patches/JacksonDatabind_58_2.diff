@@ -1,0 +1,128 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java b/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
+index df861215c..719fff97e 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
+@@ -700,57 +700,77 @@ public class BeanDeserializerFactory
+      * @return Property constructed, if any; or null to indicate that
+      *   there should be no property based on given definitions.
+      */
+-    protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,
+-            BeanDescription beanDesc, BeanPropertyDefinition propDef,
+-            JavaType propType0)
+-        throws JsonMappingException
+-    {
+-        // need to ensure method is callable (for non-public)
+-        AnnotatedMember mutator = propDef.getNonConstructorMutator();
+-
+-        if (ctxt.canOverrideAccessModifiers()) {
+-            // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;
+-            // never needed and attempts may cause problems on some platforms.
+-            // !!! NOTE: should be handled better for 2.8 and later
++protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,
++        BeanDescription beanDesc, BeanPropertyDefinition propDef,
++        JavaType propType0)
++    throws JsonMappingException
++{
++    // Retrieve the mutator, being cautious to handle potential nulls
++    AnnotatedMember mutator = propDef.getNonConstructorMutator();
++    
++    // Only manipulate access modifiers if mutator is non-null and not a special case
++    if (mutator != null) {
++        // Check if the mutator is associated with the throwable class
++        Class<?> declClass = mutator.getDeclaringClass();
++        if (!Throwable.class.isAssignableFrom(declClass)) {
++            if (ctxt.canOverrideAccessModifiers()) {
+                 mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
++            }
+         }
+-        // note: this works since we know there's exactly one argument for methods
+-        BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),
+-                propType0, propDef.getWrapperName(),
+-                beanDesc.getClassAnnotations(), mutator, propDef.getMetadata());
+-        JavaType type = resolveType(ctxt, beanDesc, propType0, mutator);
+-        // did type change?
+-        if (type != propType0) {
+-            property = property.withType(type);
+-        }
++    }
+ 
+-        // First: does the Method specify the deserializer to use? If so, let's use it.
+-        JsonDeserializer<Object> propDeser = findDeserializerFromAnnotation(ctxt, mutator);
+-        type = modifyTypeByAnnotation(ctxt, mutator, type);
+-        TypeDeserializer typeDeser = type.getTypeHandler();
+-        SettableBeanProperty prop;
+-        if (mutator instanceof AnnotatedMethod) {
+-            prop = new MethodProperty(propDef, type, typeDeser,
+-                    beanDesc.getClassAnnotations(), (AnnotatedMethod) mutator);
+-        } else {
+-            prop = new FieldProperty(propDef, type, typeDeser,
+-                    beanDesc.getClassAnnotations(), (AnnotatedField) mutator);
+-        }
+-        if (propDeser != null) {
+-            prop = prop.withValueDeserializer(propDeser);
+-        }
+-        // need to retain name of managed forward references:
+-        AnnotationIntrospector.ReferenceProperty ref = propDef.findReferenceType();
+-        if (ref != null && ref.isManagedReference()) {
+-            prop.setManagedReferenceName(ref.getName());
+-        }
+-        ObjectIdInfo objectIdInfo = propDef.findObjectIdInfo();
+-        if(objectIdInfo != null){
+-            prop.setObjectIdInfo(objectIdInfo);
+-        }
+-        return prop;
++    // Create the initial property with the mutator
++    BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),
++            propType0, propDef.getWrapperName(),
++            beanDesc.getClassAnnotations(), mutator, propDef.getMetadata());
++
++    // Resolve the JavaType using any contextual modifications
++    JavaType type = resolveType(ctxt, beanDesc, propType0, mutator);
++    if (!type.equals(propType0)) {
++        property = property.withType(type);
++    }
++    
++    // Find any serializer specified directly within the property annotations
++    JsonDeserializer<Object> propDeser = findDeserializerFromAnnotation(ctxt, mutator);
++    type = modifyTypeByAnnotation(ctxt, mutator, type);
++
++    // Get the type deserializer if available
++    TypeDeserializer typeDeser = type.getTypeHandler();
++
++    SettableBeanProperty prop;
++
++    // Properly instantiate the property as a method or field property
++    if (mutator instanceof AnnotatedMethod) {
++        prop = new MethodProperty(propDef, type, typeDeser,
++                beanDesc.getClassAnnotations(), (AnnotatedMethod) mutator);
++    } else if (mutator instanceof AnnotatedField) {
++        prop = new FieldProperty(propDef, type, typeDeser,
++                beanDesc.getClassAnnotations(), (AnnotatedField) mutator);
++    } else {
++        // Throwing an exception for unhandled cases prevents failing silently
++        throw new IllegalStateException("Mutator is neither method nor field: " + (mutator != null ? mutator.getClass().getName() : "null"));
+     }
+ 
++    // Apply found deserializer
++    if (propDeser != null) {
++        prop = prop.withValueDeserializer(propDeser);
++    }
++    
++    // Handling managed reference name settings if applicable
++    AnnotationIntrospector.ReferenceProperty ref = propDef.findReferenceType();
++    if (ref != null && ref.isManagedReference()) {
++        prop.setManagedReferenceName(ref.getName());
++    }
++
++    // Handling ObjectIdInfo association if defined in property definition
++    ObjectIdInfo objectIdInfo = propDef.findObjectIdInfo();
++    if (objectIdInfo != null) {
++        prop.setObjectIdInfo(objectIdInfo);
++    }
++
++    return prop;
++}
++
+     /**
+      * Method that will construct a regular bean property setter using
+      * the given setter method.

@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/DECODE_CYCLIC.java b/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
+index 9ba739f..b336e2f 100644
+--- a/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
++++ b/src/main/java/humaneval/buggy/DECODE_CYCLIC.java
+@@ -11,15 +11,17 @@ public class DECODE_CYCLIC {
+                 for (int i = 0; i < s.length(); i += 3){
+                     groups.add(s.substring(i, Math.min(s.length(), i + 3)));
+                 }
+-                int remain = s.length() % 3;
+                 
+                 String result = "";
+                 for (String group : groups){
+-                    result += group.substring(1) + group.substring(0, 1);
+-                }
+-
+-                if (remain > 0){
+-                    result += s.substring(s.length() - remain);
++                    if(group.length() == 3) {
++                        result += group.substring(1) + group.substring(0, 1);
++                    } else {
++                        // Move the first character to the end if length is not 3
++                        if (group.length() > 0) {
++                            result += group.substring(1) + group.charAt(0);
++                        }
++                    }
+                 }
+ 
+                 return result;
+@@ -29,4 +31,4 @@ public class DECODE_CYCLIC {
+         final Cyclic cyclic = new Cyclic();
+         return cyclic.encode_cyclic(cyclic.encode_cyclic(str));
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 14,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Gson",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<? super java.lang.Number> but was:<? super ? super java.lang.Number>",
+    "test_framework": "defects4j",
+    "test_function": "  public void testDoubleSupertype() {\n    assertEquals($Gson$Types.supertypeOf(Number.class),\n            $Gson$Types.supertypeOf($Gson$Types.supertypeOf(Number.class)));\n  }",
+    "test_line": "    assertEquals($Gson$Types.supertypeOf(Number.class),",
+    "test_name": "testDoubleSupertype",
+    "test_suite": "com.google.gson.internal.bind.RecursiveTypesResolveTest"
+}

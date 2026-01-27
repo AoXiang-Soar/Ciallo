@@ -1,0 +1,327 @@
+{
+    "ADD": {
+        "matching_file": "humanevaljava_ADD_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "ADD_ELEMENTS": {
+        "matching_file": "humanevaljava_ADD_ELEMENTS_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "ADD_EVEN_AT_ODD": {
+        "matching_file": "humanevaljava_ADD_EVEN_AT_ODD_3.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "ALL_PREFIXES": {
+        "matching_file": "humanevaljava_ALL_PREFIXES_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "ANY_INT": {
+        "matching_file": "humanevaljava_ANY_INT_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "BELOW_THRESHOLD": {
+        "matching_file": "humanevaljava_BELOW_THRESHOLD_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "BELOW_ZERO": {
+        "matching_file": "humanevaljava_BELOW_ZERO_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "CAR_RACE_COLLISION": {
+        "matching_file": "humanevaljava_CAR_RACE_COLLISION_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "CHECK_DICT_CASE": {
+        "matching_file": "humanevaljava_CHECK_DICT_CASE_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "CHOOSE_NUM": {
+        "matching_file": "humanevaljava_CHOOSE_NUM_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "CIRCULAR_SHIFT": {
+        "matching_file": "humanevaljava_CIRCULAR_SHIFT_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "COMPARE": {
+        "matching_file": "humanevaljava_COMPARE_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "CONCATENATE": {
+        "matching_file": "humanevaljava_CONCATENATE_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "CORRECT_BRACKETING": {
+        "matching_file": "humanevaljava_CORRECT_BRACKETING_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "COUNT_NUMS": {
+        "matching_file": "humanevaljava_COUNT_NUMS_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "COUNT_UPPER": {
+        "matching_file": "humanevaljava_COUNT_UPPER_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "COUNT_UP_TO": {
+        "matching_file": "humanevaljava_COUNT_UP_TO_2.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "DECIMAL_TO_BINARY": {
+        "matching_file": "humanevaljava_DECIMAL_TO_BINARY_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "DIGIT_SUM": {
+        "matching_file": "humanevaljava_DIGIT_SUM_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "EXCHANGE": {
+        "matching_file": "humanevaljava_EXCHANGE_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "FACTORIAL": {
+        "matching_file": "humanevaljava_FACTORIAL_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "FIBFIB": {
+        "matching_file": "humanevaljava_FIBFIB_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "FILE_NAME_CHECK": {
+        "matching_file": "humanevaljava_FILE_NAME_CHECK_2.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "FILTER_BY_PREFIX": {
+        "matching_file": "humanevaljava_FILTER_BY_PREFIX_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "FILTER_BY_SUBSTRING": {
+        "matching_file": "humanevaljava_FILTER_BY_SUBSTRING_2.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "FILTER_INTEGERS": {
+        "matching_file": "humanevaljava_FILTER_INTEGERS_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "FIND_CLOSEST_ELEMENTS": {
+        "matching_file": "humanevaljava_FIND_CLOSEST_ELEMENTS_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "FLIP_CASE": {
+        "matching_file": "humanevaljava_FLIP_CASE_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "GET_CLOSET_VOWEL": {
+        "matching_file": "humanevaljava_GET_CLOSET_VOWEL_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "GET_MAX_TRIPLES": {
+        "matching_file": "humanevaljava_GET_MAX_TRIPLES_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "GET_ODD_COLLATZ": {
+        "matching_file": "humanevaljava_GET_ODD_COLLATZ_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "GET_POSITIVE": {
+        "matching_file": "humanevaljava_GET_POSITIVE_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "GET_ROW": {
+        "matching_file": "humanevaljava_GET_ROW_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "HAS_CLOSE_ELEMENTS": {
+        "matching_file": "humanevaljava_HAS_CLOSE_ELEMENTS_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "HEX_KEY": {
+        "matching_file": "humanevaljava_HEX_KEY_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "INCR_LIST": {
+        "matching_file": "humanevaljava_INCR_LIST_2.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "IS_MULTIPLY_PRIME": {
+        "matching_file": "humanevaljava_IS_MULTIPLY_PRIME_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "IS_SIMPLE_POWER": {
+        "matching_file": "humanevaljava_IS_SIMPLE_POWER_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "LONGEST": {
+        "matching_file": "humanevaljava_LONGEST_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "MAKE_A_PILE": {
+        "matching_file": "humanevaljava_MAKE_A_PILE_1.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "MATCH_PARENS": {
+        "matching_file": "humanevaljava_MATCH_PARENS_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "MAX_FILL": {
+        "matching_file": "humanevaljava_MAX_FILL_3.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "MEAN_ABSOLUTE_DEVIATION": {
+        "matching_file": "humanevaljava_MEAN_ABSOLUTE_DEVIATION_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "MODP": {
+        "matching_file": "humanevaljava_MODP_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "MOVE_ONE_BALL": {
+        "matching_file": "humanevaljava_MOVE_ONE_BALL_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "MULTIPLY": {
+        "matching_file": "humanevaljava_MULTIPLY_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "NUMERICAL_LETTER_GRADE": {
+        "matching_file": "humanevaljava_NUMERICAL_LETTER_GRADE_2.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "PAIRS_SUM_TO_ZERO": {
+        "matching_file": "humanevaljava_PAIRS_SUM_TO_ZERO_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "PLUCK": {
+        "matching_file": "humanevaljava_PLUCK_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "REVERSE_DELETE": {
+        "matching_file": "humanevaljava_REVERSE_DELETE_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "ROLLING_MAX": {
+        "matching_file": "humanevaljava_ROLLING_MAX_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "ROUNDED_AVG": {
+        "matching_file": "humanevaljava_ROUNDED_AVG_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "SELECT_WORDS": {
+        "matching_file": "humanevaljava_SELECT_WORDS_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "SOLUTION": {
+        "matching_file": "humanevaljava_SOLUTION_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "SPECIAL_FILTER": {
+        "matching_file": "humanevaljava_SPECIAL_FILTER_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "SPLIT_WORDS": {
+        "matching_file": "humanevaljava_SPLIT_WORDS_2.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "STRING_XOR": {
+        "matching_file": "humanevaljava_STRING_XOR_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "STRLEN": {
+        "matching_file": "humanevaljava_STRLEN_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "SUM_PRODUCT": {
+        "matching_file": "humanevaljava_SUM_PRODUCT_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "SUM_SQUARES": {
+        "matching_file": "humanevaljava_SUM_SQUARES_1.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "TOTAL_MATCH": {
+        "matching_file": "humanevaljava_TOTAL_MATCH_2.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "TRIPLES_SUM_TO_ZERO": {
+        "matching_file": "humanevaljava_TRIPLES_SUM_TO_ZERO_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "UNIQUE_DIGITS": {
+        "matching_file": "humanevaljava_UNIQUE_DIGITS_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "WILL_IT_FLY": {
+        "matching_file": "humanevaljava_WILL_IT_FLY_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    },
+    "X_OR_Y": {
+        "matching_file": "humanevaljava_X_OR_Y_0.diff",
+        "min_round": null,
+        "min_try_id": null
+    }
+}

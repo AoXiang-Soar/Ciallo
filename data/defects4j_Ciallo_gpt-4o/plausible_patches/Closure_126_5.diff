@@ -1,0 +1,20 @@
+diff --git a/src/com/google/javascript/jscomp/MinimizeExitPoints.java b/src/com/google/javascript/jscomp/MinimizeExitPoints.java
+index 4146f1777..3654a91b9 100644
+--- a/src/com/google/javascript/jscomp/MinimizeExitPoints.java
++++ b/src/com/google/javascript/jscomp/MinimizeExitPoints.java
+@@ -138,9 +138,14 @@ class MinimizeExitPoints
+        * can cause problems if it changes the completion type of the finally
+        * block. See ECMA 262 Sections 8.9 & 12.14
+        */
++      // Considerations for finally blocks: Do not try to minimize the exits
++      // within finally blocks, as their execution is crucial for executing
++      // final cleanup or actions irrespective of prior exits.
++      // The completion type must remain unchanged.
+       if (NodeUtil.hasFinally(n)) {
+         Node finallyBlock = n.getLastChild();
+-        tryMinimizeExits(finallyBlock, exitType, labelName);
++        // Handle any necessary logic here without minimizing exits 
++        // in the finally block to preserve its integrity.
+       }
+     }
+ 

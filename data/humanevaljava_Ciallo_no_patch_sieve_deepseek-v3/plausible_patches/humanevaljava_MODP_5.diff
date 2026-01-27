@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/MODP.java b/src/main/java/humaneval/buggy/MODP.java
+index a8f7394..84ce6b2 100644
+--- a/src/main/java/humaneval/buggy/MODP.java
++++ b/src/main/java/humaneval/buggy/MODP.java
+@@ -14,10 +14,18 @@ package humaneval.buggy;
+ 
+ public class MODP {
+     public static int modp(int n, int p) {
++        if (p == 1) return 0;
+         int result = 1;
+-        for (int i = 0; i < n; i += 1){
+-            result = 2 * result;
++        int power = n;
++        int base = 2;
++        base = base % p;
++        while (power > 0) {
++            if (power % 2 == 1) {
++                result = (result * base) % p;
++            }
++            power = power >> 1;
++            base = (base * base) % p;
+         }
+-        return result % p;
++        return result;
+     }
+-}
++}
+\ No newline at end of file

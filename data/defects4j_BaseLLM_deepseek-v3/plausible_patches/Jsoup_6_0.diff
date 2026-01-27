@@ -1,0 +1,28 @@
+diff --git a/src/main/java/org/jsoup/nodes/Entities.java b/src/main/java/org/jsoup/nodes/Entities.java
+index 4daf7208..44c2334a 100644
+--- a/src/main/java/org/jsoup/nodes/Entities.java
++++ b/src/main/java/org/jsoup/nodes/Entities.java
+@@ -47,7 +47,7 @@ public class Entities {
+             return string;
+ 
+         Matcher m = unescapePattern.matcher(string); // &(#(x|X)?([0-9a-fA-F]+)|[a-zA-Z]+);?
+-        StringBuffer accum = new StringBuffer(string.length()); // pity matcher can't use stringbuilder, avoid syncs
++        StringBuffer accum = new StringBuffer(string.length());
+         // todo: replace m.appendReplacement with own impl, so StringBuilder and quoteReplacement not required
+ 
+         while (m.find()) {
+@@ -65,11 +65,11 @@ public class Entities {
+                     charval = full.get(name);
+             }
+ 
+-            if (charval != -1 || charval > 0xFFFF) { // out of range
++            if (charval != -1 && charval <= 0xFFFF) { // within valid range
+                 String c = Character.toString((char) charval);
+-                m.appendReplacement(accum, c);
++                m.appendReplacement(accum, Matcher.quoteReplacement(c));
+             } else {
+-                m.appendReplacement(accum, m.group(0));
++                m.appendReplacement(accum, Matcher.quoteReplacement(m.group(0)));
+             }
+         }
+         m.appendTail(accum);

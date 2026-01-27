@@ -1,0 +1,26 @@
+diff --git a/src/com/google/javascript/jscomp/InlineCostEstimator.java b/src/com/google/javascript/jscomp/InlineCostEstimator.java
+index 76a5d0aab..da31b9718 100644
+--- a/src/com/google/javascript/jscomp/InlineCostEstimator.java
++++ b/src/com/google/javascript/jscomp/InlineCostEstimator.java
+@@ -99,5 +99,19 @@ class InlineCostEstimator {
+      * Constants (true, false, null) are considered basically free,
+      * because it's likely that they will get folded when we're done.
+      */
++    @Override
++    void addConstant(String newcode) {
++      // Constants contribute minimally (1 character) to the cost
++      add("0");
++    }
++
++    /**
++     * Numbers contribute minimally to the cost
++     */
++    @Override
++    void addNumber(double x) {
++      // Numbers contribute minimally (1 character) to the cost
++      add("0");
++    }
+   }
+-}
++}
+\ No newline at end of file

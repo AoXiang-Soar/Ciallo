@@ -1,0 +1,16 @@
+{
+    "bug_id": 35,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Lang",
+    "test_error_message": "java.lang.ClassCastException: class [Ljava.lang.Object; cannot be cast to class [Ljava.lang.String; ([Ljava.lang.Object; and [Ljava.lang.String; are in module java.base of loader 'bootstrap')",
+    "test_framework": "defects4j",
+    "test_function": "    public void testLANG571(){\n        String[] stringArray=null;\n        String aString=null;\n        try {\n            @SuppressWarnings(\"unused\")\n            String[] sa = ArrayUtils.add(stringArray, aString);\n            fail(\"Should have caused IllegalArgumentException\");\n        } catch (IllegalArgumentException iae){\n            //expected\n        }\n        try {\n            @SuppressWarnings(\"unused\")\n            String[] sa = ArrayUtils.add(stringArray, 0, aString);\n            fail(\"Should have caused IllegalArgumentException\");\n        } catch (IllegalArgumentException iae){\n            //expected\n        }\n    }",
+    "test_line": "            String[] sa = ArrayUtils.add(stringArray, aString);",
+    "test_name": "testLANG571",
+    "test_suite": "org.apache.commons.lang3.ArrayUtilsAddTest"
+}

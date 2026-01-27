@@ -1,0 +1,58 @@
+diff --git a/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java b/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java
+index 99d86e92a..43b35dc71 100644
+--- a/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java
++++ b/src/main/java/org/apache/commons/math3/optimization/general/AbstractLeastSquaresOptimizer.java
+@@ -558,8 +558,50 @@ public abstract class AbstractLeastSquaresOptimizer
+      * @param m Symmetric, positive-definite (weight) matrix.
+      * @return the square-root of the weight matrix.
+      */
+-    private RealMatrix squareRoot(RealMatrix m) {
+-            final EigenDecomposition dec = new EigenDecomposition(m);
+-            return dec.getSquareRoot();
++private RealMatrix squareRoot(RealMatrix m) {
++    // Check if matrix is diagonal - faster computation for diagonal matrices
++    if (isDiagonal(m)) {
++        return squareRootDiagonal(m);
+     }
++    
++    // Use QR decomposition-based approach for better numerical stability with large matrices
++    QRDecomposition qr = new QRDecomposition(m);
++    RealMatrix r = qr.getR();
++    
++    // Compute square root of R (which is upper triangular)
++    EigenDecomposition eigenR = new EigenDecomposition(r);
++    RealMatrix sqrtR = eigenR.getSquareRoot();
++    
++    if (sqrtR == null) {
++        throw new RuntimeException("Matrix square root computation failed");
++    }
++    
++    // Reconstruct original matrix square root: Q * sqrt(R)
++    return qr.getQ().multiply(sqrtR);
++}
++
++private boolean isDiagonal(RealMatrix m) {
++    final int n = m.getRowDimension();
++    for (int i = 0; i < n; i++) {
++        for (int j = 0; j < n; j++) {
++            if (i != j && Math.abs(m.getEntry(i, j)) > 1e-10) {
++                return false;
++            }
++        }
++    }
++    return true;
++}
++
++private RealMatrix squareRootDiagonal(RealMatrix m) {
++    final int n = m.getRowDimension();
++    RealMatrix result = m.createMatrix(n, n);
++    for (int i = 0; i < n; i++) {
++        double diag = m.getEntry(i, i);
++        if (diag < 0) {
++            throw new RuntimeException("Negative diagonal element");
++        }
++        result.setEntry(i, i, Math.sqrt(diag));
++    }
++    return result;
++}
+ }

@@ -1,0 +1,26 @@
+diff --git a/src/main/java/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java b/src/main/java/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java
+index 93dd3bbdd..873d144b0 100644
+--- a/src/main/java/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java
++++ b/src/main/java/org/apache/commons/math/analysis/solvers/BracketingNthOrderBrentSolver.java
+@@ -157,7 +157,7 @@ public class BracketingNthOrderBrentSolver
+             return x[1];
+         }
+ 
+-        // evaluate first  endpoint
++        // evaluate first endpoint
+         y[0] = computeObjectiveValue(x[0]);
+         if (Precision.equals(y[0], 0.0, 1)) {
+             // return the first endpoint if it is a perfect root.
+@@ -232,10 +232,10 @@ public class BracketingNthOrderBrentSolver
+             double targetY;
+             if (agingA >= MAXIMAL_AGING) {
+                 // we keep updating the high bracket, try to compensate this
+-                targetY = -REDUCTION_FACTOR * yB;
++                targetY = (allowed == AllowedSolution.RIGHT_SIDE) ? -REDUCTION_FACTOR * yA : -REDUCTION_FACTOR * yB;
+             } else if (agingB >= MAXIMAL_AGING) {
+                 // we keep updating the low bracket, try to compensate this
+-                targetY = -REDUCTION_FACTOR * yA;
++                targetY = (allowed == AllowedSolution.LEFT_SIDE) ? -REDUCTION_FACTOR * yB : -REDUCTION_FACTOR * yA;
+             } else {
+                 // bracketing is balanced, try to find the root itself
+                 targetY = 0;

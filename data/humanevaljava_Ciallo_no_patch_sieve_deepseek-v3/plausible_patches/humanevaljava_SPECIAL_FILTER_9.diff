@@ -1,0 +1,50 @@
+diff --git a/src/main/java/humaneval/buggy/SPECIAL_FILTER.java b/src/main/java/humaneval/buggy/SPECIAL_FILTER.java
+index eab06ca..c20b747 100644
+--- a/src/main/java/humaneval/buggy/SPECIAL_FILTER.java
++++ b/src/main/java/humaneval/buggy/SPECIAL_FILTER.java
+@@ -1,27 +1,28 @@
+ package humaneval.buggy;
+ 
+-import java.util.ArrayList;
+-import java.util.Arrays;
+-
+-/* Write a function that takes an array of numbers as input and returns 
+-the number of elements in the array that are greater than 10 and both 
+-first and last digits of a number are odd (1, 3, 5, 7, 9).
+-For example:
+-specialFilter([15, -73, 14, -15]) => 1 
+-specialFilter([33, -2, -3, 45, 21, 109]) => 2 */
++import java.util.HashSet;
++import java.util.Set;
+ 
+ public class SPECIAL_FILTER {
+     public static int special_filter(int[] nums) {
+         int count = 0;
+-        ArrayList<Integer> odd_digits = new ArrayList<Integer>(Arrays.asList(1, 3, 5, 7, 9));
+-        for (Integer num : nums) {
++        Set<Character> oddDigits = new HashSet<Character>();
++        oddDigits.add('1');
++        oddDigits.add('3');
++        oddDigits.add('5');
++        oddDigits.add('7');
++        oddDigits.add('9');
++        
++        for (int num : nums) {
+             if (num > 10) {
+-                String number_as_string = num + "";
+-                if (odd_digits.contains(number_as_string.charAt(0))
+-                        && odd_digits.contains(number_as_string.charAt(number_as_string.length())))
+-                    count += 1;
++                String numStr = Integer.toString(Math.abs(num));
++                char firstDigit = numStr.charAt(0);
++                char lastDigit = numStr.charAt(numStr.length() - 1);
++                if (oddDigits.contains(firstDigit) && oddDigits.contains(lastDigit)) {
++                    count++;
++                }
+             }
+         }
+         return count;
+     }
+-}
++}
+\ No newline at end of file

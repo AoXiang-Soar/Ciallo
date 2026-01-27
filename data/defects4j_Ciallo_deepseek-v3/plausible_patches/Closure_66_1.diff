@@ -1,0 +1,119 @@
+diff --git a/src/com/google/javascript/jscomp/TypeCheck.java b/src/com/google/javascript/jscomp/TypeCheck.java
+index edb780516..136eb8b77 100644
+--- a/src/com/google/javascript/jscomp/TypeCheck.java
++++ b/src/com/google/javascript/jscomp/TypeCheck.java
+@@ -457,8 +457,7 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+    * scope chain to use in name lookups as well as error reporting.
+    * @param n The node being visited.
+    * @param parent The parent of the node n.
+-   */
+-  public void visit(NodeTraversal t, Node n, Node parent) {
++   */public void visit(NodeTraversal t, Node n, Node parent) {
+     JSType childType;
+     JSType leftType, rightType;
+     Node left, right;
+@@ -471,8 +470,6 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+         break;
+ 
+       case Token.LP:
+-        // If this is under a FUNCTION node, it is a parameter list and can be
+-        // ignored here.
+         if (parent.getType() != Token.FUNCTION) {
+           ensureTyped(t, n, getJSType(n.getFirstChild()));
+         } else {
+@@ -510,16 +507,15 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+         break;
+ 
+       case Token.STRING:
+-        // Object literal keys are handled with OBJECTLIT
+         if (!NodeUtil.isObjectLitKey(n, n.getParent())) {
+           ensureTyped(t, n, STRING_TYPE);
+-          // Object literal keys are not typeable
++        } else {
++          typeable = false;
+         }
+         break;
+ 
+       case Token.GET:
+       case Token.SET:
+-        // Object literal keys are handled with OBJECTLIT
+         break;
+ 
+       case Token.ARRAYLIT:
+@@ -538,9 +534,6 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+ 
+       case Token.GETELEM:
+         visitGetElem(t, n);
+-        // The type of GETELEM is always unknown, so no point counting that.
+-        // If that unknown leaks elsewhere (say by an assignment to another
+-        // variable), then it will be counted.
+         typeable = false;
+         break;
+ 
+@@ -652,9 +645,6 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+                    rightType.matchesNumberContext()) {
+           // OK.
+         } else {
+-          // Whether the comparison is numeric will be determined at runtime
+-          // each time the expression is evaluated. Regardless, both operands
+-          // should match a string context.
+           String message = "left side of comparison";
+           validator.expectString(t, n, leftType, message);
+           validator.expectNotNullOrUndefined(
+@@ -747,7 +737,6 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+         visitFunction(t, n);
+         break;
+ 
+-      // These nodes have no interesting type behavior.
+       case Token.LABEL:
+       case Token.LABEL_NAME:
+       case Token.SWITCH:
+@@ -765,7 +754,6 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+         typeable = false;
+         break;
+ 
+-      // These nodes require data flow analysis.
+       case Token.DO:
+       case Token.FOR:
+       case Token.IF:
+@@ -773,15 +761,13 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+         typeable = false;
+         break;
+ 
+-      // These nodes are typed during the type inference.
+       case Token.AND:
+       case Token.HOOK:
+       case Token.OBJECTLIT:
+       case Token.OR:
+-        if (n.getJSType() != null) { // If we didn't run type inference.
++        if (n.getJSType() != null) {
+           ensureTyped(t, n);
+         } else {
+-          // If this is an enum, then give that type to the objectlit as well.
+           if ((n.getType() == Token.OBJECTLIT)
+               && (parent.getJSType() instanceof EnumType)) {
+             ensureTyped(t, n, parent.getJSType());
+@@ -789,6 +775,7 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+             ensureTyped(t, n);
+           }
+         }
++        typeable = n.getType() != Token.OBJECTLIT;
+         if (n.getType() == Token.OBJECTLIT) {
+           for (Node key : n.children()) {
+             visitObjLitKey(t, key, n);
+@@ -802,7 +789,6 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+         break;
+     }
+ 
+-    // Don't count externs since the user's code may not even use that part.
+     typeable = typeable && !inExterns;
+ 
+     if (typeable) {
+@@ -811,7 +797,6 @@ public class TypeCheck implements NodeTraversal.Callback, CompilerPass {
+ 
+     checkNoTypeCheckSection(n, false);
+   }
+-
+   /**
+    * Counts the given node in the typed statistics.
+    * @param n a node that should be typed

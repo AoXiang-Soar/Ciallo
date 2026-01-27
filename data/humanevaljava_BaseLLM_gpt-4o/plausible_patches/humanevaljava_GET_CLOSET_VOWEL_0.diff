@@ -1,0 +1,37 @@
+diff --git a/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java b/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java
+index 885eb35..96f89b2 100644
+--- a/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java
++++ b/src/main/java/humaneval/buggy/GET_CLOSET_VOWEL.java
+@@ -6,7 +6,7 @@ import java.util.Arrays;
+ /*
+  * You are given a word. Your task is to find the closest vowel that stands between 
+     two consonants from the right side of the word (case sensitive).
+-    
++
+     Vowels in the beginning and ending doesn't count. Return empty string if you didn't
+     find any vowel met the above condition. 
+ 
+@@ -21,15 +21,17 @@ import java.util.Arrays;
+ 
+ public class GET_CLOSET_VOWEL {
+     public static String get_closet_vowel(String word) {
+-        if(word.length() < 3) return "";
++        if (word.length() < 3) return "";
+         ArrayList<Character> vowels = new ArrayList<Character>(Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'));
+-        for(int i = word.length() - 2; i >= 0; i--) {
+-            if(vowels.contains(word.charAt(i))) {
+-                if(!vowels.contains(word.charAt(i + 1)) && !vowels.contains(word.charAt(i - 1))) {
++
++        // Iterate from the second last character to the second character
++        for (int i = word.length() - 2; i > 0; i--) {
++            if (vowels.contains(word.charAt(i))) {
++                if (!vowels.contains(word.charAt(i + 1)) && !vowels.contains(word.charAt(i - 1))) {
+                     return word.substring(i, i + 1);
+                 }
+             }
+         }
+         return "";
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/CHANGE_BASE.java b/src/main/java/humaneval/buggy/CHANGE_BASE.java
+index 6e31774..09a44c7 100644
+--- a/src/main/java/humaneval/buggy/CHANGE_BASE.java
++++ b/src/main/java/humaneval/buggy/CHANGE_BASE.java
+@@ -1,23 +1,14 @@
+ package humaneval.buggy;
+ 
+-/* Change numerical base of input number x to base.
+-return string representation after the conversion.
+-base numbers are less than 10.
+->>> change_base(8, 3)
+-'22'
+->>> change_base(8, 2)
+-'1000'
+->>> change_base(7, 2)
+-'111' */
+-
+ public class CHANGE_BASE {
+     public static String change_base(int x, int base) {
+-        String result = "";
++        StringBuilder result = new StringBuilder(); // Use StringBuilder for efficient string concatenation
+ 
+         while (x > 0) {
+-            result = result + x % base;
+-            x = x - x / base;
++            result.insert(0, x % base);           // Insert the remainder at the beginning of the result
++            x = x / base;                         // Correctly reduce x by dividing it by the base
+         }
+-        return result;
++
++        return result.toString();
+     }
+-}
++}
+\ No newline at end of file

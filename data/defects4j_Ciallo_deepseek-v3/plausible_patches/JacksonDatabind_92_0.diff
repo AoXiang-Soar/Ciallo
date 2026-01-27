@@ -1,0 +1,13 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java b/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
+index bb73abfbc..a19b01306 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java
+@@ -61,6 +61,8 @@ public class BeanDeserializerFactory
+         // [databind#1680]: may or may not be problem, take no chance
+         s.add("com.sun.rowset.JdbcRowSetImpl");
+         // [databind#1737]; JDK provided
++        s.add("java.util.logging.FileHandler");
++        s.add("java.rmi.server.UnicastRemoteObject");
+         // [databind#1737]; 3rd party
+ 
+         DEFAULT_NO_DESER_CLASS_NAMES = Collections.unmodifiableSet(s);

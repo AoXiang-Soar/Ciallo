@@ -1,0 +1,55 @@
+diff --git a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+index ce6926fa..158b7d81 100644
+--- a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
++++ b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+@@ -225,22 +225,38 @@ public class ListOrderedSet<E>
+     }
+ 
+     @Override
+-    public boolean retainAll(Collection<?> coll) {
+-        boolean result = collection.retainAll(coll);
+-        if (result == false) {
+-            return false;
++public boolean retainAll(Collection<?> coll) {
++    if (coll == null) {
++        throw new NullPointerException();
++    }
++
++    boolean modified = false;
++    if (collection.size() > 0) {
++        // First check if any modifications will be made
++        boolean hasAny = false;
++        for (Object o : coll) {
++            if (collection.contains(o)) {
++                hasAny = true;
++                break;
++            }
+         }
+-        if (collection.size() == 0) {
++        
++        if (!hasAny) {
++            modified = !collection.isEmpty();
++            collection.clear();
+             setOrder.clear();
+-        } else {
+-            for (Iterator<E> it = setOrder.iterator(); it.hasNext();) {
+-                if (!collection.contains(it.next())) {
+-                    it.remove();
+-                }
+-            }
++            return modified;
++        }
++
++        // Now do the actual retain operation
++        modified = collection.retainAll(coll);
++        if (modified) {
++            // Only need to update setOrder if collection was modified
++            setOrder.retainAll(collection);
+         }
+-        return result;
+     }
++    return modified;
++}
+ 
+     @Override
+     public Object[] toArray() {

@@ -1,0 +1,16 @@
+{
+    "bug_id": 25,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "java.lang.NullPointerException: You must invoke setComparator() to set a comparator first.",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCollatedIterator() {\n        try {\n            IteratorUtils.collatedIterator(null, collectionOdd.iterator(), null);\n            fail(\"expecting NullPointerException\");\n        } catch (NullPointerException npe) {\n            // expected\n        }\n\n        try {\n            IteratorUtils.collatedIterator(null, null, collectionEven.iterator());\n            fail(\"expecting NullPointerException\");\n        } catch (NullPointerException npe) {\n            // expected\n        }\n\n        // natural ordering\n        Iterator<Integer> it = \n                IteratorUtils.collatedIterator(null, collectionOdd.iterator(), collectionEven.iterator());\n\n        List<Integer> result = IteratorUtils.toList(it);\n        assertEquals(12, result.size());\n\n        List<Integer> combinedList = new ArrayList<Integer>();\n        combinedList.addAll(collectionOdd);\n        combinedList.addAll(collectionEven);\n        Collections.sort(combinedList);\n\n        assertEquals(combinedList, result);\n\n        it = IteratorUtils.collatedIterator(null, collectionOdd.iterator(), emptyCollection.iterator());\n        result = IteratorUtils.toList(it);\n        assertEquals(collectionOdd, result);\n\n        final Comparator<Integer> reverseComparator =\n                ComparatorUtils.reversedComparator(ComparatorUtils.<Integer>naturalComparator());\n\n        Collections.reverse((List<Integer>) collectionOdd);\n        Collections.reverse((List<Integer>) collectionEven);\n        Collections.reverse(combinedList);\n\n        it = IteratorUtils.collatedIterator(reverseComparator,\n                                            collectionOdd.iterator(),\n                                            collectionEven.iterator());\n        result = IteratorUtils.toList(it);\n        assertEquals(combinedList, result);\n    }",
+    "test_line": "        List<Integer> result = IteratorUtils.toList(it);",
+    "test_name": "testCollatedIterator",
+    "test_suite": "org.apache.commons.collections4.IteratorUtilsTest"
+}

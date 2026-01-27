@@ -1,0 +1,16 @@
+{
+    "bug_id": 12,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "  @Override public void skipValue() throws IOException {\n    if (peek() == JsonToken.NAME) {\n      nextName();\n      pathNames[stackSize - 2] = \"null\";\n    } else {\n      popStack();\n        pathNames[stackSize - 1] = \"null\";\n    }\n      pathIndices[stackSize - 1]++;\n  }",
+    "fixed_code": "  @Override public void skipValue() throws IOException {\n    if (peek() == JsonToken.NAME) {\n      nextName();\n      pathNames[stackSize - 2] = \"null\";\n    } else {\n      popStack();\n      if (stackSize > 0) {\n        pathNames[stackSize - 1] = \"null\";\n      }\n    }\n    if (stackSize > 0) {\n      pathIndices[stackSize - 1]++;\n    }\n  }",
+    "fixed_lines": "      if (stackSize > 0) {\n      }\n    if (stackSize > 0) {\n    }",
+    "masked_code": "  @Override public void skipValue() throws IOException {\n    if (peek() == JsonToken.NAME) {\n      nextName();\n      pathNames[stackSize - 2] = \"null\";\n    } else {\n      popStack();\n        pathNames[stackSize - 1] = \"null\";\n    }\n      pathIndices[stackSize - 1]++;\n>>> [ INFILL ] <<<\n  }",
+    "project": "Gson",
+    "test_error_message": "java.lang.ArrayIndexOutOfBoundsException: Index -1 out of bounds for length 32",
+    "test_framework": "defects4j",
+    "test_function": "  public void testSkipValue_filledJsonObject() throws IOException {\n    JsonObject jsonObject = new JsonObject();\n    JsonArray jsonArray = new JsonArray();\n    jsonArray.add('c');\n    jsonArray.add(\"text\");\n    jsonObject.add(\"a\", jsonArray);\n    jsonObject.addProperty(\"b\", true);\n    jsonObject.addProperty(\"i\", 1);\n    jsonObject.add(\"n\", JsonNull.INSTANCE);\n    JsonObject jsonObject2 = new JsonObject();\n    jsonObject2.addProperty(\"n\", 2L);\n    jsonObject.add(\"o\", jsonObject2);\n    jsonObject.addProperty(\"s\", \"text\");\n    JsonTreeReader in = new JsonTreeReader(jsonObject);\n    in.skipValue();\n    assertEquals(JsonToken.END_DOCUMENT, in.peek());\n  }",
+    "test_line": "    in.skipValue();",
+    "test_name": "testSkipValue_filledJsonObject",
+    "test_suite": "com.google.gson.internal.bind.JsonTreeReaderTest"
+}

@@ -1,0 +1,33 @@
+diff --git a/source/org/jfree/data/time/TimeSeries.java b/source/org/jfree/data/time/TimeSeries.java
+index 795d791..498da8e 100644
+--- a/source/org/jfree/data/time/TimeSeries.java
++++ b/source/org/jfree/data/time/TimeSeries.java
+@@ -1054,6 +1054,28 @@ public class TimeSeries extends Series implements Cloneable, Serializable {
+             throw new IllegalArgumentException("Requires start <= end.");
+         }
+         TimeSeries copy = (TimeSeries) super.clone();
++        copy.data = new java.util.ArrayList();
++        copy.minY = this.minY;
++        copy.maxY = this.maxY;
++        if (this.data.size() > 0) {
++            TimeSeriesDataItem firstItem = (TimeSeriesDataItem) this.data.get(start);
++            TimeSeriesDataItem lastItem = (TimeSeriesDataItem) this.data.get(end);
++            copy.minY = Math.min(firstItem.getValue().doubleValue(), 
++                               lastItem.getValue().doubleValue());
++            copy.maxY = Math.max(firstItem.getValue().doubleValue(),
++                               lastItem.getValue().doubleValue());
++            for (int index = start; index <= end; index++) {
++                TimeSeriesDataItem item
++                        = (TimeSeriesDataItem) this.data.get(index);
++                TimeSeriesDataItem clone = (TimeSeriesDataItem) item.clone();
++                try {
++                    copy.add(clone);
++                }
++                catch (SeriesException e) {
++                    e.printStackTrace();
++                }
++            }
++        }
+         copy.data = new java.util.ArrayList();
+         if (this.data.size() > 0) {
+             for (int index = start; index <= end; index++) {

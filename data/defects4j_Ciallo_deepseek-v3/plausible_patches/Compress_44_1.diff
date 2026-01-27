@@ -1,0 +1,27 @@
+diff --git a/src/main/java/org/apache/commons/compress/utils/ChecksumCalculatingInputStream.java b/src/main/java/org/apache/commons/compress/utils/ChecksumCalculatingInputStream.java
+index 10c7d68d..559de880 100644
+--- a/src/main/java/org/apache/commons/compress/utils/ChecksumCalculatingInputStream.java
++++ b/src/main/java/org/apache/commons/compress/utils/ChecksumCalculatingInputStream.java
+@@ -30,13 +30,17 @@
+     private final InputStream in;
+     private final Checksum checksum;
+ 
+-    public ChecksumCalculatingInputStream(final Checksum checksum, final InputStream in) {
+-
+-
++public ChecksumCalculatingInputStream(final Checksum checksum, final InputStream in) {
++    validate(checksum, in);
++    this.checksum = checksum;
++    this.in = in;
++}
+ 
+-        this.checksum = checksum;
+-        this.in = in;
++private void validate(Checksum checksum, InputStream in) {
++    if (checksum == null || in == null) {
++        throw new NullPointerException();
+     }
++}
+ 
+     /**
+      * Reads a single byte from the stream

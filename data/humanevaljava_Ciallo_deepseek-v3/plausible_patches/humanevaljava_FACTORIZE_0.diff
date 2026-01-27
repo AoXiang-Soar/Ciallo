@@ -1,0 +1,17 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIZE.java b/src/main/java/humaneval/buggy/FACTORIZE.java
+index 57975b5..59f796c 100644
+--- a/src/main/java/humaneval/buggy/FACTORIZE.java
++++ b/src/main/java/humaneval/buggy/FACTORIZE.java
+@@ -17,6 +17,10 @@ public class FACTORIZE {
+             }
+         }
+ 
++        if (n > 1) {
++            result.add(n);
++        }
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

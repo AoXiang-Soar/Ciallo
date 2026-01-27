@@ -1,0 +1,56 @@
+diff --git a/src/main/java/org/jsoup/parser/HtmlTreeBuilder.java b/src/main/java/org/jsoup/parser/HtmlTreeBuilder.java
+index 08444ef0..5e05c85d 100644
+--- a/src/main/java/org/jsoup/parser/HtmlTreeBuilder.java
++++ b/src/main/java/org/jsoup/parser/HtmlTreeBuilder.java
+@@ -463,28 +463,34 @@ public class HtmlTreeBuilder extends TreeBuilder {
+         return inSpecificScope(specificScopeTarget, baseTypes, extraTypes);
+     }
+ 
+-    private boolean inSpecificScope(String[] targetNames, String[] baseTypes, String[] extraTypes) {
+-        // https://html.spec.whatwg.org/multipage/parsing.html#has-an-element-in-the-specific-scope
+-        int bottom = stack.size() -1;
+-        if (bottom > MaxScopeSearchDepth) {
+-            bottom = MaxScopeSearchDepth;
++private boolean inSpecificScope(String[] targetNames, String[] baseTypes, String[] extraTypes) {
++    // Ensure we don't go beyond the Maximum Search Depth or the stack size
++    int bottom = stack.size() - 1;
++    int limit = Math.min(bottom, MaxScopeSearchDepth); 
++
++    for (int pos = bottom; pos >= 0 && pos >= bottom - limit; pos--) {
++        final String elName = stack.get(pos).nodeName();
++
++        // Check if the current element is one of the targetNames
++        if (inSorted(elName, targetNames)) {
++            return true;
+         }
+-        final int top = bottom > MaxScopeSearchDepth ? bottom - MaxScopeSearchDepth : 0;
+-        // don't walk too far up the tree
+ 
+-        for (int pos = bottom; pos >= top; pos--) {
+-            final String elName = stack.get(pos).nodeName();
+-            if (inSorted(elName, targetNames))
+-                return true;
+-            if (inSorted(elName, baseTypes))
+-                return false;
+-            if (extraTypes != null && inSorted(elName, extraTypes))
+-                return false;
++        // Check baseTypes after targetNames have been verified
++        if (inSorted(elName, baseTypes)) {
++            return false;
++        }
++
++        // Additional types to consider, if provided
++        if (extraTypes != null && inSorted(elName, extraTypes)) {
++            return false;
+         }
+-        //Validate.fail("Should not be reachable"); // would end up false because hitting 'html' at root (basetypes)
+-        return false;
+     }
+ 
++    // If we exhaust the loop without finding the element in targetNames, return false
++    return false;
++}
++
+     boolean inScope(String[] targetNames) {
+         return inSpecificScope(targetNames, TagsSearchInScope, null);
+     }

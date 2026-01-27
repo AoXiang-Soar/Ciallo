@@ -1,0 +1,16 @@
+{
+    "bug_id": 31,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError: Expected name 'b' (JsonParser), TokenBuffer had 'a'",
+    "test_framework": "defects4j",
+    "test_function": "    private void _verifyOutputContext(JsonStreamContext ctxt1, JsonStreamContext ctxt2)\n    {\n        if (ctxt1 == null) {\n            if (ctxt2 == null) {\n                return;\n            }\n            fail(\"Context 1 null, context 2 not null: \"+ctxt2);\n        } else if (ctxt2 == null) {\n            fail(\"Context 2 null, context 1 not null: \"+ctxt1);\n        }\n        if (!ctxt1.getTypeDesc().equals(ctxt2.getTypeDesc())) {\n            fail(\"Different output context: token-buffer's = \"+ctxt1+\", json-generator's: \"+ctxt2);\n        }\n\n        if (ctxt1.inObject()) {\n            assertTrue(ctxt2.inObject());\n            String str1 = ctxt1.getCurrentName();\n            String str2 = ctxt2.getCurrentName();\n\n            if ((str1 != str2) && !str1.equals(str2)) {\n                fail(\"Expected name '\"+str2+\"' (JsonParser), TokenBuffer had '\"+str1+\"'\");\n            }\n        } else if (ctxt1.inArray()) {\n            assertTrue(ctxt2.inArray());\n            assertEquals(ctxt1.getCurrentIndex(), ctxt2.getCurrentIndex());\n        }\n        _verifyOutputContext(ctxt1.getParent(), ctxt2.getParent());\n    }",
+    "test_line": "                fail(\"Expected name '\"+str2+\"' (JsonParser), TokenBuffer had '\"+str1+\"'\");",
+    "test_name": "testOutputContext",
+    "test_suite": "com.fasterxml.jackson.databind.util.TestTokenBuffer"
+}

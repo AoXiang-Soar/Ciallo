@@ -1,0 +1,43 @@
+diff --git a/src/main/java/org/apache/commons/lang3/math/NumberUtils.java b/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
+index c58402156..4acc2c817 100644
+--- a/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
++++ b/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
+@@ -567,8 +567,8 @@ public class NumberUtils {
+         }
+         //User doesn't have a preference on the return type, so let's start
+         //small and go from there...
+-        if (expPos > -1 && expPos < str.length() - 1) {
+-            exp = str.substring(expPos + 1, str.length());
++        if (expPos > -1) {
++            exp = str.substring(expPos + 1);
+         } else {
+             exp = null;
+         }
+@@ -590,17 +590,21 @@ public class NumberUtils {
+         //Must be a Float, Double, BigDecimal
+         final boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+         try {
+-                final Float f = createFloat(str);
+-                if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+-                    return f;
++                if(numDecimals <= 7){// If number of decimals is less than or equal to 7, it can be a float
++                    final Float f = createFloat(str);
++                    if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
++                        return f;
++                    }
+                 }
+         } catch (final NumberFormatException nfe) { // NOPMD
+             // ignore the bad number
+         }
+         try {
+-                final Double d = createDouble(str);
+-                if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+-                    return d;
++                if(numDecimals <= 16) { // If number of decimals is less than or equal to 16, it can be a double
++                    final Double d = createDouble(str);
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
++                        return d;
++                    }
+                 }
+         } catch (final NumberFormatException nfe) { // NOPMD
+             // ignore the bad number

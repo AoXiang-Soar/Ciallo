@@ -1,0 +1,16 @@
+{
+    "bug_id": "UNIQUE_DIGITS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_UNIQUE_DIGITS.test_0:12 expected:<[1, 15, 33, 1422]> but was:<[1, 15, 33]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        ArrayList<Integer> input = new ArrayList<Integer>(Arrays.asList(15, 33, 1422, 1));\n        ArrayList<Integer> result = humaneval.buggy.UNIQUE_DIGITS.unique_digits(input);\n        ArrayList<Integer> desired = new ArrayList<Integer>(Arrays.asList(1, 15, 33));\n        org.junit.Assert.assertEquals(result, desired);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(result, desired);",
+    "test_name": "test_0",
+    "test_suite": "TEST_UNIQUE_DIGITS"
+}

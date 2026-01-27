@@ -1,0 +1,113 @@
+diff --git a/src/java/org/apache/commons/cli/GnuParser.java b/src/java/org/apache/commons/cli/GnuParser.java
+index 0de035f..ca11663 100644
+--- a/src/java/org/apache/commons/cli/GnuParser.java
++++ b/src/java/org/apache/commons/cli/GnuParser.java
+@@ -49,63 +49,60 @@ public class GnuParser extends Parser {
+      * flattening when a non option has been encountered
+      * @return a String array of the flattened arguments
+      */
+-    protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption)
+-    {
+-        List tokens = new ArrayList();
++protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
++    List tokens = new ArrayList();
++    boolean eatTheRest = false;
+ 
+-        boolean eatTheRest = false;
++    for (int i = 0; i < arguments.length; i++) {
++        String arg = arguments[i];
+ 
+-        for (int i = 0; i < arguments.length; i++)
+-        {
+-            String arg = arguments[i];
+-
+-            if ("--".equals(arg))
+-            {
+-                eatTheRest = true;
+-                tokens.add("--");
+-            }
+-            else if ("-".equals(arg))
+-            {
+-                tokens.add("-");
+-            }
+-            else if (arg.startsWith("-"))
+-            {
+-                String opt = Util.stripLeadingHyphens(arg);
+-
+-                if (options.hasOption(opt))
+-                {
+-                    tokens.add(arg);
+-                }
+-                else
+-                {
+-                    if (options.hasOption(arg.substring(0, 2)))
+-                    {
+-                        // the format is --foo=value or -foo=value
+-                        // the format is a special properties option (-Dproperty=value)
+-                        tokens.add(arg.substring(0, 2)); // -D
+-                        tokens.add(arg.substring(2)); // property=value
+-                    }
+-                    else
+-                    {
+-                        eatTheRest = stopAtNonOption;
+-                        tokens.add(arg);
+-                    }
++        if ("--".equals(arg)) {
++            eatTheRest = true;
++            tokens.add("--");
++        }
++        else if ("-".equals(arg)) {
++            tokens.add("-");
++        }
++        else if (arg.startsWith("-")) {
++            // Check for options with values in format --foo=value or -f=value
++            int equalIndex = arg.indexOf('=');
++            if (equalIndex > 0) {
++                String optPart = arg.substring(0, equalIndex);
++                String strippedOpt = Util.stripLeadingHyphens(optPart);
++                if (options.hasOption(strippedOpt)) {
++                    tokens.add(optPart);
++                    tokens.add(arg.substring(equalIndex + 1));
++                    continue;
+                 }
+             }
+-            else
+-            {
++
++            String opt = Util.stripLeadingHyphens(arg);
++            if (options.hasOption(opt)) {
+                 tokens.add(arg);
+             }
+-
+-            if (eatTheRest)
+-            {
+-                for (i++; i < arguments.length; i++)
+-                {
+-                    tokens.add(arguments[i]);
++            else {
++                // Handle special properties option (-Dproperty=value)
++                if (arg.length() > 2 && options.hasOption(arg.substring(0, 2))) {
++                    tokens.add(arg.substring(0, 2));
++                    tokens.add(arg.substring(2));
++                }
++                else {
++                    eatTheRest = stopAtNonOption;
++                    tokens.add(arg);
+                 }
+             }
+         }
++        else {
++            tokens.add(arg);
++        }
+ 
+-        return (String[]) tokens.toArray(new String[tokens.size()]);
++        if (eatTheRest) {
++            for (i++; i < arguments.length; i++) {
++                tokens.add(arguments[i]);
++            }
++        }
+     }
++
++    return (String[]) tokens.toArray(new String[tokens.size()]);
++}
+ }

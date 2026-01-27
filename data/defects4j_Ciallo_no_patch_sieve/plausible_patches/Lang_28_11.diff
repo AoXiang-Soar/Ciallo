@@ -1,0 +1,88 @@
+diff --git a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+index c3cb8695f..cc5aecf95 100644
+--- a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
++++ b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+@@ -32,37 +32,60 @@ public class NumericEntityUnescaper extends CharSequenceTranslator {
+      * {@inheritDoc}
+      */
+     @Override
+-    public int translate(CharSequence input, int index, Writer out) throws IOException {
+-        // TODO: Protect from ArrayIndexOutOfBounds
+-        if(input.charAt(index) == '&' && input.charAt(index + 1) == '#') {
+-            int start = index + 2;
+-            boolean isHex = false;
++public int translate(CharSequence input, int index, Writer out) throws IOException {
++    // Boundary checks
++    if (index < 0 || index >= input.length()) {
++        return 0;
++    }
+ 
+-            char firstChar = input.charAt(start);
+-            if(firstChar == 'x' || firstChar == 'X') {
+-                start++;
+-                isHex = true;
+-            }
++    // Check for entity pattern "&#"
++    if (input.charAt(index) == '&' && index + 1 < input.length() && input.charAt(index + 1) == '#') {
++        int start = index + 2;
++        if (start >= input.length()) {
++            return 0;
++        }
+ 
+-            int end = start;
+-            while(input.charAt(end) != ';') {
+-                end++;
++        boolean isHex = false;
++        char firstChar = input.charAt(start);
++        if (firstChar == 'x' || firstChar == 'X') {
++            start++;
++            isHex = true;
++            if (start >= input.length()) {
++                return 0;
+             }
++        }
+ 
+-            int entityValue;
+-            try {
+-                if(isHex) {
+-                    entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 16);
++        // Find semicolon
++        int end = start;
++        while (end < input.length() && input.charAt(end) != ';') {
++            end++;
++        }
++        if (end >= input.length() || input.charAt(end) != ';') {
++            return 0;
++        }
++
++        try {
++            String numStr = input.subSequence(start, end).toString();
++            int codePoint = isHex ? Integer.parseInt(numStr, 16) : Integer.parseInt(numStr, 10);
++
++            // Handle supplementary characters
++            if (codePoint > 0xFFFF) {
++                char[] surrogates = Character.toChars(codePoint);
++                out.write(surrogates);
++            } else {
++                // Check for valid BMP character
++                if (Character.isValidCodePoint(codePoint)) {
++                    out.write(codePoint);
+                 } else {
+-                    entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
++                    return 0;
+                 }
+-            } catch(NumberFormatException nfe) {
+-                return 0;
+             }
+ 
+-                out.write(entityValue);
+-            return 2 + (end - start) + (isHex ? 1 : 0) + 1;
++            return end - index + 1; // Total length: from & to ;
++        } catch (NumberFormatException nfe) {
++            return 0;
+         }
+-        return 0;
+     }
++    return 0;
++}
+ }

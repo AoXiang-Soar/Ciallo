@@ -1,0 +1,54 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java b/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
+index 49fdf7f6..f0d37bc7 100644
+--- a/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
++++ b/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
+@@ -30,6 +30,12 @@ import java.lang.reflect.Method;
+ public abstract class UnsafeAllocator {
+   public abstract <T> T newInstance(Class<T> c) throws Exception;
+ 
++  private static void validateClass(Class<?> c) {
++    if (c.isInterface() || (c.getModifiers() & java.lang.reflect.Modifier.ABSTRACT) != 0) {
++      throw new UnsupportedOperationException("Cannot allocate " + c);
++    }
++  }
++
+   public static UnsafeAllocator create() {
+     // try JVM
+     // public class Unsafe {
+@@ -45,6 +51,7 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
++          validateClass(c);
+           return (T) allocateInstance.invoke(unsafe, c);
+         }
+       };
+@@ -68,6 +75,7 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
++          validateClass(c);
+           return (T) newInstance.invoke(null, c, constructorId);
+         }
+       };
+@@ -87,6 +95,7 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
++          validateClass(c);
+           return (T) newInstance.invoke(null, c, Object.class);
+         }
+       };
+@@ -101,10 +110,4 @@ public abstract class UnsafeAllocator {
+       }
+     };
+   }
+-
+-  /**
+-   * Check if the class can be instantiated by unsafe allocator. If the instance has interface or abstract modifiers
+-   * throw an {@link java.lang.UnsupportedOperationException}
+-   * @param c instance of the class to be checked
+-   */
+-}
++}
+\ No newline at end of file

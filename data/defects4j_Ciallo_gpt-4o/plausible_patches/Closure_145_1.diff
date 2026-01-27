@@ -1,0 +1,32 @@
+diff --git a/src/com/google/javascript/jscomp/CodeGenerator.java b/src/com/google/javascript/jscomp/CodeGenerator.java
+index 42c9ab388..64ad85f99 100644
+--- a/src/com/google/javascript/jscomp/CodeGenerator.java
++++ b/src/com/google/javascript/jscomp/CodeGenerator.java
+@@ -705,14 +705,19 @@ class CodeGenerator {
+    * @return Whether the Node is a DO or FUNCTION (with or without
+    * labels).
+    */
+-  private boolean isOneExactlyFunctionOrDo(Node n) {
+-        // For labels with block children, we need to ensure that a
+-        // labeled FUNCTION or DO isn't generated when extraneous BLOCKs 
+-        // are skipped. 
+-          // Either a empty statement or an block with more than one child,
+-          // way it isn't a FUNCTION or DO.
+-      return (n.getType() == Token.FUNCTION || n.getType() == Token.DO);
+-  }
++private boolean isOneExactlyFunctionOrDo(Node n) {
++    // Check if the node is labeled and its labeled child is a FUNCTION or DO.
++    if (n.getType() == Token.LABEL) {
++        Node labeledChild = n.getFirstChild();
++        // Ensure labeledChild is not null and is followed by a FUNCTION or DO.
++        if (labeledChild != null) {
++            labeledChild = labeledChild.getNext();
++            return labeledChild != null && (labeledChild.getType() == Token.FUNCTION || labeledChild.getType() == Token.DO);
++        }
++    }
++    // Check if the node is directly a FUNCTION or DO.
++    return (n.getType() == Token.FUNCTION || n.getType() == Token.DO);
++}
+ 
+   /**
+    * Adds a node at the left-hand side of an expression. Unlike

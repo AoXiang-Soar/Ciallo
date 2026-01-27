@@ -1,0 +1,16 @@
+{
+    "bug_id": 62,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "            String name = t.asEndTag().normalName();",
+    "code": "        boolean anyOtherEndTag(Token t, HtmlTreeBuilder tb) {\n            String name = t.asEndTag().normalName();\n            ArrayList<Element> stack = tb.getStack();\n            for (int pos = stack.size() -1; pos >= 0; pos--) {\n                Element node = stack.get(pos);\n                if (node.nodeName().equals(name)) {\n                    tb.generateImpliedEndTags(name);\n                    if (!name.equals(tb.currentElement().nodeName()))\n                        tb.error(this);\n                    tb.popStackToClose(name);\n                    break;\n                } else {\n                    if (tb.isSpecial(node)) {\n                        tb.error(this);\n                        return false;\n                    }\n                }\n            }\n            return true;\n        }",
+    "fixed_code": "",
+    "fixed_lines": "            String name = t.asEndTag().name(); // matches with case sensitivity if enabled",
+    "masked_code": "",
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<<r> <X> A <[/X> <y> B </y]> </r>> but was:<<r> <X> A <[y> B </y> </X]> </r>>",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void caseSensitiveParseTree() {\n        String html = \"<r><X>A</X><y>B</y></r>\";\n        Parser parser = Parser.htmlParser();\n        parser.settings(ParseSettings.preserveCase);\n        Document doc = parser.parseInput(html, \"\");\n        assertEquals(\"<r> <X> A </X> <y> B </y> </r>\", StringUtil.normaliseWhitespace(doc.body().html()));\n\n    }",
+    "test_line": "        assertEquals(\"<r> <X> A </X> <y> B </y> </r>\", StringUtil.normaliseWhitespace(doc.body().html()));",
+    "test_name": "caseSensitiveParseTree",
+    "test_suite": "org.jsoup.parser.HtmlParserTest"
+}

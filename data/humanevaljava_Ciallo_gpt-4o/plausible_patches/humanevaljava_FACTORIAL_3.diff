@@ -1,0 +1,45 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIAL.java b/src/main/java/humaneval/buggy/FACTORIAL.java
+index 0347b28..dc8faca 100644
+--- a/src/main/java/humaneval/buggy/FACTORIAL.java
++++ b/src/main/java/humaneval/buggy/FACTORIAL.java
+@@ -13,19 +13,32 @@ import java.util.ArrayList;
+  */
+ 
+ public class FACTORIAL {
++    
++    private static int factorialOf(int num) {
++        int result = 1;
++        for(int i = 1; i <= num; i++) {
++            result *= i;
++        }
++        return result;
++    }
++    
++    private static int sumUpTo(int num) {
++        int sum = 0;
++        for(int i = 1; i <= num; i++) {
++            sum += i;
++        }
++        return sum;
++    }
++    
+     public static ArrayList<Integer> factorial(int n) {
+         ArrayList<Integer> ret = new ArrayList<>();
+         for(int i = 1; i <= n; i++) {
+             if((i % 2) == 0) {
+-                int x = 1;
+-                for(int j = 1; j <= i; j++) x *= j;
+-                ret.add(x);
++                ret.add(factorialOf(i));
+             } else {
+-                int x = 0;
+-                for(int j = 1; j <= i; i++) x -= j;
+-                ret.add(x);
++                ret.add(sumUpTo(i));
+             }
+         }
+         return ret;
+     }
+-}
++}
+\ No newline at end of file

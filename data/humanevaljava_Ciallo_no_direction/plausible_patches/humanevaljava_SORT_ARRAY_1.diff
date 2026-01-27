@@ -1,0 +1,56 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_ARRAY.java b/src/main/java/humaneval/buggy/SORT_ARRAY.java
+index 04eb5e2..8ee708e 100644
+--- a/src/main/java/humaneval/buggy/SORT_ARRAY.java
++++ b/src/main/java/humaneval/buggy/SORT_ARRAY.java
+@@ -1,33 +1,25 @@
+ package humaneval.buggy;
+ 
+ import java.util.Arrays;
+-
+-/* Given an array of non-negative integers, return a copy of the given array after sorting,
+-you will sort the given array in ascending order if the sum( first index value, last index value) is odd,
+-or sort it in descending order if the sum( first index value, last index value) is even.
+-
+-Note:
+-* don't change the given array.
+-
+-Examples:
+-* sort_array([]) => []
+-* sort_array([5]) => [5]
+-* sort_array([2, 4, 3, 0, 1, 5]) => [0, 1, 2, 3, 4, 5]
+-* sort_array([2, 4, 3, 0, 1, 5, 6]) => [6, 5, 4, 3, 2, 1, 0] */
++import java.util.Collections;
++import java.util.List;
++import java.util.stream.Collectors;
+ 
+ public class SORT_ARRAY {
+     public static int[] sort_array(int[] array) {
+-        if (array.length == 0)
+-            return array;
+-        Arrays.sort(array);
+-        if ((array[0] + array[array.length - 1]) % 2 == 1)
+-            return array;
+-        else {
+-            for (int i = 0; i < array.length / 2; i += 1){
+-                array[i] = array[array.length - i - 1];
+-                array[array.length - i - 1] = array[i];
+-            }
+-            return array;
++        if (array.length == 0) {
++            return array.clone();
++        }
++        
++        int[] result = array.clone();
++        Arrays.sort(result);
++        
++        if ((result[0] + result[result.length - 1]) % 2 == 0) {
++            // Convert to List to reverse, then back to array
++            List<Integer> list = Arrays.stream(result).boxed().collect(Collectors.toList());
++            Collections.reverse(list);
++            return list.stream().mapToInt(Integer::intValue).toArray();
+         }
++        return result;
+     }
+-}
++}
+\ No newline at end of file

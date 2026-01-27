@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/BELOW_ZERO.java b/src/main/java/humaneval/buggy/BELOW_ZERO.java
+index 556ea41..539fad5 100644
+--- a/src/main/java/humaneval/buggy/BELOW_ZERO.java
++++ b/src/main/java/humaneval/buggy/BELOW_ZERO.java
+@@ -5,12 +5,13 @@ import java.util.List;
+ public class BELOW_ZERO {
+     public static boolean below_zero(List<Integer> operations) {
+         int balance = 0;
+-        for (Integer op : operations){
++        boolean went_below = false;
++        for (Integer op : operations) {
+             balance += op;
+-            if (balance > 0){
+-                return false;
++            if (balance < 0) {
++                went_below = true;
+             }
+         }
+-        return true;
++        return went_below;
+     }
+-}
++}
+\ No newline at end of file

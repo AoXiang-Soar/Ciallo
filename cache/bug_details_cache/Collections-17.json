@@ -1,0 +1,16 @@
+{
+    "bug_id": 17,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void objectFactoryUsesEqualsForTest() throws Exception {\n        Predicate<EqualsTestObject> predicate = equalPredicate(FALSE_OBJECT);\n        assertFalse(predicate, FALSE_OBJECT);\n        assertTrue(equalPredicate(TRUE_OBJECT), TRUE_OBJECT);\n    }",
+    "test_line": "        assertFalse(predicate, FALSE_OBJECT);",
+    "test_name": "objectFactoryUsesEqualsForTest",
+    "test_suite": "org.apache.commons.collections.functors.TestEqualPredicate"
+}

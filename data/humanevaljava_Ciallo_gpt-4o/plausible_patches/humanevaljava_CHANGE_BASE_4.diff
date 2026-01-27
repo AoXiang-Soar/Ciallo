@@ -1,0 +1,39 @@
+diff --git a/src/main/java/humaneval/buggy/CHANGE_BASE.java b/src/main/java/humaneval/buggy/CHANGE_BASE.java
+index 6e31774..2293ba2 100644
+--- a/src/main/java/humaneval/buggy/CHANGE_BASE.java
++++ b/src/main/java/humaneval/buggy/CHANGE_BASE.java
+@@ -1,23 +1,20 @@
+ package humaneval.buggy;
+ 
+-/* Change numerical base of input number x to base.
+-return string representation after the conversion.
+-base numbers are less than 10.
+->>> change_base(8, 3)
+-'22'
+->>> change_base(8, 2)
+-'1000'
+->>> change_base(7, 2)
+-'111' */
+-
+ public class CHANGE_BASE {
+     public static String change_base(int x, int base) {
+         String result = "";
+ 
+         while (x > 0) {
+-            result = result + x % base;
+-            x = x - x / base;
++            System.out.println("Current x: " + x); // Debug output for current value of x
++            System.out.println("Current result: " + result); // Debug output for current result
++
++            result = (x % base) + result; // Add remainder to the front of the result string
++            System.out.println("New result after modulus: " + result); // Debug output after modulus operation
++
++            x = x / base; // Correct division calculation to move through digits
++            System.out.println("New x after division: " + x); // Debug output after division
+         }
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

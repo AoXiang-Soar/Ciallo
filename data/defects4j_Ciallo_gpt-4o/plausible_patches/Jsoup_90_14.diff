@@ -1,0 +1,16 @@
+diff --git a/src/main/java/org/jsoup/helper/HttpConnection.java b/src/main/java/org/jsoup/helper/HttpConnection.java
+index a941e483..ebcad6cd 100644
+--- a/src/main/java/org/jsoup/helper/HttpConnection.java
++++ b/src/main/java/org/jsoup/helper/HttpConnection.java
+@@ -421,6 +421,11 @@ public class HttpConnection implements Connection {
+                     return false;
+                 }
+ 
++                // Ensure there's enough room for the following continuation bytes
++                if (end >= input.length || (i + 1) >= input.length || 
++                    (o & 0xC0) != 0x80) {
++                    return false;
++                }
+ 
+                 while (i < end) {
+                     i++;

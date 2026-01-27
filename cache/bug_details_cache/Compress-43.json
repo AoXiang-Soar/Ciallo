@@ -1,0 +1,16 @@
+{
+    "bug_id": 43,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Compress",
+    "test_error_message": "junit.framework.AssertionFailedError: arrays first differed at element [0]; expected:<0> but was:<8>",
+    "test_framework": "defects4j",
+    "test_function": "    public void doesntWriteDataDescriptorWhenAddingRawEntries() throws IOException {\n        ByteArrayOutputStream init = new ByteArrayOutputStream();\n        try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(init)) {\n            zos.putArchiveEntry(new ZipArchiveEntry(\"test1.txt\"));\n            zos.write(\"foo\".getBytes(\"UTF-8\"));\n            zos.closeArchiveEntry();\n        }\n\n        File f = new File(dir, \"test.zip\");\n        try (FileOutputStream fos = new FileOutputStream(f)) {\n            fos.write(init.toByteArray());\n        }\n\n        ByteArrayOutputStream o = new ByteArrayOutputStream();\n        ZipArchiveEntry zae;\n        try (ZipFile zf = new ZipFile(f);\n             ZipArchiveOutputStream zos = new ZipArchiveOutputStream(o)) {\n            zae = zf.getEntry(\"test1.txt\");\n            zos.addRawArchiveEntry(zae, zf.getRawInputStream(zae));\n        }\n\n        byte[] data = o.toByteArray();\n        byte[] versionInLFH = Arrays.copyOfRange(data, 4, 6);\n        // still 2.0 because of Deflate\n        assertArrayEquals(new byte[] { 20, 0 }, versionInLFH);\n        byte[] gpbInLFH = Arrays.copyOfRange(data, 6, 8);\n        // no DD but EFS flag\n        assertArrayEquals(new byte[] { 0, 8 }, gpbInLFH);\n\n        int cdhStart = findCentralDirectory(data);\n        byte[] versionInCDH = Arrays.copyOfRange(data, cdhStart + 6, cdhStart + 8);\n        assertArrayEquals(new byte[] { 20, 0 }, versionInCDH);\n        byte[] gpbInCDH = Arrays.copyOfRange(data, cdhStart + 8, cdhStart + 10);\n        assertArrayEquals(new byte[] { 0, 8 }, gpbInCDH);\n\n        int ddStart = cdhStart - 16;\n        assertNotEquals(ZipLong.DD_SIG, new ZipLong(data, ddStart));\n        long crcFromLFH = ZipLong.getValue(data, 14);\n        long cSizeFromLFH = ZipLong.getValue(data, 18);\n        long sizeFromLFH = ZipLong.getValue(data, 22);\n        assertEquals(3, sizeFromLFH);\n\n        long crcFromCDH = ZipLong.getValue(data, cdhStart + 16);\n        assertEquals(crcFromLFH, crcFromCDH);\n        long cSizeFromCDH = ZipLong.getValue(data, cdhStart + 20);\n        assertEquals(cSizeFromLFH, cSizeFromCDH);\n        long sizeFromCDH = ZipLong.getValue(data, cdhStart + 24);\n        assertEquals(sizeFromLFH, sizeFromCDH);\n    }",
+    "test_line": "        assertArrayEquals(new byte[] { 0, 8 }, gpbInLFH);",
+    "test_name": "doesntWriteDataDescriptorWhenAddingRawEntries",
+    "test_suite": "org.apache.commons.compress.archivers.zip.DataDescriptorTest"
+}

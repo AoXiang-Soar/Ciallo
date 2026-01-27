@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/EVEN_ODD_PALINDROME.java b/src/main/java/humaneval/buggy/EVEN_ODD_PALINDROME.java
+index 1ef65fc..0014edb 100644
+--- a/src/main/java/humaneval/buggy/EVEN_ODD_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/EVEN_ODD_PALINDROME.java
+@@ -29,18 +29,25 @@ import java.util.Arrays;
+ public class EVEN_ODD_PALINDROME {
+     public static boolean is_palindrome(int n) {
+         String n_str = Integer.toString(n);
+-        String n_str_rev = "";
+-        for(int i = n_str.length() - 1; i >= 0; i--) {
+-            n_str_rev += n_str.substring(i, i + 1);
++        int length = n_str.length();
++        for (int i = 0; i < length / 2; i++) {
++            if (n_str.charAt(i) != n_str.charAt(length - 1 - i)) {
++                return false;
++            }
+         }
+-        return n_str.equals(n_str_rev);
++        return true;
+     }
+ 
+     public static ArrayList<Integer> even_odd_palindrome(int n) {
+         int even_palindrome_count = 0, odd_palindrome_count = 0;
+         for(int i = 1; i <= n; i++) {
+-            if((i % 2) == 0 && is_palindrome(i)) odd_palindrome_count--;
+-            else if((i % 2) == 1 && is_palindrome(i)) even_palindrome_count--;
++            if(is_palindrome(i)) {
++                if(i % 2 == 0) {
++                    even_palindrome_count++;
++                } else {
++                    odd_palindrome_count++;
++                }
++            }
+         }
+         ArrayList<Integer> result = new ArrayList<>(Arrays.asList(even_palindrome_count, odd_palindrome_count));
+         return result;

@@ -1,0 +1,16 @@
+{
+    "bug_id": 89,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "    public void addValue(Object v) {\n            addValue((Comparable<?>) v);            \n    }",
+    "fixed_code": "    public void addValue(Object v) {\n        if (v instanceof Comparable<?>){\n            addValue((Comparable<?>) v);            \n        } else {\n            throw new IllegalArgumentException(\"Object must implement Comparable\");\n        }\n    }",
+    "fixed_lines": "        if (v instanceof Comparable<?>){\n        } else {\n            throw new IllegalArgumentException(\"Object must implement Comparable\");\n        }",
+    "masked_code": "    public void addValue(Object v) {\n            addValue((Comparable<?>) v);            \n>>> [ INFILL ] <<<\n    }",
+    "project": "Math",
+    "test_error_message": "java.lang.ClassCastException: class java.lang.Object cannot be cast to class java.lang.Comparable (java.lang.Object and java.lang.Comparable are in module java.base of loader 'bootstrap')",
+    "test_framework": "defects4j",
+    "test_function": "    public void testAddNonComparable(){\n        try {\n            f.addValue(new Object()); // This was previously OK\n            fail(\"Expected IllegalArgumentException\");\n        } catch (IllegalArgumentException expected) {\n        }\n        f.clear();\n        f.addValue(1);\n        try {\n            f.addValue(new Object());\n            fail(\"Expected IllegalArgumentException\");\n        } catch (IllegalArgumentException expected) {\n        }\n    }",
+    "test_line": "            f.addValue(new Object()); // This was previously OK",
+    "test_name": "testAddNonComparable",
+    "test_suite": "org.apache.commons.math.stat.FrequencyTest"
+}

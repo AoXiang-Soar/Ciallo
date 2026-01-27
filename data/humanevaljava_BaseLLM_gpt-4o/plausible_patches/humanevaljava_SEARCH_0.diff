@@ -1,0 +1,44 @@
+diff --git a/src/main/java/humaneval/buggy/SEARCH.java b/src/main/java/humaneval/buggy/SEARCH.java
+index 285deda..8649048 100644
+--- a/src/main/java/humaneval/buggy/SEARCH.java
++++ b/src/main/java/humaneval/buggy/SEARCH.java
+@@ -1,5 +1,8 @@
+ package humaneval.buggy;
+ 
++import java.util.HashMap;
++import java.util.Map;
++
+ /* You are given a non-empty list of positive integers. Return the greatest integer that is greater than 
+ zero, and has a frequency greater than or equal to the value of the integer itself. 
+ The frequency of an integer is the number of times it appears in the list.
+@@ -11,17 +14,20 @@ Examples:
+ 
+ public class SEARCH {
+     public static int search(int[] lst) {
+-        int max = -1;
+-        for (Integer i : lst) {
+-            if (i > max)
+-                max = i;
++        Map<Integer, Integer> frequencyMap = new HashMap<>();
++        for (int num : lst) {
++            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+         }
+ 
+         int result = -1;
+-        int[] frq = new int[max];
+-        for (int i = 0; i < lst.length; i += 1)  frq[i] += 1;
+-        for (int i = 0; i < frq.length; i += 1) if (frq[i] >= i) result = i;
+-        
++        for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
++            int number = entry.getKey();
++            int frequency = entry.getValue();
++            if (frequency >= number && number > result) {
++                result = number;
++            }
++        }
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 93,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: 17! expected:<3.55687428096E14> but was:<3.55687428096001E14>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testFactorial() {\n        for (int i = 1; i < 21; i++) {\n            assertEquals(i + \"! \", factorial(i), MathUtils.factorial(i));\n            assertEquals(i + \"! \", (double)factorial(i), MathUtils.factorialDouble(i), Double.MIN_VALUE);\n            assertEquals(i + \"! \", Math.log((double)factorial(i)), MathUtils.factorialLog(i), 10E-12);\n        }\n        \n        assertEquals(\"0\", 1, MathUtils.factorial(0));\n        assertEquals(\"0\", 1.0d, MathUtils.factorialDouble(0), 1E-14);\n        assertEquals(\"0\", 0.0d, MathUtils.factorialLog(0), 1E-14);\n    }",
+    "test_line": "            assertEquals(i + \"! \", (double)factorial(i), MathUtils.factorialDouble(i), Double.MIN_VALUE);",
+    "test_name": "testFactorial",
+    "test_suite": "org.apache.commons.math.util.MathUtilsTest"
+}

@@ -1,0 +1,104 @@
+diff --git a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+index 68891ace7..7b1205fcb 100644
+--- a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
++++ b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+@@ -34,38 +34,55 @@ public class NumericEntityUnescaper extends CharSequenceTranslator {
+      * {@inheritDoc}
+      */
+     @Override
+-    public int translate(CharSequence input, int index, Writer out) throws IOException {
+-        int seqEnd = input.length();
+-        // Uses -2 to ensure there is something after the &#
+-        if(input.charAt(index) == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {
+-            int start = index + 2;
+-            boolean isHex = false;
+-
+-            char firstChar = input.charAt(start);
+-            if(firstChar == 'x' || firstChar == 'X') {
+-                start++;
+-                isHex = true;
+-
+-                // Check there's more than just an x after the &#
++public int translate(CharSequence input, int index, Writer out) throws IOException {
++    int seqEnd = input.length();
++    // Uses -2 to ensure there is something after the &#
++    if(input.charAt(index) == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {
++        int start = index + 2;
++        if (start >= seqEnd) {  // Check if we're already at end of input
++            return 0;
++        }
++        
++        boolean isHex = false;
++        char firstChar = input.charAt(start);
++        if(firstChar == 'x' || firstChar == 'X') {
++            start++;
++            isHex = true;
++            if (start >= seqEnd) {  // Check if hex marker was last character
++                return 0;
+             }
++        }
+ 
+-            int end = start;
+-            // Note that this supports character codes without a ; on the end
+-            while(input.charAt(end) != ';') 
+-            {
+-                end++;
++        int end = start;
++        // Scan until semicolon or end of input/digits
++        while(end < seqEnd) {
++            char c = input.charAt(end);
++            if (c == ';') {
++                break;
++            }
++            if (isHex) {
++                if (!Character.isDigit(c) && !(c >= 'a' && c <= 'f') && !(c >= 'A' && c <= 'F')) {
++                    break;
++                }
++            } else {
++                if (!Character.isDigit(c)) {
++                    break;
++                }
+             }
++            end++;
++        }
++
++        // No digits found
++        if (end == start) {
++            return 0;
++        }
+ 
++        try {
+             int entityValue;
+-            try {
+-                if(isHex) {
+-                    entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 16);
+-                } else {
+-                    entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
+-                }
+-            } catch(NumberFormatException nfe) {
+-            System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start +"]["+ end +"]");
+-                return 0;
++            if(isHex) {
++                entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 16);
++            } else {
++                entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
+             }
+ 
+             if(entityValue > 0xFFFF) {
+@@ -76,9 +93,13 @@ public class NumericEntityUnescaper extends CharSequenceTranslator {
+                 out.write(entityValue);
+             }
+ 
+-
+-            return 2 + (end - start) + (isHex ? 1 : 0) + 1;
++            // Only count semicolon if it exists
++            int semicolonBonus = (end < seqEnd && input.charAt(end) == ';') ? 1 : 0;
++            return 2 + (end - start) + (isHex ? 1 : 0) + semicolonBonus;
++        } catch(NumberFormatException nfe) {
++            return 0;
+         }
+-        return 0;
+     }
++    return 0;
++}
+ }

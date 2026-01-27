@@ -1,0 +1,16 @@
+{
+    "bug_id": 12,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Codec",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<-1> but was:<183>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testSkipToEnd() throws Throwable {\n        InputStream ins = new ByteArrayInputStream(StringUtils.getBytesIso8859_1(ENCODED_FOO));\n        Base32InputStream b32stream = new Base32InputStream(ins);\n        // due to CODEC-130, skip now skips correctly decoded characters rather than encoded\n        assertEquals(3, b32stream.skip(3));\n        // End of stream reached\n        assertEquals(-1, b32stream.read());\n        assertEquals(-1, b32stream.read());\n    }",
+    "test_line": "        assertEquals(-1, b32stream.read());",
+    "test_name": "testSkipToEnd",
+    "test_suite": "org.apache.commons.codec.binary.Base32InputStreamTest"
+}

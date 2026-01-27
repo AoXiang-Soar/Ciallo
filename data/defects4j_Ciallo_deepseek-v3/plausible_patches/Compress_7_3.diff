@@ -1,0 +1,18 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index bca115fa..66aca911 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -95,10 +95,11 @@ public class TarUtils {
+         int          end = offset + length;
+ 
+         for (int i = offset; i < end; ++i) {
+-            if (buffer[i] == 0) {
++            byte b = buffer[i];
++            if (b == 0) {
+                 break;
+             }
+-            result.append((char) buffer[i]);
++            result.append((char) (b & 0xFF));
+         }
+ 
+         return result.toString();

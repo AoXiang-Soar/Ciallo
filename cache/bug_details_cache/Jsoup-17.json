@@ -1,0 +1,16 @@
+{
+    "bug_id": 17,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<[0",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void handles0CharacterAsText() {\n        Document doc = Jsoup.parse(\"0<p>0</p>\");\n        assertEquals(\"0\\n<p>0</p>\", doc.body().html());\n    }",
+    "test_line": "        assertEquals(\"0\\n<p>0</p>\", doc.body().html());",
+    "test_name": "handles0CharacterAsText",
+    "test_suite": "org.jsoup.parser.ParserTest"
+}

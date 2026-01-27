@@ -1,0 +1,16 @@
+{
+    "bug_id": 60,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<class com.fasterxml.jackson.databind.jsontype.TestDefaultWithCreators$Bean1385> but was:<class [B>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testWithCreatorAndJsonValue() throws Exception\n    {\n        final byte[] BYTES = new byte[] { 1, 2, 3, 4, 5 };\n        ObjectMapper mapper = new ObjectMapper();\n        mapper.enableDefaultTyping();\n        String json = mapper.writeValueAsString(new Bean1385Wrapper(\n                new Bean1385(BYTES)\n        ));\n        Bean1385Wrapper result = mapper.readValue(json, Bean1385Wrapper.class);\n        assertNotNull(result);\n        assertNotNull(result.value);\n        assertEquals(Bean1385.class, result.value.getClass());\n        Bean1385 b = (Bean1385) result.value;\n        Assert.assertArrayEquals(BYTES, b.raw);\n    }",
+    "test_line": "",
+    "test_name": "testWithCreatorAndJsonValue",
+    "test_suite": "com.fasterxml.jackson.databind.jsontype.TestDefaultWithCreators"
+}

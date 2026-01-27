@@ -1,0 +1,19 @@
+diff --git a/src/main/java/com/fasterxml/jackson/core/json/JsonWriteContext.java b/src/main/java/com/fasterxml/jackson/core/json/JsonWriteContext.java
+index 4ff12d70..d50fe034 100644
+--- a/src/main/java/com/fasterxml/jackson/core/json/JsonWriteContext.java
++++ b/src/main/java/com/fasterxml/jackson/core/json/JsonWriteContext.java
+@@ -163,9 +163,14 @@ public class JsonWriteContext extends JsonStreamContext
+         if (dd.isDup(name)) { throw new JsonGenerationException("Duplicate field '"+name+"'"); }
+     }
+     
++
+     public int writeValue() {
+         // Most likely, object:
+         if (_type == TYPE_OBJECT) {
++            if (!_gotName) {
++                return STATUS_EXPECT_NAME;
++            }
++            _gotName = false;
+             _gotName = false;
+             ++_index;
+             return STATUS_OK_AFTER_COLON;

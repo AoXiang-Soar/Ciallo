@@ -1,0 +1,16 @@
+{
+    "bug_id": "GENERATE_INTEGERS",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_GENERATE_INTEGERS.test_1:18 expected:<[]> but was:<[2, 4, 6, 8]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        ArrayList<Integer> result = humaneval.buggy.GENERATE_INTEGERS.generate_integers(10, 2);\n        org.junit.Assert.assertEquals(\n            result, new ArrayList<Integer>(Arrays.asList(2, 4, 6, 8))\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_1",
+    "test_suite": "TEST_GENERATE_INTEGERS"
+}

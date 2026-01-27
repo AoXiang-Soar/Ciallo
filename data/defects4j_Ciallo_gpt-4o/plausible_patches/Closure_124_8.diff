@@ -1,0 +1,65 @@
+diff --git a/src/com/google/javascript/jscomp/ExploitAssigns.java b/src/com/google/javascript/jscomp/ExploitAssigns.java
+index 0f03e3558..63bb46961 100644
+--- a/src/com/google/javascript/jscomp/ExploitAssigns.java
++++ b/src/com/google/javascript/jscomp/ExploitAssigns.java
+@@ -203,21 +203,45 @@ class ExploitAssigns extends AbstractPeepholeOptimization {
+    * changed.
+    * @return Whether the replacement can be made.
+    */
+-  private boolean isSafeReplacement(Node node, Node replacement) {
++private boolean isSafeReplacement(Node node, Node replacement) {
+     // No checks are needed for simple names.
+     if (node.isName()) {
+-      return true;
++        return true;
+     }
+     Preconditions.checkArgument(node.isGetProp());
+ 
+-      node = node.getFirstChild();
+-    if (node.isName()
+-        && isNameAssignedTo(node.getString(), replacement)) {
+-      return false;
++    // Traverse the GetProp chain for the original node
++    Node currentNode = node;
++    while (currentNode.isGetProp()) {
++        Node childNode = currentNode.getFirstChild();
++        
++        // Check if the replaceable part matches a name that is known to be unsafe to replace
++        if (childNode.isName() && isNameAssignedTo(childNode.getString(), replacement)) {
++            return false;
++        }
++        
++        currentNode = childNode;
+     }
+ 
+-    return true;
+-  }
++    // Here we assume it's safe unless proven
++    boolean safeReplacement = true;
++
++    // Traverse the GetProp chain of the replacement node
++    Node replacementCurrentNode = replacement;
++    while (replacementCurrentNode.isGetProp()) {
++        Node replacementChildNode = replacementCurrentNode.getFirstChild();
++        
++        // If the replacement affects the base object and isn't safe on similar grounds as above.
++        if (replacementChildNode.isName() && isNameAssignedTo(replacementChildNode.getString(), node)) {
++            safeReplacement = false;
++            break;
++        }
++
++        replacementCurrentNode = replacementChildNode;
++    }
++
++    return safeReplacement;
++}
+ 
+   /**
+    * @return Whether name is assigned in the expression rooted at node.
+@@ -241,4 +265,4 @@ class ExploitAssigns extends AbstractPeepholeOptimization {
+ 
+     return false;
+   }
+-}
+\ No newline at end of file
++}

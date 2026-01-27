@@ -1,0 +1,110 @@
+diff --git a/src/main/java/org/jsoup/safety/Cleaner.java b/src/main/java/org/jsoup/safety/Cleaner.java
+index e4d45bd2..434af7e8 100644
+--- a/src/main/java/org/jsoup/safety/Cleaner.java
++++ b/src/main/java/org/jsoup/safety/Cleaner.java
+@@ -6,67 +6,35 @@ import org.jsoup.parser.Tag;
+ 
+ import java.util.List;
+ 
+-/**
+- The whitelist based HTML cleaner. Use to ensure that end-user provided HTML contains only the elements and attributes
+- that you are expecting; no junk, and no cross-site scripting attacks!
+- <p/>
+- The HTML cleaner parses the input as HTML and then runs it through a white-list, so the output HTML can only contain
+- HTML that is allowed by the whitelist.
+- <p/>
+- It is assumed that the input HTML is a body fragment; the clean methods only pull from the source's body, and the
+- canned white-lists only allow body contained tags.
+- <p/>
+- Rather than interacting directly with a Cleaner object, generally see the {@code clean} methods in {@link org.jsoup.Jsoup}.
+- */
+ public class Cleaner {
+     private Whitelist whitelist;
+ 
+-    /**
+-     Create a new cleaner, that sanitizes documents using the supplied whitelist.
+-     @param whitelist white-list to clean with
+-     */
+     public Cleaner(Whitelist whitelist) {
+         Validate.notNull(whitelist);
+         this.whitelist = whitelist;
+     }
+ 
+-    /**
+-     Creates a new, clean document, from the original dirty document, containing only elements allowed by the whitelist.
+-     The original document is not modified. Only elements from the dirt document's <code>body</code> are used.
+-     @param dirtyDocument Untrusted base document to clean.
+-     @return cleaned document.
+-     */
+     public Document clean(Document dirtyDocument) {
+         Validate.notNull(dirtyDocument);
+ 
+         Document clean = Document.createShell(dirtyDocument.baseUri());
+-        if (dirtyDocument.body() != null) // frameset documents won't have a body. the clean doc will have empty body.
++        if (dirtyDocument.body() != null)
+             copySafeNodes(dirtyDocument.body(), clean.body());
+ 
+         return clean;
+     }
+ 
+-    /**
+-     Determines if the input document is valid, against the whitelist. It is considered valid if all the tags and attributes
+-     in the input HTML are allowed by the whitelist.
+-     <p/>
+-     This method can be used as a validator for user input forms. An invalid document will still be cleaned successfully
+-     using the {@link #clean(Document)} document. If using as a validator, it is recommended to still clean the document
+-     to ensure enforced attributes are set correctly, and that the output is tidied.
+-     @param dirtyDocument document to test
+-     @return true if no tags or attributes need to be removed; false if they do
+-     */
+     public boolean isValid(Document dirtyDocument) {
+         Validate.notNull(dirtyDocument);
+-
+         Document clean = Document.createShell(dirtyDocument.baseUri());
+-        int numDiscarded = copySafeNodes(dirtyDocument.body(), clean.body());
+-        return numDiscarded == 0;
++        if (dirtyDocument.body() != null) {
++            clean.body().appendChild(new Element(Tag.valueOf("div"), dirtyDocument.baseUri()));
++            int numDiscarded = copySafeNodes(dirtyDocument.body(), clean.body().child(0));
++            return numDiscarded == 0;
++        }
++        return true;
+     }
+ 
+-    /**
+-     Iterates the input and copies trusted nodes (tags, attributes, text) into the destination.
+-     */
+     private int copySafeNodes(Element root, Element destination) {
+         List<Node> sourceChildren = root.childNodes();
+         int numDiscarded = 0;
+@@ -75,7 +43,7 @@ public class Cleaner {
+             if (source instanceof Element) {
+                 Element sourceEl = (Element) source;
+ 
+-                if (whitelist.isSafeTag(sourceEl.tagName())) { // safe, clone and copy safe attrs
++                if (whitelist.isSafeTag(sourceEl.tagName())) {
+                     ElementMeta meta = createSafeElement(sourceEl);
+                     Element destChild = meta.el;
+                     destination.appendChild(destChild);
+@@ -90,11 +58,11 @@ public class Cleaner {
+                 TextNode sourceText = (TextNode) source;
+                 TextNode destText = new TextNode(sourceText.getWholeText(), source.baseUri());
+                 destination.appendChild(destText);
++            } else {
++                numDiscarded++;
+             }
+         }
+         return numDiscarded;
+-
+-
+     }
+ 
+     private ElementMeta createSafeElement(Element sourceEl) {
+@@ -125,5 +93,4 @@ public class Cleaner {
+             this.numAttribsDiscarded = numAttribsDiscarded;
+         }
+     }
+-
+-}
++}
+\ No newline at end of file

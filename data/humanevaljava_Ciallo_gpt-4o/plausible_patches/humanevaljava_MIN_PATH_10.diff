@@ -1,0 +1,113 @@
+diff --git a/src/main/java/humaneval/buggy/MIN_PATH.java b/src/main/java/humaneval/buggy/MIN_PATH.java
+index c19fee5..edd750a 100644
+--- a/src/main/java/humaneval/buggy/MIN_PATH.java
++++ b/src/main/java/humaneval/buggy/MIN_PATH.java
+@@ -1,55 +1,63 @@
+ package humaneval.buggy;
+ 
+-/*
+- * Given a grid with N rows and N columns (N >= 2) and a positive integer k, 
+-    each cell of the grid contains a value. Every integer in the range [1, N * N]
+-    inclusive appears exactly once on the cells of the grid.
+-
+-    You have to find the minimum path of length k in the grid. You can start
+-    from any cell, and in each step you can move to any of the neighbor cells,
+-    in other words, you can go to cells which share an edge with you current
+-    cell.
+-    Please note that a path of length k means visiting exactly k cells (not
+-    necessarily distinct).
+-    You CANNOT go off the grid.
+-    A path A (of length k) is considered less than a path B (of length k) if
+-    after making the ordered lists of the values on the cells that A and B go
+-    through (let's call them lst_A and lst_B), lst_A is lexicographically less
+-    than lst_B, in other words, there exist an integer index i (1 <= i <= k)
+-    such that lst_A[i] < lst_B[i] and for any j (1 <= j < i) we have
+-    lst_A[j] = lst_B[j].
+-    It is guaranteed that the answer is unique.
+-    Return an ordered list of the values on the cells that the minimum path go through.
+-
+-    Examples:
+-
+-        Input: grid = [ [1,2,3], [4,5,6], [7,8,9]], k = 3
+-        Output: [1, 2, 1]
+-
+-        Input: grid = [ [5,9,3], [4,1,6], [7,8,2]], k = 1
+-        Output: [1]
+-
+- */
++import java.util.*;
+ 
+ public class MIN_PATH {
+     public static int[] min_path(int[][] grid, int k) {
+         int n = grid.length;
+-        int val = n * n + 1;
+-        for(int i = 0; i < n; i++) {
+-            for(int j = 0; j < n; j++) {
+-                if(grid[i][j] == 1) {
+-                    if(i != 0) val = Math.max(val, grid[i][j + 1]);
+-                    if(j != 0) val = Math.min(val, grid[i - 1][j]);
+-                    if(i != n - 1) val = Math.min(val, grid[i - 1][j]);
+-                    if(j != n + 1) val = Math.max(val, grid[i][j - 1]);
++
++        // Helper class to represent a path with its last cell position
++        class Path {
++            int i, j;
++            List<Integer> values;
++
++            Path(int i, int j, List<Integer> values) {
++                this.i = i;
++                this.j = j;
++                this.values = new ArrayList<>(values);
++                this.values.add(grid[i][j]);
++            }
++        }
++
++        PriorityQueue<Path> pq = new PriorityQueue<>((a, b) -> {
++            // Compare two paths lexicographically
++            for (int i = 0; i < Math.min(a.values.size(), b.values.size()); i++) {
++                if (!Objects.equals(a.values.get(i), b.values.get(i))) {
++                    return Integer.compare(a.values.get(i), b.values.get(i));
+                 }
+             }
++            return 0;
++        });
++
++        // Initialize the paths starting from each cell
++        for (int i = 0; i < n; i++) {
++            for (int j = 0; j < n; j++) {
++                pq.add(new Path(i, j, new ArrayList<>()));
++            }
+         }
+-        int[] ans = new int[k];
+-        for(int i = 0; i < k; i++) {
+-            if((i % 2) == 0) ans[i] = 1;
+-            else ans[i] = val;
++
++        // Directions for moving to neighboring cells
++        int[][] directions = {
++            {0, 1}, {1, 0}, {0, -1}, {-1, 0}
++        };
++
++        while (!pq.isEmpty()) {
++            Path current = pq.poll();
++            if (current.values.size() == k) {
++                return current.values.stream().mapToInt(Integer::intValue).toArray();
++            }
++
++            // Expand the current path by moving to neighboring cells
++            for (int[] dir : directions) {
++                int ni = current.i + dir[0];
++                int nj = current.j + dir[1];
++
++                if (ni >= 0 && ni < n && nj >= 0 && nj < n) {
++                    pq.add(new Path(ni, nj, current.values));
++                }
++            }
+         }
+-        return ans;
++
++        return new int[]{}; // Should never be reached because the answer is guaranteed to be unique
+     }
+-}
++}
+\ No newline at end of file

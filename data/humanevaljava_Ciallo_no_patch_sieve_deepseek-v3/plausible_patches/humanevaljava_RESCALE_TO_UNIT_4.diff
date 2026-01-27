@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java b/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java
+index 905614f..daffef8 100644
+--- a/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java
++++ b/src/main/java/humaneval/buggy/RESCALE_TO_UNIT.java
+@@ -1,18 +1,11 @@
+ package humaneval.buggy;
+ 
++import java.util.Arrays;
++
+ public class RESCALE_TO_UNIT {
+     public static double[] rescale_to_unit(double[] numbers){
+-        double min = Double.MAX_VALUE;
+-        double max = Double.MIN_VALUE;
+-
+-        for (int i = 0; i < numbers.length; i += 1) {
+-            if (numbers[i] > max) {
+-                max = numbers[i];
+-            }
+-            else if (numbers[i] < min) {
+-                min = numbers[i];
+-            }
+-        }
++        double min = Arrays.stream(numbers).summaryStatistics().getMin();
++        double max = Arrays.stream(numbers).summaryStatistics().getMax();
+ 
+         double[] result = new double[numbers.length];
+         for (int i = 0; i < numbers.length; i += 1) {
+@@ -20,4 +13,4 @@ public class RESCALE_TO_UNIT {
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

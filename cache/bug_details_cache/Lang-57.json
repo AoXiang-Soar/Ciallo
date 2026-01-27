@@ -1,0 +1,16 @@
+{
+    "bug_id": 57,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        return cAvailableLocaleSet.contains(locale);",
+    "code": "    public static boolean isAvailableLocale(Locale locale) {\n        return cAvailableLocaleSet.contains(locale);\n    }",
+    "fixed_code": "    public static boolean isAvailableLocale(Locale locale) {\n        return availableLocaleList().contains(locale);\n    }",
+    "fixed_lines": "        return availableLocaleList().contains(locale);",
+    "masked_code": "    public static boolean isAvailableLocale(Locale locale) {\n>>> [ INFILL ] <<<\n    }",
+    "project": "Lang",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testAvailableLocaleSet() {\n        Set set = LocaleUtils.availableLocaleSet();\n        Set set2 = LocaleUtils.availableLocaleSet();\n        assertNotNull(set);\n        assertSame(set, set2);\n        assertUnmodifiableCollection(set);\n        \n        Locale[] jdkLocaleArray = Locale.getAvailableLocales();\n        List jdkLocaleList = Arrays.asList(jdkLocaleArray);\n        Set jdkLocaleSet = new HashSet(jdkLocaleList);\n        assertEquals(jdkLocaleSet, set);\n    }",
+    "test_line": "        LocaleUtils.isAvailableLocale(Locale.getDefault());",
+    "test_name": "testAvailableLocaleSet",
+    "test_suite": "org.apache.commons.lang.LocaleUtilsTest"
+}

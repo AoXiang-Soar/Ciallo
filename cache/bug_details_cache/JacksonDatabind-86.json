@@ -1,0 +1,16 @@
+{
+    "bug_id": 86,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testSuperClassWithReferencedJavaType() {\n        TypeFactory tf = objectMapper().getTypeFactory();\n        tf.constructType(Base.class); // must be constructed before sub to set the cache correctly\n        JavaType subType = tf.constructType(Sub.class);\n        // baseTypeFromSub should be a ResolvedRecursiveType in this test\n        JavaType baseTypeFromSub = subType.getSuperClass();\n        assertNotNull(baseTypeFromSub.getSuperClass());\n    }",
+    "test_line": "        assertNotNull(baseTypeFromSub.getSuperClass());",
+    "test_name": "testSuperClassWithReferencedJavaType",
+    "test_suite": "com.fasterxml.jackson.databind.type.RecursiveTypeTest"
+}

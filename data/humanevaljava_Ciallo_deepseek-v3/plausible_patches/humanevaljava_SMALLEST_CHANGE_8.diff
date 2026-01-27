@@ -1,0 +1,38 @@
+diff --git a/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java b/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
+index 4ab2c82..21d456f 100644
+--- a/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
++++ b/src/main/java/humaneval/buggy/SMALLEST_CHANGE.java
+@@ -1,22 +1,20 @@
+ package humaneval.buggy;
+ 
+-// Given an array arr of integers, find the minimum number of elements that
+-// need to be changed to make the array palindromic. A palindromic array is an array that
+-// is read the same backwards and forwards. In one change, you can change one element to any other element.
+-
+-// For example:
+-// smallest_change([1,2,3,5,4,7,9,6]) == 4
+-// smallest_change([1, 2, 3, 4, 3, 2, 2]) == 1
+-// smallest_change([1, 2, 3, 2, 1]) == 0
+-
+ public class SMALLEST_CHANGE {
+     public static int smallest_change(int[] arr) {
++        if (arr == null || arr.length < 2) {
++            return 0; // Return 0 for null or single-element arrays as they are already palindromic
++        }
++
+         int result = 0;
+-        for (int i = 0; i < arr.length; i += 1) {
+-            if (arr[i] != arr[arr.length - i])
++        int n = arr.length;
++
++        for (int i = 0; i < n / 2; i += 1) {
++            if (arr[i] != arr[n - i - 1]) {
+                 result += 1;
++            }
+         }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

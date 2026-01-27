@@ -1,0 +1,16 @@
+{
+    "bug_id": "SEARCH",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SEARCH.test_14:139 expected:<0> but was:<-1>\nTEST_SEARCH.test_1:16 \u00bb ArrayIndexOutOfBounds Index 4 out of bounds for length...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_14() throws java.lang.Exception {\n        int result = humaneval.buggy.SEARCH.search(\n            new int[] {10}\n        );\n        org.junit.Assert.assertEquals(\n            result, -1\n        );\n    }",
+    "test_line": "        int result = humaneval.buggy.SEARCH.search(",
+    "test_name": "test_14",
+    "test_suite": "TEST_SEARCH"
+}

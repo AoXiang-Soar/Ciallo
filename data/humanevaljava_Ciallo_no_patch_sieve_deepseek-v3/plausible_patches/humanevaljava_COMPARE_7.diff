@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/COMPARE.java b/src/main/java/humaneval/buggy/COMPARE.java
+index 844eae3..7c1eade 100644
+--- a/src/main/java/humaneval/buggy/COMPARE.java
++++ b/src/main/java/humaneval/buggy/COMPARE.java
+@@ -13,9 +13,13 @@ public class COMPARE {
+         int[] result = new int[game.length];
+ 
+         for (int i = 0; i < game.length; i += 1) {
+-            result[i] = Math.floorDiv(game[i], guess[i]);
++            if (game[i] == guess[i]) {
++                result[i] = 0;
++            } else {
++                result[i] = Math.abs(game[i] - guess[i]);
++            }
+         }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,52 @@
+diff --git a/src/main/java/humaneval/buggy/ENCODE.java b/src/main/java/humaneval/buggy/ENCODE.java
+index 6fe264c..32b4703 100644
+--- a/src/main/java/humaneval/buggy/ENCODE.java
++++ b/src/main/java/humaneval/buggy/ENCODE.java
+@@ -1,33 +1,28 @@
+ package humaneval.buggy;
+ 
+-// Write a function that takes a message, and encodes in such a 
+-// way that it swaps case of all letters, replaces all vowels in 
+-// the message with the letter that appears 2 places ahead of that 
+-// vowel in the english alphabet. 
+-// Assume only letters. 
+-
+-// Examples:
+-// >>> encode('test')
+-// 'TGST'
+-// >>> encode('This is a message')
+-// 'tHKS KS C MGSSCGG'
+-
+ public class ENCODE {
+     public static String encode(String message) {
+         StringBuilder sb = new StringBuilder();
+         for (char c : message.toCharArray()) {
++            // Step 1: Swap the case
++            char originalChar = c; // Save the original character for vowel transformation
+             if (Character.isUpperCase(c)) {
+                 c = Character.toLowerCase(c);
+-            }
+-            if (Character.isLowerCase(c)) {
++            } else if (Character.isLowerCase(c)) {
+                 c = Character.toUpperCase(c);
+             }
+-            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'A' || c == 'E' || c == 'I' || c == 'O'
+-                    || c == 'U') {
+-                c = (char) ((int) c + 2);
++
++            // Step 2: Transform vowels in their original case context
++            if (originalChar == 'a' || originalChar == 'e' || originalChar == 'i' || originalChar == 'o' || originalChar == 'u') {
++                c = (char) (originalChar + 2);
++                c = Character.toUpperCase(c); // Transform to uppercase since vowels were lowercase initially
++            } else if (originalChar == 'A' || originalChar == 'E' || originalChar == 'I' || originalChar == 'O' || originalChar == 'U') {
++                c = (char) (originalChar + 2);
++                c = Character.toLowerCase(c); // Transform to lowercase since vowels were uppercase initially
+             }
++
+             sb.append(c);
+         }
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

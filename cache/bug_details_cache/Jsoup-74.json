@@ -1,0 +1,16 @@
+{
+    "bug_id": 74,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<This[isonelong]word> but was:<This[\u00adis\u200bone\u200clong\u200d]word>",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void testNormalizesInvisiblesInText() {\n        // return Character.getType(c) == 16 && (c == 8203 || c == 8204 || c == 8205 || c == 173);\n        String escaped = \"This&shy;is&#x200b;one&#x200c;long&#x200d;word\";\n        String decoded = \"This\\u00ADis\\u200Bone\\u200Clong\\u200Dword\"; // browser would not display those soft hyphens / other chars, so we don't want them in the text\n\n        Document doc = Jsoup.parse(\"<p>\" + escaped);\n        Element p = doc.select(\"p\").first();\n        doc.outputSettings().charset(\"ascii\"); // so that the outer html is easier to see with escaped invisibles\n        assertEquals(\"Thisisonelongword\", p.text()); // text is normalized\n        assertEquals(\"<p>\" + escaped + \"</p>\", p.outerHtml()); // html / whole text keeps &shy etc;\n        assertEquals(decoded, p.textNodes().get(0).getWholeText());\n\n        Element matched = doc.select(\"p:contains(Thisisonelongword)\").first(); // really just oneloneword, no invisibles\n        assertEquals(\"p\", matched.nodeName());\n        assertTrue(matched.is(\":containsOwn(Thisisonelongword)\"));\n\n    }",
+    "test_line": "        assertEquals(\"Thisisonelongword\", p.text()); // text is normalized",
+    "test_name": "testNormalizesInvisiblesInText",
+    "test_suite": "org.jsoup.nodes.ElementTest"
+}

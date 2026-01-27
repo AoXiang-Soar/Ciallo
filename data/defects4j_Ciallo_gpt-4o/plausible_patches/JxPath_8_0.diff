@@ -1,0 +1,61 @@
+diff --git a/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java b/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
+index c6e0041..1120a90 100644
+--- a/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
++++ b/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
+@@ -53,29 +53,35 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+ 
+     protected abstract boolean evaluateCompare(int compare);
+ 
+-    private boolean compute(Object left, Object right) {
+-        left = reduce(left);
+-        right = reduce(right);
++private boolean compute(Object left, Object right) {
++    left = reduce(left);
++    right = reduce(right);
+ 
+-        if (left instanceof InitialContext) {
+-            ((InitialContext) left).reset();
+-        }
+-        if (right instanceof InitialContext) {
+-            ((InitialContext) right).reset();
+-        }
+-        if (left instanceof Iterator && right instanceof Iterator) {
+-            return findMatch((Iterator) left, (Iterator) right);
+-        }
+-        if (left instanceof Iterator) {
+-            return containsMatch((Iterator) left, right);
+-        }
+-        if (right instanceof Iterator) {
+-            return containsMatch((Iterator) right, left);
+-        }
+-        double ld = InfoSetUtil.doubleValue(left);
+-        double rd = InfoSetUtil.doubleValue(right);
+-        return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
++    if (left instanceof InitialContext) {
++        ((InitialContext) left).reset();
++    }
++    if (right instanceof InitialContext) {
++        ((InitialContext) right).reset();
++    }
++    if (left instanceof Iterator && right instanceof Iterator) {
++        return findMatch((Iterator) left, (Iterator) right);
+     }
++    if (left instanceof Iterator) {
++        return containsMatch((Iterator) left, right);
++    }
++    if (right instanceof Iterator) {
++        return containsMatch((Iterator) right, left);
++    }
++    double ld = InfoSetUtil.doubleValue(left);
++    double rd = InfoSetUtil.doubleValue(right);
++
++    // Modify comparison logic to handle NaN values
++    if (Double.isNaN(ld) || Double.isNaN(rd)) {
++        return false; // Any comparison with NaN should return false for < or >
++    }
++
++    return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
++}
+ 
+     private Object reduce(Object o) {
+         if (o instanceof SelfContext) {

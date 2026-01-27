@@ -1,0 +1,16 @@
+{
+    "bug_id": 18,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "  static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {\n      // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead\n    checkArgument(supertype.isAssignableFrom(contextRawType));\n    return resolve(context, contextRawType,\n        $Gson$Types.getGenericSupertype(context, contextRawType, supertype));\n  }",
+    "fixed_code": "  static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {\n    if (context instanceof WildcardType) {\n      // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead\n      context = ((WildcardType)context).getUpperBounds()[0];\n    }\n    checkArgument(supertype.isAssignableFrom(contextRawType));\n    return resolve(context, contextRawType,\n        $Gson$Types.getGenericSupertype(context, contextRawType, supertype));\n  }",
+    "fixed_lines": "    if (context instanceof WildcardType) {\n      context = ((WildcardType)context).getUpperBounds()[0];\n    }",
+    "masked_code": "  static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {\n      // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead\n>>> [ INFILL ] <<<\n    checkArgument(supertype.isAssignableFrom(contextRawType));\n    return resolve(context, contextRawType,\n        $Gson$Types.getGenericSupertype(context, contextRawType, supertype));\n  }",
+    "project": "Gson",
+    "test_error_message": "java.lang.ClassCastException: class com.google.gson.internal.LinkedTreeMap cannot be cast to class com.google.gson.functional.CollectionTest$SmallClass (com.google.gson.internal.LinkedTreeMap and com.google.gson.functional.CollectionTest$SmallClass are in unnamed module of loader org.apache.tools.ant.loader.AntClassLoader5 @7674a051)",
+    "test_framework": "defects4j",
+    "test_function": "  public void testIssue1107() {\n    String json = \"{\\n\" +\n            \"  \\\"inBig\\\": {\\n\" +\n            \"    \\\"key\\\": [\\n\" +\n            \"      { \\\"inSmall\\\": \\\"hello\\\" }\\n\" +\n            \"    ]\\n\" +\n            \"  }\\n\" +\n            \"}\";\n    BigClass bigClass = new Gson().fromJson(json, BigClass.class);\n    SmallClass small = bigClass.inBig.get(\"key\").get(0);\n    assertNotNull(small);\n    assertEquals(\"hello\", small.inSmall);\n  }",
+    "test_line": "",
+    "test_name": "testIssue1107",
+    "test_suite": "com.google.gson.functional.CollectionTest"
+}

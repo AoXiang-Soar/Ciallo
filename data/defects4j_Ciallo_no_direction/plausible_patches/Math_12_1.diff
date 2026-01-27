@@ -1,0 +1,167 @@
+diff --git a/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java b/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java
+index 4d166c224..d8bff43d7 100644
+--- a/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java
++++ b/src/main/java/org/apache/commons/math3/random/BitsStreamGenerator.java
+@@ -16,54 +16,34 @@
+  */
+ package org.apache.commons.math3.random;
+ 
+-
+ import org.apache.commons.math3.exception.NotStrictlyPositiveException;
+ import org.apache.commons.math3.util.FastMath;
+ 
+-/** Base class for random number generators that generates bits streams.
+- *
+- * @version $Id$
+- * @since 2.0
+- */
+ public abstract class BitsStreamGenerator
+-    implements RandomGenerator {
+-    /** Serializable version identifier */
+-    /** Next gaussian. */
++    implements RandomGenerator, java.io.Serializable {
++    
++    private static final long serialVersionUID = 20130104L;
++    
+     private double nextGaussian;
+ 
+-    /**
+-     * Creates a new random number generator.
+-     */
+     public BitsStreamGenerator() {
+         nextGaussian = Double.NaN;
+     }
+ 
+-    /** {@inheritDoc} */
+-    public abstract void setSeed(int seed);
++    protected BitsStreamGenerator(BitsStreamGenerator original) {
++        this.nextGaussian = original.nextGaussian;
++    }
+ 
+-    /** {@inheritDoc} */
++    public abstract void setSeed(int seed);
+     public abstract void setSeed(int[] seed);
+-
+-    /** {@inheritDoc} */
+     public abstract void setSeed(long seed);
+ 
+-    /** Generate next pseudorandom number.
+-     * <p>This method is the core generation algorithm. It is used by all the
+-     * public generation methods for the various primitive types {@link
+-     * #nextBoolean()}, {@link #nextBytes(byte[])}, {@link #nextDouble()},
+-     * {@link #nextFloat()}, {@link #nextGaussian()}, {@link #nextInt()},
+-     * {@link #next(int)} and {@link #nextLong()}.</p>
+-     * @param bits number of random bits to produce
+-     * @return random bits generated
+-     */
+     protected abstract int next(int bits);
+ 
+-    /** {@inheritDoc} */
+     public boolean nextBoolean() {
+         return next(1) != 0;
+     }
+ 
+-    /** {@inheritDoc} */
+     public void nextBytes(byte[] bytes) {
+         int i = 0;
+         final int iEnd = bytes.length - 3;
+@@ -82,60 +62,40 @@ public abstract class BitsStreamGenerator
+         }
+     }
+ 
+-    /** {@inheritDoc} */
+     public double nextDouble() {
+         final long high = ((long) next(26)) << 26;
+         final int  low  = next(26);
+         return (high | low) * 0x1.0p-52d;
+     }
+ 
+-    /** {@inheritDoc} */
+     public float nextFloat() {
+         return next(23) * 0x1.0p-23f;
+     }
+ 
+-    /** {@inheritDoc} */
+     public double nextGaussian() {
+-
+-        final double random;
+-        if (Double.isNaN(nextGaussian)) {
+-            // generate a new pair of gaussian numbers
+-            final double x = nextDouble();
+-            final double y = nextDouble();
+-            final double alpha = 2 * FastMath.PI * x;
+-            final double r      = FastMath.sqrt(-2 * FastMath.log(y));
+-            random       = r * FastMath.cos(alpha);
+-            nextGaussian = r * FastMath.sin(alpha);
+-        } else {
+-            // use the second element of the pair already generated
+-            random = nextGaussian;
+-            nextGaussian = Double.NaN;
++        synchronized (this) {
++            final double random;
++            if (Double.isNaN(nextGaussian)) {
++                // generate a new pair of gaussian numbers
++                final double x = nextDouble();
++                final double y = nextDouble();
++                final double alpha = 2 * FastMath.PI * x;
++               final double r      = FastMath.sqrt(-2 * FastMath.log(y));
++                random       = r * FastMath.cos(alpha);
++                nextGaussian = r * FastMath.sin(alpha);
++            } else {
++                // use the second element of the pair already generated
++                random = nextGaussian;
++                nextGaussian = Double.NaN;
++            }
++            return random;
+         }
+-
+-        return random;
+-
+     }
+ 
+-    /** {@inheritDoc} */
+     public int nextInt() {
+         return next(32);
+     }
+ 
+-    /**
+-     * {@inheritDoc}
+-     * <p>This default implementation is copied from Apache Harmony
+-     * java.util.Random (r929253).</p>
+-     *
+-     * <p>Implementation notes: <ul>
+-     * <li>If n is a power of 2, this method returns
+-     * {@code (int) ((n * (long) next(31)) >> 31)}.</li>
+-     *
+-     * <li>If n is not a power of 2, what is returned is {@code next(31) % n}
+-     * with {@code next(31)} values rejected (i.e. regenerated) until a
+-     * value that is larger than the remainder of {@code Integer.MAX_VALUE / n}
+-     * is generated. Rejection of this initial segment is necessary to ensure
+-     * a uniform distribution.</li></ul></p>
+-     */
+     public int nextInt(int n) throws IllegalArgumentException {
+         if (n > 0) {
+             if ((n & -n) == n) {
+@@ -152,19 +112,13 @@ public abstract class BitsStreamGenerator
+         throw new NotStrictlyPositiveException(n);
+     }
+ 
+-    /** {@inheritDoc} */
+     public long nextLong() {
+         final long high  = ((long) next(32)) << 32;
+         final long  low  = ((long) next(32)) & 0xffffffffL;
+         return high | low;
+     }
+ 
+-    /**
+-     * Clears the cache used by the default implementation of
+-     * {@link #nextGaussian}.
+-     */
+-    public void clear() {
++    public synchronized void clear() {
+         nextGaussian = Double.NaN;
+     }
+-
+-}
++}
+\ No newline at end of file

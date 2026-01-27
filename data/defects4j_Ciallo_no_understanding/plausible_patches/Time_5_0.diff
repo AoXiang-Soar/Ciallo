@@ -1,0 +1,32 @@
+diff --git a/src/main/java/org/joda/time/Period.java b/src/main/java/org/joda/time/Period.java
+index f4047933..07c37838 100644
+--- a/src/main/java/org/joda/time/Period.java
++++ b/src/main/java/org/joda/time/Period.java
+@@ -1625,13 +1625,20 @@ public final class Period
+         int years = getYears();
+         int months = getMonths();
+         if (years != 0 || months != 0) {
+-            years = FieldUtils.safeAdd(years, months / 12);
+-            months = months % 12;
+-            if (years != 0) {
+-                result = result.withYears(years);
+-            }
+-            if (months != 0) {
+-                result = result.withMonths(months);
++            if (type.isSupported(DurationFieldType.years())) {
++                years = FieldUtils.safeAdd(years, months / 12);
++                months = months % 12;
++                if (years != 0) {
++                    result = result.withYears(years);
++                }
++                if (months != 0) {
++                    result = result.withMonths(months);
++                }
++            } else {
++                months = FieldUtils.safeAdd(months, years * 12);
++                if (months != 0) {
++                    result = result.withMonths(months);
++                }
+             }
+         }
+         return result;

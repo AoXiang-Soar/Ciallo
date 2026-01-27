@@ -1,0 +1,38 @@
+diff --git a/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java b/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java
+index 484c02b..b7202dc 100644
+--- a/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java
++++ b/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java
+@@ -1,8 +1,5 @@
+ package humaneval.buggy;
+ 
+-import java.math.BigDecimal;
+-import java.math.RoundingMode;
+-
+ /* Given the lengths of the three sides of a triangle. Return the area of
+ the triangle rounded to 2 decimal points if the three sides form a valid triangle. 
+ Otherwise return -1
+@@ -14,14 +11,17 @@ triangle_area(1, 2, 10) == -1 */
+ 
+ public class TRIANGLE_AREA_2 {
+     public static double triangle_area_2(double a, double b, double c) {
++        // Check if the given sides can form a valid triangle
+         if (a + b <= c || a + c <= b || b + c <= a)
+             return -1;
+         
+-        double s = (a + b + c) / 2.;
+-        double result = Math.pow(s, 0.5);
++        // Calculate the semi-perimeter
++        double s = (a + b + c) / 2.0;
++        
++        // Use Heron's formula to calculate the area
++        double area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
+         
+-        BigDecimal bd = BigDecimal.valueOf(result);
+-        bd = bd.setScale(2, RoundingMode.HALF_UP);
+-        return bd.doubleValue();
++        // Round the result to 2 decimal places and return it
++        return Math.round(area * 100.0) / 100.0;
+     }
+-}
++}
+\ No newline at end of file

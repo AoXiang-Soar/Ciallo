@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/ENCRYPT.java b/src/main/java/humaneval/buggy/ENCRYPT.java
+index 84c720b..5f24b05 100644
+--- a/src/main/java/humaneval/buggy/ENCRYPT.java
++++ b/src/main/java/humaneval/buggy/ENCRYPT.java
+@@ -17,7 +17,7 @@ public class ENCRYPT {
+         for (char c : s.toCharArray()){
+             if ('a' <= c && c <= 'z'){
+                 sb.append(
+-                    d.charAt(s.indexOf((int) c) + 2 * 2)
++                    d.charAt((d.indexOf(c) + 2 * 2) % 26)
+                 );
+             } else {
+                 sb.append(c);
+@@ -25,4 +25,4 @@ public class ENCRYPT {
+         }
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

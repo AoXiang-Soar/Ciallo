@@ -1,0 +1,16 @@
+{
+    "bug_id": 46,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        sb.append(';');",
+    "code": "    public StringBuilder getGenericSignature(StringBuilder sb)\n    {\n        _classSignature(_class, sb, false);\n        sb.append('<');\n        sb = _referencedType.getGenericSignature(sb);\n        sb.append(';');\n        return sb;\n    }",
+    "fixed_code": "    public StringBuilder getGenericSignature(StringBuilder sb)\n    {\n        _classSignature(_class, sb, false);\n        sb.append('<');\n        sb = _referencedType.getGenericSignature(sb);\n        sb.append(\">;\");\n        return sb;\n    }",
+    "fixed_lines": "        sb.append(\">;\");",
+    "masked_code": "    public StringBuilder getGenericSignature(StringBuilder sb)\n    {\n        _classSignature(_class, sb, false);\n        sb.append('<');\n        sb = _referencedType.getGenericSignature(sb);\n>>> [ INFILL ] <<<\n        return sb;\n    }",
+    "project": "JacksonDatabind",
+    "test_error_message": "",
+    "test_framework": "defects4j",
+    "test_function": "",
+    "test_line": "",
+    "test_name": "",
+    "test_suite": ""
+}

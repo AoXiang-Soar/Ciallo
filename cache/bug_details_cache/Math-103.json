@@ -1,0 +1,16 @@
+{
+    "bug_id": 103,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "    public double cumulativeProbability(double x) throws MathException {\n            return 0.5 * (1.0 + Erf.erf((x - mean) /\n                    (standardDeviation * Math.sqrt(2.0))));\n    }",
+    "fixed_code": "    public double cumulativeProbability(double x) throws MathException {\n        try {\n            return 0.5 * (1.0 + Erf.erf((x - mean) /\n                    (standardDeviation * Math.sqrt(2.0))));\n        } catch (MaxIterationsExceededException ex) {\n            if (x < (mean - 20 * standardDeviation)) { // JDK 1.5 blows at 38\n                return 0.0d;\n            } else if (x > (mean + 20 * standardDeviation)) {\n                return 1.0d;\n            } else {\n                throw ex;\n            }\n        }\n    }",
+    "fixed_lines": "        try {\n        } catch (MaxIterationsExceededException ex) {\n            if (x < (mean - 20 * standardDeviation)) { // JDK 1.5 blows at 38\n                return 0.0d;\n            } else if (x > (mean + 20 * standardDeviation)) {\n                return 1.0d;\n            } else {\n                throw ex;\n            }\n        }",
+    "masked_code": "    public double cumulativeProbability(double x) throws MathException {\n            return 0.5 * (1.0 + Erf.erf((x - mean) /\n                    (standardDeviation * Math.sqrt(2.0))));\n>>> [ INFILL ] <<<\n    }",
+    "project": "Math",
+    "test_error_message": "org.apache.commons.math.MaxIterationsExceededException: Maximal number of iterations (10,000) exceeded",
+    "test_framework": "defects4j",
+    "test_function": "    public void testExtremeValues() throws Exception {\n        NormalDistribution distribution = (NormalDistribution) getDistribution();\n        distribution.setMean(0);\n        distribution.setStandardDeviation(1);\n        for (int i = 0; i < 100; i+=5) { // make sure no convergence exception\n            double lowerTail = distribution.cumulativeProbability((double)-i);\n            double upperTail = distribution.cumulativeProbability((double) i);\n            if (i < 10) { // make sure not top-coded\n                assertTrue(lowerTail > 0.0d);\n                assertTrue(upperTail < 1.0d);\n            }\n            else { // make sure top coding not reversed\n                assertTrue(lowerTail < 0.00001);\n                assertTrue(upperTail > 0.99999);\n            }\n        } \n   }",
+    "test_line": "            double lowerTail = distribution.cumulativeProbability((double)-i);",
+    "test_name": "testExtremeValues",
+    "test_suite": "org.apache.commons.math.distribution.NormalDistributionTest"
+}

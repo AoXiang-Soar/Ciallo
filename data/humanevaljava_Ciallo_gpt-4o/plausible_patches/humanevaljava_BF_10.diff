@@ -1,0 +1,40 @@
+diff --git a/src/main/java/humaneval/buggy/BF.java b/src/main/java/humaneval/buggy/BF.java
+index dd3c22b..7c32b52 100644
+--- a/src/main/java/humaneval/buggy/BF.java
++++ b/src/main/java/humaneval/buggy/BF.java
+@@ -3,7 +3,7 @@ package humaneval.buggy;
+ import java.util.ArrayList;
+ import java.util.Arrays;
+ 
+-/* There are eight planets in our solar system: the closerst to the Sun 
++/* There are eight planets in our solar system: the closest to the Sun 
+ is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, 
+ Uranus, Neptune.
+ Write a function that takes two planet names as strings planet1 and planet2. 
+@@ -24,12 +24,22 @@ public class BF {
+         ));
+ 
+         ArrayList<String> result = new ArrayList<String>();
+-        if ((! planet_names.contains(planet1)) || (! planet_names.contains(planet2)))
++        if (!planet_names.contains(planet1) || !planet_names.contains(planet2)) {
+             return result;
++        }
++        
+         int planet1_index = planet_names.indexOf(planet1);
+         int planet2_index = planet_names.indexOf(planet2);
+-        for (int i = planet1_index; i < planet2_index; i += 1)
++
++        // We need to find all planets between the indices, irrespective of their order
++        int start = Math.min(planet1_index, planet2_index);
++        int end = Math.max(planet1_index, planet2_index);
++
++        // Collect planets between start and end (exclusive)
++        for (int i = start + 1; i < end; i++) {
+             result.add(planet_names.get(i));
++        }
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

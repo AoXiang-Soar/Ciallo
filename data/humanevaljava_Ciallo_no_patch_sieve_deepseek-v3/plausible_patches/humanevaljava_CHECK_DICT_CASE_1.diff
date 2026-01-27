@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+index ba94200..c14810f 100644
+--- a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
++++ b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+@@ -36,9 +36,12 @@ public class CHECK_DICT_CASE {
+                 } else if (state.equals("upper") && !str_key.toUpperCase().equals(str_key)) {
+                     state = "mixed";
+                     break;
++                } else if (state.equals("lower") && !str_key.toLowerCase().equals(str_key)) {
++                    state = "mixed";
++                    break;
+                 }
+             }
+-            return (state.equals("upper")) || (state.equals("lower"));
++            return !state.equals("mixed");
+         }
+     }
+-}
++}
+\ No newline at end of file

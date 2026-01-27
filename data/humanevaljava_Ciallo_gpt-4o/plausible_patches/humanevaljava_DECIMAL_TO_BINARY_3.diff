@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/DECIMAL_TO_BINARY.java b/src/main/java/humaneval/buggy/DECIMAL_TO_BINARY.java
+index d4ad9ad..bf0ccba 100644
+--- a/src/main/java/humaneval/buggy/DECIMAL_TO_BINARY.java
++++ b/src/main/java/humaneval/buggy/DECIMAL_TO_BINARY.java
+@@ -13,7 +13,14 @@ package humaneval.buggy;
+ 
+ public class DECIMAL_TO_BINARY {
+     public static String decimal_to_binary(int decimal) {
+-        String result = Integer.toHexString(decimal);
+-        return "db" + result + "db";
++        StringBuilder binaryString = new StringBuilder();
++        while(decimal > 0) {
++            binaryString.insert(0, decimal % 2);
++            decimal = decimal / 2;
++        }
++        if (binaryString.length() == 0) {
++            binaryString.append("0");
++        }
++        return "db" + binaryString.toString() + "db";
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,145 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/impl/JavaUtilCollectionsDeserializers.java b/src/main/java/com/fasterxml/jackson/databind/deser/impl/JavaUtilCollectionsDeserializers.java
+index 3228bacda..9979b95cf 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/impl/JavaUtilCollectionsDeserializers.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/impl/JavaUtilCollectionsDeserializers.java
+@@ -10,14 +10,6 @@ import com.fasterxml.jackson.databind.deser.std.StdDelegatingDeserializer;
+ import com.fasterxml.jackson.databind.type.TypeFactory;
+ import com.fasterxml.jackson.databind.util.Converter;
+ 
+-/**
+- * Helper class used to contain logic for deserializing "special" containers
+- * from {@code java.util.Collections} and {@code java.util.Arrays}. This is needed
+- * because they do not have usable no-arguments constructor: however, are easy enough
+- * to deserialize using delegating deserializer.
+- *
+- * @since 2.9.4
+- */
+ public abstract class JavaUtilCollectionsDeserializers
+ {
+     private final static int TYPE_SINGLETON_SET = 1;
+@@ -26,12 +18,10 @@ public abstract class JavaUtilCollectionsDeserializers
+ 
+     private final static int TYPE_UNMODIFIABLE_SET = 4;
+     private final static int TYPE_UNMODIFIABLE_LIST = 5;
+-    private final static int TYPE_UNMODIFIABLE_MAP = 6;
++   private final static int TYPE_UNMODIFIABLE_MAP = 6;
+ 
+     public final static int TYPE_AS_LIST = 7;
+ 
+-    // 10-Jan-2018, tatu: There are a few "well-known" special containers in JDK too:
+-
+     private final static Class<?> CLASS_AS_ARRAYS_LIST = Arrays.asList(null, null).getClass();
+ 
+     private final static Class<?> CLASS_SINGLETON_SET;
+@@ -40,10 +30,6 @@ public abstract class JavaUtilCollectionsDeserializers
+ 
+     private final static Class<?> CLASS_UNMODIFIABLE_SET;
+     private final static Class<?> CLASS_UNMODIFIABLE_LIST;
+-
+-    /* 02-Mar-2019, tatu: for [databind#2265], need to consider possible alternate type...
+-     *    which we essentially coerce into the other one
+-     */
+     private final static Class<?> CLASS_UNMODIFIABLE_MAP;
+ 
+     static {
+@@ -54,7 +40,6 @@ public abstract class JavaUtilCollectionsDeserializers
+         List<?> list = Collections.singletonList(Boolean.TRUE);
+         CLASS_SINGLETON_LIST = list.getClass();
+         CLASS_UNMODIFIABLE_LIST = Collections.unmodifiableList(list).getClass();
+-        // for [databind#2265]
+         
+         Map<?,?> map = Collections.singletonMap("a", "b");
+         CLASS_SINGLETON_MAP = map.getClass();
+@@ -67,17 +52,18 @@ public abstract class JavaUtilCollectionsDeserializers
+     {
+         JavaUtilCollectionsConverter conv;
+ 
+-        // 10-Jan-2017, tatu: Some types from `java.util.Collections`/`java.util.Arrays` need bit of help...
+-        if (type.hasRawClass(CLASS_AS_ARRAYS_LIST)) {
++        Class<?> rawClass = type.getRawClass();
++        if (rawClass == CLASS_AS_ARRAYS_LIST) {
+             conv = converter(TYPE_AS_LIST, type, List.class);
+-        } else if (type.hasRawClass(CLASS_SINGLETON_LIST)) {
++        } else if (rawClass == CLASS_SINGLETON_LIST) {
+             conv = converter(TYPE_SINGLETON_LIST, type, List.class);
+-        } else if (type.hasRawClass(CLASS_SINGLETON_SET)) {
++        } else if (rawClass == CLASS_SINGLETON_SET) {
+             conv = converter(TYPE_SINGLETON_SET, type, Set.class);
+-        // [databind#2265]: we may have another impl type for unmodifiable Lists, check both
+-        } else if (type.hasRawClass(CLASS_UNMODIFIABLE_LIST)) {
++        } else if (rawClass == CLASS_UNMODIFIABLE_LIST || 
++                   "java.util.Collections$UnmodifiableRandomAccessList".equals(rawClass.getName()) ||
++                   "java.util.Collections$UnmodifiableList".equals(rawClass.getName())) {
+             conv = converter(TYPE_UNMODIFIABLE_LIST, type, List.class);
+-        } else if (type.hasRawClass(CLASS_UNMODIFIABLE_SET)) {
++        } else if (rawClass == CLASS_UNMODIFIABLE_SET) {
+             conv = converter(TYPE_UNMODIFIABLE_SET, type, Set.class);
+         } else {
+             return null;
+@@ -91,10 +77,11 @@ public abstract class JavaUtilCollectionsDeserializers
+     {
+         JavaUtilCollectionsConverter conv;
+ 
+-        // 10-Jan-2017, tatu: Some types from `java.util.Collections`/`java.util.Arrays` need bit of help...
+-        if (type.hasRawClass(CLASS_SINGLETON_MAP)) {
++        Class<?> rawClass = type.getRawClass();
++        if (rawClass == CLASS_SINGLETON_MAP) {
+             conv = converter(TYPE_SINGLETON_MAP, type, Map.class);
+-        } else if (type.hasRawClass(CLASS_UNMODIFIABLE_MAP)) {
++        } else if (rawClass == CLASS_UNMODIFIABLE_MAP ||
++                   "java.util.Collections$UnmodifiableMap".equals(rawClass.getName())) {
+             conv = converter(TYPE_UNMODIFIABLE_MAP, type, Map.class);
+         } else {
+             return null;
+@@ -108,15 +95,9 @@ public abstract class JavaUtilCollectionsDeserializers
+         return new JavaUtilCollectionsConverter(kind, concreteType.findSuperType(rawSuper));
+     }
+ 
+-    /**
+-     * Implementation used for converting from various generic container
+-     * types ({@link java.util.Set}, {@link java.util.List}, {@link java.util.Map})
+-     * into more specific implementations accessible via {@code java.util.Collections}.
+-     */
+     private static class JavaUtilCollectionsConverter implements Converter<Object,Object>
+     {
+         private final JavaType _inputType;
+-
+         private final int _kind;
+ 
+         private JavaUtilCollectionsConverter(int kind, JavaType inputType) {
+@@ -126,7 +107,7 @@ public abstract class JavaUtilCollectionsDeserializers
+         
+         @Override
+         public Object convert(Object value) {
+-            if (value == null) { // is this legal to get?
++            if (value == null) {
+                 return null;
+             }
+             
+@@ -160,7 +141,6 @@ public abstract class JavaUtilCollectionsDeserializers
+ 
+             case TYPE_AS_LIST:
+             default:
+-                // Here we do not actually care about impl type, just return List as-is:
+                 return value;
+             }
+         }
+@@ -172,16 +152,13 @@ public abstract class JavaUtilCollectionsDeserializers
+ 
+         @Override
+         public JavaType getOutputType(TypeFactory typeFactory) {
+-            // we don't actually care, so:
+             return _inputType;
+         }
+ 
+         private void _checkSingleton(int size) {
+             if (size != 1) {
+-                // not the best error ever but... has to do
+                 throw new IllegalArgumentException("Can not deserialize Singleton container from "+size+" entries");
+             }
+         }
+     }
+-    
+-}
++}
+\ No newline at end of file

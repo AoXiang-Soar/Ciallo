@@ -1,0 +1,64 @@
+diff --git a/src/main/java/humaneval/buggy/MATCH_PARENS.java b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+old mode 100644
+new mode 100755
+index 0d0da0a..d15a190
+--- a/src/main/java/humaneval/buggy/MATCH_PARENS.java
++++ b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+@@ -19,16 +19,50 @@ public class MATCH_PARENS {
+     public static boolean check(String s) {
+         int val = 0;
+         for(int i = 0; i < s.length(); i++) {
+-            if(s.charAt(i) == '(') val--;
+-            else val++;
++            if(s.charAt(i) == '(') val++;
++            else val--;
+             if(val < 0) return false;
+         }
+         return val == 0;
+     }
+     public static String match_parens(String[] lst) {
+-        String S1 = lst[0] + lst[1];
+-        String S2 = lst[1] + lst[0];
+-        if(check(S1) || check(S2)) return "Yes";
++        // Check all possible combinations of mixed parentheses
++        String s1 = lst[0];
++        String s2 = lst[1];
++        
++        int total = 0;
++        boolean valid = true;
++        
++        // Scenario 1: Try s1 + s2
++        valid = true;
++        total = 0;
++        for (int i = 0; i < s1.length(); i++) {
++            if (s1.charAt(i) == '(') total++;
++            else total--;
++            if (total < 0) valid = false;
++        }
++        for (int i = 0; i < s2.length(); i++) {
++            if (s2.charAt(i) == '(') total++;
++            else total--;
++            if (total < 0) valid = false;
++        }
++        if (valid && total == 0) return "Yes";
++        
++        // Scenario 2: Try s2 + s1
++        valid = true;
++        total = 0;
++        for (int i = 0; i < s2.length(); i++) {
++            if (s2.charAt(i) == '(') total++;
++            else total--;
++            if (total < 0) valid = false;
++        }
++        for (int i = 0; i < s1.length(); i++) {
++            if (s1.charAt(i) == '(') total++;
++            else total--;
++            if (total < 0) valid = false;
++        }
++        if (valid && total == 0) return "Yes";
++        
+         return "No";
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 13,
+    "bug_type": "SH SF",
+    "buggy_lines": "",
+    "code": "    public boolean hasAttr(String attributeKey) {\n        Validate.notNull(attributeKey);\n\n        return attributes.hasKey(attributeKey);\n    }",
+    "fixed_code": "    public boolean hasAttr(String attributeKey) {\n        Validate.notNull(attributeKey);\n\n        if (attributeKey.toLowerCase().startsWith(\"abs:\")) {\n            String key = attributeKey.substring(\"abs:\".length());\n            if (attributes.hasKey(key) && !absUrl(key).equals(\"\"))\n                return true;\n        }\n        return attributes.hasKey(attributeKey);\n    }",
+    "fixed_lines": "        if (attributeKey.toLowerCase().startsWith(\"abs:\")) {\n            String key = attributeKey.substring(\"abs:\".length());\n            if (attributes.hasKey(key) && !absUrl(key).equals(\"\"))\n                return true;\n        }",
+    "masked_code": "    public boolean hasAttr(String attributeKey) {\n        Validate.notNull(attributeKey);\n\n>>> [ INFILL ] <<<\n        return attributes.hasKey(attributeKey);\n    }",
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void handlesAbsPrefixOnHasAttr() {\n        // 1: no abs url; 2: has abs url\n        Document doc = Jsoup.parse(\"<a id=1 href='/foo'>One</a> <a id=2 href='http://jsoup.org/'>Two</a>\");\n        Element one = doc.select(\"#1\").first();\n        Element two = doc.select(\"#2\").first();\n\n        assertFalse(one.hasAttr(\"abs:href\"));\n        assertTrue(one.hasAttr(\"href\"));\n        assertEquals(\"\", one.absUrl(\"href\"));\n\n        assertTrue(two.hasAttr(\"abs:href\"));\n        assertTrue(two.hasAttr(\"href\"));\n        assertEquals(\"http://jsoup.org/\", two.absUrl(\"href\"));\n    }",
+    "test_line": "        assertTrue(two.hasAttr(\"abs:href\"));",
+    "test_name": "handlesAbsPrefixOnHasAttr",
+    "test_suite": "org.jsoup.nodes.NodeTest"
+}

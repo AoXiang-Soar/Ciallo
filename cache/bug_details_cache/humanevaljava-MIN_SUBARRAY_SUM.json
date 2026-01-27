@@ -1,0 +1,16 @@
+{
+    "bug_id": "MIN_SUBARRAY_SUM",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MIN_SUBARRAY_SUM.test_0:11 expected:<1> but was:<-16>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        ArrayList<Long> input = new ArrayList<Long>(Arrays.asList(2L, 3L, 4L, 1L, 2L, 4L));\n        long result = humaneval.buggy.MIN_SUBARRAY_SUM.min_subarray_sum(input);\n        org.junit.Assert.assertEquals(1, result);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(7L, result);",
+    "test_name": "test_0",
+    "test_suite": "TEST_MIN_SUBARRAY_SUM"
+}

@@ -1,0 +1,16 @@
+{
+    "bug_id": 1,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "",
+    "code": "    public void close() throws IOException {\n        if (!this.closed) {\n            super.close();\n            this.closed = true;\n        }\n    }",
+    "fixed_code": "    public void close() throws IOException {\n        if (!this.closed) {\n            this.finish();\n            super.close();\n            this.closed = true;\n        }\n    }",
+    "fixed_lines": "            this.finish();",
+    "masked_code": "    public void close() throws IOException {\n        if (!this.closed) {\n>>> [ INFILL ] <<<\n            super.close();\n            this.closed = true;\n        }\n    }",
+    "project": "Compress",
+    "test_error_message": "java.io.EOFException",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCpioUnarchive() throws Exception {\n        final File output = new File(dir, \"bla.cpio\");\n        {\n            final File file1 = getFile(\"test1.xml\");\n            final File file2 = getFile(\"test2.xml\");\n\n            final OutputStream out = new FileOutputStream(output);\n            final ArchiveOutputStream os = new ArchiveStreamFactory().createArchiveOutputStream(\"cpio\", out);\n            os.putArchiveEntry(new CpioArchiveEntry(\"test1.xml\", file1.length()));\n            IOUtils.copy(new FileInputStream(file1), os);\n            os.closeArchiveEntry();\n\n            os.putArchiveEntry(new CpioArchiveEntry(\"test2.xml\", file2.length()));\n            IOUtils.copy(new FileInputStream(file2), os);\n            os.closeArchiveEntry();\n\n            os.close();\n            out.close();\n        }\n\n        // Unarchive Operation\n        final File input = output;\n        final InputStream is = new FileInputStream(input);\n        final ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream(\"cpio\", is);\n\n\n        Map result = new HashMap();\n        ArchiveEntry entry = null;\n        while ((entry = in.getNextEntry()) != null) {\n            File target = new File(dir, entry.getName());\n            final OutputStream out = new FileOutputStream(target);\n            IOUtils.copy(in, out);\n            out.close();\n            result.put(entry.getName(), target);\n        }\n        in.close();\n\n        int lineSepLength = System.getProperty(\"line.separator\").length();\n\n        File t = (File)result.get(\"test1.xml\");\n        assertTrue(\"Expected \" + t.getAbsolutePath() + \" to exist\", t.exists());\n        assertEquals(\"length of \" + t.getAbsolutePath(),\n                     72 + 4 * lineSepLength, t.length());\n\n        t = (File)result.get(\"test2.xml\");\n        assertTrue(\"Expected \" + t.getAbsolutePath() + \" to exist\", t.exists());\n        assertEquals(\"length of \" + t.getAbsolutePath(),\n                     73 + 5 * lineSepLength, t.length());\n    }",
+    "test_line": "        while ((entry = in.getNextEntry()) != null) {",
+    "test_name": "testCpioUnarchive",
+    "test_suite": "org.apache.commons.compress.archivers.CpioTestCase"
+}

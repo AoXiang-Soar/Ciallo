@@ -1,0 +1,47 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java b/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
+index 49fdf7f6..1cf8ab62 100644
+--- a/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
++++ b/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
+@@ -45,6 +45,9 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
++          if (c.isInterface() || c.isAnnotation() || (c.getModifiers() & java.lang.reflect.Modifier.ABSTRACT) != 0) {
++            throw new UnsupportedOperationException("Cannot allocate " + c);
++          }
+           return (T) allocateInstance.invoke(unsafe, c);
+         }
+       };
+@@ -68,6 +71,9 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
++          if (c.isInterface() || c.isAnnotation() || (c.getModifiers() & java.lang.reflect.Modifier.ABSTRACT) != 0) {
++            throw new UnsupportedOperationException("Cannot allocate " + c);
++          }
+           return (T) newInstance.invoke(null, c, constructorId);
+         }
+       };
+@@ -87,6 +93,9 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
++          if (c.isInterface() || c.isAnnotation() || (c.getModifiers() & java.lang.reflect.Modifier.ABSTRACT) != 0) {
++            throw new UnsupportedOperationException("Cannot allocate " + c);
++          }
+           return (T) newInstance.invoke(null, c, Object.class);
+         }
+       };
+@@ -101,10 +110,4 @@ public abstract class UnsafeAllocator {
+       }
+     };
+   }
+-
+-  /**
+-   * Check if the class can be instantiated by unsafe allocator. If the instance has interface or abstract modifiers
+-   * throw an {@link java.lang.UnsupportedOperationException}
+-   * @param c instance of the class to be checked
+-   */
+-}
++}
+\ No newline at end of file

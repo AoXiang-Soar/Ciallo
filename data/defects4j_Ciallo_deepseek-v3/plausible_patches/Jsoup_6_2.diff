@@ -1,0 +1,68 @@
+diff --git a/src/main/java/org/jsoup/nodes/Entities.java b/src/main/java/org/jsoup/nodes/Entities.java
+index 4daf7208..c0b6bf1d 100644
+--- a/src/main/java/org/jsoup/nodes/Entities.java
++++ b/src/main/java/org/jsoup/nodes/Entities.java
+@@ -47,31 +47,41 @@ public class Entities {
+             return string;
+ 
+         Matcher m = unescapePattern.matcher(string); // &(#(x|X)?([0-9a-fA-F]+)|[a-zA-Z]+);?
+-        StringBuffer accum = new StringBuffer(string.length()); // pity matcher can't use stringbuilder, avoid syncs
+-        // todo: replace m.appendReplacement with own impl, so StringBuilder and quoteReplacement not required
++StringBuffer accum = new StringBuffer(string.length());
+ 
+-        while (m.find()) {
+-            int charval = -1;
+-            String num = m.group(3);
+-            if (num != null) {
+-                try {
+-                    int base = m.group(2) != null ? 16 : 10; // 2 is hex indicator
+-                    charval = Integer.valueOf(num, base);
+-                } catch (NumberFormatException e) {
+-                } // skip
+-            } else {
+-                String name = m.group(1);
+-                if (full.containsKey(name))
+-                    charval = full.get(name);
+-            }
++while (m.find()) {
++    int charval = -1;
++    String num = m.group(3);
++    if (num != null) {
++        try {
++            int base = m.group(2) != null ? 16 : 10;
++            charval = Integer.valueOf(num, base);
++        } catch (NumberFormatException e) {
++            // skip invalid numbers
++        }
++    } else {
++        String name = m.group(1);
++        if (full.containsKey(name))
++            charval = full.get(name);
++    }
+ 
+-            if (charval != -1 || charval > 0xFFFF) { // out of range
+-                String c = Character.toString((char) charval);
+-                m.appendReplacement(accum, c);
+-            } else {
+-                m.appendReplacement(accum, m.group(0));
+-            }
++    if (charval != -1 && charval <= 0xFFFF) {
++        String c = Character.toString((char) charval);
++        try {
++            m.appendReplacement(accum, c);
++        } catch (IllegalArgumentException e) {
++            // Fallback to quoted replacement if special characters are present
++            m.appendReplacement(accum, Matcher.quoteReplacement(c));
++        }
++    } else {
++        try {
++            m.appendReplacement(accum, m.group(0));
++        } catch (IllegalArgumentException e) {
++            // Fallback to quoted replacement if special characters are present
++            m.appendReplacement(accum, Matcher.quoteReplacement(m.group(0)));
+         }
++    }
++}
+         m.appendTail(accum);
+         return accum.toString();
+     }

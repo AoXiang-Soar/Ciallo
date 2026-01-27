@@ -1,0 +1,95 @@
+diff --git a/src/main/java/org/jsoup/helper/W3CDom.java b/src/main/java/org/jsoup/helper/W3CDom.java
+index f58a9255..bae0b50b 100644
+--- a/src/main/java/org/jsoup/helper/W3CDom.java
++++ b/src/main/java/org/jsoup/helper/W3CDom.java
+@@ -19,6 +19,8 @@ import javax.xml.transform.dom.DOMSource;
+ import javax.xml.transform.stream.StreamResult;
+ import java.io.StringWriter;
+ import java.util.HashMap;
++import java.util.Map;
++import java.util.Stack;
+ 
+ /**
+  * Helper class to transform a {@link org.jsoup.nodes.Document} to a {@link org.w3c.dom.Document org.w3c.dom.Document},
+@@ -36,8 +38,8 @@ public class W3CDom {
+         Validate.notNull(in);
+         DocumentBuilder builder;
+         try {
+-        	//set the factory to be namespace-aware
+-        	factory.setNamespaceAware(true);
++            // Set the factory to be namespace-aware
++            factory.setNamespaceAware(true);
+             builder = factory.newDocumentBuilder();
+             Document out = builder.newDocument();
+             convert(in, out);
+@@ -70,7 +72,7 @@ public class W3CDom {
+         private static final String xmlnsPrefix = "xmlns:";
+ 
+         private final Document doc;
+-        private final HashMap<String, String> namespaces = new HashMap<>();
++        private final Stack<Map<String, String>> namespacesStack = new Stack<>();
+         private Element dest;
+ 
+         public W3CBuilder(Document doc) {
+@@ -78,11 +80,17 @@ public class W3CDom {
+         }
+ 
+         public void head(org.jsoup.nodes.Node source, int depth) {
++            Map<String, String> currentNamespaces = new HashMap<>();
++            if (!namespacesStack.isEmpty()) {
++                currentNamespaces.putAll(namespacesStack.peek());
++            }
++            namespacesStack.push(currentNamespaces);
++
+             if (source instanceof org.jsoup.nodes.Element) {
+                 org.jsoup.nodes.Element sourceEl = (org.jsoup.nodes.Element) source;
+ 
+                 String prefix = updateNamespaces(sourceEl);
+-                String namespace = namespaces.get(prefix);
++                String namespace = namespacesStack.peek().get(prefix);
+ 
+                 Element el = doc.createElementNS(namespace, sourceEl.tagName());
+                 copyAttributes(sourceEl, el);
+@@ -111,8 +119,9 @@ public class W3CDom {
+ 
+         public void tail(org.jsoup.nodes.Node source, int depth) {
+             if (source instanceof org.jsoup.nodes.Element && dest.getParentNode() instanceof Element) {
+-                dest = (Element) dest.getParentNode(); // undescend. cromulent.
++                dest = (Element) dest.getParentNode(); // undescend
+             }
++            namespacesStack.pop();
+         }
+ 
+         private void copyAttributes(org.jsoup.nodes.Node source, Element el) {
+@@ -128,8 +137,6 @@ public class W3CDom {
+          * Finds any namespaces defined in this element. Returns any tag prefix.
+          */
+         private String updateNamespaces(org.jsoup.nodes.Element el) {
+-            // scan the element for namespace declarations
+-            // like: xmlns="blah" or xmlns:prefix="blah"
+             Attributes attributes = el.attributes();
+             for (Attribute attr : attributes) {
+                 String key = attr.getKey();
+@@ -141,14 +148,13 @@ public class W3CDom {
+                 } else {
+                     continue;
+                 }
+-                namespaces.put(prefix, attr.getValue());
++                namespacesStack.peek().put(prefix, attr.getValue());
+             }
+ 
+             // get the element prefix if any
+             int pos = el.tagName().indexOf(":");
+             return pos > 0 ? el.tagName().substring(0, pos) : "";
+         }
+-
+     }
+ 
+     /**
+@@ -169,4 +175,4 @@ public class W3CDom {
+             throw new IllegalStateException(e);
+         }
+     }
+-}
++}
+\ No newline at end of file

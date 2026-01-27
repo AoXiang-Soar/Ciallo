@@ -1,0 +1,61 @@
+diff --git a/src/com/google/javascript/jscomp/PeepholeOptimizationsPass.java b/src/com/google/javascript/jscomp/PeepholeOptimizationsPass.java
+index b51c088e4..f584c7558 100644
+--- a/src/com/google/javascript/jscomp/PeepholeOptimizationsPass.java
++++ b/src/com/google/javascript/jscomp/PeepholeOptimizationsPass.java
+@@ -110,32 +110,43 @@ class PeepholeOptimizationsPass
+     compiler.removeChangeHandler(handler);
+   }
+ 
+-  private void traverse(Node node) {
++private void traverse(Node node) {
+     // The goal here is to avoid retraversing
+     // the entire AST to catch newly created opportunities.
+     // So we track whether a "unit of code" has changed,
+     // and revisit immediately.
+     if (!shouldVisit(node)) {
+-      return;
++        return;
+     }
+ 
+     int visits = 0;
++    boolean shouldContinue;
++
+     do {
+-      Node c = node.getFirstChild();
+-      while(c != null) {
+-        traverse(c);
+-        Node next = c.getNext();
+-        c = next;
+-      }
++        // Traverse all children before visiting the current node.
++        Node c = node.getFirstChild();
++        while (c != null) {
++            Node next = c.getNext(); // Get next before traversing, to avoid issues with node changes.
++            traverse(c); // Traverse the child node.
++            c = next; // Move to the next sibling.
++        }
++
++        // Visit the current node.
++        visit(node);
++        visits++;
+ 
+-      visit(node);
+-      visits++;
++        // Ensure we are not stuck in an infinite traversal loop.
++        Preconditions.checkState(visits < 10000, "too many iterations");
+ 
+-      Preconditions.checkState(visits < 10000, "too many interations");
+-    } while (shouldRetraverse(node));
++        // Determine if this node should be revisited.
++        // Obtain this information after processing all children and visiting this node.
++        shouldContinue = shouldRetraverse(node);
+ 
++    } while (shouldContinue);
++
++    // Performs any needed cleanup after traversing the node.
+     exitNode(node);
+-  }
++}
+ 
+   private boolean shouldRetraverse(Node node) {
+     if (node.getParent() != null && node.isFunction() || node.isScript()) {

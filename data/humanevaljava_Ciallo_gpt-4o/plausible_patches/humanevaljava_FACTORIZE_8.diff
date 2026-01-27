@@ -1,0 +1,33 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIZE.java b/src/main/java/humaneval/buggy/FACTORIZE.java
+index 57975b5..27cab42 100644
+--- a/src/main/java/humaneval/buggy/FACTORIZE.java
++++ b/src/main/java/humaneval/buggy/FACTORIZE.java
+@@ -8,15 +8,21 @@ public class FACTORIZE {
+         List<Integer> result = new ArrayList<Integer>();
+ 
+         int i = 2;
+-        while (i <= (int)(Math.sqrt(n) + 1)){
+-            if (n % i == 0){
++        // Change loop condition for efficiency and correctness
++        while (i * i <= n) {
++            if (n % i == 0) {
+                 result.add(i);
+-                n = n / i;
+-            } else{
+-                i += 1;
++                n /= i;
++            } else {
++                i++;
+             }
+         }
+ 
++        // If n becomes a prime number greater than the factors considered
++        if (n > 1) {
++            result.add(n);
++        }
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

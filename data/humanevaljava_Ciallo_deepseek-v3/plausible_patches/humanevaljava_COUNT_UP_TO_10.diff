@@ -1,0 +1,37 @@
+diff --git a/src/main/java/humaneval/buggy/COUNT_UP_TO.java b/src/main/java/humaneval/buggy/COUNT_UP_TO.java
+index 2952188..00dd484 100644
+--- a/src/main/java/humaneval/buggy/COUNT_UP_TO.java
++++ b/src/main/java/humaneval/buggy/COUNT_UP_TO.java
+@@ -3,7 +3,7 @@ package humaneval.buggy;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+-// Implement a function that takes an non-negative integer and returns an array of the first n
++// Implement a function that takes a non-negative integer and returns an array of the first n
+ // integers that are prime numbers and less than n.
+ // for example:
+ // count_up_to(5) => [2,3]
+@@ -18,14 +18,17 @@ public class COUNT_UP_TO {
+         List<Integer> primes = new ArrayList<Integer>();
+ 
+         for (int i = 2; i < n; i += 1){
+-            boolean is_prime = false;
+-            for (int j = 2; j < i; j += 1){
++            boolean is_prime = true; // Start by assuming the number is prime
++            for (int j = 2; j * j <= i; j += 1){ // Optimized check up to sqrt(i)
+                 if (i % j == 0) {
+-                    is_prime = false;
++                    is_prime = false; // Not a prime number if divisible
++                    break; // Break early if not prime
+                 }
+             }
+-            if (is_prime) primes.add(i);
++            if (is_prime) {
++                primes.add(i);
++            }
+         }
+         return primes;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,67 @@
+diff --git a/src/java/org/apache/commons/cli/PosixParser.java b/src/java/org/apache/commons/cli/PosixParser.java
+index 2590de7..8905182 100644
+--- a/src/java/org/apache/commons/cli/PosixParser.java
++++ b/src/java/org/apache/commons/cli/PosixParser.java
+@@ -275,35 +275,45 @@ public class PosixParser extends Parser {
+      * @param stopAtNonOption Specifies whether to stop processing
+      * at the first non-Option encountered.
+      */
+-    protected void burstToken(String token, boolean stopAtNonOption)
++protected void burstToken(String token, boolean stopAtNonOption)
++{
++    int tokenLength = token.length();
++    boolean encounteredNonOption = false;
++
++    for (int i = 1; i < tokenLength; i++)
+     {
+-        int tokenLength = token.length();
++        String ch = String.valueOf(token.charAt(i));
++        boolean hasOption = options.hasOption(ch);
+ 
+-        for (int i = 1; i < tokenLength; i++)
++        if (hasOption && !encounteredNonOption)
+         {
+-            String ch = String.valueOf(token.charAt(i));
+-            boolean hasOption = options.hasOption(ch);
++            tokens.add("-" + ch);
++            currentOption = options.getOption(ch);
+ 
+-            if (hasOption)
++            if (currentOption.hasArg())
+             {
+-                tokens.add("-" + ch);
+-                currentOption = options.getOption(ch);
+-
+-                if (currentOption.hasArg() && (token.length() != (i + 1)))
++                if (token.length() != (i + 1))
+                 {
+                     tokens.add(token.substring(i + 1));
+-
+-                    break;
+                 }
++                break;
+             }
+-            else if (stopAtNonOption)
++        }
++        else
++        {
++            encounteredNonOption = true;
++            if (stopAtNonOption)
+             {
+                 process(token.substring(i));
+-            }
+-            else
+-            {
+-                tokens.add("-" + ch);
++                return;
+             }
+         }
+     }
++
++    // If all chars were options or if an option wasn't found and stopAtNonOption is false
++    if (encounteredNonOption && !stopAtNonOption)
++    {
++        tokens.add(token);
++    }
++}
+ }

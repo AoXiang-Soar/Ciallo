@@ -1,0 +1,16 @@
+{
+    "bug_id": 41,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: unexpected warnings(s):",
+    "test_framework": "defects4j",
+    "test_function": "  public void testMethodInference6() throws Exception {\n    testTypes(\n        \"/** @constructor */ function F() {}\" +\n        \"/** @param {number} x */ F.prototype.foo = function(x) { };\" +\n        \"/** @constructor \\n * @extends {F} */ \" +\n        \"function G() {}\" +\n        \"/** @override */ G.prototype.foo = function() { };\" +\n        \"(new G()).foo(1);\");\n  }",
+    "test_line": "      fail(\"unexpected warnings(s):\\n\" + Joiner.on(\"\\n\").join(warnings));",
+    "test_name": "testMethodInference6",
+    "test_suite": "com.google.javascript.jscomp.LooseTypeCheckTest"
+}

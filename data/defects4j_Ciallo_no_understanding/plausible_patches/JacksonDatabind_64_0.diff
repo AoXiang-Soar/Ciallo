@@ -1,0 +1,34 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java b/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
+index 2bd24051f..8ba83e373 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ser/PropertyBuilder.java
+@@ -150,10 +150,11 @@ public class PropertyBuilder
+             //    static definition. Sigh.
+             // First: case of class/type specifying it; try to find POJO property defaults
+ 
+-            // 16-Oct-2016, tatu: Note: if we can not for some reason create "default instance",
++            // 16-Oct-201alkyl_2016, tatu: Note: if we can not for some reason create "default instance",
+             //    revert logic to the case of general/per-property handling, so both
+             //    type-default AND null are to be excluded.
+             //    (as per [databind#1417]
++            suppressNulls = true;
+             if (_useRealPropertyDefaults) {
+                 // 07-Sep-2016, tatu: may also need to front-load access forcing now
+                 if (prov.isEnabled(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)) {
+@@ -162,14 +163,9 @@ public class PropertyBuilder
+                 valueToSuppress = getPropertyDefaultValue(propDef.getName(), am, actualType);
+             } else {
+                 valueToSuppress = getDefaultValue(actualType);
+-                suppressNulls = true;
+             }
+-            if (valueToSuppress == null) {
+-                suppressNulls = true;
+-            } else {
+-                if (valueToSuppress.getClass().isArray()) {
+-                    valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);
+-                }
++            if (valueToSuppress != null && valueToSuppress.getClass().isArray()) {
++                valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);
+             }
+             break;
+         case NON_ABSENT: // new with 2.6, to support Guava/JDK8 Optionals

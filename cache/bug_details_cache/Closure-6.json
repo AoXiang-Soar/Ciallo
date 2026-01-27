@@ -1,0 +1,16 @@
+{
+    "bug_id": 6,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<2> but was:<1>",
+    "test_framework": "defects4j",
+    "test_function": "  public void testTypeRedefinition() throws Exception {\n    testClosureTypesMultipleWarnings(\n        \"a={};/**@enum {string}*/ a.A = {ZOR:'b'};\"\n        + \"/** @constructor */ a.A = function() {}\",\n        Lists.newArrayList(\n            \"variable a.A redefined with type function (new:a.A): undefined, \" +\n            \"original definition at [testcode]:1 with type enum{a.A}\",\n            \"assignment to property A of a\\n\" +\n            \"found   : function (new:a.A): undefined\\n\" +\n            \"required: enum{a.A}\"));\n  }",
+    "test_line": "      assertEquals(descriptions.size(), compiler.getWarningCount());",
+    "test_name": "testTypeRedefinition",
+    "test_suite": "com.google.javascript.jscomp.LooseTypeCheckTest"
+}

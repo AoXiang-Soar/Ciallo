@@ -1,0 +1,16 @@
+{
+    "bug_id": 85,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testCascadedRemovalOfUnlessUnconditonalJumps() {\n    test(\"switch (a) { case 'a': break; case 'b': break; case 'c': break }\",\n         \"switch (a) { case 'a': break; case 'b': case 'c': }\");\n    // Only one break removed per pass.\n    test(\"switch (a) { case 'a': break; case 'b': case 'c': }\",\n         \"switch (a) { case 'a': case 'b': case 'c': }\");\n\n    test(\"function foo() {\" +\n      \"  switch (a) { case 'a':return; case 'b':return; case 'c':return }}\",\n      \"function foo() { switch (a) { case 'a':return; case 'b': case 'c': }}\");\n    test(\"function foo() {\" +\n      \"  switch (a) { case 'a':return; case 'b': case 'c': }}\",\n      \"function foo() { switch (a) { case 'a': case 'b': case 'c': }}\");\n\n    testSame(\"function foo() {\" +\n             \"switch (a) { case 'a':return 2; case 'b':return 1}}\");\n  }",
+    "test_line": "    test(\"switch (a) { case 'a': break; case 'b': break; case 'c': break }\",",
+    "test_name": "testCascadedRemovalOfUnlessUnconditonalJumps",
+    "test_suite": "com.google.javascript.jscomp.UnreachableCodeEliminationTest"
+}

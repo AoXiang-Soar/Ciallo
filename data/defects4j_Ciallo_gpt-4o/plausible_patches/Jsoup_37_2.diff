@@ -1,0 +1,30 @@
+diff --git a/src/main/java/org/jsoup/nodes/Element.java b/src/main/java/org/jsoup/nodes/Element.java
+index f87ffcb6..4f430be0 100644
+--- a/src/main/java/org/jsoup/nodes/Element.java
++++ b/src/main/java/org/jsoup/nodes/Element.java
+@@ -1095,11 +1095,21 @@ public class Element extends Node {
+      * @return String of HTML.
+      * @see #outerHtml()
+      */
+-    public String html() {
+-        StringBuilder accum = new StringBuilder();
+-        html(accum);
+-        return accum.toString().trim();
++public String html() {
++    StringBuilder accum = new StringBuilder();
++    html(accum);
++    
++    // Check if prettyPrint is disabled and return the untrimmed string if so
++    if (this.ownerDocument() != null) {
++        boolean prettyPrintSetting = this.ownerDocument().outputSettings().prettyPrint();
++        if (!prettyPrintSetting) {
++            return accum.toString();
++        }
+     }
++    
++    // Default behavior is to return the trimmed string
++    return accum.toString().trim();
++}
+ 
+     private void html(StringBuilder accum) {
+         for (Node node : childNodes)

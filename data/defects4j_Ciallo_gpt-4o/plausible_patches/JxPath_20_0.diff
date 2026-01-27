@@ -1,0 +1,99 @@
+diff --git a/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java b/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
+index 65ed1ed..9c92f07 100644
+--- a/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
++++ b/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperationRelationalExpression.java
+@@ -1,19 +1,3 @@
+-/*
+- * Licensed to the Apache Software Foundation (ASF) under one or more
+- * contributor license agreements.  See the NOTICE file distributed with
+- * this work for additional information regarding copyright ownership.
+- * The ASF licenses this file to You under the Apache License, Version 2.0
+- * (the "License"); you may not use this file except in compliance with
+- * the License.  You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+ package org.apache.commons.jxpath.ri.compiler;
+ 
+ import java.util.Collection;
+@@ -72,26 +56,12 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         left = reduce(left);
+         right = reduce(right);
+ 
+-        if (left instanceof InitialContext) {
+-            ((InitialContext) left).reset();
+-        }
+-        if (right instanceof InitialContext) {
+-            ((InitialContext) right).reset();
+-        }
+-        if (left instanceof Iterator && right instanceof Iterator) {
+-            return findMatch((Iterator) left, (Iterator) right);
+-        }
+-        if (left instanceof Iterator) {
+-            return containsMatch((Iterator) left, right);
+-        }
+-        if (right instanceof Iterator) {
+-            return containsMatch((Iterator) right, left);
+-        }
+-        double ld = InfoSetUtil.doubleValue(left);
++        // Use InfoSetUtil.doubleValue only if the object is not null
++        double ld = left != null ? InfoSetUtil.doubleValue(left) : Double.NaN;
+         if (Double.isNaN(ld)) {
+             return false;
+         }
+-        double rd = InfoSetUtil.doubleValue(right);
++        double rd = right != null ? InfoSetUtil.doubleValue(right) : Double.NaN;
+         if (Double.isNaN(rd)) {
+             return false;
+         }
+@@ -108,7 +78,21 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+             o = ((EvalContext) o).getSingleNodePointer();
+         }
+         if (o instanceof Collection) {
+-            o = ((Collection) o).iterator();
++            if (!((Collection) o).isEmpty()) {
++                // Take the first element if the collection is not empty
++                o = ((Collection) o).iterator().next();
++            } else {
++                o = null; // Empty collection converts to null
++            }
++        }
++        if (o instanceof Iterator) {
++            Iterator iterator = (Iterator) o;
++            if (iterator.hasNext()) {
++                // Take the first item if the iterator has elements
++                o = iterator.next();
++            } else {
++                o = null; // Empty iterator converts to null
++            }
+         }
+         return o;
+     }
+@@ -129,13 +113,6 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         return false;
+     }
+ 
+-    /**
+-     * Learn whether any element returned from an Iterator matches a given value.
+-     * @param it Iterator
+-     * @param value to look for
+-     * @return whether a match was found
+-     */
+-
+     /**
+      * Learn whether there is an intersection between two Iterators.
+      * @param lit left Iterator
+@@ -154,5 +131,4 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
+         }
+         return false;
+     }
+-
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,23 @@
+diff --git a/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java b/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java
+index 526f5cb..929fba1 100644
+--- a/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java
++++ b/src/main/java/humaneval/buggy/REMOVE_DUPLICATES.java
+@@ -9,6 +9,11 @@ public class REMOVE_DUPLICATES {
+         List<Integer> result = new ArrayList<Integer>();
+         HashMap<Integer, Integer> count = new HashMap<Integer, Integer>();
+         
++        // Initialize all counts to 0 first
++        for (Integer n : numbers){
++            count.put(n, 0);
++        }
++
+         for (Integer n : numbers){
+             count.put(n, count.get(n) + 1);
+         }
+@@ -20,4 +25,4 @@ public class REMOVE_DUPLICATES {
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,25 @@
+diff --git a/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java b/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java
+index 5cb0e4382..42db6cdd1 100644
+--- a/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java
++++ b/src/main/java/org/apache/commons/math3/distribution/DiscreteDistribution.java
+@@ -184,14 +184,15 @@ public class DiscreteDistribution<T> {
+                     sampleSize);
+         }
+ 
+-        final T[]out = (T[]) java.lang.reflect.Array.newInstance(singletons.get(0).getClass(), sampleSize);
++        final T[] out = (T[]) java.lang.reflect.Array.newInstance(
++            singletons.get(0) != null && singletons.get(0).getClass().isAnonymousClass() ? 
++                Object.class : singletons.get(0).getClass(), 
++            sampleSize);
+ 
+         for (int i = 0; i < sampleSize; i++) {
+             out[i] = sample();
+         }
+ 
+         return out;
+-
+     }
+-
+-}
++}
+\ No newline at end of file

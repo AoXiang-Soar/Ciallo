@@ -1,0 +1,20 @@
+diff --git a/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java b/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java
+index ae7ac3994..7257eeb43 100644
+--- a/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java
++++ b/src/main/java/org/apache/commons/math/optimization/fitting/GaussianFitter.java
+@@ -118,7 +118,14 @@ public class GaussianFitter extends CurveFitter {
+      */
+     public double[] fit() {
+         final double[] guess = (new ParameterGuesser(getObservations())).guess();
+-        return fit(new Gaussian.Parametric(), guess);
++return fit(new Gaussian.Parametric() {
++    @Override
++    public double value(double x, double... p) {
++        // Ensure sigma parameter is strictly positive
++        double sigma = Math.max(Math.abs(p[2]), Double.MIN_NORMAL);
++        return p[0] * Math.exp(-((x - p[1]) * (x - p[1])) / (2 * sigma * sigma));
++    }
++}, guess);
+     }
+ 
+     /**

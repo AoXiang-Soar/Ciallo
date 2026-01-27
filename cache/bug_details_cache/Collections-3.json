@@ -1,0 +1,16 @@
+{
+    "bug_id": 3,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        return ListUtils.retainAll(collection, remove);",
+    "code": "    public static Collection removeAll(Collection collection, Collection remove) {\n        return ListUtils.retainAll(collection, remove);\n    }",
+    "fixed_code": "    public static Collection removeAll(Collection collection, Collection remove) {\n        return ListUtils.removeAll(collection, remove);\n    }",
+    "fixed_lines": "        return ListUtils.removeAll(collection, remove);",
+    "masked_code": "    public static Collection removeAll(Collection collection, Collection remove) {\n>>> [ INFILL ] <<<\n    }",
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<1> but was:<2>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testRemoveAll() {\n        List base = new ArrayList();\n        base.add(\"A\");\n        base.add(\"B\");\n        base.add(\"C\");\n        List sub = new ArrayList();\n        sub.add(\"A\");\n        sub.add(\"C\");\n        sub.add(\"X\");\n        \n        Collection result = CollectionUtils.removeAll(base, sub);\n        assertEquals(1, result.size());\n        assertEquals(false, result.contains(\"A\"));\n        assertEquals(true, result.contains(\"B\"));\n        assertEquals(false, result.contains(\"C\"));\n        assertEquals(3, base.size());\n        assertEquals(true, base.contains(\"A\"));\n        assertEquals(true, base.contains(\"B\"));\n        assertEquals(true, base.contains(\"C\"));\n        assertEquals(3, sub.size());\n        assertEquals(true, sub.contains(\"A\"));\n        assertEquals(true, sub.contains(\"C\"));\n        assertEquals(true, sub.contains(\"X\"));\n        \n        try {\n            CollectionUtils.removeAll(null, null);\n            fail(\"expecting NullPointerException\");\n        } catch(NullPointerException npe){} // this is what we want\n    }",
+    "test_line": "        assertEquals(1, result.size());",
+    "test_name": "testRemoveAll",
+    "test_suite": "org.apache.commons.collections.TestCollectionUtils"
+}

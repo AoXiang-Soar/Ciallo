@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/STRING_XOR.java b/src/main/java/humaneval/buggy/STRING_XOR.java
+index a57100f..93c8871 100644
+--- a/src/main/java/humaneval/buggy/STRING_XOR.java
++++ b/src/main/java/humaneval/buggy/STRING_XOR.java
+@@ -1,13 +1,22 @@
+ package humaneval.buggy;
+ 
+ public class STRING_XOR {
+-    public static String string_xor(String a, String b){
+-        String result = "";
+-        for (int i = 0; i < a.length(); i += 1){
+-            if (a.charAt(i) == b.charAt(i)){
+-                result += "0";
+-            }
++    public static String string_xor(String a, String b) {
++        // Check if the lengths of the strings are equal
++        if (a.length() != b.length()) {
++            throw new IllegalArgumentException("Input strings must be of the same length");
+         }
+-        return result;
++        
++        StringBuilder result = new StringBuilder(a.length());
++        
++        for (int i = 0; i < a.length(); i++) {
++            // Perform an XOR operation on the integer representation of characters '0' and '1'
++            char xorResult = (char) ((a.charAt(i) - '0') ^ (b.charAt(i) - '0') + '0');
++            // Append result to the StringBuilder
++            result.append(xorResult);
++        }
++        
++        // Convert result to string and return
++        return result.toString();
+     }
+-}
++}
+\ No newline at end of file

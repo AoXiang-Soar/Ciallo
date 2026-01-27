@@ -1,0 +1,24 @@
+diff --git a/src/java/org/apache/commons/math/complex/ComplexFormat.java b/src/java/org/apache/commons/math/complex/ComplexFormat.java
+index b404bc415..ba4b198f3 100644
+--- a/src/java/org/apache/commons/math/complex/ComplexFormat.java
++++ b/src/java/org/apache/commons/math/complex/ComplexFormat.java
+@@ -373,17 +373,14 @@ public class ComplexFormat extends Format implements Serializable {
+         // parse imaginary character
+         int n = getImaginaryCharacter().length();
+         startIndex = pos.getIndex();
+-        int endIndex = startIndex + n;
+-        if (
+-            source.substring(startIndex, endIndex).compareTo(
+-            getImaginaryCharacter()) != 0) {
++        if (!source.startsWith(getImaginaryCharacter(), startIndex)) {
+             // set index back to initial, error index should be the start index
+             // character examined.
+             pos.setIndex(initialIndex);
+             pos.setErrorIndex(startIndex);
+             return null;
+         }
+-        pos.setIndex(endIndex);
++        pos.setIndex(startIndex + n);
+ 
+         return new Complex(re.doubleValue(), im.doubleValue() * sign);
+     }

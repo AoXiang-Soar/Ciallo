@@ -1,0 +1,31 @@
+diff --git a/src/main/java/humaneval/buggy/CAR_RACE_COLLISION.java b/src/main/java/humaneval/buggy/CAR_RACE_COLLISION.java
+index 4ded3f1..0ed6dd9 100644
+--- a/src/main/java/humaneval/buggy/CAR_RACE_COLLISION.java
++++ b/src/main/java/humaneval/buggy/CAR_RACE_COLLISION.java
+@@ -1,9 +1,9 @@
+ package humaneval.buggy;
+ 
+ /* Imagine a road that's a perfectly straight infinitely long line.
+-n cars are driving left to right;  simultaneously, a different set of n cars
+-are driving right to left.   The two sets of cars start out being very far from
+-each other.  All cars move in the same speed.  Two cars are said to collide
++n cars are driving left to right; simultaneously, a different set of n cars
++are driving right to left. The two sets of cars start out being very far from
++each other. All cars move in the same speed. Two cars are said to collide
+ when a car that's moving left to right hits a car that's moving right to left.
+ However, the cars are infinitely sturdy and strong; as a result, they continue moving
+ in their trajectory as if they did not collide.
+@@ -12,6 +12,10 @@ This function outputs the number of such collisions. */
+ 
+ public class CAR_RACE_COLLISION {
+     public static int car_race_collision(int n) {
+-        return n;
++        // When two sets of n cars are driving towards each other on a perfectly straight line at the same speed,
++        // every car from the left-to-right set will collide with every car from the right-to-left set.
++        // Therefore, for each of the n cars from left-to-right, it will collide with n cars from right-to-left
++        // resulting in n * n total collisions.
++        return n * n;
+     }
+-}
++}
+\ No newline at end of file

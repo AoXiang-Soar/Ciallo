@@ -1,0 +1,33 @@
+diff --git a/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java b/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java
+index 148daad0d..16b42c505 100644
+--- a/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java
++++ b/src/main/java/org/apache/commons/math/distribution/PoissonDistributionImpl.java
+@@ -19,11 +19,11 @@ package org.apache.commons.math.distribution;
+ import java.io.Serializable;
+ 
+ import org.apache.commons.math.MathException;
+-import org.apache.commons.math.MathRuntimeException;
+ import org.apache.commons.math.exception.util.LocalizedFormats;
+ import org.apache.commons.math.special.Gamma;
+ import org.apache.commons.math.util.MathUtils;
+ import org.apache.commons.math.util.FastMath;
++import org.apache.commons.math.exception.NotStrictlyPositiveException;
+ 
+ /**
+  * Implementation for the {@link PoissonDistribution}.
+@@ -91,7 +91,7 @@ public class PoissonDistributionImpl extends AbstractIntegerDistribution
+      */
+     public PoissonDistributionImpl(double p, double epsilon, int maxIterations) {
+         if (p <= 0) {
+-            throw MathRuntimeException.createIllegalArgumentException(LocalizedFormats.NOT_POSITIVE_POISSON_MEAN, p);
++            throw new NotStrictlyPositiveException(LocalizedFormats.NOT_POSITIVE_POISSON_MEAN, p);
+         }
+         mean = p;
+         normal = new NormalDistributionImpl(p, FastMath.sqrt(p));
+@@ -238,4 +238,4 @@ public class PoissonDistributionImpl extends AbstractIntegerDistribution
+     protected int getDomainUpperBound(double p) {
+         return Integer.MAX_VALUE;
+     }
+-}
++}
+\ No newline at end of file

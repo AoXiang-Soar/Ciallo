@@ -1,0 +1,16 @@
+{
+    "bug_id": 32,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        clone.classNames();",
+    "code": "    public Element clone() {\n        Element clone = (Element) super.clone();\n        clone.classNames();\n        return clone;\n    }",
+    "fixed_code": "    public Element clone() {\n        Element clone = (Element) super.clone();\n        clone.classNames = null; // derived on first hit, otherwise gets a pointer to source classnames\n        return clone;\n    }",
+    "fixed_lines": "        clone.classNames = null; // derived on first hit, otherwise gets a pointer to source classnames",
+    "masked_code": "    public Element clone() {\n        Element clone = (Element) super.clone();\n>>> [ INFILL ] <<<\n        return clone;\n    }",
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void testClonesClassnames() {\n        Document doc = Jsoup.parse(\"<div class='one two'></div>\");\n        Element div = doc.select(\"div\").first();\n        Set<String> classes = div.classNames();\n        assertEquals(2, classes.size());\n        assertTrue(classes.contains(\"one\"));\n        assertTrue(classes.contains(\"two\"));\n\n        Element copy = div.clone();\n        Set<String> copyClasses = copy.classNames();\n        assertEquals(2, copyClasses.size());\n        assertTrue(copyClasses.contains(\"one\"));\n        assertTrue(copyClasses.contains(\"two\"));\n        copyClasses.add(\"three\");\n        copyClasses.remove(\"one\");\n\n        assertTrue(classes.contains(\"one\"));\n        assertFalse(classes.contains(\"three\"));\n        assertFalse(copyClasses.contains(\"one\"));\n        assertTrue(copyClasses.contains(\"three\"));\n\n        assertEquals(\"\", div.html());\n        assertEquals(\"\", copy.html());\n    }",
+    "test_line": "        assertTrue(classes.contains(\"one\"));",
+    "test_name": "testClonesClassnames",
+    "test_suite": "org.jsoup.nodes.ElementTest"
+}

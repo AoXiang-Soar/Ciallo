@@ -1,0 +1,97 @@
+diff --git a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+index 68891ace7..d4711863e 100644
+--- a/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
++++ b/src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+@@ -34,51 +34,62 @@ public class NumericEntityUnescaper extends CharSequenceTranslator {
+      * {@inheritDoc}
+      */
+     @Override
+-    public int translate(CharSequence input, int index, Writer out) throws IOException {
+-        int seqEnd = input.length();
+-        // Uses -2 to ensure there is something after the &#
+-        if(input.charAt(index) == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {
+-            int start = index + 2;
+-            boolean isHex = false;
++public int translate(CharSequence input, int index, Writer out) throws IOException {
++    int seqEnd = input.length();
++    if (input.charAt(index) == '&' && index < seqEnd - 1 && input.charAt(index + 1) == '#') {
++        int start = index + 2;
++        boolean isHex = false;
+ 
++        // Check for hexadecimal marker
++        if (start < seqEnd) {
+             char firstChar = input.charAt(start);
+-            if(firstChar == 'x' || firstChar == 'X') {
++            if (firstChar == 'x' || firstChar == 'X') {
+                 start++;
+                 isHex = true;
+-
+-                // Check there's more than just an x after the &#
+             }
++        }
+ 
+-            int end = start;
+-            // Note that this supports character codes without a ; on the end
+-            while(input.charAt(end) != ';') 
+-            {
+-                end++;
++        int end = start;
++        // Scan digits until semicolon or invalid character
++        while (end < seqEnd) {
++            char c = input.charAt(end);
++            if (c == ';') break;
++            if (isHex) {
++                if (!Character.isDigit(c) && !(c >= 'a' && c <= 'f') && !(c >= 'A' && c <= 'F')) {
++                    break;
++                }
++            } else {
++                if (!Character.isDigit(c)) {
++                    break;
++                }
+             }
++            end++;
++        }
+ 
+-            int entityValue;
++        if (end > start) {
+             try {
+-                if(isHex) {
++                int entityValue;
++                if (isHex) {
+                     entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 16);
+                 } else {
+                     entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
+                 }
+-            } catch(NumberFormatException nfe) {
+-            System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start +"]["+ end +"]");
+-                return 0;
+-            }
+-
+-            if(entityValue > 0xFFFF) {
+-                char[] chrs = Character.toChars(entityValue);
+-                out.write(chrs[0]);
+-                out.write(chrs[1]);
+-            } else {
+-                out.write(entityValue);
+-            }
+ 
++                if (entityValue > 0xFFFF) {
++                    char[] chrs = Character.toChars(entityValue);
++                    out.write(chrs[0]);
++                    out.write(chrs[1]);
++                } else {
++                    out.write(entityValue);
++                }
+ 
+-            return 2 + (end - start) + (isHex ? 1 : 0) + 1;
++                // Return number of characters consumed (including ; if present)
++                return 2 + (end - start) + (isHex ? 1 : 0) + (end < seqEnd && input.charAt(end) == ';' ? 1 : 0);
++            } catch (NumberFormatException nfe) {
++                return 0;
++            }
+         }
+-        return 0;
+     }
++    return 0;
++}
+ }

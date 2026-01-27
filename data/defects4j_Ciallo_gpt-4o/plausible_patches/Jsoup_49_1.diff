@@ -1,0 +1,38 @@
+diff --git a/src/main/java/org/jsoup/nodes/Node.java b/src/main/java/org/jsoup/nodes/Node.java
+index 01a4cd1c..1dad6e14 100644
+--- a/src/main/java/org/jsoup/nodes/Node.java
++++ b/src/main/java/org/jsoup/nodes/Node.java
+@@ -435,16 +435,24 @@ public abstract class Node implements Cloneable {
+         }
+     }
+ 
+-    protected void addChildren(int index, Node... children) {
+-        Validate.noNullElements(children);
+-        ensureChildNodes();
+-        for (int i = children.length - 1; i >= 0; i--) {
+-            Node in = children[i];
+-            reparentChild(in);
+-            childNodes.add(index, in);
+-        }
+-        reindexChildren(index);
++protected void addChildren(int index, Node... children) {
++    Validate.noNullElements(children);
++    ensureChildNodes();
++    List<Node> temp = new ArrayList<Node>();
++
++    // Reparent and add all children to a temporary list
++    for (Node in : children) {
++        reparentChild(in);
++        temp.add(in);
+     }
++    
++    // Insert children from the temporary list into childNodes at the specified index
++    for (int i = 0; i < temp.size(); i++) {
++        childNodes.add(index + i, temp.get(i));
++    }
++
++    reindexChildren(index);
++}
+ 
+     protected void ensureChildNodes() {
+         if (childNodes == EMPTY_NODES) {

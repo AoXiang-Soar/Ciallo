@@ -1,0 +1,39 @@
+diff --git a/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java b/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java
+index 67b368deb..14cf635a6 100644
+--- a/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java
++++ b/src/main/java/org/apache/commons/math3/genetics/ElitisticListPopulation.java
+@@ -33,7 +33,7 @@ import org.apache.commons.math3.util.FastMath;
+ public class ElitisticListPopulation extends ListPopulation {
+ 
+     /** percentage of chromosomes copied to the next generation */
+-    private double elitismRate = 0.9;
++    private double elitismRate;
+ 
+     /**
+      * Creates a new ElitisticListPopulation instance.
+@@ -48,7 +48,7 @@ public class ElitisticListPopulation extends ListPopulation {
+                                    final int populationLimit,
+                                    final double elitismRate) {
+         super(chromosomes, populationLimit);
+-        this.elitismRate = elitismRate;
++        setElitismRate(elitismRate);
+     }
+ 
+     /**
+@@ -62,7 +62,7 @@ public class ElitisticListPopulation extends ListPopulation {
+      */
+     public ElitisticListPopulation(final int populationLimit, final double elitismRate) {
+         super(populationLimit);
+-        this.elitismRate = elitismRate;
++        setElitismRate(elitismRate);
+     }
+ 
+     /**
+@@ -108,5 +108,4 @@ public class ElitisticListPopulation extends ListPopulation {
+     public double getElitismRate() {
+         return this.elitismRate;
+     }
+-
+-}
++}
+\ No newline at end of file

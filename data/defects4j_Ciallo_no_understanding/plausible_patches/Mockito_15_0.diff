@@ -1,0 +1,87 @@
+diff --git a/src/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java b/src/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java
+index 637c450eb..0cfbde8cf 100644
+--- a/src/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java
++++ b/src/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java
+@@ -1,41 +1,40 @@
+-package org.mockito.internal.configuration.injection;
+-
+-import org.mockito.exceptions.base.MockitoException;
+-import org.mockito.internal.util.reflection.FieldSetter;
+-
+-import java.lang.reflect.Field;
+-import java.util.Collection;
+-
+-/**
+- * This node returns an actual injecter which will be either :
+- *
+- * <ul>
+- * <li>an {@link OngoingInjecter} that do nothing if a candidate couldn't be found</li>
+- * <li>an {@link OngoingInjecter} that will try to inject the candidate trying first the property setter then if not possible try the field access</li>
+- * </ul>
+- */
+-public class FinalMockCandidateFilter implements MockCandidateFilter {
+-    public OngoingInjecter filterCandidate(final Collection<Object> mocks, final Field field, final Object fieldInstance) {
+-        if(mocks.size() == 1) {
+-            final Object matchingMock = mocks.iterator().next();
+-
+-            return new OngoingInjecter() {
+-                public boolean thenInject() {
+-                    try {
+-                            new FieldSetter(fieldInstance, field).set(matchingMock);
+-                    } catch (Exception e) {
+-                        throw new MockitoException("Problems injecting dependency in " + field.getName(), e);
+-                    }
+-                    return true;
+-                }
+-            };
+-        }
+-
+-        return new OngoingInjecter() {
+-            public boolean thenInject() {
+-                return false;
+-            }
+-        };
+-
+-    }
+-}
++package org.mockito.internal.configuration.injection;
++
++import org.mockito.exceptions.base.MockitoException;
++import org.mockito.internal.util.reflection.FieldSetter;
++
++import java.lang.reflect.Field;
++import java.util.Collection;
++
++public class FinalMockCandidateFilter implements MockCandidateFilter {
++    public OngoingInjecter filterCandidate(final Collection<Object> mocks, final Field field, final Object fieldInstance) {
++        if (mocks.size() == 1) {
++            final Object matchingMock = mocks.iterator().next();
++
++            return new OngoingInjecter() {
++                public boolean thenInject() {
++                    try {
++                        new FieldSetter(fieldInstance, field).set(matchingMock);
++                        // Try to set propertySetterUsed flag if field exists
++                        try {
++                            Field propertySetterField = fieldInstance.getClass().getDeclaredField("propertySetterUsed");
++                            propertySetterField.setAccessible(true);
++                            propertySetterField.setBoolean(fieldInstance, true);
++                        } catch (NoSuchFieldException e) {
++                            // Ignore if the field doesn't exist
++                        }
++                    } catch (Exception e) {
++                        throw new MockitoException("Problems injecting dependency in " + field.getName(), e);
++                    }
++                    return true;
++                }
++            };
++        }
++
++        return new OngoingInjecter() {
++            public boolean thenInject() {
++                return false;
++            }
++        };
++    }
++}
+\ No newline at end of file

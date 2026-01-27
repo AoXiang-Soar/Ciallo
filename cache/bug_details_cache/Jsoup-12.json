@@ -1,0 +1,16 @@
+{
+    "bug_id": 12,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "org.jsoup.select.Selector$SelectorParseException: Could not parse query '=x|y]': unexpected token at '=x|y]'",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void testByAttributeRegexCombined() {\n        Document doc = Jsoup.parse(\"<div><table class=x><td>Hello</td></table></div>\");\n        Elements els = doc.select(\"div table[class~=x|y]\");\n        assertEquals(1, els.size());\n        assertEquals(\"Hello\", els.text());\n    }",
+    "test_line": "        Elements els = doc.select(\"div table[class~=x|y]\");",
+    "test_name": "testByAttributeRegexCombined",
+    "test_suite": "org.jsoup.select.SelectorTest"
+}

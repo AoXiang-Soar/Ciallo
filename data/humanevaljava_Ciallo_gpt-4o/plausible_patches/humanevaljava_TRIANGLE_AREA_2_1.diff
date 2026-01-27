@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java b/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java
+index 484c02b..7c09015 100644
+--- a/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java
++++ b/src/main/java/humaneval/buggy/TRIANGLE_AREA_2.java
+@@ -17,11 +17,11 @@ public class TRIANGLE_AREA_2 {
+         if (a + b <= c || a + c <= b || b + c <= a)
+             return -1;
+         
+-        double s = (a + b + c) / 2.;
+-        double result = Math.pow(s, 0.5);
++        double s = (a + b + c) / 2.0;
++        double result = Math.sqrt(s * (s - a) * (s - b) * (s - c));
+         
+         BigDecimal bd = BigDecimal.valueOf(result);
+         bd = bd.setScale(2, RoundingMode.HALF_UP);
+         return bd.doubleValue();
+     }
+-}
++}
+\ No newline at end of file

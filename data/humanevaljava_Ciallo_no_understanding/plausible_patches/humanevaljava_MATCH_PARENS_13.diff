@@ -1,0 +1,93 @@
+diff --git a/src/main/java/humaneval/buggy/MATCH_PARENS.java b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+old mode 100644
+new mode 100755
+index 0d0da0a..4f4bca1
+--- a/src/main/java/humaneval/buggy/MATCH_PARENS.java
++++ b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+@@ -17,18 +17,76 @@ package humaneval.buggy;
+ 
+ public class MATCH_PARENS {
+     public static boolean check(String s) {
+-        int val = 0;
++        int balance = 0;
+         for(int i = 0; i < s.length(); i++) {
+-            if(s.charAt(i) == '(') val--;
+-            else val++;
+-            if(val < 0) return false;
++            if(s.charAt(i) == '(') balance++;
++            else balance--;
++            if(balance < 0) return false;
+         }
+-        return val == 0;
++        return balance == 0;
+     }
++    
+     public static String match_parens(String[] lst) {
+-        String S1 = lst[0] + lst[1];
+-        String S2 = lst[1] + lst[0];
+-        if(check(S1) || check(S2)) return "Yes";
++        String s1 = lst[0];
++        String s2 = lst[1];
++        
++        // Check obvious cases where at least one string is already balanced
++        if(check(s1 + s2) || check(s2 + s1)) {
++            return "Yes";
++        }
++        
++        // If total parentheses don't match, it's impossible
++        int count1 = 0, count2 = 0;
++        for(int i = 0; i < s1.length(); i++) {
++            if(s1.charAt(i) == '(') count1++;
++            else count1--;
++        }
++        for(int i = 0; i < s2.length(); i++) {
++            if(s2.charAt(i) == '(') count2++;
++            else count2--;
++        }
++        if(count1 + count2 != 0) {
++            return "No";
++        }
++        
++        // Try interleaving parts of the strings by checking if prefixes balance
++        int balance = 0;
++        int i = 0, j = 0;
++        while(i < s1.length() || j < s2.length()) {
++            if(balance < 0) break;
++            if(i < s1.length()) {
++                if(s1.charAt(i) == '(') balance++;
++                else balance--;
++                i++;
++            }
++            if(balance < 0) break;
++            if(j < s2.length()) {
++                if(s2.charAt(j) == '(') balance++;
++                else balance--;
++                j++;
++            }
++        }
++        if(balance == 0) return "Yes";
++        
++        balance = 0;
++        i = 0;
++        j = 0;
++        while(i < s1.length() || j < s2.length()) {
++            if(balance < 0) break;
++            if(j < s2.length()) {
++                if(s2.charAt(j) == '(') balance++;
++                else balance--;
++                j++;
++            }
++            if(balance < 0) break;
++            if(i < s1.length()) {
++                if(s1.charAt(i) == '(') balance++;
++                else balance--;
++                i++;
++            }
++        }
++        if(balance == 0) return "Yes";
++        
+         return "No";
+     }
+-}
++}
+\ No newline at end of file

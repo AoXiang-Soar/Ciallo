@@ -1,0 +1,16 @@
+{
+    "bug_id": "STRANGE_SORT_LIST",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_STRANGE_SORT_LIST.test_0:10 \u00bb TestTimedOut test timed out after 3000 mill...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        List<Integer> result = humaneval.buggy.STRANGE_SORT_LIST.strange_sort_list(\n            new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4))\n        );\n        org.junit.Assert.assertEquals(\n            result, new ArrayList<Integer>(Arrays.asList(1, 4, 2, 3))\n        );\n    }",
+    "test_line": "        List<Integer> result = humaneval.buggy.STRANGE_SORT_LIST.strange_sort_list(",
+    "test_name": "test_0",
+    "test_suite": "TEST_STRANGE_SORT_LIST"
+}

@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/MAXIMUM_K.java b/src/main/java/humaneval/buggy/MAXIMUM_K.java
+old mode 100644
+new mode 100755
+index 4f3e095..4e228c1
+--- a/src/main/java/humaneval/buggy/MAXIMUM_K.java
++++ b/src/main/java/humaneval/buggy/MAXIMUM_K.java
+@@ -32,9 +32,10 @@ public class MAXIMUM_K {
+     public static ArrayList<Integer> maximum_k(ArrayList<Integer> arr, int k) {
+         Collections.sort(arr);
+         ArrayList<Integer> result = new ArrayList<>();
+-        for(int i = arr.size() - 1; i >= arr.size() - k; i--) {
++        int start = arr.size() - k;
++        for(int i = start; i < arr.size(); i++) {
+             result.add(arr.get(i));
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

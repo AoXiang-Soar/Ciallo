@@ -1,0 +1,19 @@
+diff --git a/src/com/google/javascript/jscomp/Compiler.java b/src/com/google/javascript/jscomp/Compiler.java
+index 118502116..272f10c61 100644
+--- a/src/com/google/javascript/jscomp/Compiler.java
++++ b/src/com/google/javascript/jscomp/Compiler.java
+@@ -265,13 +265,13 @@ public class Compiler extends AbstractCompiler {
+             getDiagnosticGroups().getRegisteredGroups()));
+     guards.add(options.getWarningsGuard());
+ 
+-
+     // All passes must run the variable check. This synthesizes
+     // variables later so that the compiler doesn't crash. It also
+     // checks the externs file for validity. If you don't want to warn
+     // about missing variable declarations, we shut that specific
+     // error off.
+     if (!options.checkSymbols &&
++        !options.enables(DiagnosticGroups.CHECK_VARIABLES) &&
+         (warningsGuard == null || !warningsGuard.disables(
+             DiagnosticGroups.CHECK_VARIABLES))) {
+       guards.add(new DiagnosticGroupWarningsGuard(

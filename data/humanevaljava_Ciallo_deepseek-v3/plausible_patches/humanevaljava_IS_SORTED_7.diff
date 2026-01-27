@@ -1,0 +1,47 @@
+diff --git a/src/main/java/humaneval/buggy/IS_SORTED.java b/src/main/java/humaneval/buggy/IS_SORTED.java
+index 173398c..28400be 100644
+--- a/src/main/java/humaneval/buggy/IS_SORTED.java
++++ b/src/main/java/humaneval/buggy/IS_SORTED.java
+@@ -20,19 +20,30 @@ import java.util.HashMap;
+ 
+ public class IS_SORTED {
+     public static boolean is_sorted(int[] lst) {
+-        HashMap<Integer, Integer> count_num = new HashMap<>();
+-        for(int i = 0; i < lst.length; i++) {
+-            count_num.put(lst[i], 0);
+-        }
+-        for(int i = 0; i < lst.length; i++) {
+-            count_num.put(lst[i], count_num.get(lst[i]) + 1);
++        if (lst.length == 0) {
++            return true; // An empty list is considered sorted
+         }
++        
++        // Initialize a HashMap to count occurrences of each number
++        HashMap<Integer, Integer> count_num = new HashMap<>();
++        
++        // Iterate through the list to count duplicates and check order
+         for(int i = 0; i < lst.length; i++) {
+-            if(count_num.get(lst[i]) > 2) return false;
+-        }
+-        for(int i = 0; i < lst.length - 1; i++) {
+-            if(lst[i] <= lst[i + 1]) return false;
++            // Count occurrences of each number
++            count_num.put(lst[i], count_num.getOrDefault(lst[i], 0) + 1);
++            
++            // Check if any number occurs more than twice
++            if(count_num.get(lst[i]) > 2) {
++                return false;
++            }
++
++            // Check for ascending order
++            // Skip the first element, just compare consecutive pairs
++            if (i > 0 && lst[i - 1] > lst[i]) {
++                return false;
++            }
+         }
++        
+         return true;
+     }
+-}
++}
+\ No newline at end of file

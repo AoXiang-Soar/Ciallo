@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/VOWELS_COUNT.java b/src/main/java/humaneval/buggy/VOWELS_COUNT.java
+old mode 100644
+new mode 100755
+index 5b0715f..d205cc0
+--- a/src/main/java/humaneval/buggy/VOWELS_COUNT.java
++++ b/src/main/java/humaneval/buggy/VOWELS_COUNT.java
+@@ -14,15 +14,15 @@ Example:
+ public class VOWELS_COUNT {
+     public static int vowels_count(String str) {
+         int result = 0;
+-        char[] str_chars = str.toCharArray();
++        String lowerStr = str.toLowerCase();
++        char[] str_chars = lowerStr.toCharArray();
+ 
+         for (char c : str_chars) {
+-            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'A' || c == 'E' || c == 'I' || c == 'O'
+-                    || c == 'U')
++            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+                 result += 1;
+         }
+-        if (str_chars[str_chars.length - 1] == 'y')
++        if (str_chars.length > 0 && str_chars[str_chars.length - 1] == 'y')
+             result += 1;
+         return result;
+     }
+-}
++}
+\ No newline at end of file

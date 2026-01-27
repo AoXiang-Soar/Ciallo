@@ -1,0 +1,97 @@
+diff --git a/src/main/java/humaneval/buggy/DO_ALGEBRA.java b/src/main/java/humaneval/buggy/DO_ALGEBRA.java
+index 08aedcb..9c63461 100644
+--- a/src/main/java/humaneval/buggy/DO_ALGEBRA.java
++++ b/src/main/java/humaneval/buggy/DO_ALGEBRA.java
+@@ -3,37 +3,64 @@ package humaneval.buggy;
+ import javax.script.ScriptEngineManager;
+ import javax.script.ScriptEngine;
+ import javax.script.ScriptException;
+-
+-// Given two lists operator, and operand. The first list has basic algebra operations, and 
+-// the second list is a list of integers. Use the two given lists to build the algebric 
+-// expression and return the evaluation of this expression.
+-
+-// The basic algebra operations:
+-// Addition ( + ) 
+-// Subtraction ( - ) 
+-// Multiplication ( * ) 
+-// Floor division ( / ) 
+-// Exponentiation ( ** ), deprecated in Java
+-
+-// Example:
+-// operator['+', '*', '-']
+-// array = [2, 3, 4, 5]
+-// result = 2 + 3 * 4 - 5
+-// => result = 9
+-
+-// Note:
+-//     The length of operator list is equal to the length of operand list minus one.
+-//     Operand is a list of of non-negative integers.
+-//     Operator list has at least one operator, and operand list has at least two operands.
++import java.util.Stack;
+ 
+ public class DO_ALGEBRA {
+     public static double do_algebra(String[] operator, int[] operand) throws NumberFormatException, ScriptException {
++        String[] postfix = new String[operand.length + operator.length];
++        Stack<String> opStack = new Stack<>();
++        int j = 0;
++        
++        postfix[j++] = String.valueOf(operand[0]);
++        
++        for (int i = 0; i < operator.length; i++) {
++            while (!opStack.empty() && precedence(opStack.peek()) >= precedence(operator[i])) {
++                postfix[j++] = opStack.pop();
++            }
++            opStack.push(operator[i]);
++            postfix[j++] = String.valueOf(operand[i + 1]);
++        }
++        
++        while (!opStack.empty()) {
++            postfix[j++] = opStack.pop();
++        }
++        
+         ScriptEngineManager mgr = new ScriptEngineManager();
+         ScriptEngine engine = mgr.getEngineByName("JavaScript");
+-        String expression = "";
+-        for (int i = 0; i < operand.length; i += 1) {
+-            expression += operator[i] + operand[i];
++        String expression = String.join(" ", postfix).trim().replaceAll(" +", " ");
++        return Double.parseDouble(engine.eval(parsePostfix(expression)).toString());
++    }
++    
++    private static int precedence(String op) {
++        switch (op) {
++            case "**": return 4;
++            case "*":
++            case "/": return 3;
++            case "+":
++            case "-": return 2;
++            default: return 1;
++        }
++    }
++    
++    private static String parsePostfix(String expr) {
++        String[] tokens = expr.split(" ");
++        Stack<String> stack = new Stack<>();
++        
++        for (String token : tokens) {
++            if (token.matches("-?\\d+")) {
++                stack.push(token);
++            } else {
++                double b = Double.parseDouble(stack.pop());
++                double a = Double.parseDouble(stack.pop());
++                switch (token) {
++                    case "+": stack.push(String.valueOf(a + b)); break;
++                    case "-": stack.push(String.valueOf(a - b)); break;
++                    case "*": stack.push(String.valueOf(a * b)); break;
++                    case "/": stack.push(String.valueOf(a / b)); break;
++                    case "**": stack.push(String.valueOf(Math.pow(a, b))); break;
++                }
++            }
+         }
+-        return Double.parseDouble(engine.eval(expression).toString());
++        return stack.pop();
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 30,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        final int n1n2prod = n1 * n2;",
+    "code": "    private double calculateAsymptoticPValue(final double Umin,\n                                             final int n1,\n                                             final int n2)\n        throws ConvergenceException, MaxCountExceededException {\n\n        final int n1n2prod = n1 * n2;\n\n        // http://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U#Normal_approximation\n        final double EU = n1n2prod / 2.0;\n        final double VarU = n1n2prod * (n1 + n2 + 1) / 12.0;\n\n        final double z = (Umin - EU) / FastMath.sqrt(VarU);\n\n        final NormalDistribution standardNormal = new NormalDistribution(0, 1);\n\n        return 2 * standardNormal.cumulativeProbability(z);\n    }",
+    "fixed_code": "    private double calculateAsymptoticPValue(final double Umin,\n                                             final int n1,\n                                             final int n2)\n        throws ConvergenceException, MaxCountExceededException {\n\n        final double n1n2prod = n1 * n2;\n\n        // http://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U#Normal_approximation\n        final double EU = n1n2prod / 2.0;\n        final double VarU = n1n2prod * (n1 + n2 + 1) / 12.0;\n\n        final double z = (Umin - EU) / FastMath.sqrt(VarU);\n\n        final NormalDistribution standardNormal = new NormalDistribution(0, 1);\n\n        return 2 * standardNormal.cumulativeProbability(z);\n    }",
+    "fixed_lines": "        final double n1n2prod = n1 * n2;",
+    "masked_code": "    private double calculateAsymptoticPValue(final double Umin,\n                                             final int n1,\n                                             final int n2)\n        throws ConvergenceException, MaxCountExceededException {\n\n>>> [ INFILL ] <<<\n\n        // http://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U#Normal_approximation\n        final double EU = n1n2prod / 2.0;\n        final double VarU = n1n2prod * (n1 + n2 + 1) / 12.0;\n\n        final double z = (Umin - EU) / FastMath.sqrt(VarU);\n\n        final NormalDistribution standardNormal = new NormalDistribution(0, 1);\n\n        return 2 * standardNormal.cumulativeProbability(z);\n    }",
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    public void testBigDataSet() throws Exception {\n        double[] d1 = new double[1500];\n        double[] d2 = new double[1500];\n        for (int i = 0; i < 1500; i++) {\n            d1[i] = 2 * i;\n            d2[i] = 2 * i + 1;\n        }\n        double result = testStatistic.mannWhitneyUTest(d1, d2);\n        Assert.assertTrue(result > 0.1);\n    }",
+    "test_line": "        Assert.assertTrue(result > 0.1);",
+    "test_name": "testBigDataSet",
+    "test_suite": "org.apache.commons.math3.stat.inference.MannWhitneyUTestTest"
+}

@@ -1,0 +1,16 @@
+{
+    "bug_id": 16,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<0.0> but was:<Infinity>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testMath905LargePositive() {\n        final double start = StrictMath.log(Double.MAX_VALUE);\n        final double endT = StrictMath.sqrt(2) * StrictMath.sqrt(Double.MAX_VALUE);\n        final double end = 2 * StrictMath.log(endT);\n\n        double maxErr = 0;\n        for (double x = start; x < end; x += 1e-3) {\n            final double tst = FastMath.cosh(x);\n            final double ref = Math.cosh(x);\n            maxErr = FastMath.max(maxErr, FastMath.abs(ref - tst) / FastMath.ulp(ref));            \n        }\n        Assert.assertEquals(0, maxErr, 3);\n\n        for (double x = start; x < end; x += 1e-3) {\n            final double tst = FastMath.sinh(x);\n            final double ref = Math.sinh(x);\n            maxErr = FastMath.max(maxErr, FastMath.abs(ref - tst) / FastMath.ulp(ref));            \n        }\n        Assert.assertEquals(0, maxErr, 3);\n    }",
+    "test_line": "        Assert.assertEquals(0, maxErr, 3);",
+    "test_name": "testMath905LargePositive",
+    "test_suite": "org.apache.commons.math3.util.FastMathTest"
+}

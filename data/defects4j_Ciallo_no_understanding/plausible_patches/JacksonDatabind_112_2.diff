@@ -1,0 +1,84 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringCollectionDeserializer.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringCollectionDeserializer.java
+index f50ca3629..0a2365454 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/StringCollectionDeserializer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/StringCollectionDeserializer.java
+@@ -97,41 +97,52 @@ public final class StringCollectionDeserializer
+     /**********************************************************
+      */
+     @Override
+-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
+-            BeanProperty property) throws JsonMappingException
+-    {
+-        // May need to resolve types for delegate-based creators:
+-        JsonDeserializer<Object> delegate = null;
+-        if (_valueInstantiator != null) {
+-            // [databind#2324]: check both array-delegating and delegating
++public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
++        BeanProperty property) throws JsonMappingException {
++    // Handle delegate-based creators more comprehensively
++    JsonDeserializer<Object> delegate = null;
++    if (_valueInstantiator != null) {
++        // Check for array-delegating creator first as it's more specific
++        AnnotatedWithParams arrayDelegateCreator = _valueInstantiator.getArrayDelegateCreator();
++        if (arrayDelegateCreator != null) {
++            JavaType arrayDelegateType = _valueInstantiator.getArrayDelegateType(ctxt.getConfig());
++            if (arrayDelegateType != null) {
++                delegate = findDeserializer(ctxt, arrayDelegateType, property);
++            }
++        }
++        
++        // If no array delegate found, try regular delegate creator
++        if (delegate == null) {
+             AnnotatedWithParams delegateCreator = _valueInstantiator.getDelegateCreator();
+             if (delegateCreator != null) {
+                 JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
+-                delegate = findDeserializer(ctxt, delegateType, property);
++                if (delegateType != null) {
++                    delegate = findDeserializer(ctxt, delegateType, property);
++                }
+             }
+         }
+-        JsonDeserializer<?> valueDeser = _valueDeserializer;
+-        final JavaType valueType = _containerType.getContentType();
++    }
++
++    // Rest of the method remains the same as original...
++    JsonDeserializer<?> valueDeser = _valueDeserializer;
++    final JavaType valueType = _containerType.getContentType();
++    if (valueDeser == null) {
++        valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+         if (valueDeser == null) {
+-            // [databind#125]: May have a content converter
+-            valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+-            if (valueDeser == null) {
+-            // And we may also need to get deserializer for String
+-                valueDeser = ctxt.findContextualValueDeserializer(valueType, property);
+-            }
+-        } else { // if directly assigned, probably not yet contextual, so:
+-            valueDeser = ctxt.handleSecondaryContextualization(valueDeser, property, valueType);
+-        }
+-        // 11-Dec-2015, tatu: Should we pass basic `Collection.class`, or more refined? Mostly
+-        //   comes down to "List vs Collection" I suppose... for now, pass Collection
+-        Boolean unwrapSingle = findFormatFeature(ctxt, property, Collection.class,
+-                JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+-        NullValueProvider nuller = findContentNullProvider(ctxt, property, valueDeser);
+-        if (isDefaultDeserializer(valueDeser)) {
+-            valueDeser = null;
++            valueDeser = ctxt.findContextualValueDeserializer(valueType, property);
+         }
+-        return withResolved(delegate, valueDeser, nuller, unwrapSingle);
++    } else {
++        valueDeser = ctxt.handleSecondaryContextualization(valueDeser, property, valueType);
+     }
++
++    Boolean unwrapSingle = findFormatFeature(ctxt, property, Collection.class,
++            JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
++    NullValueProvider nuller = findContentNullProvider(ctxt, property, valueDeser);
++    if (isDefaultDeserializer(valueDeser)) {
++        valueDeser = null;
++    }
++    return withResolved(delegate, valueDeser, nuller, unwrapSingle);
++}
+     
+     /*
+     /**********************************************************

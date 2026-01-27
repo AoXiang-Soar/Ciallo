@@ -1,0 +1,70 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java b/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
+index 9d2f74b35..2e30c98e8 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
++++ b/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
+@@ -352,29 +352,45 @@ public class TreeTraversingParser extends ParserMinimalBase
+      */
+ 
+     @Override
+-    public byte[] getBinaryValue(Base64Variant b64variant)
+-        throws IOException, JsonParseException
+-    {
+-        // Multiple possibilities...
+-        JsonNode n = currentNode();
+-        if (n != null) {
+-            // [databind#2096]: although `binaryValue()` works for real binary node
+-            // and embedded "POJO" node, coercion from TextNode may require variant, so:
+-            byte[] data = n.binaryValue();
+-            if (data != null) {
+-                return data;
+-            }
+-            if (n.isPojo()) {
+-                Object ob = ((POJONode) n).getPojo();
+-                if (ob instanceof byte[]) {
+-                    return (byte[]) ob;
+-                }
+-            }
+-        }
+-        // otherwise return null to mark we have no binary content
++public byte[] getBinaryValue(Base64Variant b64variant)
++    throws IOException, JsonParseException
++{
++    if (b64variant == null) {
++        throw new IllegalArgumentException("Base64Variant cannot be null");
++    }
++
++    JsonNode n = currentNode();
++    if (n == null) {
+         return null;
+     }
+ 
++    // First try binary node
++    if (n.isBinary()) {
++        return n.binaryValue();
++    }
++
++    // Then try POJO node
++    if (n.isPojo()) {
++        Object ob = ((POJONode) n).getPojo();
++        if (ob instanceof byte[]) {
++            return (byte[]) ob;
++        }
++    }
++
++    // Finally try text node with Base64
++    if (n.isTextual()) {
++        String str = n.textValue();
++        try {
++            return b64variant.decode(str);
++        } catch (IllegalArgumentException e) {
++            // Return null for malformed Base64 content per method contract
++            return null;
++        }
++    }
++
++    return null;
++}
++
+ 
+     @Override
+     public int readBinaryValue(Base64Variant b64variant, OutputStream out)

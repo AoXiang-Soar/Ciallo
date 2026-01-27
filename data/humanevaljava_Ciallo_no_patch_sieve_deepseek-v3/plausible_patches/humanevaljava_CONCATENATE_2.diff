@@ -1,0 +1,25 @@
+diff --git a/src/main/java/humaneval/buggy/CONCATENATE.java b/src/main/java/humaneval/buggy/CONCATENATE.java
+index 7069bba..950fb0b 100644
+--- a/src/main/java/humaneval/buggy/CONCATENATE.java
++++ b/src/main/java/humaneval/buggy/CONCATENATE.java
+@@ -3,8 +3,15 @@ package humaneval.buggy;
+ public class CONCATENATE {
+     public static String concatenate(String[] strings) {
+         String result = null;
+-        for (String string : strings)
+-            result += string;
+-        return result;
++        for (String string : strings) {
++            if (string != null) {
++                if (result == null) {
++                    result = string;
++                } else {
++                    result += string;
++                }
++            }
++        }
++        return result == null ? "" : result;
+     }
+-}
++}
+\ No newline at end of file

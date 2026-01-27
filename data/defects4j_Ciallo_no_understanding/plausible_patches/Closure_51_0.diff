@@ -1,0 +1,31 @@
+diff --git a/src/com/google/javascript/jscomp/CodeConsumer.java b/src/com/google/javascript/jscomp/CodeConsumer.java
+index 146d2f8b4..4932f6b66 100644
+--- a/src/com/google/javascript/jscomp/CodeConsumer.java
++++ b/src/com/google/javascript/jscomp/CodeConsumer.java
+@@ -238,6 +238,11 @@ abstract class CodeConsumer {
+       add(" ");
+     }
+ 
++    if (x == 0 && 1/x == Double.NEGATIVE_INFINITY) {
++      add("-0.0");
++      return;
++    }
++
+     if ((long) x == x) {
+       long value = (long) x;
+       long mantissa = value;
+@@ -256,7 +261,6 @@ abstract class CodeConsumer {
+     } else {
+       add(String.valueOf(x));
+     }
+-
+   }
+ 
+   static boolean isWordChar(char ch) {
+@@ -286,4 +290,4 @@ abstract class CodeConsumer {
+ 
+   /** Called when we're at the end of a file. */
+   void endFile() {}
+-}
++}
+\ No newline at end of file

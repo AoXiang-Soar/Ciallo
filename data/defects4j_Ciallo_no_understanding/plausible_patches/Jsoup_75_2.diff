@@ -1,0 +1,53 @@
+diff --git a/src/main/java/org/jsoup/nodes/Attributes.java b/src/main/java/org/jsoup/nodes/Attributes.java
+index 1f4d812f..3dbf3ea7 100644
+--- a/src/main/java/org/jsoup/nodes/Attributes.java
++++ b/src/main/java/org/jsoup/nodes/Attributes.java
+@@ -307,23 +307,34 @@ public class Attributes implements Iterable<Attribute>, Cloneable {
+         return accum.toString();
+     }
+ 
+-    final void html(final Appendable accum, final Document.OutputSettings out) throws IOException {
+-        final int sz = size;
+-        for (int i = 0; i < sz; i++) {
+-            // inlined from Attribute.html()
+-            final String key = keys[i];
+-            final String val = vals[i];
+-            accum.append(' ').append(key);
+-
+-            // collapse checked=null, checked="", checked=checked; write out others
+-            if (!(out.syntax() == Document.OutputSettings.Syntax.html
+-                && (val == null || val.equals(key) && Attribute.isBooleanAttribute(key)))) {
+-                accum.append("=\"");
+-                Entities.escape(accum, val == null ? EmptyString : val, out, true, false, false);
+-                accum.append('"');
++final void html(final Appendable accum, final Document.OutputSettings out) throws IOException {
++    final int sz = size;
++    for (int i = 0; i < sz; i++) {
++        final String key = keys[i];
++        final String val = vals[i];
++        accum.append(' ').append(key);
++
++        // Handle HTML boolean attributes where value can be omitted
++        if (out.syntax() == Document.OutputSettings.Syntax.html) {
++            if (Attribute.isBooleanAttribute(key)) {
++                // Only output value if it's non-empty and doesn't match the attribute name
++                if (val != null && !val.isEmpty() && !val.equals(key)) {
++                    accum.append("=\"");
++                    Entities.escape(accum, val, out, true, false, false);
++                    accum.append('"');
++                }
++                continue;
+             }
+         }
++
++        // Default handling for non-HTML syntax or non-boolean attributes
++        if (val != null || out.syntax() != Document.OutputSettings.Syntax.html) {
++            accum.append("=\"");
++            Entities.escape(accum, val == null ? EmptyString : val, out, true, false, false);
++            accum.append('"');
++        }
+     }
++}
+ 
+     @Override
+     public String toString() {

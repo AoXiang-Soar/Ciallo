@@ -1,0 +1,57 @@
+diff --git a/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java b/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
+index 4045209..4b7629b 100644
+--- a/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
++++ b/src/main/java/humaneval/buggy/UNIQUE_DIGITS.java
+@@ -3,38 +3,33 @@ package humaneval.buggy;
+ import java.util.ArrayList;
+ import java.util.Collections;
+ 
+-/*
+- * Given a list of positive integers x. return a sorted list of all 
+-    elements that hasn't any even digit.
+-
+-    Note: Returned list should be sorted in increasing order.
+-    
+-    For example:
+-    >>> unique_digits([15, 33, 1422, 1])
+-    [1, 15, 33]
+-    >>> unique_digits([152, 323, 1422, 10])
+-    []
+- */
+-
+ public class UNIQUE_DIGITS {
+     public static ArrayList<Integer> unique_digits(ArrayList<Integer> x) {
+         ArrayList<Integer> res = new ArrayList<Integer>();
+         for(int i : x) {
+             int num = i;
+-            boolean all_odd = true;
++            boolean hasEvenDigit = false;
++
++            // Check each digit of the number
+             while(num > 0) {
+                 int curr_digit = num % 10;
+-                if((curr_digit % 2) != 0) {
+-                    all_odd = true;
++
++                // If the digit is even, mark hasEvenDigit as true and break
++                if((curr_digit % 2) == 0) {
++                    hasEvenDigit = true;
+                     break;
+                 }
+                 num /= 10;
+             }
+-            if(all_odd) {
++
++            // If no even digit was found, add the number to the result list
++            if(!hasEvenDigit) {
+                 res.add(i);
+             }
+         }
++
++        // Sort the resulting list in increasing order
+         Collections.sort(res);
+         return res;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,54 @@
+diff --git a/src/main/java/humaneval/buggy/FIX_SPACES.java b/src/main/java/humaneval/buggy/FIX_SPACES.java
+index 2f27898..6583163 100644
+--- a/src/main/java/humaneval/buggy/FIX_SPACES.java
++++ b/src/main/java/humaneval/buggy/FIX_SPACES.java
+@@ -13,26 +13,34 @@ public class FIX_SPACES {
+     public static String fix_spaces(String text) {
+         String new_text = "";
+         int i = 0;
+-        int start = 0;
+-        int end = 0;
++        int space_count = 0;
++
+         while (i < text.length()) {
+-            if (text.charAt(i) == ' ') end += 1;
+-            else {
+-                if (end - start > 2) new_text += "-" + text.substring(i, i + 1);
+-                else if (end - start > 0) {
+-                    for (int j = start; j < end; j += 1) {
++            if (text.charAt(i) == ' ') {
++                space_count++;
++            } else {
++                if (space_count > 2) {
++                    new_text += "-";
++                } else if (space_count > 0) {
++                    for (int j = 0; j < space_count; j++) {
+                         new_text += "_";
+                     }
+-                    new_text += text.substring(i, i + 1);
+-                } else {
+-                    new_text += text.substring(i, i + 1);
+                 }
+-                start = i + 1;
+-                end = i + 1;
++                new_text += text.charAt(i);
++                space_count = 0;
++            }
++            i++;
++        }
++
++        // If there are spaces at the end of the string, handle them correctly
++        if (space_count > 2) {
++            new_text += "-";
++        } else if (space_count > 0) {
++            for (int j = 0; j < space_count; j++) {
++                new_text += "_";
+             }
+-            i += 1;
+         }
+ 
+         return new_text;
+     }
+-}
++}
+\ No newline at end of file

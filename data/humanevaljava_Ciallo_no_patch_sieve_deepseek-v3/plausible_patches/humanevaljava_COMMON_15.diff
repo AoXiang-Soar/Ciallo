@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/COMMON.java b/src/main/java/humaneval/buggy/COMMON.java
+index f818c29..52483e7 100644
+--- a/src/main/java/humaneval/buggy/COMMON.java
++++ b/src/main/java/humaneval/buggy/COMMON.java
+@@ -10,7 +10,7 @@ import java.util.*;
+ 
+ public class COMMON {
+     public static int[] common(int[] l1, int[] l2) {
+-        ArrayList<Integer> common = new ArrayList<Integer>();
++        Set<Integer> common = new HashSet<>();
+         
+         for (int i = 0; i < l1.length; i += 1){
+             for (int j = 0; j < l2.length; j += 1){
+@@ -18,6 +18,7 @@ public class COMMON {
+                     common.add(l1[i]);
+             }
+         }
++        
+         int[] result = new int[common.size()];
+         int index = 0;
+         for (Integer c : common) {
+@@ -27,4 +28,4 @@ public class COMMON {
+         Arrays.sort(result);
+         return result;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/IS_PALINDROME.java b/src/main/java/humaneval/buggy/IS_PALINDROME.java
+index 9b34adb..e382ce4 100644
+--- a/src/main/java/humaneval/buggy/IS_PALINDROME.java
++++ b/src/main/java/humaneval/buggy/IS_PALINDROME.java
+@@ -1,21 +1,13 @@
+ package humaneval.buggy;
+ 
+-/* Checks if given string is a palindrome
+->>> is_palindrome('')
+-True
+->>> is_palindrome('aba')
+-True
+->>> is_palindrome('aaaaa')
+-True
+->>> is_palindrome('zbcd')
+-False */
+-
+ public class IS_PALINDROME {
+     public static boolean is_palindrome(String text) {
+-        for (int i = 0; i < text.length(); i += 1){
+-            if (text.charAt(i) == text.charAt(text.length() - i))
+-                return true;
++        int len = text.length();
++        for (int i = 0; i < len / 2; i++) {
++            if (text.charAt(i) != text.charAt(len - 1 - i)) {
++                return false;
++            }
+         }
+-        return false;
++        return true;
+     }
+-}
++}
+\ No newline at end of file

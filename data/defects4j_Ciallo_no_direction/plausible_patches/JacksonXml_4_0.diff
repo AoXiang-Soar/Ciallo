@@ -1,0 +1,33 @@
+diff --git a/src/main/java/com/fasterxml/jackson/dataformat/xml/ser/XmlSerializerProvider.java b/src/main/java/com/fasterxml/jackson/dataformat/xml/ser/XmlSerializerProvider.java
+index 327d1497..399886ca 100644
+--- a/src/main/java/com/fasterxml/jackson/dataformat/xml/ser/XmlSerializerProvider.java
++++ b/src/main/java/com/fasterxml/jackson/dataformat/xml/ser/XmlSerializerProvider.java
+@@ -197,15 +197,20 @@ public class XmlSerializerProvider extends DefaultSerializerProvider
+         }
+     }
+ 
+-    protected void _serializeXmlNull(JsonGenerator jgen) throws IOException
+-    {
+-        // 14-Nov-2016, tatu: As per [dataformat-xml#213], we may have explicitly
+-        //    configured root name...
+-        if (jgen instanceof ToXmlGenerator) {
+-            _initWithRootName((ToXmlGenerator) jgen, ROOT_NAME_FOR_NULL);
+-        }
+-        super.serializeValue(jgen, null);
++protected void _serializeXmlNull(JsonGenerator jgen) throws IOException
++{
++    // First try to get configured root name
++    QName rootName = _rootNameFromConfig();
++    // If not configured, use the standard ROOT_NAME_FOR_NULL
++    if (rootName == null) {
++        rootName = ROOT_NAME_FOR_NULL;
+     }
++    ToXmlGenerator xgen = _asXmlGenerator(jgen);
++    if (xgen != null) {
++        _initWithRootName(xgen, rootName);
++    }
++    super.serializeValue(jgen, null);
++}
+     
+     protected void _startRootArray(ToXmlGenerator xgen, QName rootName) throws IOException
+     {

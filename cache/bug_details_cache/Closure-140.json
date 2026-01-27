@@ -1,0 +1,16 @@
+{
+    "bug_id": 140,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: compiler.reportCodeChange() was called even though nothing changed",
+    "test_framework": "defects4j",
+    "test_function": "  public void testEmptyModule() {\n    // When the dest module is empty, it might try to move the code to the\n    // one of the modules that the empty module depends on. In some cases\n    // this might ended up to be the same module as the definition of the code.\n    // When that happens, CrossMooduleCodeMotion might report a code change\n    // while nothing is moved. This should not be a problem if we know all\n    // modules are non-empty.\n    JSModule m1 = new JSModule(\"m1\");\n    m1.add(JSSourceFile.fromCode(\"m1\", \"function x() {}\"));\n    \n    JSModule empty = new JSModule(\"empty\");\n    empty.addDependency(m1);\n    \n    JSModule m2 = new JSModule(\"m2\");\n    m2.add(JSSourceFile.fromCode(\"m2\", \"x()\"));\n    m2.addDependency(empty);\n    \n    JSModule m3 = new JSModule(\"m3\");\n    m3.add(JSSourceFile.fromCode(\"m3\", \"x()\"));\n    m3.addDependency(empty);\n    \n    test(new JSModule[] {m1,empty,m2,m3},\n        new String[] {\n          \"\",\n          \"function x() {}\",\n          \"x()\",\n          \"x()\"\n    });\n  }",
+    "test_line": "    test(new JSModule[] {m1,empty,m2,m3},",
+    "test_name": "testEmptyModule",
+    "test_suite": "com.google.javascript.jscomp.CrossModuleCodeMotionTest"
+}

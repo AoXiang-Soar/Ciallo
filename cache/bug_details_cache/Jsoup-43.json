@@ -1,0 +1,16 @@
+{
+    "bug_id": 43,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "            if (element.equals(search))",
+    "code": "    private static <E extends Element> Integer indexInList(Element search, List<E> elements) {\n        Validate.notNull(search);\n        Validate.notNull(elements);\n\n        for (int i = 0; i < elements.size(); i++) {\n            E element = elements.get(i);\n            if (element.equals(search))\n                return i;\n        }\n        return null;\n    }",
+    "fixed_code": "    private static <E extends Element> Integer indexInList(Element search, List<E> elements) {\n        Validate.notNull(search);\n        Validate.notNull(elements);\n\n        for (int i = 0; i < elements.size(); i++) {\n            E element = elements.get(i);\n            if (element == search)\n                return i;\n        }\n        return null;\n    }",
+    "fixed_lines": "            if (element == search)",
+    "masked_code": "    private static <E extends Element> Integer indexInList(Element search, List<E> elements) {\n        Validate.notNull(search);\n        Validate.notNull(elements);\n\n        for (int i = 0; i < elements.size(); i++) {\n            E element = elements.get(i);\n>>> [ INFILL ] <<<\n                return i;\n        }\n        return null;\n    }",
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void testElementSiblingIndexSameContent() {\n        Document doc = Jsoup.parse(\"<div><p>One</p>...<p>One</p>...<p>One</p>\");\n        Elements ps = doc.select(\"p\");\n        assertTrue(0 == ps.get(0).elementSiblingIndex());\n        assertTrue(1 == ps.get(1).elementSiblingIndex());\n        assertTrue(2 == ps.get(2).elementSiblingIndex());\n    }",
+    "test_line": "        assertTrue(1 == ps.get(1).elementSiblingIndex());",
+    "test_name": "testElementSiblingIndexSameContent",
+    "test_suite": "org.jsoup.nodes.ElementTest"
+}

@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/STRONGEST_EXTENSION.java b/src/main/java/humaneval/buggy/STRONGEST_EXTENSION.java
+old mode 100644
+new mode 100755
+index 7ff1563..8aca2ef
+--- a/src/main/java/humaneval/buggy/STRONGEST_EXTENSION.java
++++ b/src/main/java/humaneval/buggy/STRONGEST_EXTENSION.java
+@@ -19,18 +19,21 @@ package humaneval.buggy;
+ public class STRONGEST_EXTENSION {
+     public static String strongest_extension(String class_name, String[] extensions) {
+         String strong = null;
+-        int val = Integer.MIN_VALUE;
++        int max_val = Integer.MIN_VALUE;
+ 
+         for (String s : extensions) {
+             int CAP = 0;
+             int SM = 0;
+             for (char c : s.toCharArray()) {
+-                if (Character.toUpperCase(c) == c) SM += 1;
+-                if (Character.toLowerCase(c) == c) CAP += 1;
++                if (Character.isUpperCase(c)) CAP += 1;
++                if (Character.isLowerCase(c)) SM += 1;
++            }
++            int current_val = CAP - SM;
++            if (current_val > max_val) {
++                max_val = current_val;
++                strong = s;
+             }
+-            val = CAP - SM;
+-            strong = s;
+         }
+         return class_name + "." + strong;
+     }
+-}
++}
+\ No newline at end of file

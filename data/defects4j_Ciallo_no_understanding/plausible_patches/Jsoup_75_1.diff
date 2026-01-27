@@ -1,0 +1,46 @@
+diff --git a/src/main/java/org/jsoup/nodes/Attributes.java b/src/main/java/org/jsoup/nodes/Attributes.java
+index 1f4d812f..66ad5e82 100644
+--- a/src/main/java/org/jsoup/nodes/Attributes.java
++++ b/src/main/java/org/jsoup/nodes/Attributes.java
+@@ -307,23 +307,26 @@ public class Attributes implements Iterable<Attribute>, Cloneable {
+         return accum.toString();
+     }
+ 
+-    final void html(final Appendable accum, final Document.OutputSettings out) throws IOException {
+-        final int sz = size;
+-        for (int i = 0; i < sz; i++) {
+-            // inlined from Attribute.html()
+-            final String key = keys[i];
+-            final String val = vals[i];
+-            accum.append(' ').append(key);
+-
+-            // collapse checked=null, checked="", checked=checked; write out others
+-            if (!(out.syntax() == Document.OutputSettings.Syntax.html
+-                && (val == null || val.equals(key) && Attribute.isBooleanAttribute(key)))) {
+-                accum.append("=\"");
+-                Entities.escape(accum, val == null ? EmptyString : val, out, true, false, false);
+-                accum.append('"');
+-            }
++final void html(final Appendable accum, final Document.OutputSettings out) throws IOException {
++    final int sz = size;
++    for (int i = 0; i < sz; i++) {
++        final String key = keys[i];
++        final String val = vals[i];
++        accum.append(' ').append(key);
++
++        // collapse empty or self-matching values for boolean attributes in HTML syntax
++        boolean isHtml = out.syntax() == Document.OutputSettings.Syntax.html;
++        boolean isBooleanAttr = Attribute.isBooleanAttribute(key);
++        boolean collapseValue = (val == null) || 
++                              (isBooleanAttr && (val.equals("") || val.equals(key)));
++        
++        if (!(isHtml && collapseValue)) {
++            accum.append("=\"");
++            Entities.escape(accum, val == null ? EmptyString : val, out, true, false, false);
++            accum.append('"');
+         }
+     }
++}
+ 
+     @Override
+     public String toString() {

@@ -1,0 +1,47 @@
+diff --git a/src/org/mockito/internal/creation/DelegatingMethod.java b/src/org/mockito/internal/creation/DelegatingMethod.java
+index 349719bd0..1e7be2488 100644
+--- a/src/org/mockito/internal/creation/DelegatingMethod.java
++++ b/src/org/mockito/internal/creation/DelegatingMethod.java
+@@ -1,11 +1,6 @@
+-/*
+- * Copyright (c) 2007 Mockito contributors
+- * This program is made available under the terms of the MIT License.
+- */
+ package org.mockito.internal.creation;
+ 
+ import org.mockito.internal.invocation.MockitoMethod;
+-
+ import java.lang.reflect.Method;
+ import java.lang.reflect.Modifier;
+ 
+@@ -51,12 +46,26 @@ public class DelegatingMethod implements MockitoMethod {
+      * or if the input object is a Method which is equal to the internal Method of this DelegatingMethod.
+      */
+     @Override
+-    public boolean equals(Object o) {
+-            return method.equals(o);
++    public boolean equals(Object obj) {
++        if (obj == null) {
++            return false;
++        }
++        if (obj == this) {
++            return true;
++        }
++        if (obj instanceof DelegatingMethod) {
++            DelegatingMethod other = (DelegatingMethod) obj;
++            return method.equals(other.getJavaMethod());
++        }
++        if (obj instanceof Method) {
++            return method.equals(obj);
++        }
++        return false;
+     }
+ 
+     @Override
+     public int hashCode() {
+-        return 1;
++        // Hash code should depend on the `method` to maintain a contract with `equals`.
++        return method.hashCode();
+     }
+ }
+\ No newline at end of file

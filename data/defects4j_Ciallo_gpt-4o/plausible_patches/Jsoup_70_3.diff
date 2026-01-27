@@ -1,0 +1,53 @@
+diff --git a/src/main/java/org/jsoup/nodes/Element.java b/src/main/java/org/jsoup/nodes/Element.java
+index faca4c8c..78ab9fd3 100644
+--- a/src/main/java/org/jsoup/nodes/Element.java
++++ b/src/main/java/org/jsoup/nodes/Element.java
+@@ -1084,17 +1084,39 @@ public class Element extends Node {
+             accum.append(" ");
+     }
+ 
+-    static boolean preserveWhitespace(Node node) {
+-        // looks only at this element and five levels up, to prevent recursion & needless stack searches
+-        if (node != null && node instanceof Element) {
+-            Element el = (Element) node;
+-                if (el.tag.preserveWhitespace())
+-                    return true;
+-                else
+-                    return el.parent() != null && el.parent().tag.preserveWhitespace();
+-        }
++static boolean preserveWhitespace(Node node) {
++    // Looks only at this element and five levels up, to prevent recursion & needless stack searches
++    // Add error handling or logging
++    if (node == null) {
++        System.err.println("Node is null, cannot preserve whitespace.");
++        return false;
++    }
++    if (!(node instanceof Element)) {
++        System.err.println("Node is not an instance of Element, found: " + node.getClass().getSimpleName());
+         return false;
+     }
++    
++    Element el = (Element) node;
++    if (el.tag.preserveWhitespace()) {
++        return true;
++    }
++    
++    int depth = 0;
++    while (el.parent() != null && depth < 5) {
++        el = el.parent();
++        if (el.tag.preserveWhitespace()) {
++            return true;
++        }
++        depth++;
++    }
++    
++    // Log if the depth was reached without preserving
++    if (depth == 5) {
++        System.err.println("Reached max depth without finding preserveWhitespace tag.");
++    }
++    
++    return false;
++}
+ 
+     /**
+      * Set the text of this element. Any existing contents (text or elements) will be cleared

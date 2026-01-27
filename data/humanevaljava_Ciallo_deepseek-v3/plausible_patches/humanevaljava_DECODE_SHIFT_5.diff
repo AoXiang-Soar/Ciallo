@@ -1,0 +1,47 @@
+diff --git a/src/main/java/humaneval/buggy/DECODE_SHIFT.java b/src/main/java/humaneval/buggy/DECODE_SHIFT.java
+index c8aba74..b0a3dc8 100644
+--- a/src/main/java/humaneval/buggy/DECODE_SHIFT.java
++++ b/src/main/java/humaneval/buggy/DECODE_SHIFT.java
+@@ -7,7 +7,11 @@ public class DECODE_SHIFT {
+     public static String encode_shift(String string){
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            c = (char)((((int) c + 5 - (int)('a')) % 26) + (int)('a'));
++            if (Character.isLowerCase(c)) {
++                c = shiftCharacter(c, 5, 'a', 'z');
++            } else if (Character.isUpperCase(c)) {
++                c = shiftCharacter(c, 5, 'A', 'Z');
++            }
+             sb.append(c);
+         }
+         return sb.toString();
+@@ -16,9 +20,26 @@ public class DECODE_SHIFT {
+     public static String decode_shift(String string) {
+         StringBuilder sb = new StringBuilder();
+         for (char c : string.toCharArray()) {
+-            c = (char)((((int) c - 5 - (int)('a')) % 26) + (int)('a'));
++            if (Character.isLowerCase(c)) {
++                c = shiftCharacter(c, -5, 'a', 'z');
++            } else if (Character.isUpperCase(c)) {
++                c = shiftCharacter(c, -5, 'A', 'Z');
++            }
+             sb.append(c);
+         }
+         return sb.toString();
+     }
+-}
++
++    private static char shiftCharacter(char c, int shift, char lowerBound, char upperBound) {
++        int range = upperBound - lowerBound + 1;
++        char shiftedChar = (char) (c + shift);
++        
++        if (shiftedChar > upperBound) {
++            shiftedChar = (char) (shiftedChar - range);
++        } else if (shiftedChar < lowerBound) {
++            shiftedChar = (char) (shiftedChar + range);
++        }
++
++        return shiftedChar;
++    }
++}
+\ No newline at end of file

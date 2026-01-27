@@ -1,0 +1,16 @@
+{
+    "bug_id": 25,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "",
+    "code": "    public ZipArchiveInputStream(InputStream inputStream,\n                                 String encoding,\n                                 boolean useUnicodeExtraFields,\n                                 boolean allowStoredEntriesWithDataDescriptor) {\n        zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);\n        this.useUnicodeExtraFields = useUnicodeExtraFields;\n        in = new PushbackInputStream(inputStream, buf.capacity());\n        this.allowStoredEntriesWithDataDescriptor =\n            allowStoredEntriesWithDataDescriptor;\n        // haven't read anything so far\n    }",
+    "fixed_code": "    public ZipArchiveInputStream(InputStream inputStream,\n                                 String encoding,\n                                 boolean useUnicodeExtraFields,\n                                 boolean allowStoredEntriesWithDataDescriptor) {\n        zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);\n        this.useUnicodeExtraFields = useUnicodeExtraFields;\n        in = new PushbackInputStream(inputStream, buf.capacity());\n        this.allowStoredEntriesWithDataDescriptor =\n            allowStoredEntriesWithDataDescriptor;\n        // haven't read anything so far\n        buf.limit(0);\n    }",
+    "fixed_lines": "        buf.limit(0);",
+    "masked_code": "    public ZipArchiveInputStream(InputStream inputStream,\n                                 String encoding,\n                                 boolean useUnicodeExtraFields,\n                                 boolean allowStoredEntriesWithDataDescriptor) {\n        zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);\n        this.useUnicodeExtraFields = useUnicodeExtraFields;\n        in = new PushbackInputStream(inputStream, buf.capacity());\n        this.allowStoredEntriesWithDataDescriptor =\n            allowStoredEntriesWithDataDescriptor;\n        // haven't read anything so far\n>>> [ INFILL ] <<<\n    }",
+    "project": "Compress",
+    "test_error_message": "junit.framework.AssertionFailedError: arrays first differed at element [0]; expected:<100> but was:<0>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testReadingOfFirstStoredEntry() throws Exception {\n        ZipArchiveInputStream in = new ZipArchiveInputStream(new FileInputStream(getFile(\"COMPRESS-264.zip\")));\n        \n        try {\n            ZipArchiveEntry ze = in.getNextZipEntry();\n            assertEquals(5, ze.getSize());\n            assertArrayEquals(new byte[] {'d', 'a', 't', 'a', '\\n'},\n                              IOUtils.toByteArray(in));\n        } finally {\n            in.close();\n        }\n    }",
+    "test_line": "            assertArrayEquals(new byte[] {'d', 'a', 't', 'a', '\\n'},",
+    "test_name": "testReadingOfFirstStoredEntry",
+    "test_suite": "org.apache.commons.compress.archivers.zip.ZipArchiveInputStreamTest"
+}

@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/IS_PRIME.java b/src/main/java/humaneval/buggy/IS_PRIME.java
+index e55a04c..621c6af 100644
+--- a/src/main/java/humaneval/buggy/IS_PRIME.java
++++ b/src/main/java/humaneval/buggy/IS_PRIME.java
+@@ -1,13 +1,15 @@
+ package humaneval.buggy;
+ 
+ public class IS_PRIME {
+-    public static boolean is_prime(int n){
++    public static boolean is_prime(int n) {
+         if (n < 2)
+             return false;
+-        for (int k = 0; k < n; k += 1){
++        if (n == 2)
++            return true;
++        for (int k = 2; k <= Math.sqrt(n); k++) {
+             if (n % k == 0)
+                 return false;
+         }
+         return true;
+     }
+-}
++}
+\ No newline at end of file

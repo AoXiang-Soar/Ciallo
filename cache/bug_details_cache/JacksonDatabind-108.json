@@ -1,0 +1,16 @@
+{
+    "bug_id": 108,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "junit.framework.AssertionFailedError: Should get `null` for reads with `JsonParser`, instead got: com.fasterxml.jackson.databind.node.MissingNode",
+    "test_framework": "defects4j",
+    "test_function": "    public void testNullFromEOFWithParserAndReader() throws Exception\n    {\n        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY0)) {\n            _assertNullTree(MAPPER.reader().readTree(p));\n        }\n        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY1)) {\n            _assertNullTree(MAPPER.reader().readTree(p));\n        }\n        try (JsonParser p = MAPPER.getFactory().createParser(new StringReader(EMPTY0))) {\n            _assertNullTree(MAPPER.reader().readTree(p));\n        }\n        try (JsonParser p = MAPPER.getFactory().createParser(new StringReader(EMPTY1))) {\n            _assertNullTree(MAPPER.reader().readTree(p));\n        }\n\n        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY0_BYTES)) {\n            _assertNullTree(MAPPER.reader().readTree(p));\n        }\n        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY1_BYTES)) {\n            _assertNullTree(MAPPER.reader().readTree(p));\n        }\n        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY1_BYTES, 0, EMPTY1_BYTES.length)) {\n            _assertNullTree(MAPPER.reader().readTree(p));\n        }\n\n        try (JsonParser p = MAPPER.getFactory().createParser(new ByteArrayInputStream(EMPTY0_BYTES))) {\n            _assertNullTree(MAPPER.reader().readTree(p));\n        }\n        try (JsonParser p = MAPPER.getFactory().createParser(new ByteArrayInputStream(EMPTY1_BYTES))) {\n            _assertNullTree(MAPPER.reader().readTree(p));\n        }\n    }",
+    "test_line": "            _assertNullTree(MAPPER.reader().readTree(p));",
+    "test_name": "testNullFromEOFWithParserAndReader",
+    "test_suite": "com.fasterxml.jackson.databind.node.EmptyContentAsTreeTest"
+}

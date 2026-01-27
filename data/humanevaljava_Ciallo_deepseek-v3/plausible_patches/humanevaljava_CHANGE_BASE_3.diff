@@ -1,0 +1,18 @@
+diff --git a/src/main/java/humaneval/buggy/CHANGE_BASE.java b/src/main/java/humaneval/buggy/CHANGE_BASE.java
+index 6e31774..a62e83b 100644
+--- a/src/main/java/humaneval/buggy/CHANGE_BASE.java
++++ b/src/main/java/humaneval/buggy/CHANGE_BASE.java
+@@ -15,9 +15,9 @@ public class CHANGE_BASE {
+         String result = "";
+ 
+         while (x > 0) {
+-            result = result + x % base;
+-            x = x - x / base;
++            result = (x % base) + result;
++            x = x / base; // Correctly use integer division to update x
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

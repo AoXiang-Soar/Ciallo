@@ -1,0 +1,16 @@
+{
+    "bug_id": 43,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.ComparisonFailure: expected:<[inconsistent return type",
+    "test_framework": "defects4j",
+    "test_function": "  public void testLends10() throws Exception {\n    testTypes(\n        \"function defineClass(x) { return function() {}; } \" +\n        \"/** @constructor */\" +\n        \"var Foo = defineClass(\" +\n        \"    /** @lends {Foo.prototype} */ ({/** @type {number} */ bar: 1}));\" +\n        \"/** @return {string} */ function f() { return (new Foo()).bar; }\",\n        \"inconsistent return type\\n\" +\n        \"found   : number\\n\" +\n        \"required: string\");\n  }",
+    "test_line": "      assertEquals(description, warnings[0].description);",
+    "test_name": "testLends10",
+    "test_suite": "com.google.javascript.jscomp.TypeCheckTest"
+}

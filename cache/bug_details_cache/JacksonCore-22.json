@@ -1,0 +1,16 @@
+{
+    "bug_id": 22,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonCore",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<1> but was:<0>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testSingleMatchFilteringWithPath() throws Exception\n    {\n        String jsonString = aposToQuotes(\"{'a':123,'array':[1,2],'ob':{'value0':2,'value':3,'value2':4},'b':true}\");\n        JsonParser p0 = JSON_F.createParser(jsonString);\n        FilteringParserDelegate p = new FilteringParserDelegate(p0,\n                new NameMatchFilter(\"a\"),\n                true, // includePath\n                false // multipleMatches\n        );\n        String result = readAndWrite(JSON_F, p);\n        assertEquals(aposToQuotes(\"{'a':123}\"), result);\n        assertEquals(1, p.getMatchCount());\n    }",
+    "test_line": "        assertEquals(1, p.getMatchCount());",
+    "test_name": "testSingleMatchFilteringWithPath",
+    "test_suite": "com.fasterxml.jackson.core.filter.BasicParserFilteringTest"
+}

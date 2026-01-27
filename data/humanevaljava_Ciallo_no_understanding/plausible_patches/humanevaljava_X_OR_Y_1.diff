@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/X_OR_Y.java b/src/main/java/humaneval/buggy/X_OR_Y.java
+index 5b8c4bf..6010611 100644
+--- a/src/main/java/humaneval/buggy/X_OR_Y.java
++++ b/src/main/java/humaneval/buggy/X_OR_Y.java
+@@ -10,9 +10,13 @@ for x_or_y(15, 8, 5) == 5 */
+ public class X_OR_Y {
+     public static int x_or_y(int n, int x, int y) {
+         if (n == 1) return y;
++        boolean isPrime = true;
+         for (int i = 2; i < n; i += 1) {
+-            if (n % i == 0) return x;
++            if (n % i == 0) {
++                isPrime = false;
++                break;
++            }
+         }
+-        return y;
++        return isPrime ? x : y;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 10,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Cli",
+    "test_error_message": "junit.framework.AssertionFailedError: MissingOptionException not thrown",
+    "test_framework": "defects4j",
+    "test_function": "    public void testReuseOptionsTwice() throws Exception\n    {\n        Options opts = new Options();\n\t\topts.addOption(OptionBuilder.isRequired().create('v'));\n\n\t\tGnuParser parser = new GnuParser();\n\n        // first parsing\n        parser.parse(opts, new String[] { \"-v\" });\n\n        try\n        {\n            // second parsing, with the same Options instance and an invalid command line\n            parser.parse(opts, new String[0]);\n            fail(\"MissingOptionException not thrown\");\n        }\n        catch (MissingOptionException e)\n        {\n            // expected\n        }\n    }",
+    "test_line": "            fail(\"MissingOptionException not thrown\");",
+    "test_name": "testReuseOptionsTwice",
+    "test_suite": "org.apache.commons.cli.ParseRequiredTest"
+}

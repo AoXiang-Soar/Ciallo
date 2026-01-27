@@ -1,0 +1,16 @@
+{
+    "bug_id": 66,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.exc.InvalidFormatException: Can not deserialize Map key of type",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCustomEnumKeySerializerWithPolymorphic() throws IOException\n    {\n        SimpleModule simpleModule = new SimpleModule();\n        simpleModule.addDeserializer(SuperTypeEnum.class, new JsonDeserializer<SuperTypeEnum>() {\n            @Override\n            public SuperTypeEnum deserialize(JsonParser p, DeserializationContext deserializationContext)\n                    throws IOException\n            {\n                return SuperTypeEnum.valueOf(p.getText());\n            }\n        });\n        ObjectMapper mapper = new ObjectMapper()\n                .registerModule(simpleModule);\n\n        SuperType superType = mapper.readValue(\"{\\\"someMap\\\": {\\\"FOO\\\": \\\"bar\\\"}}\",\n                SuperType.class);\n        assertEquals(\"Deserialized someMap.FOO should equal bar\", \"bar\",\n                superType.someMap.get(SuperTypeEnum.FOO));\n    }",
+    "test_line": "        SuperType superType = mapper.readValue(\"{\\\"someMap\\\": {\\\"FOO\\\": \\\"bar\\\"}}\",\n                SuperType.class);",
+    "test_name": "testCustomEnumKeySerializerWithPolymorphic",
+    "test_suite": "com.fasterxml.jackson.databind.module.TestCustomEnumKeyDeserializer"
+}

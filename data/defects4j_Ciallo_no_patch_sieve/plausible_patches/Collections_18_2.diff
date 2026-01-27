@@ -1,0 +1,55 @@
+diff --git a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+index ce6926fa..d8ccb908 100644
+--- a/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
++++ b/src/main/java/org/apache/commons/collections/set/ListOrderedSet.java
+@@ -225,22 +225,41 @@ public class ListOrderedSet<E>
+     }
+ 
+     @Override
+-    public boolean retainAll(Collection<?> coll) {
+-        boolean result = collection.retainAll(coll);
+-        if (result == false) {
+-            return false;
++public boolean retainAll(Collection<?> coll) {
++    // Create a set of elements to retain for efficient lookup
++    Set<?> retainElements = (coll instanceof Set<?>) 
++        ? (Set<?>) coll 
++        : new HashSet<Object>(coll);
++
++    // Track modification state
++    boolean modified = false;
++    
++    // First pass: remove from main collection
++    Iterator<E> collectionIter = collection.iterator();
++    while (collectionIter.hasNext()) {
++        if (!retainElements.contains(collectionIter.next())) {
++            collectionIter.remove();
++            modified = true;
+         }
+-        if (collection.size() == 0) {
++    }
++
++    // Second pass: sync with ordered collection if modified
++    if (modified) {
++        if (collection.isEmpty()) {
+             setOrder.clear();
+         } else {
+-            for (Iterator<E> it = setOrder.iterator(); it.hasNext();) {
+-                if (!collection.contains(it.next())) {
+-                    it.remove();
++            // Use setOrder's iterator to remove non-retained elements
++            Iterator<E> orderIter = setOrder.iterator();
++            while (orderIter.hasNext()) {
++                if (!collection.contains(orderIter.next())) {
++                    orderIter.remove();
+                 }
+             }
+         }
+-        return result;
+     }
++    
++    return modified;
++}
+ 
+     @Override
+     public Object[] toArray() {

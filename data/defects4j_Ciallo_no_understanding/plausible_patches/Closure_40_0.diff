@@ -1,0 +1,15 @@
+diff --git a/src/com/google/javascript/jscomp/NameAnalyzer.java b/src/com/google/javascript/jscomp/NameAnalyzer.java
+index 088a99334..b3255ee4a 100644
+--- a/src/com/google/javascript/jscomp/NameAnalyzer.java
++++ b/src/com/google/javascript/jscomp/NameAnalyzer.java
+@@ -633,6 +633,10 @@ final class NameAnalyzer implements CompilerPass {
+         NameInformation ns = createNameInformation(t, nameNode, n);
+         if (ns != null && ns.onlyAffectsClassDef) {
+           JsName name = getName(ns.name, false);
++          while (nameNode != null && name == null && nameNode.isGetProp()) {
++            nameNode = nameNode.getFirstChild();
++            name = getName(nameNode.getString(), false);
++          }
+           if (name != null) {
+           refNodes.add(new ClassDefiningFunctionNode(
+               name, n, parent, parent.getParent()));

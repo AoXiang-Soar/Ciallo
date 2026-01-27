@@ -1,0 +1,61 @@
+diff --git a/src/java/org/apache/commons/cli/PosixParser.java b/src/java/org/apache/commons/cli/PosixParser.java
+index 2590de7..370210d 100644
+--- a/src/java/org/apache/commons/cli/PosixParser.java
++++ b/src/java/org/apache/commons/cli/PosixParser.java
+@@ -275,35 +275,39 @@ public class PosixParser extends Parser {
+      * @param stopAtNonOption Specifies whether to stop processing
+      * at the first non-Option encountered.
+      */
+-    protected void burstToken(String token, boolean stopAtNonOption)
++protected void burstToken(String token, boolean stopAtNonOption)
++{
++    int tokenLength = token.length();
++
++    for (int i = 1; i < tokenLength; i++)
+     {
+-        int tokenLength = token.length();
++        String ch = String.valueOf(token.charAt(i));
++        boolean hasOption = options.hasOption(ch);
+ 
+-        for (int i = 1; i < tokenLength; i++)
++        if (hasOption)
+         {
+-            String ch = String.valueOf(token.charAt(i));
+-            boolean hasOption = options.hasOption(ch);
++            tokens.add("-" + ch);
++            currentOption = options.getOption(ch);
+ 
+-            if (hasOption)
++            if (currentOption.hasArg() && (token.length() != (i + 1)))
+             {
+-                tokens.add("-" + ch);
+-                currentOption = options.getOption(ch);
+-
+-                if (currentOption.hasArg() && (token.length() != (i + 1)))
+-                {
+-                    tokens.add(token.substring(i + 1));
+-
+-                    break;
+-                }
++                tokens.add(token.substring(i + 1));
++                break;
+             }
+-            else if (stopAtNonOption)
++        }
++        else
++        {
++            if (stopAtNonOption)
+             {
+                 process(token.substring(i));
++                break;
+             }
+             else
+             {
+-                tokens.add("-" + ch);
++                tokens.add(token);
++                break;
+             }
+         }
+     }
+ }
++}

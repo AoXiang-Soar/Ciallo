@@ -1,0 +1,16 @@
+{
+    "bug_id": 41,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "java.lang.IllegalArgumentException: Unrecognized Type: [null]",
+    "test_framework": "defects4j",
+    "test_function": "    public void testDeprecatedTypeResolution() throws Exception\n    {\n        TypeFactory tf = MAPPER.getTypeFactory();\n\n        // first, with real (if irrelevant) context\n        JavaType t = tf.constructType(Point.class, getClass());\n        assertEquals(Point.class, t.getRawClass());\n\n        // and then missing context\n        JavaType t2 = tf.constructType(Point.class, (Class<?>) null);\n        assertEquals(Point.class, t2.getRawClass());\n\n        JavaType ctxt = tf.constructType(getClass());\n        JavaType t3 = tf.constructType(Point.class, ctxt);\n        assertEquals(Point.class, t3.getRawClass());\n    }",
+    "test_line": "        JavaType t2 = tf.constructType(Point.class, (Class<?>) null);",
+    "test_name": "testDeprecatedTypeResolution",
+    "test_suite": "com.fasterxml.jackson.databind.interop.DeprecatedTypeHandling1102Test"
+}

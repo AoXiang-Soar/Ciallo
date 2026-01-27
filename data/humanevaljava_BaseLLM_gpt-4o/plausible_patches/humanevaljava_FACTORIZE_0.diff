@@ -1,0 +1,19 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIZE.java b/src/main/java/humaneval/buggy/FACTORIZE.java
+index 57975b5..ae823ee 100644
+--- a/src/main/java/humaneval/buggy/FACTORIZE.java
++++ b/src/main/java/humaneval/buggy/FACTORIZE.java
+@@ -16,7 +16,12 @@ public class FACTORIZE {
+                 i += 1;
+             }
+         }
++        
++        // If n is greater than 1 at the end, it means n is a prime factor itself
++        if (n > 1) {
++            result.add(n);
++        }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

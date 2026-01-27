@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/IS_SORTED.java b/src/main/java/humaneval/buggy/IS_SORTED.java
+index 173398c..39c50ba 100644
+--- a/src/main/java/humaneval/buggy/IS_SORTED.java
++++ b/src/main/java/humaneval/buggy/IS_SORTED.java
+@@ -20,6 +20,10 @@ import java.util.HashMap;
+ 
+ public class IS_SORTED {
+     public static boolean is_sorted(int[] lst) {
++        for(int i = 0; i < lst.length - 1; i++) {
++            if(lst[i] > lst[i + 1]) return false;
++        }
++        
+         HashMap<Integer, Integer> count_num = new HashMap<>();
+         for(int i = 0; i < lst.length; i++) {
+             count_num.put(lst[i], 0);
+@@ -30,9 +34,6 @@ public class IS_SORTED {
+         for(int i = 0; i < lst.length; i++) {
+             if(count_num.get(lst[i]) > 2) return false;
+         }
+-        for(int i = 0; i < lst.length - 1; i++) {
+-            if(lst[i] <= lst[i + 1]) return false;
+-        }
+         return true;
+     }
+-}
++}
+\ No newline at end of file

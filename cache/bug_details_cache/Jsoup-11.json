@@ -1,0 +1,16 @@
+{
+    "bug_id": 11,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "org.jsoup.select.Selector$SelectorParseException: Could not parse query ':not(p)': unexpected token at ':not(p)'",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void notAll() {\n        Document doc = Jsoup.parse(\"<p>Two</p> <p><span>Three</span></p>\");\n\n        Elements el1 = doc.body().select(\":not(p)\"); // should just be the span\n        assertEquals(2, el1.size());\n        assertEquals(\"body\", el1.first().tagName());\n        assertEquals(\"span\", el1.last().tagName());\n    }",
+    "test_line": "        Elements el1 = doc.body().select(\":not(p)\"); // should just be the span",
+    "test_name": "notAll",
+    "test_suite": "org.jsoup.select.SelectorTest"
+}

@@ -1,0 +1,19 @@
+diff --git a/src/java/org/apache/commons/lang3/ArrayUtils.java b/src/java/org/apache/commons/lang3/ArrayUtils.java
+index 889497e9d..bf761f128 100644
+--- a/src/java/org/apache/commons/lang3/ArrayUtils.java
++++ b/src/java/org/apache/commons/lang3/ArrayUtils.java
+@@ -2957,10 +2957,12 @@ public class ArrayUtils {
+             return clone(array1);
+         }
+         final Class<?> type1 = array1.getClass().getComponentType();
++        if (!type1.isAssignableFrom(array2.getClass().getComponentType())) {
++            throw new IllegalArgumentException("Cannot store " + array2.getClass().getComponentType() + " in " + type1 + " array");
++        }
+         T[] joinedArray = (T[]) Array.newInstance(type1, array1.length + array2.length);
+         System.arraycopy(array1, 0, joinedArray, 0, array1.length);
+-            System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
+-            // Check if problem is incompatible types
++        System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
+         return joinedArray;
+     }
+ 

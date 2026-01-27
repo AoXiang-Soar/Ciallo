@@ -1,0 +1,119 @@
+diff --git a/gson/src/main/java/com/google/gson/TypeInfoFactory.java b/gson/src/main/java/com/google/gson/TypeInfoFactory.java
+index eaf3a101..6799d6ef 100644
+--- a/gson/src/main/java/com/google/gson/TypeInfoFactory.java
++++ b/gson/src/main/java/com/google/gson/TypeInfoFactory.java
+@@ -42,7 +42,7 @@ final class TypeInfoFactory {
+ 
+   /**
+    * Evaluates the "actual" type for the field.  If the field is a "TypeVariable" or has a
+-   * "TypeVariable" in a parameterized type then it evaluates the real type.
++   * " TypeVariable" in a parameterized type then it evaluates the real type.
+    *
+    * @param f the actual field object to retrieve the type from
+    * @param typeDefiningF the type that contains the field {@code f}
+@@ -77,26 +77,46 @@ final class TypeInfoFactory {
+           TypeUtils.wrapWithArray(TypeUtils.toRawClass(actualType))
+           : new GenericArrayTypeImpl(actualType);
+     } else if (typeToEvaluate instanceof TypeVariable<?>) {
++      TypeVariable<?> fieldTypeVariable = (TypeVariable<?>) typeToEvaluate;
+       if (parentType instanceof ParameterizedType) {
+-        // The class definition has the actual types used for the type variables.
+-        // Find the matching actual type for the Type Variable used for the field.
+-        // For example, class Foo<A> { A a; }
+-        // new Foo<Integer>(); defines the actual type of A to be Integer.
+-        // So, to find the type of the field a, we will have to look at the class'
+-        // actual type arguments.
+-        TypeVariable<?> fieldTypeVariable = (TypeVariable<?>) typeToEvaluate;
+-        TypeVariable<?>[] classTypeVariables = rawParentClass.getTypeParameters();
+-        ParameterizedType objParameterizedType = (ParameterizedType) parentType;
+-        int indexOfActualTypeArgument = getIndex(classTypeVariables, fieldTypeVariable);
+-        Type[] actualTypeArguments = objParameterizedType.getActualTypeArguments();
+-        return actualTypeArguments[indexOfActualTypeArgument];
+-
+-
++        ParameterizedType parameterizedParentType = (ParameterizedType) parentType;
++        TypeVariable<?>[] typeParameters = rawParentClass.getTypeParameters();
++        Type[] actualTypeArguments = parameterizedParentType.getActualTypeArguments();
++        
++        for (int i = 0; i < typeParameters.length; i++) {
++          if (fieldTypeVariable.equals(typeParameters[i])) {
++            return getActualType(actualTypeArguments[i], parentType, rawParentClass);
++          }
++        }
+       }
+-
+-      throw new UnsupportedOperationException("Expecting parameterized type, got " + parentType
+-          + ".\n Are you missing the use of TypeToken idiom?\n See "
+-          + "http://sites.google.com/site/gson/gson-user-guide#TOC-Serializing-and-Deserializing-Gener");
++      
++      // If we can't resolve the type variable from the immediate parent,
++      // try to resolve it from superclass/interfaces
++      Class<?> currentClass = rawParentClass;
++      while (currentClass != null) {
++        Type genericSuperclass = currentClass.getGenericSuperclass();
++        if (genericSuperclass instanceof ParameterizedType) {
++          Type resolved = tryResolveTypeVariable(fieldTypeVariable, (ParameterizedType) genericSuperclass);
++          if (resolved != null) {
++            return resolved;
++          }
++        }
++        
++        Type[] genericInterfaces = currentClass.getGenericInterfaces();
++        for (Type genericInterface : genericInterfaces) {
++          if (genericInterface instanceof ParameterizedType) {
++            Type resolved = tryResolveTypeVariable(fieldTypeVariable, (ParameterizedType) genericInterface);
++            if (resolved != null) {
++              return resolved;
++            }
++          }
++        }
++        
++        currentClass = currentClass.getSuperclass();
++      }
++      
++      // If we still can't resolve it, keep the original type variable
++      return typeToEvaluate;
+     } else if (typeToEvaluate instanceof WildcardType) {
+       WildcardType castedType = (WildcardType) typeToEvaluate;
+       return getActualType(castedType.getUpperBounds()[0], parentType, rawParentClass);
+@@ -106,11 +126,18 @@ final class TypeInfoFactory {
+     }
+   }
+ 
+-
+-      // Evaluate type on this type
+-
+-
+-
++  private static Type tryResolveTypeVariable(TypeVariable<?> typeVar, ParameterizedType parameterizedType) {
++    Class<?> rawType = (Class<?>) parameterizedType.getRawType();
++    TypeVariable<?>[] typeParams = rawType.getTypeParameters();
++    Type[] actualArgs = parameterizedType.getActualTypeArguments();
++    
++    for (int i = 0; i < typeParams.length; i++) {
++      if (typeVar.equals(typeParams[i])) {
++        return actualArgs[i];
++      }
++    }
++    return null;
++  }
+ 
+   private static Type[] extractRealTypes(
+       Type[] actualTypeArguments, Type parentType, Class<?> rawParentClass) {
+@@ -122,14 +149,4 @@ final class TypeInfoFactory {
+     }
+     return retTypes;
+   }
+-
+-  private static int getIndex(TypeVariable<?>[] types, TypeVariable<?> type) {
+-    for (int i = 0; i < types.length; ++i) {
+-      if (type.equals(types[i])) {
+-        return i;
+-      }
+-    }
+-    throw new IllegalStateException(
+-        "How can the type variable not be present in the class declaration!");
+-  }
+-}
++}
+\ No newline at end of file

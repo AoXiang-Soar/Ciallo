@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/HOW_MANY_TIMES.java b/src/main/java/humaneval/buggy/HOW_MANY_TIMES.java
+old mode 100644
+new mode 100755
+index fbdb46b..72fa2a2
+--- a/src/main/java/humaneval/buggy/HOW_MANY_TIMES.java
++++ b/src/main/java/humaneval/buggy/HOW_MANY_TIMES.java
+@@ -3,11 +3,11 @@ package humaneval.buggy;
+ public class HOW_MANY_TIMES {
+     public static int how_many_times(String string, String substring) {
+         int times = 0;
+-        for (int i = 0; i < string.length() - substring.length(); i += 1) {
+-            if (string.substring(i, i + substring.length()).equals(substring)){
++        for (int i = 0; i <= string.length() - substring.length(); i += 1) {
++            if (string.substring(i, i + substring.length()).equals(substring)) {
+                 times += 1;
+             }
+         }
+         return times;
+     }
+-}
++}
+\ No newline at end of file

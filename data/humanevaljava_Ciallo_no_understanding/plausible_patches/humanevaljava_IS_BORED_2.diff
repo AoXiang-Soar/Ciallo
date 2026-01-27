@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/IS_BORED.java b/src/main/java/humaneval/buggy/IS_BORED.java
+old mode 100644
+new mode 100755
+index 56b1db3..11e5219
+--- a/src/main/java/humaneval/buggy/IS_BORED.java
++++ b/src/main/java/humaneval/buggy/IS_BORED.java
+@@ -15,9 +15,10 @@ public class IS_BORED {
+         String[] sentences = S.split("\\.|\\?|!");
+         int result = 0;
+         for (String sentence : sentences) {
+-            if (sentence.length() >= 2 && sentence.subSequence(0, 2).equals("I "))
++            sentence = sentence.trim();
++            if (sentence.startsWith("I ") || sentence.equals("I"))
+                 result += 1;
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

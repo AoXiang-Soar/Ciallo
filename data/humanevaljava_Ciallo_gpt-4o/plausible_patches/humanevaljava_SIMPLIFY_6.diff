@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/SIMPLIFY.java b/src/main/java/humaneval/buggy/SIMPLIFY.java
+index a55ee2e..5fe3640 100644
+--- a/src/main/java/humaneval/buggy/SIMPLIFY.java
++++ b/src/main/java/humaneval/buggy/SIMPLIFY.java
+@@ -1,16 +1,5 @@
+ package humaneval.buggy;
+ 
+-/* Your task is to implement a function that will simplify the expression
+-x * n. The function returns True if x * n evaluates to a whole number and False
+-otherwise. Both x and n, are string representation of a fraction, and have the following format,
+-<numerator>/<denominator> where both numerator and denominator are positive whole numbers.
+-
+-You can assume that x, and n are valid fractions, and do not have zero as denominator.
+-
+-simplify("1/5", "5/1") = True
+-simplify("1/6", "2/1") = False
+-simplify("7/10", "10/2") = False */
+-
+ public class SIMPLIFY {
+     public static boolean simplify(String x, String n) {
+         int a = Integer.parseInt(x.split("/")[0]);
+@@ -20,8 +9,8 @@ public class SIMPLIFY {
+ 
+         int numerator = a * c;
+         int denom = b * d;
+-        if (numerator / denom == (int) (numerator / denom))
+-            return true;
+-        return false;
++        
++        // Simplify the check by using the modulus operation
++        return (numerator * 1.0) / denom == numerator / denom;
+     }
+-}
++}
+\ No newline at end of file

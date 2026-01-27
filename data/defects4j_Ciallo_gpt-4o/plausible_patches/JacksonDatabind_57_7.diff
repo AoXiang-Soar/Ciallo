@@ -1,0 +1,52 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+index 10fddc4d6..3a43122f2 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ObjectReader.java
+@@ -1432,15 +1432,39 @@ public class ObjectReader
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.
+      */
+-    public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
+-        throws IOException, JsonProcessingException
+-    {
+-        if (_dataFormatReaders != null) {
+-            return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
+-        }
+-        return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-                true));
++public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)
++    throws IOException, JsonProcessingException
++{
++    // Validate input byte array
++    if (src == null) {
++        throw new IllegalArgumentException("Source byte array 'src' cannot be null.");
++    }
++    
++    // Validate offset and length parameters
++    if (offset < 0 || length < 0) {
++        throw new IllegalArgumentException("Offset and length must be non-negative.");
+     }
++    
++    if (offset + length > src.length) {
++        throw new IllegalArgumentException("Offset and length exceed the boundaries of the source array.");
++    }
++
++    // If data format readers are available, use them to detect the data format
++    if (_dataFormatReaders != null) {
++        return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
++    }
++    
++    // Create a JsonParser with the specified offset and length
++    JsonParser parser;
++    try {
++        parser = _parserFactory.createParser(src, offset, length);
++    } catch (IOException e) {
++        throw new IOException("Failed to create JsonParser: " + e.getMessage(), e);
++    }
++
++    // Bind and read values from the parser
++    return _bindAndReadValues(_considerFilter(parser, true));
++}
+ 
+     /**
+      * Overloaded version of {@link #readValue(InputStream)}.

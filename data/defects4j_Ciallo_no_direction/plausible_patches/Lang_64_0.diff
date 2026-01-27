@@ -1,0 +1,64 @@
+diff --git a/src/java/org/apache/commons/lang/enums/ValuedEnum.java b/src/java/org/apache/commons/lang/enums/ValuedEnum.java
+index 6aca541b4..a921abd82 100644
+--- a/src/java/org/apache/commons/lang/enums/ValuedEnum.java
++++ b/src/java/org/apache/commons/lang/enums/ValuedEnum.java
+@@ -74,29 +74,6 @@ import org.apache.commons.lang.ClassUtils;
+  * <p><em>NOTE:</em>These are declared <code>final</code>, so compilers may 
+  * inline the code. Ensure you recompile everything when using final. </p>
+  *
+- * <p>The above class could then be used as follows:</p>
+- *
+- * <pre>
+- * public void doSomething(JavaVersion ver) {
+- *   switch (ver.getValue()) {
+- *     case JAVA1_0_VALUE:
+- *       // ...
+- *       break;
+- *     case JAVA1_1_VALUE:
+- *       // ...
+- *       break;
+- *     //...
+- *   }
+- * }
+- * </pre>
+- *
+- * <p>As shown, each enum has a name and a value. These can be accessed using
+- * <code>getName</code> and <code>getValue</code>.</p>
+- *
+- * <p>The <code>getEnum</code> and <code>iterator</code> methods are recommended.
+- * Unfortunately, Java restrictions require these to be coded as shown in each subclass.
+- * An alternative choice is to use the {@link EnumUtils} class.</p>
+- *
+  * @author Apache Avalon project
+  * @author Stephen Colebourne
+  * @since 2.1 (class existed in enum package from v1.0)
+@@ -180,19 +157,12 @@ public abstract class ValuedEnum extends Enum {
+      * @throws NullPointerException if other is <code>null</code>
+      */
+     public int compareTo(Object other) {
++        if (getClass() != other.getClass()) {
++            throw new ClassCastException("Different enum class '" + ClassUtils.getShortClassName(other.getClass()) + "'");
++        }
+         return iValue - ((ValuedEnum) other).iValue;
+     }
+ 
+-    /**
+-     * <p>Use reflection to return an objects value.</p>
+-     *
+-     * @param other  the object to determine the value for
+-     * @return the value
+-     */
+-            // ignore - should never happen
+-            // ignore - should never happen
+-            // ignore - should never happen
+-
+     /**
+      * <p>Human readable description of this <code>Enum</code> item.</p>
+      *
+@@ -207,4 +177,4 @@ public abstract class ValuedEnum extends Enum {
+         }
+         return iToString;
+     }
+-}
++}
+\ No newline at end of file

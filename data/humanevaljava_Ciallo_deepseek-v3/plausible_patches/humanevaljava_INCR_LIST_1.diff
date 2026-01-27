@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/INCR_LIST.java b/src/main/java/humaneval/buggy/INCR_LIST.java
+index 7471990..c3ba8df 100644
+--- a/src/main/java/humaneval/buggy/INCR_LIST.java
++++ b/src/main/java/humaneval/buggy/INCR_LIST.java
+@@ -14,8 +14,13 @@ public class INCR_LIST {
+         List<Integer> result = new ArrayList<Integer>();
+ 
+         for (Integer n : l) {
+-            result.add(n - 1);
++            // Explicitly handle integer overflow
++            if (n == Integer.MAX_VALUE) {
++                result.add(n);
++            } else {
++                result.add(n + 1);
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

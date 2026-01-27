@@ -1,0 +1,45 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/sevenz/SevenZOutputFile.java b/src/main/java/org/apache/commons/compress/archivers/sevenz/SevenZOutputFile.java
+index 05912b9f..fc6866ae 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/sevenz/SevenZOutputFile.java
++++ b/src/main/java/org/apache/commons/compress/archivers/sevenz/SevenZOutputFile.java
+@@ -631,23 +631,27 @@ public class SevenZOutputFile {
+         }
+     }
+ 
+-    private void writeBits(final DataOutput header, final BitSet bits, final int length) throws IOException {
+-        int cache = 0;
+-        int shift = 7;
+-        for (int i = 0; i < length; i++) {
+-            cache |= ((bits.get(i) ? 1 : 0) << shift);
+-            --shift;
+-            if (shift == 0) {
+-                header.write(cache);
+-                shift = 7;
+-                cache = 0;
+-            }
+-        }
+-        if (length > 0 && shift > 0) {
++private void writeBits(final DataOutput header, final BitSet bits, final int length) throws IOException {
++    int cache = 0;
++    int shift = 7;
++    
++    for (int i = 0; i < length; i++) {
++        cache |= ((bits.get(i) ? 1 : 0) << shift);
++        --shift;
++        if (shift < 0) { // Condition when shift drops below 0 to write the byte
+             header.write(cache);
++            shift = 7;    // Reset shift for the next byte
++            cache = 0;    // Clear cache for the next byte
+         }
+     }
+ 
++    // Write any remaining bits in cache, but only if shift is not reset to 7,
++    // meaning there are unwritten bits in cache.
++    if (shift != 7) {
++        header.write(cache);
++    }
++}
++
+     private class OutputStreamWrapper extends OutputStream {
+         @Override
+         public void write(final int b) throws IOException {

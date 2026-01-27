@@ -1,0 +1,16 @@
+{
+    "bug_id": 100,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: Unexpected error(s): JSC_USED_GLOBAL_THIS. dangerous use of the global this object at testcode line 1 : 35 expected:<0> but was:<1>",
+    "test_framework": "defects4j",
+    "test_function": "  public void testStaticFunction6() {\n    testSame(\"function a() { return function() { this = 8; } }\");\n  }",
+    "test_line": "    testSame(\"function a() { return function() { this = 8; } }\");",
+    "test_name": "testStaticFunction6",
+    "test_suite": "com.google.javascript.jscomp.CheckGlobalThisTest"
+}

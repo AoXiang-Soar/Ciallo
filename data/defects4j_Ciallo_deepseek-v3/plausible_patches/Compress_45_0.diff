@@ -1,0 +1,48 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index 39ce5c1a..066af023 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -471,26 +471,30 @@ public static int formatLongOctalBytes(final long value, final byte[] buf, final
+      * will not fit in the buffer.
+      * @since 1.4
+      */
+-    public static int formatLongOctalOrBinaryBytes(
+-        final long value, final byte[] buf, final int offset, final int length) {
++public static int formatLongOctalOrBinaryBytes(
++    final long value, final byte[] buf, final int offset, final int length) {
+ 
+-        // Check whether we are dealing with UID/GID or SIZE field
+-        final long maxAsOctalChar = length == TarConstants.UIDLEN ? TarConstants.MAXID : TarConstants.MAXSIZE;
++    // Check whether we are dealing with UID/GID or SIZE field
++    final long maxAsOctalChar = length == TarConstants.UIDLEN ? TarConstants.MAXID : TarConstants.MAXSIZE;
+ 
+-        final boolean negative = value < 0;
+-        if (!negative && value <= maxAsOctalChar) { // OK to store as octal chars
+-            return formatLongOctalBytes(value, buf, offset, length);
+-        }
++    final boolean negative = value < 0;
++    if (!negative && value <= maxAsOctalChar) { // OK to store as octal chars
++        return formatLongOctalBytes(value, buf, offset, length);
++    }
+ 
+-        if (length < 9) {
+-            formatLongBinary(value, buf, offset, length, negative);
++    if (length < 9) {
++        if (negative && length < 8) {
++            throw new IllegalArgumentException("Value " + value + " is too large for " + length + " byte field.");
+         }
++        formatLongBinary(value, buf, offset, length, negative);
++    } else {
+         formatBigIntegerBinary(value, buf, offset, length, negative);
+-
+-        buf[offset] = (byte) (negative ? 0xff : 0x80);
+-        return offset + length;
+     }
+ 
++    buf[offset] = (byte) (negative ? 0xff : 0x80);
++    return offset + length;
++}
++
+     private static void formatLongBinary(final long value, final byte[] buf,
+                                          final int offset, final int length,
+                                          final boolean negative) {

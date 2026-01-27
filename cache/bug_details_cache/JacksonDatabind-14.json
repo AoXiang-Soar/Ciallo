@@ -1,0 +1,16 @@
+{
+    "bug_id": 14,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field \"i\" (class com.fasterxml.jackson.databind.convert.TestUpdateValue$DataB), not marked as ignorable (2 known properties: \"da\", \"k\"])",
+    "test_framework": "defects4j",
+    "test_function": "    public void testIssue744() throws IOException\n    {\n        ObjectMapper mapper = new ObjectMapper();\n        SimpleModule module = new SimpleModule();\n        module.addDeserializer(DataA.class, new DataADeserializer());\n        mapper.registerModule(module);\n\n        DataB db = new DataB();\n        db.da.i = 11;\n        db.k = 13;\n        String jsonBString = mapper.writeValueAsString(db);\n        JsonNode jsonBNode = mapper.valueToTree(db);\n\n        // create parent\n        DataB dbNewViaString = mapper.readValue(jsonBString, DataB.class);\n        assertEquals(5, dbNewViaString.da.i);\n        assertEquals(13, dbNewViaString.k);\n\n        DataB dbNewViaNode = mapper.treeToValue(jsonBNode, DataB.class);\n        assertEquals(5, dbNewViaNode.da.i);\n        assertEquals(13, dbNewViaNode.k);\n\n        // update parent\n        DataB dbUpdViaString = new DataB();\n        DataB dbUpdViaNode = new DataB();\n\n        assertEquals(1, dbUpdViaString.da.i);\n        assertEquals(3, dbUpdViaString.k);\n        mapper.readerForUpdating(dbUpdViaString).readValue(jsonBString);\n        assertEquals(5, dbUpdViaString.da.i);\n        assertEquals(13, dbUpdViaString.k);\n\n        assertEquals(1, dbUpdViaNode.da.i);\n        assertEquals(3, dbUpdViaNode.k);\n        \n        mapper.readerForUpdating(dbUpdViaNode).readValue(jsonBNode);\n        assertEquals(5, dbUpdViaNode.da.i);\n        assertEquals(13, dbUpdViaNode.k);\n    }",
+    "test_line": "",
+    "test_name": "testIssue744",
+    "test_suite": "com.fasterxml.jackson.databind.convert.TestUpdateValue"
+}

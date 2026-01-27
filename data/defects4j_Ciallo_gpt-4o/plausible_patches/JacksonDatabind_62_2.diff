@@ -1,0 +1,104 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/std/CollectionDeserializer.java b/src/main/java/com/fasterxml/jackson/databind/deser/std/CollectionDeserializer.java
+index 7f58b7ad8..f9eeacbb3 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/std/CollectionDeserializer.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/std/CollectionDeserializer.java
+@@ -167,45 +167,63 @@ public class CollectionDeserializer
+      * for.
+      */
+     @Override
+-    public CollectionDeserializer createContextual(DeserializationContext ctxt,
+-            BeanProperty property) throws JsonMappingException
+-    {
+-        // May need to resolve types for delegate-based creators:
+-        JsonDeserializer<Object> delegateDeser = null;
+-        if (_valueInstantiator != null) {
+-            if (_valueInstantiator.canCreateUsingDelegate()) {
+-                JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
+-                if (delegateType == null) {
+-                    throw new IllegalArgumentException("Invalid delegate-creator definition for "+_collectionType
+-                            +": value instantiator ("+_valueInstantiator.getClass().getName()
+-                            +") returned true for 'canCreateUsingDelegate()', but null for 'getDelegateType()'");
+-                }
+-                delegateDeser = findDeserializer(ctxt, delegateType, property);
++public CollectionDeserializer createContextual(DeserializationContext ctxt,
++        BeanProperty property) throws JsonMappingException
++{
++    JsonDeserializer<Object> delegateDeser = null;
++    if (_valueInstantiator != null) {
++        if (_valueInstantiator.canCreateUsingDelegate()) {
++            JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
++            if (delegateType == null) {
++                throw new IllegalArgumentException("Invalid delegate-creator definition for " + _collectionType
++                        + ": value instantiator (" + _valueInstantiator.getClass().getName()
++                        + ") returned true for 'canCreateUsingDelegate()', but null for 'getDelegateType()'");
++            }
++            delegateDeser = findDeserializer(ctxt, delegateType, property);
++        } else if (isUnmodifiableCollection(_collectionType.getRawClass())) {
++            JavaType mutableType = getMutableTypeForUnmodifiable(_collectionType, ctxt);
++            if (mutableType != null) {
++                delegateDeser = ctxt.findContextualValueDeserializer(mutableType, property);
+             }
+         }
+-        // [databind#1043]: allow per-property allow-wrapping of single overrides:
+-        // 11-Dec-2015, tatu: Should we pass basic `Collection.class`, or more refined? Mostly
+-        //   comes down to "List vs Collection" I suppose... for now, pass Collection
+-        Boolean unwrapSingle = findFormatFeature(ctxt, property, Collection.class,
+-                JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+-        // also, often value deserializer is resolved here:
+-        JsonDeserializer<?> valueDeser = _valueDeserializer;
+-        
+-        // May have a content converter
+-        valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+-        final JavaType vt = _collectionType.getContentType();
+-        if (valueDeser == null) {
+-            valueDeser = ctxt.findContextualValueDeserializer(vt, property);
+-        } else { // if directly assigned, probably not yet contextual, so:
+-            valueDeser = ctxt.handleSecondaryContextualization(valueDeser, property, vt);
+-        }
+-        // and finally, type deserializer needs context as well
+-        TypeDeserializer valueTypeDeser = _valueTypeDeserializer;
+-        if (valueTypeDeser != null) {
+-            valueTypeDeser = valueTypeDeser.forProperty(property);
+-        }
+-        return withResolved(delegateDeser, valueDeser, valueTypeDeser, unwrapSingle);
+     }
++    Boolean unwrapSingle = findFormatFeature(ctxt, property, Collection.class,
++            JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
++    JsonDeserializer<?> valueDeser = _valueDeserializer;
++    
++    valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
++    final JavaType vt = _collectionType.getContentType();
++    if (valueDeser == null) {
++        valueDeser = ctxt.findContextualValueDeserializer(vt, property);
++    } else {
++        valueDeser = ctxt.handleSecondaryContextualization(valueDeser, property, vt);
++    }
++    TypeDeserializer valueTypeDeser = _valueTypeDeserializer;
++    if (valueTypeDeser != null) {
++        valueTypeDeser = valueTypeDeser.forProperty(property);
++    }
++    return withResolved(delegateDeser, valueDeser, valueTypeDeser, unwrapSingle);
++}
++
++// Check for unmodifiable collection types
++private boolean isUnmodifiableCollection(Class<?> rawClass) {
++    return java.util.Collections.unmodifiableSet(Collections.emptySet()).getClass().isAssignableFrom(rawClass)
++            || java.util.Collections.unmodifiableList(Collections.emptyList()).getClass().isAssignableFrom(rawClass)
++            || java.util.Collections.unmodifiableMap(Collections.emptyMap()).getClass().isAssignableFrom(rawClass);
++}
++
++// Get the mutable base type for an unmodifiable collection
++private JavaType getMutableTypeForUnmodifiable(JavaType unmodifiableType, DeserializationContext ctxt) {
++    Class<?> rawClass = unmodifiableType.getRawClass();
++    if (Set.class.isAssignableFrom(rawClass)) {
++        return ctxt.constructType(Set.class);
++    } else if (List.class.isAssignableFrom(rawClass)) {
++        return ctxt.constructType(List.class);
++    } else if (Map.class.isAssignableFrom(rawClass)) {
++        return ctxt.constructType(Map.class);
++    }
++    return null;
++}
+ 
+     /*
+     /**********************************************************

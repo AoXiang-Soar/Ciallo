@@ -1,0 +1,36 @@
+diff --git a/src/main/java/humaneval/buggy/BY_LENGTH.java b/src/main/java/humaneval/buggy/BY_LENGTH.java
+index 0e33347..2873201 100644
+--- a/src/main/java/humaneval/buggy/BY_LENGTH.java
++++ b/src/main/java/humaneval/buggy/BY_LENGTH.java
+@@ -39,13 +39,24 @@ public class BY_LENGTH {
+         digit_map.put(7, "Seven");
+         digit_map.put(8, "Eight");
+         digit_map.put(9, "Nine");
+-        Collections.sort(a, Collections.reverseOrder());
+-        ArrayList<String> result = new ArrayList<>();
+-        for(int num : a) {
+-            if(digit_map.get(num) != "") {
+-                result.add(digit_map.get(num));
++        
++        // Create a new list for numbers between 1 and 9 (inclusive)
++        ArrayList<Integer> filteredNumbers = new ArrayList<>();
++        for (int num : a) {
++            if (num >= 1 && num <= 9) {
++                filteredNumbers.add(num);
+             }
+         }
++        
++        // Sort the filtered numbers in descending order
++        Collections.sort(filteredNumbers, Collections.reverseOrder());
++
++        // Map the sorted numbers to their corresponding names
++        ArrayList<String> result = new ArrayList<>();
++        for (int num : filteredNumbers) {
++            result.add(digit_map.get(num));
++        }
++
+         return result;
+     }
+-}
++}
+\ No newline at end of file

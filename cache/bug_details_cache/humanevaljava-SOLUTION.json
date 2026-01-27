@@ -1,0 +1,16 @@
+{
+    "bug_id": "SOLUTION",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_SOLUTION.test_0:11 expected:<12> but was:<8>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        ArrayList<Integer> input = new ArrayList<>(Arrays.asList(5, 8, 7, 1));\n        int result = humaneval.buggy.SOLUTION.solution(input);\n        org.junit.Assert.assertEquals(12, result);\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(12, result);",
+    "test_name": "test_0",
+    "test_suite": "TEST_SOLUTION"
+}

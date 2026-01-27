@@ -1,0 +1,60 @@
+diff --git a/src/main/java/humaneval/buggy/SOLVE_STRING.java b/src/main/java/humaneval/buggy/SOLVE_STRING.java
+index e31e9a2..2cf4477 100644
+--- a/src/main/java/humaneval/buggy/SOLVE_STRING.java
++++ b/src/main/java/humaneval/buggy/SOLVE_STRING.java
+@@ -1,28 +1,36 @@
+ package humaneval.buggy;
+ 
+-// You are given a string s.
+-// if s[i] is a letter, reverse its case from lower to upper or vise versa, 
+-// otherwise keep it as it is.
+-// If the string contains no letters, reverse the string.
+-// The function should return the resulted string.
+-// Examples
+-// solve("1234") = "4321"
+-// solve("ab") = "AB"
+-// solve("#a@C") = "#A@c"
+-
+ public class SOLVE_STRING {
+     public static String solve_string(String s) {
+-        int flg = 0;
++        boolean hasLetters = false;
+         StringBuilder sb = new StringBuilder();
++        
++        // First check if there are any letters
+         for (char c : s.toCharArray()) {
+-            if (Character.isLowerCase(c)) sb.append(Character.toUpperCase(c));
+-            else sb.append(Character.toLowerCase(c));
+-            flg = 1;
++            if (Character.isLetter(c)) {
++                hasLetters = true;
++                break;
++            }
+         }
+-        if (flg == 0) {
+-            sb = new StringBuilder();
+-            for (int i = s.length() - 1; i >= 0; i -= 1) sb.append(s.charAt(i));
++        
++        if (hasLetters) {
++            // Process characters with case switching
++            for (char c : s.toCharArray()) {
++                if (Character.isLetter(c)) {
++                    if (Character.isLowerCase(c)) {
++                        sb.append(Character.toUpperCase(c));
++                    } else {
++                        sb.append(Character.toLowerCase(c));
++                    }
++                } else {
++                    sb.append(c);
++                }
++            }
++        } else {
++            // Reverse the string if no letters
++            sb = new StringBuilder(s).reverse();
+         }
++        
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,62 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/zip/ZipArchiveEntry.java b/src/main/java/org/apache/commons/compress/archivers/zip/ZipArchiveEntry.java
+index 1833227c..ae747dc0 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/zip/ZipArchiveEntry.java
++++ b/src/main/java/org/apache/commons/compress/archivers/zip/ZipArchiveEntry.java
+@@ -646,32 +646,24 @@ public class ZipArchiveEntry extends java.util.zip.ZipEntry
+      * @see java.lang.Object#equals(java.lang.Object)
+      */
+     @Override
+-    public boolean equals(Object obj) {
+-        if (this == obj) {
+-            return true;
+-        }
+-        if (obj == null || getClass() != obj.getClass()) {
+-            return false;
+-        }
+-        ZipArchiveEntry other = (ZipArchiveEntry) obj;
+-        String myName = getName();
+-        String otherName = other.getName();
+-        if (myName == null) {
+-            if (otherName != null) {
+-                return false;
+-            }
+-        } else if (!myName.equals(otherName)) {
+-            return false;
+-        }
+-        String myComment = getComment();
+-        String otherComment = other.getComment();
+-        if (myComment == null) {
+-            if (otherComment != null) {
+-                return false;
+-            }
+-        } else if (!myComment.equals(otherComment)) {
+-            return false;
+-        }
++public boolean equals(Object obj) {
++    if (this == obj) {
++        return true;
++    }
++    if (obj == null || getClass() != obj.getClass()) {
++        return false;
++    }
++    ZipArchiveEntry other = (ZipArchiveEntry) obj;
++    String myName = getName();
++    String otherName = other.getName();
++    if (myName == null ? otherName != null : !myName.equals(otherName)) {
++        return false;
++    }
++    
++    // Handle comments and treat null as equivalent to empty string
++    String myComment = getComment();
++    String otherComment = other.getComment();
++    if ((myComment == null ? "" : myComment).equals(otherComment == null ? "" : otherComment)) {
+         return getTime() == other.getTime()
+             && getInternalAttributes() == other.getInternalAttributes()
+             && getPlatform() == other.getPlatform()
+@@ -686,4 +678,6 @@ public class ZipArchiveEntry extends java.util.zip.ZipEntry
+                              other.getLocalFileDataExtra())
+             && gpb.equals(other.gpb);
+     }
++    return false;
++}
+ }

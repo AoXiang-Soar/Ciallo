@@ -1,0 +1,16 @@
+{
+    "bug_id": "DECODE_SHIFT",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_DECODE_SHIFT.test_0:10 expected:<asdjkh[\\]> but was:<asdjkh[v]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        String input = \"asdjkhv\";\n        String result = humaneval.buggy.DECODE_SHIFT.decode_shift(\n            humaneval.buggy.DECODE_SHIFT.encode_shift(input)\n        );\n        org.junit.Assert.assertEquals(\n            result, input\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_DECODE_SHIFT"
+}

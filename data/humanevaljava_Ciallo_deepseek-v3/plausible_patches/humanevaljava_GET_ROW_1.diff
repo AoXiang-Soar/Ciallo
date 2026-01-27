@@ -1,0 +1,79 @@
+diff --git a/src/main/java/humaneval/buggy/GET_ROW.java b/src/main/java/humaneval/buggy/GET_ROW.java
+index 83f4169..c42c7af 100644
+--- a/src/main/java/humaneval/buggy/GET_ROW.java
++++ b/src/main/java/humaneval/buggy/GET_ROW.java
+@@ -1,6 +1,7 @@
+ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
++import java.util.Arrays;
+ 
+ public class GET_ROW {
+     public class Tuple{
+@@ -8,8 +9,9 @@ public class GET_ROW {
+         int y;
+         public Tuple(int x, int y) {
+             this.x = x;
+-            this.y = y;            
++            this.y = y;
+         }
++        
+         @Override
+         public boolean equals(Object o) {
+             if (o instanceof Tuple) {
+@@ -17,18 +19,49 @@ public class GET_ROW {
+             }
+             return false;
+         }
+-    } 
++
++        @Override
++        public String toString() {
++            return "(" + x + ", " + y + ")";
++        }
++    }
+ 
+     public static ArrayList<Tuple> get_row(ArrayList<ArrayList<Integer>> lst, int x) {
+         ArrayList<Tuple> result = new ArrayList<Tuple>();
+ 
+         for (int i = 0; i < lst.size(); i += 1) {
+-            for (int j = lst.get(0).size() - 1; j >= 0; j -= 1){
+-                if (lst.get(i).get(i) == x){
+-                    result.add(new GET_ROW().new Tuple(i, i));
++            for (int j = lst.get(i).size() - 1; j >= 0; j -= 1) {
++                if (lst.get(i).get(j) == x) {
++                    result.add(new GET_ROW().new Tuple(i, j));
+                 }
+             }
+         }
+         return result;
+     }
+-}
++
++    public static void main(String[] args) {
++        ArrayList<humaneval.buggy.GET_ROW.Tuple> result = humaneval.buggy.GET_ROW.get_row(
++            new ArrayList<ArrayList<Integer>>(
++                Arrays.asList(
++                    new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6)),
++                    new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 1, 6)),
++                    new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 1))
++                )
++            ), 1
++        );
++
++        ArrayList<humaneval.buggy.GET_ROW.Tuple> expected = new ArrayList<humaneval.buggy.GET_ROW.Tuple>(
++            Arrays.asList(
++                new humaneval.buggy.GET_ROW().new Tuple(0, 0),
++                new humaneval.buggy.GET_ROW().new Tuple(1, 4),
++                new humaneval.buggy.GET_ROW().new Tuple(1, 0),
++                new humaneval.buggy.GET_ROW().new Tuple(2, 5),
++                new humaneval.buggy.GET_ROW().new Tuple(2, 0)
++            )
++        );
++
++        System.out.println("Expected: " + expected);
++        System.out.println("Result: " + result);
++        assert result.equals(expected) : "Test failed!";
++    }
++}
+\ No newline at end of file

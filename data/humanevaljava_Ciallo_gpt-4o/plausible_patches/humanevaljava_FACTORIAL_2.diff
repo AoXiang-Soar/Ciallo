@@ -1,0 +1,37 @@
+diff --git a/src/main/java/humaneval/buggy/FACTORIAL.java b/src/main/java/humaneval/buggy/FACTORIAL.java
+index 0347b28..b53a60f 100644
+--- a/src/main/java/humaneval/buggy/FACTORIAL.java
++++ b/src/main/java/humaneval/buggy/FACTORIAL.java
+@@ -1,6 +1,7 @@
+ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
++import java.util.Arrays;
+ 
+ /*
+  * Implement the function f that takes n as a parameter,
+@@ -22,10 +23,21 @@ public class FACTORIAL {
+                 ret.add(x);
+             } else {
+                 int x = 0;
+-                for(int j = 1; j <= i; i++) x -= j;
++                for(int j = 1; j <= i; j++) x += j; // Corrected from x -= j to x += j
+                 ret.add(x);
+             }
+         }
+         return ret;
+     }
+-}
++    
++    public static void main(String[] args) {
++        // Test case 0
++        ArrayList<Integer> result = FACTORIAL.factorial(5);
++        ArrayList<Integer> desired = new ArrayList<>(Arrays.asList(1, 2, 6, 24, 15));
++        if(result.equals(desired)) {
++            System.out.println("Test case 0 passed.");
++        } else {
++            System.out.println("Test case 0 failed.");
++        }
++    }
++}
+\ No newline at end of file

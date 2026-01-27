@@ -1,0 +1,43 @@
+diff --git a/src/main/java/humaneval/buggy/ROUNDED_AVG.java b/src/main/java/humaneval/buggy/ROUNDED_AVG.java
+index 4f7aba3..c52fc99 100644
+--- a/src/main/java/humaneval/buggy/ROUNDED_AVG.java
++++ b/src/main/java/humaneval/buggy/ROUNDED_AVG.java
+@@ -1,5 +1,8 @@
+ package humaneval.buggy;
+ 
++import java.math.BigDecimal;
++import java.math.RoundingMode;
++
+ /*
+  * You are given two positive integers n and m, and your task is to compute the
+     average of the integers from n through m (including n and m). 
+@@ -13,19 +16,20 @@ package humaneval.buggy;
+ 
+ public class ROUNDED_AVG {
+     public static String rounded_avg(int n, int m) {
+-        if(m < n) return "-1";
++        if(n > m) return "-1";
+         int summation = 0;
+         for(int i = n; i < m + 1; i++) {
+             summation += i;
+         }
+-        double avg = ((double) summation)/((double) (m - n + 1));
+-        double rem = avg - Math.floor(avg);
+-        int avg_rounded = 0;
+-        if(rem <= 0.5) {
+-            avg_rounded = (int) Math.ceil(avg);
++        BigDecimal avg = new BigDecimal(summation)
++            .divide(new BigDecimal(m - n + 1), 10, RoundingMode.HALF_DOWN);
++        BigDecimal remainder = avg.remainder(BigDecimal.ONE);
++        int avg_rounded;
++        if(remainder.compareTo(new BigDecimal("0.5")) <= 0) {
++            avg_rounded = avg.setScale(0, RoundingMode.DOWN).intValue();
+         } else {
+-            avg_rounded = (int) Math.ceil(avg);
++            avg_rounded = avg.setScale(0, RoundingMode.UP).intValue();
+         }
+         return Integer.toBinaryString(avg_rounded);
+     }
+-}
++}
+\ No newline at end of file

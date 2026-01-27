@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/PARSE_NESTED_PARENS.java b/src/main/java/humaneval/buggy/PARSE_NESTED_PARENS.java
+index 6bc914f..6d98931 100644
+--- a/src/main/java/humaneval/buggy/PARSE_NESTED_PARENS.java
++++ b/src/main/java/humaneval/buggy/PARSE_NESTED_PARENS.java
+@@ -14,12 +14,14 @@ public class PARSE_NESTED_PARENS {
+             for (char c : paren_group.toCharArray()){
+                 if (c == '('){
+                     depth += 1;
+-                    max_depth = Math.max(depth, max_depth);
++                } else if (c == ')') {
++                    depth -= 1;
+                 }
++                max_depth = Math.max(depth, max_depth);
+             }
+             result.add(max_depth);
+         }
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

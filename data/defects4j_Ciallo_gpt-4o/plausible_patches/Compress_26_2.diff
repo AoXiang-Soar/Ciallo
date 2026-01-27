@@ -1,0 +1,29 @@
+diff --git a/src/main/java/org/apache/commons/compress/utils/IOUtils.java b/src/main/java/org/apache/commons/compress/utils/IOUtils.java
+index 686d75ad..bb5ac098 100644
+--- a/src/main/java/org/apache/commons/compress/utils/IOUtils.java
++++ b/src/main/java/org/apache/commons/compress/utils/IOUtils.java
+@@ -101,6 +101,24 @@ public final class IOUtils {
+             numToSkip -= skipped;
+         }
+             
++        // Single byte buffer to read when skipping fails
++        byte[] singleByteBuffer = new byte[1];
++        while (numToSkip > 0) {
++            // Try skipping first
++            long skipped = input.skip(numToSkip);
++            if (skipped > 0) {
++                numToSkip -= skipped;
++                continue;
++            }
++            
++            // If skip fails, read a single byte
++            int readByte = input.read(singleByteBuffer, 0, 1);
++            if (readByte == -1) {
++                // End of stream reached
++                break;
++            }
++            numToSkip -= readByte;
++        }
+         return available - numToSkip;
+     }
+ 

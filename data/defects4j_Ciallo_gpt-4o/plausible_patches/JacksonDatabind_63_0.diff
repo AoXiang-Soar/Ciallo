@@ -1,0 +1,23 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/JsonMappingException.java b/src/main/java/com/fasterxml/jackson/databind/JsonMappingException.java
+index 482622b82..2129ace21 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/JsonMappingException.java
++++ b/src/main/java/com/fasterxml/jackson/databind/JsonMappingException.java
+@@ -123,16 +123,8 @@ public class JsonMappingException
+                     sb.append("UNKNOWN");
+                 } else {
+                     Class<?> cls = (_from instanceof Class<?>) ? (Class<?>)_from : _from.getClass();
+-                    // Hmmh. Although Class.getName() is mostly ok, it does look
+-                    // butt-ugly for arrays.
+-                    // 06-Oct-2016, tatu: as per [databind#1403], `getSimpleName()` not so good
+-                    //   as it drops enclosing class. So let's try bit different approach
+-                    String pkgName = com.fasterxml.jackson.databind.util.ClassUtil.getPackageName(cls);
+-                    if (pkgName != null) {
+-                        sb.append(pkgName);
+-                        sb.append('.');
+-                    }
+-                    sb.append(cls.getSimpleName());
++                    // Here, using getName() instead of getSimpleName() to include enclosing class
++                    sb.append(cls.getName());
+                 }
+                 sb.append('[');
+                 if (_fieldName != null) {

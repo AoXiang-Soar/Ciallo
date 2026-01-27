@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/MULTIPLY.java b/src/main/java/humaneval/buggy/MULTIPLY.java
+index 7ea427a..e0b4430 100644
+--- a/src/main/java/humaneval/buggy/MULTIPLY.java
++++ b/src/main/java/humaneval/buggy/MULTIPLY.java
+@@ -1,16 +1,9 @@
+ package humaneval.buggy;
+ 
+-// Complete the function that takes two integers and returns 
+-// the product of their unit digits.
+-// Assume the input is always valid.
+-// Examples:
+-// multiply(148, 412) should return 16.
+-// multiply(19, 28) should return 72.
+-// multiply(2020, 1851) should return 0.
+-// multiply(14,-15) should return 20.
+-
+ public class MULTIPLY {
+     public static int multiply(int a, int b) {
+-        return (a % 10) * (b % 10);
++        int unitDigitA = a < 0 ? -a % 10 : a % 10;
++        int unitDigitB = b < 0 ? -b % 10 : b % 10;
++        return unitDigitA * unitDigitB;
+     }
+-}
++}
+\ No newline at end of file

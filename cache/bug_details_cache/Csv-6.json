@@ -1,0 +1,16 @@
+{
+    "bug_id": 6,
+    "bug_type": "SF",
+    "buggy_lines": "",
+    "code": "    public Iterator<String> iterator() {\n        return toList().iterator();\n    }\n\n    /**\n     * Puts all values of this record into the given Map.\n     *\n     * @param map The Map to populate.\n     * @return the given map.\n     */\n    <M extends Map<String, String>> M putIn(final M map) {\n        for (final Entry<String, Integer> entry : mapping.entrySet()) {\n            final int col = entry.getValue().intValue();\n                map.put(entry.getKey(), values[col]);\n        }\n        return map;\n    }",
+    "fixed_code": "    public Iterator<String> iterator() {\n        return toList().iterator();\n    }\n\n    /**\n     * Puts all values of this record into the given Map.\n     *\n     * @param map The Map to populate.\n     * @return the given map.\n     */\n    <M extends Map<String, String>> M putIn(final M map) {\n        for (final Entry<String, Integer> entry : mapping.entrySet()) {\n            final int col = entry.getValue().intValue();\n            if (col < values.length) {\n                map.put(entry.getKey(), values[col]);\n            }\n        }\n        return map;\n    }",
+    "fixed_lines": "            if (col < values.length) {\n            }",
+    "masked_code": "    public Iterator<String> iterator() {\n        return toList().iterator();\n    }\n\n    /**\n     * Puts all values of this record into the given Map.\n     *\n     * @param map The Map to populate.\n     * @return the given map.\n     */\n    <M extends Map<String, String>> M putIn(final M map) {\n        for (final Entry<String, Integer> entry : mapping.entrySet()) {\n            final int col = entry.getValue().intValue();\n                map.put(entry.getKey(), values[col]);\n>>> [ INFILL ] <<<\n        }\n        return map;\n    }",
+    "project": "Csv",
+    "test_error_message": "java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2",
+    "test_framework": "defects4j",
+    "test_function": "    public void testToMapWithShortRecord() throws Exception {\n       final CSVParser parser =  CSVParser.parse(\"a,b\", CSVFormat.DEFAULT.withHeader(\"A\", \"B\", \"C\"));\n       final CSVRecord shortRec = parser.iterator().next();\n       shortRec.toMap();\n    }",
+    "test_line": "       shortRec.toMap();",
+    "test_name": "testToMapWithShortRecord",
+    "test_suite": "org.apache.commons.csv.CSVRecordTest"
+}

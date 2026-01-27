@@ -1,0 +1,30 @@
+diff --git a/src/main/java/org/jsoup/nodes/FormElement.java b/src/main/java/org/jsoup/nodes/FormElement.java
+index e498975d..f4c43532 100644
+--- a/src/main/java/org/jsoup/nodes/FormElement.java
++++ b/src/main/java/org/jsoup/nodes/FormElement.java
+@@ -45,8 +45,7 @@ public class FormElement extends Element {
+         elements.add(element);
+         return this;
+     }
+-
+-
++    
+     /**
+      * Prepare to submit this form. A Connection object is created with the request set up from the form values. You
+      * can then set up other options (like user-agent, timeout, cookies), then execute it.
+@@ -75,6 +74,8 @@ public class FormElement extends Element {
+ 
+         // iterate the form control elements and accumulate their values
+         for (Element el: elements) {
++            // Ensure the form element is still part of a document
++            if (!el.hasParent()) continue;
+             if (!el.tag().isFormSubmittable()) continue; // contents are form listable, superset of submitable
+             if (el.hasAttr("disabled")) continue; // skip disabled form inputs
+             String name = el.attr("name");
+@@ -105,4 +106,4 @@ public class FormElement extends Element {
+         }
+         return data;
+     }
+-}
++}
+\ No newline at end of file

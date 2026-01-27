@@ -1,0 +1,13 @@
+diff --git a/src/java/org/apache/commons/collections/ExtendedProperties.java b/src/java/org/apache/commons/collections/ExtendedProperties.java
+index 8c302f8e..a689d0f6 100644
+--- a/src/java/org/apache/commons/collections/ExtendedProperties.java
++++ b/src/java/org/apache/commons/collections/ExtendedProperties.java
+@@ -813,7 +813,7 @@ public class ExtendedProperties extends Hashtable {
+     public void combine(ExtendedProperties props) {
+         for (Iterator it = props.getKeys(); it.hasNext();) {
+             String key = (String) it.next();
+-            setProperty(key, props.get(key));
++            setProperty(key, props.getString(key).replace("\\", "\\\\"));
+         }
+     }
+     

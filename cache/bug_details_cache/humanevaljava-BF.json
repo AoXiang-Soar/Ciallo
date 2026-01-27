@@ -1,0 +1,16 @@
+{
+    "bug_id": "BF",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_BF.test_0:10 expected:<[Jupiter, Saturn, Uranus]> but was:<[Saturn, Uranus]>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        ArrayList<String> result = humaneval.buggy.BF.bf(\"Jupiter\", \"Neptune\");\n        org.junit.Assert.assertEquals(\n            result, new ArrayList<String>(Arrays.asList(\n                \"Saturn\", \"Uranus\"\n            ))\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_BF"
+}

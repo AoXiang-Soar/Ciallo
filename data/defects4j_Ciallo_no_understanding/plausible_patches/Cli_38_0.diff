@@ -1,0 +1,56 @@
+diff --git a/src/main/java/org/apache/commons/cli/DefaultParser.java b/src/main/java/org/apache/commons/cli/DefaultParser.java
+index 4bff7f3..38177c1 100644
+--- a/src/main/java/org/apache/commons/cli/DefaultParser.java
++++ b/src/main/java/org/apache/commons/cli/DefaultParser.java
+@@ -296,20 +296,40 @@ public class DefaultParser implements CommandLineParser
+      * 
+      * @param token
+      */
+-    private boolean isShortOption(String token)
+-    {
+-        // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+-        if (!token.startsWith("-") || token.length() == 1)
+-        {
+-            return false;
+-        }
++private boolean isShortOption(String token) {
++    // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
++    if (!token.startsWith("-") || token.length() == 1) {
++        return false;
++    }
+ 
+-        // remove leading "-" and "=value"
+-        int pos = token.indexOf("=");
+-        String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
++    // Check if this is a single short option (one character after -)
++    // OR a single multi-character option (like -abc where 'abc' is one option)
++    // OR multiple concatenated options (like -abc where 'a', 'b', 'c' are separate options)
++    
++    // Remove leading "-" and "=value"
++    int pos = token.indexOf("=");
++    String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
++
++    // Case 1: Single character option (-a)
++    if (optName.length() == 1) {
+         return options.hasShortOption(optName);
+-        // check for several concatenated short options
+     }
++    
++    // Case 2: Try all possible interpretations:
++    // a) This is a single multi-character option (like -abc)
++    if (options.hasShortOption(optName)) {
++        return true;
++    }
++    
++    // b) This could be multiple concatenated single-character options (-abc where a, b, c are individual options)
++    // Check if all characters are valid short options by themselves
++    for (int i = 0; i < optName.length(); i++) {
++        if (!options.hasShortOption(String.valueOf(optName.charAt(i)))) {
++            return false;
++        }
++    }
++    return true;
++}
+ 
+     /**
+      * Tells if the token looks like a long option.

@@ -1,0 +1,16 @@
+{
+    "bug_id": "ENCRYPT",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_ENCRYPT.test_0:7 expected:<[ef]> but was:<[lm]>\nTEST_ENCRYPT.test_6:54 \u00bb StringIndexOutOfBounds String index out of range: 45",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        String result = humaneval.buggy.ENCRYPT.encrypt(\"hi\");\n        org.junit.Assert.assertEquals(\n            result, \"lm\"\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_ENCRYPT"
+}

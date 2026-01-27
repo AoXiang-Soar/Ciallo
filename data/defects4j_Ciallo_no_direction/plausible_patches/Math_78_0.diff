@@ -1,0 +1,27 @@
+diff --git a/src/main/java/org/apache/commons/math/ode/events/EventState.java b/src/main/java/org/apache/commons/math/ode/events/EventState.java
+index 50060650e..5e4d5229d 100644
+--- a/src/main/java/org/apache/commons/math/ode/events/EventState.java
++++ b/src/main/java/org/apache/commons/math/ode/events/EventState.java
+@@ -188,15 +188,13 @@ public class EventState {
+                 if (g0Positive ^ (gb >= 0)) {
+                     // there is a sign change: an event is expected during this step
+ 
+-                        // this is a corner case:
+-                        // - there was an event near ta,
+-                        // - there is another event between ta and tb
+-                        // - when ta was computed, convergence was reached on the "wrong side" of the interval
+-                        // this implies that the real sign of ga is the same as gb, so we need to slightly
+-                        // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+-                        // about bracketing
+-                            // this should never happen
+-                         
++                    if (ga * gb >= 0) {
++                        // adjust ta to ensure proper bracketing
++                        ta = ta + (forward ? convergence : -convergence);
++                        interpolator.setInterpolatedTime(ta);
++                        ga = handler.g(ta, interpolator.getInterpolatedState());
++                    }
++
+                     // variation direction, with respect to the integration direction
+                     increasing = gb >= ga;
+ 

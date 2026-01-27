@@ -1,0 +1,16 @@
+{
+    "bug_id": 26,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "java.io.NotSerializableException: com.fasterxml.jackson.databind.ser.BeanPropertyWriter",
+    "test_framework": "defects4j",
+    "test_function": "    public void testEnumHandlers() throws IOException\n    {\n        ObjectMapper mapper = new ObjectMapper();\n        // ensure we have serializers and/or deserializers, first\n        String json = mapper.writerFor(EnumPOJO.class)\n                .writeValueAsString(new EnumPOJO());\n        EnumPOJO result = mapper.readerFor(EnumPOJO.class)\n                .readValue(json);\n        assertNotNull(result);\n\n        // and then use JDK serialization to freeze/thaw objects\n        byte[] bytes = jdkSerialize(mapper);\n        ObjectMapper mapper2 = jdkDeserialize(bytes);\n        assertNotNull(mapper2);\n\n        bytes = jdkSerialize(mapper.readerFor(EnumPOJO.class));\n        ObjectReader r = jdkDeserialize(bytes);\n        assertNotNull(r);\n\n        /* 14-Aug-2015, tatu: Looks like pre-loading JsonSerializer is problematic\n         *    at this point; comment out for now. Try to fix later on.\n         */\n        bytes = jdkSerialize(mapper.writerFor(EnumPOJO.class));\n        ObjectWriter w = jdkDeserialize(bytes);\n        assertNotNull(w);\n\n        // plus, ensure objects are usable:\n        String json2 = w.writeValueAsString(new EnumPOJO());\n        assertEquals(json, json2);\n        EnumPOJO result2 = r.readValue(json2);\n        assertNotNull(result2);\n    }",
+    "test_line": "        obOut.writeObject(o);",
+    "test_name": "testEnumHandlers",
+    "test_suite": "com.fasterxml.jackson.databind.TestJDKSerialization"
+}

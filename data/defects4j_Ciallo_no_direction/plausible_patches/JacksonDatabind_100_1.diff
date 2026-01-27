@@ -1,0 +1,64 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java b/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
+index 9d2f74b35..4c0f76b54 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
++++ b/src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java
+@@ -352,29 +352,40 @@ public class TreeTraversingParser extends ParserMinimalBase
+      */
+ 
+     @Override
+-    public byte[] getBinaryValue(Base64Variant b64variant)
+-        throws IOException, JsonParseException
+-    {
+-        // Multiple possibilities...
+-        JsonNode n = currentNode();
+-        if (n != null) {
+-            // [databind#2096]: although `binaryValue()` works for real binary node
+-            // and embedded "POJO" node, coercion from TextNode may require variant, so:
+-            byte[] data = n.binaryValue();
+-            if (data != null) {
+-                return data;
+-            }
+-            if (n.isPojo()) {
+-                Object ob = ((POJONode) n).getPojo();
+-                if (ob instanceof byte[]) {
+-                    return (byte[]) ob;
+-                }
+-            }
++public byte[] getBinaryValue(Base64Variant b64variant)
++    throws IOException, JsonParseException
++{
++    JsonNode n = currentNode();
++    if (n == null) {
++        return null;
++    }
++
++    // Handle binary nodes
++    if (n.isBinary()) {
++        return n.binaryValue();
++    }
++
++    // Handle POJO nodes with byte[] content
++    if (n.isPojo()) {
++        Object pojo = ((POJONode) n).getPojo();
++        if (pojo instanceof byte[]) {
++            return (byte[]) pojo;
+         }
+-        // otherwise return null to mark we have no binary content
+         return null;
+     }
+ 
++    // Handle text nodes with Base64 content
++    if (n.isTextual()) {
++        try {
++            return b64variant.decode(n.textValue());
++        } catch (IllegalArgumentException e) {
++            return null;
++        }
++    }
++
++    return null;
++}
++
+ 
+     @Override
+     public int readBinaryValue(Base64Variant b64variant, OutputStream out)

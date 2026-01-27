@@ -1,0 +1,16 @@
+{
+    "bug_id": 9,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<...<> \u00c5 \u03c0 \u03c0 \u65b0 there &! [\u00be]> but was:<...<> \u00c5 \u03c0 \u03c0 \u65b0 there &! [&frac34;]>",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void unescape() {\n        String text = \"Hello &amp;&LT&gt; &angst &#960; &#960 &#x65B0; there &! &frac34;\";\n        assertEquals(\"Hello &<> \u00c5 \u03c0 \u03c0 \u65b0 there &! \u00be\", Entities.unescape(text));\n\n        assertEquals(\"&0987654321; &unknown\", Entities.unescape(\"&0987654321; &unknown\"));\n    }",
+    "test_line": "        assertEquals(\"Hello &<> \u00c5 \u03c0 \u03c0 \u65b0 there &! \u00be\", Entities.unescape(text));",
+    "test_name": "unescape",
+    "test_suite": "org.jsoup.nodes.EntitiesTest"
+}

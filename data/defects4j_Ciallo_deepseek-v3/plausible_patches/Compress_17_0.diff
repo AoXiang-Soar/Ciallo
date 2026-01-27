@@ -1,0 +1,22 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index c5532494..c603a7df 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -131,11 +131,15 @@ public class TarUtils {
+                     exceptionMessage(buffer, offset, length, end-1, trailer));
+         }
+         // May have additional NULs or spaces
+-        trailer = buffer[end - 1];
+-        if (trailer == 0 || trailer == ' '){
++        while (end > start && (buffer[end - 1] == 0 || buffer[end - 1] == ' ')) {
+             end--;
+         }
+ 
++        if (start >= end) {
++            throw new IllegalArgumentException(
++                    "Empty octal number");
++        }
++
+         for ( ;start < end; start++) {
+             final byte currentByte = buffer[start];
+             // CheckStyle:MagicNumber OFF

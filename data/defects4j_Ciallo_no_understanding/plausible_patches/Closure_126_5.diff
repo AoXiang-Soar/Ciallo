@@ -1,0 +1,24 @@
+diff --git a/src/com/google/javascript/jscomp/MinimizeExitPoints.java b/src/com/google/javascript/jscomp/MinimizeExitPoints.java
+index 4146f1777..ecf794b71 100644
+--- a/src/com/google/javascript/jscomp/MinimizeExitPoints.java
++++ b/src/com/google/javascript/jscomp/MinimizeExitPoints.java
+@@ -134,13 +134,17 @@ class MinimizeExitPoints
+         Node catchCodeBlock = catchNode.getLastChild();
+         tryMinimizeExits(catchCodeBlock, exitType, labelName);
+       }
++      /* Don't try to minimize the exits of finally blocks, as this
++       * can cause problems if it changes the completion type of the finally
++       * block. See ECMA 262 Sections 8.9 & 12.14
++       */
+       /* Don't try to minimize the exits of finally blocks, as this
+        * can cause problems if it changes the completion type of the finally
+        * block. See ECMA 262 Sections 8.9 & 12.14
+        */
+       if (NodeUtil.hasFinally(n)) {
+-        Node finallyBlock = n.getLastChild();
+-        tryMinimizeExits(finallyBlock, exitType, labelName);
++        // Intentionally left empty - see comment above
++        return;
+       }
+     }
+ 

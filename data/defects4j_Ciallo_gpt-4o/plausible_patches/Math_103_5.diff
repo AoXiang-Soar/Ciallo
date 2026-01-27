@@ -1,0 +1,40 @@
+diff --git a/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java b/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
+index 02810e142..47c4940ca 100644
+--- a/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
++++ b/src/java/org/apache/commons/math/distribution/NormalDistributionImpl.java
+@@ -105,10 +105,32 @@ public class NormalDistributionImpl extends AbstractContinuousDistribution
+      * x is more than 20 standard deviations from the mean, in which case the
+      * convergence exception is caught and 0 or 1 is returned.
+      */
+-    public double cumulativeProbability(double x) throws MathException {
+-            return 0.5 * (1.0 + Erf.erf((x - mean) /
+-                    (standardDeviation * Math.sqrt(2.0))));
++public double cumulativeProbability(double x) throws MathException {
++    // Use a small precision value for stopping early in tail cases
++    final double precision = 1E-12;
++
++    // Calculate the Z-score for the given x
++    double z = (x - mean) / standardDeviation;
++
++    // Check if the Z-score is in the extreme tails
++    if (z < -10.0) {
++        return 0.0; // Significantly into the lower tail
++    } else if (z > 10.0) {
++        return 1.0; // Significantly into the upper tail
++    } else {
++        // If not in the extreme tails, compute using the error function
++        double result = 0.5 * (1.0 + Erf.erf(z / Math.sqrt(2.0)));
++
++        // Ensure precision for very small or very large probabilities
++        if (result < precision) {
++            return 0.0;
++        } else if (result > 1.0 - precision) {
++            return 1.0;
++        } else {
++            return result;
++        }
+     }
++}
+     
+     /**
+      * For this distribution, X, this method returns the critical point x, such

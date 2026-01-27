@@ -1,0 +1,47 @@
+diff --git a/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java b/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
+index 558a5864..3a5e2997 100644
+--- a/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
++++ b/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
+@@ -2537,18 +2537,34 @@ public class DateTimeFormatterBuilder {
+             return MAX_LENGTH;
+         }
+ 
+-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+-            String str = text.substring(position);
+-            for (String id : ALL_IDS) {
+-                if (str.startsWith(id)) {
+-                    bucket.setZone(DateTimeZone.forID(id));
+-                    return position + id.length();
+-                }
++public int parseInto(DateTimeParserBucket bucket, String text, int position) {
++    String longestMatchedId = null;
++    int textLength = text.length();
++
++    // Iterate over all timezone IDs
++    for (String id : ALL_IDS) {
++        int idLength = id.length();
++
++        // Check if the substring, starting from given position, matches the id
++        if (position + idLength <= textLength && text.regionMatches(position, id, 0, idLength)) {
++            // Update the longest match found if current id is longer than previously longest match
++            if (longestMatchedId == null || idLength > longestMatchedId.length()) {
++                longestMatchedId = id;
+             }
+-            return ~position;
+         }
+     }
+ 
++    // If a longest match was found, apply it to the bucket and return new position
++    if (longestMatchedId != null) {
++        bucket.setZone(DateTimeZone.forID(longestMatchedId));
++        return position + longestMatchedId.length();
++    }
++
++    // If no match found, indicate failure by returning the bitwise complement of the position
++    return ~position;
++}
++    }
++
+     //-----------------------------------------------------------------------
+     static class Composite
+             implements DateTimePrinter, DateTimeParser {

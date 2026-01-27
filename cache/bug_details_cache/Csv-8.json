@@ -1,0 +1,16 @@
+{
+    "bug_id": 8,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Csv",
+    "test_error_message": "java.lang.Exception: Unexpected exception, expected<java.lang.IllegalArgumentException> but was<java.lang.IllegalStateException>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testDuplicateHeaderElements() {\n        CSVFormat.DEFAULT.withHeader(\"A\", \"A\").validate();\n    }",
+    "test_line": "        CSVFormat.DEFAULT.withHeader(\"A\", \"A\").validate();",
+    "test_name": "testDuplicateHeaderElements",
+    "test_suite": "org.apache.commons.csv.CSVFormatTest"
+}

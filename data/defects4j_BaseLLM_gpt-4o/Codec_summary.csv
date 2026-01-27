@@ -1,0 +1,19 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Codec,1,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Codec,2,SL SH SF,1,12292,13,11,1,13,
+defects4j,Codec,3,SL SH SF,1,1091,1,0,0,1,
+defects4j,Codec,4,SL SH SF,0,9130,,13,9,22,
+defects4j,Codec,5,SH SF,1,880,1,0,0,1,
+defects4j,Codec,6,SF,0,23405,,18,4,22,
+defects4j,Codec,7,SL SH SF,1,768,1,0,0,1,
+defects4j,Codec,8,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Codec,9,SL SH SF,1,560,1,0,0,1,
+defects4j,Codec,10,SL SH SF,1,1576,1,0,0,1,
+defects4j,Codec,11,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Codec,12,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Codec,13,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Codec,14,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Codec,15,SF,0,16311,,22,0,22,
+defects4j,Codec,16,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,Codec,17,SL SH SF,1,444,1,0,0,1,
+defects4j,Codec,18,SL SH SF,1,570,1,0,0,1,

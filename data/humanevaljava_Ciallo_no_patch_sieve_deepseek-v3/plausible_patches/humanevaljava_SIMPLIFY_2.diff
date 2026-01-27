@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/SIMPLIFY.java b/src/main/java/humaneval/buggy/SIMPLIFY.java
+index a55ee2e..a2a9e60 100644
+--- a/src/main/java/humaneval/buggy/SIMPLIFY.java
++++ b/src/main/java/humaneval/buggy/SIMPLIFY.java
+@@ -18,10 +18,9 @@ public class SIMPLIFY {
+         int c = Integer.parseInt(n.split("/")[0]);
+         int d = Integer.parseInt(n.split("/")[1]);
+ 
+-        int numerator = a * c;
+-        int denom = b * d;
+-        if (numerator / denom == (int) (numerator / denom))
+-            return true;
+-        return false;
++        double numerator = a * c;
++        double denom = b * d;
++        double result = numerator / denom;
++        return result == Math.floor(result);
+     }
+-}
++}
+\ No newline at end of file

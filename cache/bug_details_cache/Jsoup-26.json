@@ -1,0 +1,16 @@
+{
+    "bug_id": 26,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "",
+    "code": "    public Document clean(Document dirtyDocument) {\n        Validate.notNull(dirtyDocument);\n\n        Document clean = Document.createShell(dirtyDocument.baseUri());\n            copySafeNodes(dirtyDocument.body(), clean.body());\n\n        return clean;\n    }",
+    "fixed_code": "    public Document clean(Document dirtyDocument) {\n        Validate.notNull(dirtyDocument);\n\n        Document clean = Document.createShell(dirtyDocument.baseUri());\n        if (dirtyDocument.body() != null) // frameset documents won't have a body. the clean doc will have empty body.\n            copySafeNodes(dirtyDocument.body(), clean.body());\n\n        return clean;\n    }",
+    "fixed_lines": "        if (dirtyDocument.body() != null) // frameset documents won't have a body. the clean doc will have empty body.",
+    "masked_code": "    public Document clean(Document dirtyDocument) {\n        Validate.notNull(dirtyDocument);\n\n        Document clean = Document.createShell(dirtyDocument.baseUri());\n>>> [ INFILL ] <<<\n            copySafeNodes(dirtyDocument.body(), clean.body());\n\n        return clean;\n    }",
+    "project": "Jsoup",
+    "test_error_message": "java.lang.NullPointerException",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void handlesFramesets() {\n        String dirty = \"<html><head><script></script><noscript></noscript></head><frameset><frame src=\\\"foo\\\" /><frame src=\\\"foo\\\" /></frameset></html>\";\n        String clean = Jsoup.clean(dirty, Whitelist.basic());\n        assertEquals(\"\", clean); // nothing good can come out of that\n\n        Document dirtyDoc = Jsoup.parse(dirty);\n        Document cleanDoc = new Cleaner(Whitelist.basic()).clean(dirtyDoc);\n        assertFalse(cleanDoc == null);\n        assertEquals(0, cleanDoc.body().childNodes().size());\n    }",
+    "test_line": "        Document cleanDoc = new Cleaner(Whitelist.basic()).clean(dirtyDoc);",
+    "test_name": "handlesFramesets",
+    "test_suite": "org.jsoup.safety.CleanerTest"
+}

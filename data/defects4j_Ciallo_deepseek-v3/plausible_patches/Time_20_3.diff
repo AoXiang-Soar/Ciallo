@@ -1,0 +1,43 @@
+diff --git a/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java b/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
+index 558a5864..1f7036e3 100644
+--- a/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
++++ b/src/main/java/org/joda/time/format/DateTimeFormatterBuilder.java
+@@ -2537,17 +2537,31 @@ public class DateTimeFormatterBuilder {
+             return MAX_LENGTH;
+         }
+ 
+-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+-            String str = text.substring(position);
+-            for (String id : ALL_IDS) {
+-                if (str.startsWith(id)) {
+-                    bucket.setZone(DateTimeZone.forID(id));
+-                    return position + id.length();
++public int parseInto(DateTimeParserBucket bucket, String text, int position) {
++    String str = text.substring(position);
++    String bestMatch = null;
++    for (String id : ALL_IDS) {
++        if (str.startsWith(id)) {
++            // Only consider it a match if:
++            // 1. It's the exact remaining string, or
++            // 2. The next character is a separator (space or slash)
++            if (str.length() == id.length() || 
++                str.charAt(id.length()) == ' ' || 
++                str.charAt(id.length()) == '/') {
++                // Take the longest matching ID
++                if (bestMatch == null || id.length() > bestMatch.length()) {
++                    bestMatch = id;
+                 }
+             }
+-            return ~position;
+         }
+     }
++    if (bestMatch != null) {
++        bucket.setZone(DateTimeZone.forID(bestMatch));
++        return position + bestMatch.length();
++    }
++    return ~position;
++}
++    }
+ 
+     //-----------------------------------------------------------------------
+     static class Composite

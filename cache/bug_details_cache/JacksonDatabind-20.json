@@ -1,0 +1,16 @@
+{
+    "bug_id": 20,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JacksonDatabind",
+    "test_error_message": "com.fasterxml.jackson.databind.JsonMappingException: Conflicting setter definitions for property \"all\": com.fasterxml.jackson.databind.node.ObjectNode#setAll(1 params) vs com.fasterxml.jackson.databind.node.ObjectNode#setAll(1 params)",
+    "test_framework": "defects4j",
+    "test_function": "    public void testNamingWithObjectNode() throws Exception\n    {\n        ObjectMapper m = new ObjectMapper();\n        m.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE);\n        ClassWithObjectNodeField result =\n            m.readValue(\n                \"{ \\\"id\\\": \\\"1\\\", \\\"json\\\": { \\\"foo\\\": \\\"bar\\\", \\\"baz\\\": \\\"bing\\\" } }\",\n                ClassWithObjectNodeField.class);\n        assertNotNull(result);\n        assertEquals(\"1\", result.id);\n        assertNotNull(result.json);\n        assertEquals(2, result.json.size());\n        assertEquals(\"bing\", result.json.path(\"baz\").asText());\n    }",
+    "test_line": "            m.readValue(",
+    "test_name": "testNamingWithObjectNode",
+    "test_suite": "com.fasterxml.jackson.databind.introspect.TestNamingStrategyStd"
+}

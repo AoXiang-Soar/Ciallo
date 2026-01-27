@@ -1,0 +1,109 @@
+diff --git a/src/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java b/src/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java
+index 637c450eb..bd9825ed9 100644
+--- a/src/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java
++++ b/src/org/mockito/internal/configuration/injection/FinalMockCandidateFilter.java
+@@ -1,41 +1,62 @@
+-package org.mockito.internal.configuration.injection;
+-
+-import org.mockito.exceptions.base.MockitoException;
+-import org.mockito.internal.util.reflection.FieldSetter;
+-
+-import java.lang.reflect.Field;
+-import java.util.Collection;
+-
+-/**
+- * This node returns an actual injecter which will be either :
+- *
+- * <ul>
+- * <li>an {@link OngoingInjecter} that do nothing if a candidate couldn't be found</li>
+- * <li>an {@link OngoingInjecter} that will try to inject the candidate trying first the property setter then if not possible try the field access</li>
+- * </ul>
+- */
+-public class FinalMockCandidateFilter implements MockCandidateFilter {
+-    public OngoingInjecter filterCandidate(final Collection<Object> mocks, final Field field, final Object fieldInstance) {
+-        if(mocks.size() == 1) {
+-            final Object matchingMock = mocks.iterator().next();
+-
+-            return new OngoingInjecter() {
+-                public boolean thenInject() {
+-                    try {
+-                            new FieldSetter(fieldInstance, field).set(matchingMock);
+-                    } catch (Exception e) {
+-                        throw new MockitoException("Problems injecting dependency in " + field.getName(), e);
+-                    }
+-                    return true;
+-                }
+-            };
+-        }
+-
+-        return new OngoingInjecter() {
+-            public boolean thenInject() {
+-                return false;
+-            }
+-        };
+-
+-    }
+-}
++package org.mockito.internal.configuration.injection;
++
++import org.mockito.exceptions.base.MockitoException;
++import org.mockito.internal.util.reflection.FieldSetter;
++
++import java.lang.reflect.Field;
++import java.lang.reflect.Method;
++import java.util.Collection;
++
++/**
++ * This node returns an actual injecter which will be either:
++ *
++ * <ul>
++ * <li>an {@link OngoingInjecter} that does nothing if a candidate couldn't be found</li>
++ * <li>an {@link OngoingInjecter} that will try to inject the candidate trying first the property setter then if not possible try the field access</li>
++ * </ul>
++ */
++public class FinalMockCandidateFilter implements MockCandidateFilter {
++    public OngoingInjecter filterCandidate(final Collection<Object> mocks, final Field field, final Object fieldInstance) {
++        if (mocks.size() == 1) {
++            final Object matchingMock = mocks.iterator().next();
++
++            return new OngoingInjecter() {
++                public boolean thenInject() {
++                    try {
++                        Method setter = findSetter(fieldInstance.getClass(), field);
++                        if (setter != null) {
++                            // Make sure the setter is accessible
++                            if (!setter.isAccessible()) {
++                                setter.setAccessible(true);
++                            }
++                            setter.invoke(fieldInstance, matchingMock);
++                        } else {
++                            // Use field access as fallback
++                            new FieldSetter(fieldInstance, field).set(matchingMock);
++                        }
++                    } catch (Exception e) {
++                        throw new MockitoException("Problems injecting dependency in " + field.getName(), e);
++                    }
++                    return true;
++                }
++            };
++        }
++
++        return new OngoingInjecter() {
++            public boolean thenInject() {
++                return false;
++            }
++        };
++    }
++
++    // Helper method to find a setter for the field
++    private Method findSetter(Class<?> clazz, Field field) {
++        String fieldName = field.getName();
++        String setterName = "set" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
++        try {
++            return clazz.getDeclaredMethod(setterName, field.getType());
++        } catch (NoSuchMethodException e) {
++            return null;
++        }
++    }
++}
+\ No newline at end of file

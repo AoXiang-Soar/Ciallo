@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/IS_SIMPLE_POWER.java b/src/main/java/humaneval/buggy/IS_SIMPLE_POWER.java
+index 87a0fa5..1cf4958 100644
+--- a/src/main/java/humaneval/buggy/IS_SIMPLE_POWER.java
++++ b/src/main/java/humaneval/buggy/IS_SIMPLE_POWER.java
+@@ -15,8 +15,12 @@ public class IS_SIMPLE_POWER {
+     public static boolean is_simple_power(int x, int n) {
+         int power = 1;
+         while (power < x) {
+-            power *= n;
++            int new_power = power * n;
++            if (new_power <= power) {
++                return false;
++            }
++            power = new_power;
+         }
+         return power == x;
+     }
+-}
++}
+\ No newline at end of file

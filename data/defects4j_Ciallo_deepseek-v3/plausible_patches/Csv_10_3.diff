@@ -1,0 +1,20 @@
+diff --git a/src/main/java/org/apache/commons/csv/CSVPrinter.java b/src/main/java/org/apache/commons/csv/CSVPrinter.java
+index 94e5852d..08eb64a1 100644
+--- a/src/main/java/org/apache/commons/csv/CSVPrinter.java
++++ b/src/main/java/org/apache/commons/csv/CSVPrinter.java
+@@ -67,6 +67,15 @@ public final class CSVPrinter implements Flushable, Closeable {
+         this.format.validate();
+         // TODO: Is it a good idea to do this here instead of on the first call to a print method?
+         // It seems a pain to have to track whether the header has already been printed or not.
++        this.format.validate();
++        this.newRecord = true;
++        // Print header if configured and non-empty
++        if (format.getHeader() != null) {
++            final String[] header = format.getHeader();
++            if (header.length > 0) {
++                this.printRecord((Object[]) header);
++            }
++        }
+     }
+ 
+     // ======================================================

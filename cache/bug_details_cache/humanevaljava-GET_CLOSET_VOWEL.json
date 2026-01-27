@@ -1,0 +1,16 @@
+{
+    "bug_id": "GET_CLOSET_VOWEL",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_GET_CLOSET_VOWEL.test_11:61 \u00bb StringIndexOutOfBounds String index out of ...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_11() throws java.lang.Exception {\n        String result = humaneval.buggy.GET_CLOSET_VOWEL.get_closet_vowel(\"Asia\");\n        org.junit.Assert.assertEquals(\"\", result);\n    }",
+    "test_line": "        String result = humaneval.buggy.GET_CLOSET_VOWEL.get_closet_vowel(\"Asia\");",
+    "test_name": "test_11",
+    "test_suite": "TEST_GET_CLOSET_VOWEL"
+}

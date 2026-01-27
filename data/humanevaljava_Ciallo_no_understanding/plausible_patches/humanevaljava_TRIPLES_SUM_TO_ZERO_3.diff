@@ -1,0 +1,26 @@
+diff --git a/src/main/java/humaneval/buggy/TRIPLES_SUM_TO_ZERO.java b/src/main/java/humaneval/buggy/TRIPLES_SUM_TO_ZERO.java
+old mode 100644
+new mode 100755
+index e851652..92da724
+--- a/src/main/java/humaneval/buggy/TRIPLES_SUM_TO_ZERO.java
++++ b/src/main/java/humaneval/buggy/TRIPLES_SUM_TO_ZERO.java
+@@ -20,8 +20,10 @@ False
+ public class TRIPLES_SUM_TO_ZERO {
+     public static boolean triples_sum_to_zero(int[] numbers) {
+         for (int i = 0; i < numbers.length; i += 1) {
+-            for (int j = i; j < numbers.length; j += 1) {
+-                for (int k = j; k < numbers.length; k += 1) {
++            for (int j = 0; j < numbers.length; j += 1) {
++                if (j == i) continue;
++                for (int k = 0; k < numbers.length; k += 1) {
++                    if (k == i || k == j) continue;
+                     if (numbers[i] + numbers[j] + numbers[k] == 0)
+                         return true;
+                 }
+@@ -29,4 +31,4 @@ public class TRIPLES_SUM_TO_ZERO {
+         }
+         return false;
+     }
+-}
++}
+\ No newline at end of file

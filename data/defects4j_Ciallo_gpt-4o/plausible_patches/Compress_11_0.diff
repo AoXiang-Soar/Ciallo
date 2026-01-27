@@ -1,0 +1,35 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java b/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
+index a30cd5a8..430167cb 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
++++ b/src/main/java/org/apache/commons/compress/archivers/ArchiveStreamFactory.java
+@@ -209,6 +209,10 @@ public class ArchiveStreamFactory {
+         try {
+             int signatureLength = in.read(signature);
+             in.reset();
++            if (signatureLength < 12) {
++                // Not enough data to determine a valid archive format
++                throw new ArchiveException("No Archiver found for the stream signature");
++            }
+             if (ZipArchiveInputStream.matches(signature, signatureLength)) {
+                 return new ZipArchiveInputStream(in);
+             } else if (JarArchiveInputStream.matches(signature, signatureLength)) {
+@@ -224,6 +228,9 @@ public class ArchiveStreamFactory {
+             in.mark(dumpsig.length);
+             signatureLength = in.read(dumpsig);
+             in.reset();
++            if (signatureLength < 32) {
++                throw new ArchiveException("No Archiver found for the stream signature");
++            }
+             if (DumpArchiveInputStream.matches(dumpsig, signatureLength)) {
+                 return new DumpArchiveInputStream(in);
+             }
+@@ -233,6 +240,9 @@ public class ArchiveStreamFactory {
+             in.mark(tarheader.length);
+             signatureLength = in.read(tarheader);
+             in.reset();
++            if (signatureLength < 512) {
++                throw new ArchiveException("No Archiver found for the stream signature");
++            }
+             if (TarArchiveInputStream.matches(tarheader, signatureLength)) {
+                 return new TarArchiveInputStream(in);
+             }

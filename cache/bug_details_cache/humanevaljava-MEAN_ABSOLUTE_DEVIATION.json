@@ -1,0 +1,16 @@
+{
+    "bug_id": "MEAN_ABSOLUTE_DEVIATION",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MEAN_ABSOLUTE_DEVIATION.test_1:20",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_1() throws java.lang.Exception {\n        double result = humaneval.buggy.MEAN_ABSOLUTE_DEVIATION.mean_absolute_deviation(\n            new ArrayList<Double>(Arrays.asList(1.0, 2.0, 3.0, 4.0))\n        );\n        org.junit.Assert.assertTrue(Math.abs(result - 1.0) < 1.e-6);\n    }",
+    "test_line": "        org.junit.Assert.assertTrue(Math.abs(result - 1.0) < 1.e-6);",
+    "test_name": "test_1",
+    "test_suite": "TEST_MEAN_ABSOLUTE_DEVIATION"
+}

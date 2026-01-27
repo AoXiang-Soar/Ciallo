@@ -1,0 +1,53 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java b/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
+index 7fe03f9..da73b5b 100644
+--- a/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
++++ b/src/main/java/humaneval/buggy/SORT_ARRAY_BINARY.java
+@@ -1,20 +1,10 @@
+ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
++import java.util.Arrays;
+ import java.util.Collections;
+ import java.util.Comparator;
+ 
+-/*
+- * In this Kata, you have to sort an array of non-negative integers according to
+-    number of ones in their binary representation in ascending order.
+-    For similar number of ones, sort based on decimal value.
+-
+-    It must be implemented like this:
+-    >>> sort_array([1, 5, 2, 3, 4]) == [1, 2, 3, 4, 5]
+-    >>> sort_array([-2, -3, -4, -5, -6]) == [-6, -5, -4, -3, -2]
+-    >>> sort_array([1, 0, 2, 3, 4]) [0, 1, 2, 3, 4]
+- */
+-
+ public class SORT_ARRAY_BINARY {
+    public static int number_ones(int n) {
+       if(n < 0) n *= -1;
+@@ -33,14 +23,19 @@ public class SORT_ARRAY_BINARY {
+             int num_ones_o1 = number_ones(o1);
+             int num_ones_o2 = number_ones(o2);
+             if(num_ones_o1 == num_ones_o2) {
+-               if(o1 == o2) return 1;
+-               if(o1 < o2) return 0;
+-               if(o1 > o2) return -1;
++               return Integer.compare(o1, o2); // Correctly compare integers
+             }
+-            if(num_ones_o1 < num_ones_o2) return -1;
+-            else return 1;
++            return Integer.compare(num_ones_o1, num_ones_o2); // Compare based on number of ones
+          }
+       });
+       return arr;
+    }
+-}
++
++   public static void main(String[] args) throws Exception {
++      ArrayList<Integer> input = new ArrayList<>(Arrays.asList(1, 5, 2, 3, 4));
++      ArrayList<Integer> result = SORT_ARRAY_BINARY.sort_array_binary(input);
++      ArrayList<Integer> desired = new ArrayList<>(Arrays.asList(1, 2, 4, 3, 5));
++      System.out.println("Result: " + result);
++      System.out.println("Expected: " + desired);
++   }
++}
+\ No newline at end of file

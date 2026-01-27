@@ -1,0 +1,12 @@
+diff --git a/src/main/java/org/jsoup/nodes/FormElement.java b/src/main/java/org/jsoup/nodes/FormElement.java
+index 3949f22d..b457a2e9 100644
+--- a/src/main/java/org/jsoup/nodes/FormElement.java
++++ b/src/main/java/org/jsoup/nodes/FormElement.java
+@@ -86,6 +86,7 @@ public class FormElement extends Element {
+             if (name.length() == 0) continue;
+             String type = el.attr("type");
+ 
++if ("button".equalsIgnoreCase(type) || "image".equalsIgnoreCase(type) || "reset".equalsIgnoreCase(type)) continue;
+ 
+             if ("select".equals(el.normalName())) {
+                 Elements options = el.select("option[selected]");

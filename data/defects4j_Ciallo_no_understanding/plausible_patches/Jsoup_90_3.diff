@@ -1,0 +1,15 @@
+diff --git a/src/main/java/org/jsoup/helper/HttpConnection.java b/src/main/java/org/jsoup/helper/HttpConnection.java
+index a941e483..b4b517d7 100644
+--- a/src/main/java/org/jsoup/helper/HttpConnection.java
++++ b/src/main/java/org/jsoup/helper/HttpConnection.java
+@@ -421,6 +421,10 @@ public class HttpConnection implements Connection {
+                     return false;
+                 }
+ 
++                // Check remaining bytes for multi-byte sequence
++                if (i + (end - i) >= input.length) {
++                    return false;
++                }
+ 
+                 while (i < end) {
+                     i++;

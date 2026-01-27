@@ -1,0 +1,37 @@
+diff --git a/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java b/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java
+index 72388af..9358f5c 100644
+--- a/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java
++++ b/src/main/java/humaneval/buggy/FIND_CLOSEST_ELEMENTS.java
+@@ -7,19 +7,21 @@ public class FIND_CLOSEST_ELEMENTS {
+         double distance = Double.MAX_VALUE;
+         for (int i = 0; i < numbers.length; i += 1){
+             for (int j = 0; j < numbers.length; j += 1){
+-                double new_distance = Math.abs(numbers[i] - numbers[j]);
+-                if (new_distance < distance){
+-                    distance = new_distance;
+-                    if (numbers[i] < numbers[j]){
+-                        result[0] = numbers[i];
+-                        result[1] = numbers[j];
+-                    } else{
+-                        result[0] = numbers[j];
+-                        result[1] = numbers[i];
++                if (i != j) {  // Skip comparison if i == j
++                    double new_distance = Math.abs(numbers[i] - numbers[j]);
++                    if (new_distance < distance){
++                        distance = new_distance;
++                        if (numbers[i] < numbers[j]){
++                            result[0] = numbers[i];
++                            result[1] = numbers[j];
++                        } else{
++                            result[0] = numbers[j];
++                            result[1] = numbers[i];
++                        }
+                     }
+                 }
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

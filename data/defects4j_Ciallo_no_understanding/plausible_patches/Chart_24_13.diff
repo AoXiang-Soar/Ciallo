@@ -1,0 +1,32 @@
+diff --git a/source/org/jfree/chart/renderer/GrayPaintScale.java b/source/org/jfree/chart/renderer/GrayPaintScale.java
+index 1e1e075..043d17e 100644
+--- a/source/org/jfree/chart/renderer/GrayPaintScale.java
++++ b/source/org/jfree/chart/renderer/GrayPaintScale.java
+@@ -120,13 +120,20 @@ public class GrayPaintScale
+      * 
+      * @return A paint for the specified value.
+      */
+-    public Paint getPaint(double value) {
+-        double v = Math.max(value, this.lowerBound);
+-        v = Math.min(v, this.upperBound);
+-        int g = (int) ((value - this.lowerBound) / (this.upperBound 
+-                - this.lowerBound) * 255.0);
+-        return new Color(g, g, g);
+-    }
++public Paint getPaint(double value) {
++    // Clamp the input value between lower and upper bounds
++    double clampedValue = Math.max(value, this.lowerBound);
++    clampedValue = Math.min(clampedValue, this.upperBound);
++    
++    // Calculate the normalized position [0.0, 1.0] between bounds
++    double normalized = (clampedValue - this.lowerBound) / (this.upperBound - this.lowerBound);
++    
++    // Convert to grayscale, ensuring rounding and range constraints
++    int grayValue = (int) Math.round(normalized * 255);
++    grayValue = Math.min(Math.max(grayValue, 0), 255);  // ensure 0-255 range
++    
++    return new Color(grayValue, grayValue, grayValue);
++}
+     
+     /**
+      * Tests this <code>GrayPaintScale</code> instance for equality with an

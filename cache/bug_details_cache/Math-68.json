@@ -1,0 +1,16 @@
+{
+    "bug_id": 68,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<0.2578330049> but was:<0.25781992663680675>",
+    "test_framework": "defects4j",
+    "test_function": "  public void testMinpackJennrichSampson() {\n    minpackTest(new JennrichSampsonFunction(10, new double[] { 0.3, 0.4 },\n                                            64.5856498144943, 11.1517793413499,\n                                            new double[] {\n                                             0.2578330049, 0.257829976764542\n                                            }), false);\n  }",
+    "test_line": "      return measurements;",
+    "test_name": "testMinpackJennrichSampson",
+    "test_suite": "org.apache.commons.math.optimization.general.MinpackTest"
+}

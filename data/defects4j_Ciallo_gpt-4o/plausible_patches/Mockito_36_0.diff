@@ -1,0 +1,30 @@
+diff --git a/src/org/mockito/internal/invocation/Invocation.java b/src/org/mockito/internal/invocation/Invocation.java
+index 94d4612f5..99570b5f6 100644
+--- a/src/org/mockito/internal/invocation/Invocation.java
++++ b/src/org/mockito/internal/invocation/Invocation.java
+@@ -1,7 +1,3 @@
+-/*
+- * Copyright (c) 2007 Mockito contributors
+- * This program is made available under the terms of the MIT License.
+- */
+ package org.mockito.internal.invocation;
+ 
+ import java.util.*;
+@@ -15,6 +11,7 @@ import org.mockito.internal.reporting.PrintSettings;
+ import org.mockito.internal.reporting.PrintingFriendlyInvocation;
+ import org.mockito.internal.util.*;
+ import org.mockito.invocation.InvocationOnMock;
++import org.mockito.exceptions.base.MockitoException;
+ 
+ /**
+  * Method call on a mock object.
+@@ -199,6 +196,9 @@ public class Invocation implements PrintableInvocation, InvocationOnMock, Printi
+     }
+ 
+     public Object callRealMethod() throws Throwable {
++        if (method.getDeclaringClass().isInterface()) {
++            throw new MockitoException("Cannot call real method on an interface");
++        }
+         return realMethod.invoke(mock, rawArguments);
+     }
+ 

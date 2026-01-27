@@ -1,0 +1,16 @@
+{
+    "bug_id": 7,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Gson",
+    "test_error_message": "com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected a long but was STRING at line 1 column 2 path $.",
+    "test_framework": "defects4j",
+    "test_function": "  public void testMapDeserializationWithUnquotedLongKeys() {\n    long longKey = 9876543210L;\n    String json = String.format(\"{%d:\\\"456\\\"}\", longKey);\n    Type typeOfMap = new TypeToken<Map<Long, String>>() {}.getType();\n    Map<Long, String> map = gson.fromJson(json, typeOfMap);\n    assertEquals(1, map.size());\n    assertTrue(map.containsKey(longKey));\n    assertEquals(\"456\", map.get(longKey));\n  }",
+    "test_line": "    Map<Long, String> map = gson.fromJson(json, typeOfMap);",
+    "test_name": "testMapDeserializationWithUnquotedLongKeys",
+    "test_suite": "com.google.gson.functional.MapTest"
+}

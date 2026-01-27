@@ -1,0 +1,16 @@
+{
+    "bug_id": 28,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<1> but was:<4>",
+    "test_framework": "defects4j",
+    "test_function": "  public void testCost() {\n    checkCost(\"1\", \"1\");\n    checkCost(\"true\", \"1\");\n    checkCost(\"false\", \"1\");\n    checkCost(\"a\", \"xx\");\n    checkCost(\"a + b\", \"xx+xx\");\n    checkCost(\"foo()\", \"xx()\");\n    checkCost(\"foo(a,b)\", \"xx(xx,xx)\");\n    checkCost(\"10 + foo(a,b)\", \"0+xx(xx,xx)\");\n    checkCost(\"1 + foo(a,b)\", \"1+xx(xx,xx)\");\n    checkCost(\"a ? 1 : 0\", \"xx?1:0\");\n    checkCost(\"a.b\", \"xx.xx\");\n    checkCost(\"new Obj()\", \"new xx\");\n    checkCost(\"function a() {return \\\"monkey\\\"}\",\n              \"function xx(){return\\\"monkey\\\"}\");\n  }",
+    "test_line": "    assertEquals(example.length(), cost(source));",
+    "test_name": "testCost",
+    "test_suite": "com.google.javascript.jscomp.InlineCostEstimatorTest"
+}

@@ -1,0 +1,45 @@
+diff --git a/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java b/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java
+index 763802b..071fcf3 100644
+--- a/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java
++++ b/src/main/java/humaneval/buggy/CYCPATTERN_CHECK.java
+@@ -1,22 +1,25 @@
+ package humaneval.buggy;
+ 
+-// You are given 2 words. You need to return True if the second word or any of its rotations is a substring in the first word
+-// cycpattern_check("abcd","abd") => False
+-// cycpattern_check("hello","ell") => True
+-// cycpattern_check("whassup","psus") => False
+-// cycpattern_check("abab","baa") => True
+-// cycpattern_check("efef","eeff") => False
+-// cycpattern_check("himenss","simen") => True
+-
+ public class CYCPATTERN_CHECK {
+     public static boolean cycpattern_check(String a, String b) {
+-        int l = b.length();
+-        String pat = b;
+-        for (int i = 0; i < a.length(); i += 1) {
+-            for (int j = 0; j < l; j += 1) {
+-                if (a.substring(i, i + l).equals(pat.substring(j, j + l))) return true;
++        int lenA = a.length();
++        int lenB = b.length();
++        
++        if (lenB == 0 || lenB > lenA) {
++            return false;
++        }
++
++        // Concatenate the word b to itself to get a string representing all rotations
++        String rotatedB = b + b;
++        
++        // Check for each substring of length lenB in 'a' if it's a rotation of 'b' by checking in 'rotatedB'
++        for (int i = 0; i <= lenA - lenB; i++) {
++            String subA = a.substring(i, i + lenB);
++            if (rotatedB.contains(subA)) {
++                return true;
+             }
+         }
++        
+         return false;
+     }
+-}
++}
+\ No newline at end of file

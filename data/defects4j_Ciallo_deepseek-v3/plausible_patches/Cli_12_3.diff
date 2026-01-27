@@ -1,0 +1,115 @@
+diff --git a/src/java/org/apache/commons/cli/GnuParser.java b/src/java/org/apache/commons/cli/GnuParser.java
+index 0de035f..8d69424 100644
+--- a/src/java/org/apache/commons/cli/GnuParser.java
++++ b/src/java/org/apache/commons/cli/GnuParser.java
+@@ -49,63 +49,62 @@ public class GnuParser extends Parser {
+      * flattening when a non option has been encountered
+      * @return a String array of the flattened arguments
+      */
+-    protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption)
+-    {
+-        List tokens = new ArrayList();
++protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
++    List tokens = new ArrayList();
++    boolean eatTheRest = false;
+ 
+-        boolean eatTheRest = false;
++    for (int i = 0; i < arguments.length; i++) {
++        String arg = arguments[i];
+ 
+-        for (int i = 0; i < arguments.length; i++)
+-        {
+-            String arg = arguments[i];
+-
+-            if ("--".equals(arg))
+-            {
+-                eatTheRest = true;
+-                tokens.add("--");
+-            }
+-            else if ("-".equals(arg))
+-            {
+-                tokens.add("-");
+-            }
+-            else if (arg.startsWith("-"))
+-            {
+-                String opt = Util.stripLeadingHyphens(arg);
+-
+-                if (options.hasOption(opt))
+-                {
+-                    tokens.add(arg);
+-                }
+-                else
+-                {
+-                    if (options.hasOption(arg.substring(0, 2)))
+-                    {
+-                        // the format is --foo=value or -foo=value
+-                        // the format is a special properties option (-Dproperty=value)
+-                        tokens.add(arg.substring(0, 2)); // -D
+-                        tokens.add(arg.substring(2)); // property=value
+-                    }
+-                    else
+-                    {
+-                        eatTheRest = stopAtNonOption;
+-                        tokens.add(arg);
+-                    }
++        if ("--".equals(arg)) {
++            eatTheRest = true;
++            tokens.add("--");
++        }
++        else if ("-".equals(arg)) {
++            tokens.add("-");
++        }
++        else if (arg.startsWith("-")) {
++            // Handle both --option=value and -option=value formats
++            int equalIndex = arg.indexOf('=');
++            if (equalIndex > 0) {
++                String optionPart = arg.substring(0, equalIndex);
++                String valuePart = arg.substring(equalIndex + 1);
++                String strippedOption = Util.stripLeadingHyphens(optionPart);
++                
++                if (options.hasOption(strippedOption)) {
++                    tokens.add(optionPart);
++                    tokens.add(valuePart);
++                    continue;
+                 }
+             }
+-            else
+-            {
++
++            String opt = Util.stripLeadingHyphens(arg);
++            if (options.hasOption(opt)) {
+                 tokens.add(arg);
+             }
+-
+-            if (eatTheRest)
+-            {
+-                for (i++; i < arguments.length; i++)
+-                {
+-                    tokens.add(arguments[i]);
++            else {
++                // Handle special properties option (-Dproperty=value)
++                if (arg.length() > 2 && options.hasOption(arg.substring(0, 2))) {
++                    tokens.add(arg.substring(0, 2));
++                    tokens.add(arg.substring(2));
++                }
++                else {
++                    eatTheRest = stopAtNonOption;
++                    tokens.add(arg);
+                 }
+             }
+         }
++        else {
++            tokens.add(arg);
++        }
+ 
+-        return (String[]) tokens.toArray(new String[tokens.size()]);
++        if (eatTheRest) {
++            for (i++; i < arguments.length; i++) {
++                tokens.add(arguments[i]);
++            }
++        }
+     }
++
++    return (String[]) tokens.toArray(new String[tokens.size()]);
++}
+ }

@@ -1,0 +1,44 @@
+diff --git a/src/main/java/org/jsoup/nodes/DocumentType.java b/src/main/java/org/jsoup/nodes/DocumentType.java
+index f9f77dad..b4d6e247 100644
+--- a/src/main/java/org/jsoup/nodes/DocumentType.java
++++ b/src/main/java/org/jsoup/nodes/DocumentType.java
+@@ -1,6 +1,7 @@
+ package org.jsoup.nodes;
+ 
+ import org.jsoup.helper.StringUtil;
++import org.jsoup.helper.Validate;
+ 
+ /**
+  * A {@code <!DOCTPYE>} node.
+@@ -14,9 +15,11 @@ public class DocumentType extends Node {
+      * @param publicId the doctype's public ID
+      * @param systemId the doctype's system ID
+      * @param baseUri the doctype's base URI
++     * @throws IllegalArgumentException if name is blank
+      */
+     public DocumentType(String name, String publicId, String systemId, String baseUri) {
+         super(baseUri);
++        Validate.notEmpty(name, "DocumentType name cannot be empty");
+ 
+         attr("name", name);
+         attr("publicId", publicId);
+@@ -30,15 +33,15 @@ public class DocumentType extends Node {
+ 
+     @Override
+     void outerHtmlHead(StringBuilder accum, int depth, Document.OutputSettings out) {
+-        accum.append("<!DOCTYPE html");
++        accum.append("<!DOCTYPE ").append(attr("name"));
+         if (!StringUtil.isBlank(attr("publicId")))
+             accum.append(" PUBLIC \"").append(attr("publicId")).append("\"");
+         if (!StringUtil.isBlank(attr("systemId")))
+-            accum.append(' ').append(attr("systemId")).append("\"");
++            accum.append(" \"").append(attr("systemId")).append("\"");
+         accum.append('>');
+     }
+ 
+     @Override
+     void outerHtmlTail(StringBuilder accum, int depth, Document.OutputSettings out) {
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,28 @@
+diff --git a/src/org/mockito/internal/creation/DelegatingMethod.java b/src/org/mockito/internal/creation/DelegatingMethod.java
+index 349719bd0..0b1f1d342 100644
+--- a/src/org/mockito/internal/creation/DelegatingMethod.java
++++ b/src/org/mockito/internal/creation/DelegatingMethod.java
+@@ -52,11 +52,21 @@ public class DelegatingMethod implements MockitoMethod {
+      */
+     @Override
+     public boolean equals(Object o) {
++        if (this == o) return true;
++        if (o == null) return false;
++        
++        if (o instanceof Method) {
+             return method.equals(o);
++        }
++        if (!(o instanceof DelegatingMethod)) {
++            return false;
++        }
++        DelegatingMethod that = (DelegatingMethod) o;
++        return method.equals(that.method);
+     }
+ 
+     @Override
+     public int hashCode() {
+-        return 1;
++        return method.hashCode();
+     }
+ }
+\ No newline at end of file

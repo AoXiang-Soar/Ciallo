@@ -1,0 +1,63 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+index fe2c1133..95b4c813 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+@@ -566,31 +566,39 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+      * @throws IOException on error
+      */
+     @Override
+-    public int read(byte[] buf, int offset, int numToRead) throws IOException {
+-    	int totalRead = 0;
++public int read(byte[] buf, int offset, int numToRead) throws IOException {
++    int totalRead = 0;
+ 
+-        if (hasHitEOF || entryOffset >= entrySize) {
+-            return -1;
+-        }
++    if (hasHitEOF || entryOffset >= entrySize) {
++        return -1;
++    }
+ 
+-        if (currEntry == null) {
+-            throw new IllegalStateException("No current tar entry");
+-        }
++    if (currEntry == null) {
++        throw new IllegalStateException("No current tar entry");
++    }
+ 
+-        numToRead = Math.min(numToRead, available());
+-        
+-        totalRead = is.read(buf, offset, numToRead);
+-        count(totalRead);
+-        
+-        if (totalRead == -1) {
+-            hasHitEOF = true;
+-        } else {
+-            entryOffset += totalRead;
++    numToRead = Math.min(numToRead, available());
++    
++    totalRead = is.read(buf, offset, numToRead);
++    count(totalRead);
++    
++    if (totalRead == -1) {
++        hasHitEOF = true;
++        if (entryOffset < entrySize) {
++            throw new IOException("Truncated TAR entry - expected " + 
++                (entrySize - entryOffset) + " more bytes");
++        }
++    } else {
++        entryOffset += totalRead;
++        if (entryOffset > entrySize) {
++            throw new IOException("Entry size exceeded - read " + 
++                entryOffset + " bytes but expected only " + entrySize);
+         }
+-
+-        return totalRead;
+     }
+ 
++    return totalRead;
++}
++
+     /**
+      * Whether this class is able to read the given entry.
+      *

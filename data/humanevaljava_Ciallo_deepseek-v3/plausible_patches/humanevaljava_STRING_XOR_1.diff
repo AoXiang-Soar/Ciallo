@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/STRING_XOR.java b/src/main/java/humaneval/buggy/STRING_XOR.java
+index a57100f..f0998fc 100644
+--- a/src/main/java/humaneval/buggy/STRING_XOR.java
++++ b/src/main/java/humaneval/buggy/STRING_XOR.java
+@@ -2,12 +2,17 @@ package humaneval.buggy;
+ 
+ public class STRING_XOR {
+     public static String string_xor(String a, String b){
++        if (a.length() != b.length()) {
++            throw new IllegalArgumentException("Input strings must be of the same length");
++        }
+         String result = "";
+         for (int i = 0; i < a.length(); i += 1){
+             if (a.charAt(i) == b.charAt(i)){
+                 result += "0";
++            } else {
++                result += "1";
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

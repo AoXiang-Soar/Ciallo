@@ -1,0 +1,16 @@
+{
+    "bug_id": "MULTIPLY",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_MULTIPLY.test_3:31 expected:<-20> but was:<20>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_3() throws java.lang.Exception {\n        int result = humaneval.buggy.MULTIPLY.multiply(14, -15);\n        org.junit.Assert.assertEquals(\n            result, 20\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_3",
+    "test_suite": "TEST_MULTIPLY"
+}

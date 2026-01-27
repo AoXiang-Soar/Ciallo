@@ -1,0 +1,16 @@
+{
+    "bug_id": "IS_EQUAL_TO_SUM_EVEN",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_IS_EQUAL_TO_SUM_EVEN.test_0:6 expected:<false> but was:<true>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        org.junit.Assert.assertEquals(false, humaneval.buggy.IS_EQUAL_TO_SUM_EVEN.is_equal_to_sum_even(4));\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(false, humaneval.buggy.IS_EQUAL_TO_SUM_EVEN.is_equal_to_sum_even(4));",
+    "test_name": "test_0",
+    "test_suite": "TEST_IS_EQUAL_TO_SUM_EVEN"
+}

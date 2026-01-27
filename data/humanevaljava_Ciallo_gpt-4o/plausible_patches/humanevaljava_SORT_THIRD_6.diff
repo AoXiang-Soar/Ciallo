@@ -1,0 +1,30 @@
+diff --git a/src/main/java/humaneval/buggy/SORT_THIRD.java b/src/main/java/humaneval/buggy/SORT_THIRD.java
+index e57d2bb..3bf57eb 100644
+--- a/src/main/java/humaneval/buggy/SORT_THIRD.java
++++ b/src/main/java/humaneval/buggy/SORT_THIRD.java
+@@ -9,18 +9,19 @@ public class SORT_THIRD {
+         List<Integer> result = new ArrayList<Integer>();
+ 
+         List<Integer> thirds = new ArrayList<Integer>();
+-        for (int i = 0; i < l.size(); i += 3){
++        for (int i = 0; i < l.size(); i += 3) {
+             thirds.add(l.get(i));
+         }
+         Collections.sort(thirds);
+ 
+-        for (int i = 0; i < l.size(); i += 1){
++        // Replacing loop with more control over index increment
++        for (int i = 0, thirdIndex = 0; i < l.size(); i += 1) {
+             if (i % 3 == 0){
+-                result.add(thirds.get(i));
+-            } else{
++                result.add(thirds.get(thirdIndex++));
++            } else {
+                 result.add(l.get(i));
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

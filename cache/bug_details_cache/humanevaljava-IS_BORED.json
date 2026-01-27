@@ -1,0 +1,16 @@
+{
+    "bug_id": "IS_BORED",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_IS_BORED.test_4:39 expected:<1> but was:<2>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_4() throws java.lang.Exception {\n        int result = humaneval.buggy.IS_BORED.is_bored(\"I feel good today. I will be productive. will kill It\");\n        org.junit.Assert.assertEquals(\n            result, 2\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_4",
+    "test_suite": "TEST_IS_BORED"
+}

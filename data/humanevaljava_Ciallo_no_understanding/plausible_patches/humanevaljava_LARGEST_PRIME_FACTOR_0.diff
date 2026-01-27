@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java b/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java
+old mode 100644
+new mode 100755
+index 794cf2e..6bc10ba
+--- a/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java
++++ b/src/main/java/humaneval/buggy/LARGEST_PRIME_FACTOR.java
+@@ -20,10 +20,10 @@ public class LARGEST_PRIME_FACTOR {
+     public static int largest_prime_factor(int n) {
+         int largest = 1;
+         for (int j = 2; j < n; j += 1) {
+-            if (is_prime(j)){
+-                largest = n % j;
++            if (is_prime(j) && n % j == 0){
++                largest = j;
+             }
+         }
+         return largest;
+     }
+-}
++}
+\ No newline at end of file

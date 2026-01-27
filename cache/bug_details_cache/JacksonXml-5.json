@@ -1,0 +1,16 @@
+{
+    "bug_id": 5,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "        _rootNameLookup = src._rootNameLookup;",
+    "code": "    protected XmlSerializerProvider(XmlSerializerProvider src) {\n        super(src);\n        // 21-May-2018, tatu: As per [dataformat-xml#282], should NOT really copy\n        //    root name lookup as that may link back to diff version, configuration\n        _rootNameLookup = src._rootNameLookup;\n    }",
+    "fixed_code": "    protected XmlSerializerProvider(XmlSerializerProvider src) {\n        super(src);\n        // 21-May-2018, tatu: As per [dataformat-xml#282], should NOT really copy\n        //    root name lookup as that may link back to diff version, configuration\n        _rootNameLookup = new XmlRootNameLookup();\n    }",
+    "fixed_lines": "        _rootNameLookup = new XmlRootNameLookup();",
+    "masked_code": "    protected XmlSerializerProvider(XmlSerializerProvider src) {\n        super(src);\n        // 21-May-2018, tatu: As per [dataformat-xml#282], should NOT really copy\n        //    root name lookup as that may link back to diff version, configuration\n>>> [ INFILL ] <<<\n    }",
+    "project": "JacksonXml",
+    "test_error_message": "junit.framework.AssertionFailedError: Should NOT use name 'AnnotatedName' but 'Pojo282', xml = <AnnotatedName><a>3</a></AnnotatedName>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCopyWith() throws Exception\n    {\n        XmlMapper xmlMapper = newMapper();\n        final ObjectMapper xmlMapperNoAnno = xmlMapper.copy()\n                .disable(MapperFeature.USE_ANNOTATIONS)\n                .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);\n\n        String xml1 = xmlMapper.writeValueAsString(new Pojo282());\n        String xml2 = xmlMapperNoAnno.writeValueAsString(new Pojo282());\n\n        if (!xml1.contains(\"AnnotatedName\")) {\n            fail(\"Should use name 'AnnotatedName', xml = \"+xml1);\n        }\n        if (!xml2.contains(\"Pojo282\")\n                || xml2.contains(\"AnnotatedName\")) {\n            fail(\"Should NOT use name 'AnnotatedName' but 'Pojo282', xml = \"+xml1);\n        }\n    }",
+    "test_line": "            fail(\"Should NOT use name 'AnnotatedName' but 'Pojo282', xml = \"+xml1);",
+    "test_name": "testCopyWith",
+    "test_suite": "com.fasterxml.jackson.dataformat.xml.MapperCopyTest"
+}

@@ -1,0 +1,16 @@
+{
+    "bug_id": 15,
+    "bug_type": "SL SH SF",
+    "buggy_lines": "    if (Double.isNaN(value) || Double.isInfinite(value)) {",
+    "code": "  public JsonWriter value(double value) throws IOException {\n    writeDeferredName();\n    if (Double.isNaN(value) || Double.isInfinite(value)) {\n      throw new IllegalArgumentException(\"Numeric values must be finite, but was \" + value);\n    }\n    beforeValue();\n    out.append(Double.toString(value));\n    return this;\n  }",
+    "fixed_code": "  public JsonWriter value(double value) throws IOException {\n    writeDeferredName();\n    if (!lenient && (Double.isNaN(value) || Double.isInfinite(value))) {\n      throw new IllegalArgumentException(\"Numeric values must be finite, but was \" + value);\n    }\n    beforeValue();\n    out.append(Double.toString(value));\n    return this;\n  }",
+    "fixed_lines": "    if (!lenient && (Double.isNaN(value) || Double.isInfinite(value))) {",
+    "masked_code": "  public JsonWriter value(double value) throws IOException {\n    writeDeferredName();\n>>> [ INFILL ] <<<\n      throw new IllegalArgumentException(\"Numeric values must be finite, but was \" + value);\n    }\n    beforeValue();\n    out.append(Double.toString(value));\n    return this;\n  }",
+    "project": "Gson",
+    "test_error_message": "java.lang.IllegalArgumentException: Numeric values must be finite, but was NaN",
+    "test_framework": "defects4j",
+    "test_function": "  public void testNonFiniteDoublesWhenLenient() throws IOException {\n    StringWriter stringWriter = new StringWriter();\n    JsonWriter jsonWriter = new JsonWriter(stringWriter);\n    jsonWriter.setLenient(true);\n    jsonWriter.beginArray();\n    jsonWriter.value(Double.NaN);\n    jsonWriter.value(Double.NEGATIVE_INFINITY);\n    jsonWriter.value(Double.POSITIVE_INFINITY);\n    jsonWriter.endArray();\n    assertEquals(\"[NaN,-Infinity,Infinity]\", stringWriter.toString());\n  }",
+    "test_line": "    jsonWriter.value(Double.NaN);",
+    "test_name": "testNonFiniteDoublesWhenLenient",
+    "test_suite": "com.google.gson.stream.JsonWriterTest"
+}

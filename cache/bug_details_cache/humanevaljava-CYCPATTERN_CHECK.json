@@ -1,0 +1,16 @@
+{
+    "bug_id": "CYCPATTERN_CHECK",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_CYCPATTERN_CHECK.test_0:6 \u00bb StringIndexOutOfBounds begin 1, end 4, length...",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        boolean result = humaneval.buggy.CYCPATTERN_CHECK.cycpattern_check(\"xyzw\", \"xyw\");\n        org.junit.Assert.assertEquals(\n            result, false\n        );\n    }",
+    "test_line": "        boolean result = humaneval.buggy.CYCPATTERN_CHECK.cycpattern_check(\"xyzw\", \"xyw\");",
+    "test_name": "test_0",
+    "test_suite": "TEST_CYCPATTERN_CHECK"
+}

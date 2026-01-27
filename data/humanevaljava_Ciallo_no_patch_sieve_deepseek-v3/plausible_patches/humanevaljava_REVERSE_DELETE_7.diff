@@ -1,0 +1,35 @@
+diff --git a/src/main/java/humaneval/buggy/REVERSE_DELETE.java b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+index 93117a1..bfda614 100644
+--- a/src/main/java/humaneval/buggy/REVERSE_DELETE.java
++++ b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+@@ -2,22 +2,11 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ 
+-/*
+- * We are given two strings s and c, you have to deleted all the characters in s that are equal to any character in c
+-    then check if the result string is palindrome.
+-    A string is called palindrome if it reads the same backward as forward.
+-    You should return a tuple containing the result string and True/False for the check.
+-    Example
+-    For s = "abcde", c = "ae", the result should be ('bcd',False)
+-    For s = "abcdef", c = "b"  the result should be ('acdef',False)
+-    For s = "abcdedcba", c = "ab", the result should be ('cdedc',True)
+- */
+-
+ public class REVERSE_DELETE {
+     public static ArrayList<Object> reverse_delete(String s, String c) {
+         String new_s = "";
+         for(int i = 0; i < s.length(); i++) {
+-            if(c.indexOf(s.charAt(i)) != -1) {
++            if(c.indexOf(s.charAt(i)) == -1) {  // Fixed condition (was != -1)
+                 new_s += s.charAt(i);
+             }
+         }
+@@ -30,4 +19,4 @@ public class REVERSE_DELETE {
+         res.add(reverse_s.equals(new_s));
+         return res;
+     }
+-}
++}
+\ No newline at end of file

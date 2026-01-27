@@ -1,0 +1,47 @@
+diff --git a/src/main/java/humaneval/buggy/ADD_ELEMENTS.java b/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
+index 359f8fb..1255d2a 100644
+--- a/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
++++ b/src/main/java/humaneval/buggy/ADD_ELEMENTS.java
+@@ -20,11 +20,37 @@ import java.util.ArrayList;
+ public class ADD_ELEMENTS {
+     public static int add_elements(ArrayList<Integer> arr, int k) {
+         int result = 0;
+-        for(int i = 0; i < k; i++) {
+-            if(Integer.toString(arr.get(i)).length() >= 2) {
+-                result -= arr.get(i);
++        for (int i = 0; i < k; i++) {
++            int num = arr.get(i);
++            int numDigits = (num < 0) ? Integer.toString(num).length() - 1 : Integer.toString(num).length();
++            if (numDigits <= 2) {
++                result += num;
+             }
+         }
+         return result;
+     }
+-}
++
++    public static void main(String[] args) {
++        // Test case 1: Minimum length array
++        ArrayList<Integer> test1 = new ArrayList<>(java.util.Arrays.asList(1));
++        System.out.println(add_elements(test1, 1)); // Expected: 1
++
++        // Test case 2: Maximum length array with all single digits
++        Integer[] arr100 = new Integer[100];
++        java.util.Arrays.fill(arr100, 1);
++        ArrayList<Integer> test2 = new ArrayList<>(java.util.Arrays.asList(arr100));
++        System.out.println(add_elements(test2, 100)); // Expected: 100
++
++        // Test case 3: `k` equal to the array length
++        ArrayList<Integer> test3 = new ArrayList<>(java.util.Arrays.asList(1, 22, -3, -44, 5));
++        System.out.println(add_elements(test3, 5)); // Expected: 1 + (-3) + 5 = 3
++
++        // Test case 4: Negative numbers with two digits
++        ArrayList<Integer> test4 = new ArrayList<>(java.util.Arrays.asList(-9, -10, -11));
++        System.out.println(add_elements(test4, 3)); // Expected: -9
++
++        // Original test case: Checking the fixed code
++        ArrayList<Integer> input = new ArrayList<>(java.util.Arrays.asList(1, -2, -3, 41, 57, 76, 87, 88, 99));
++        System.out.println(add_elements(input, 3)); // Expected: -4
++    }
++}
+\ No newline at end of file

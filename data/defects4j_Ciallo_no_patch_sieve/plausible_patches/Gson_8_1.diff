@@ -1,0 +1,56 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java b/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
+index 49fdf7f6..70693bac 100644
+--- a/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
++++ b/gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java
+@@ -45,7 +45,11 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
+-          return (T) allocateInstance.invoke(unsafe, c);
++          try {
++            return (T) allocateInstance.invoke(unsafe, c);
++          } catch (Exception e) {
++            throw new UnsupportedOperationException("Cannot allocate " + c, e);
++          }
+         }
+       };
+     } catch (Exception ignored) {
+@@ -68,7 +72,11 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
+-          return (T) newInstance.invoke(null, c, constructorId);
++          try {
++            return (T) newInstance.invoke(null, c, constructorId);
++          } catch (Exception e) {
++            throw new UnsupportedOperationException("Cannot allocate " + c, e);
++          }
+         }
+       };
+     } catch (Exception ignored) {
+@@ -87,7 +95,11 @@ public abstract class UnsafeAllocator {
+         @Override
+         @SuppressWarnings("unchecked")
+         public <T> T newInstance(Class<T> c) throws Exception {
+-          return (T) newInstance.invoke(null, c, Object.class);
++          try {
++            return (T) newInstance.invoke(null, c, Object.class);
++          } catch (Exception e) {
++            throw new UnsupportedOperationException("Cannot allocate " + c, e);
++          }
+         }
+       };
+     } catch (Exception ignored) {
+@@ -101,10 +113,4 @@ public abstract class UnsafeAllocator {
+       }
+     };
+   }
+-
+-  /**
+-   * Check if the class can be instantiated by unsafe allocator. If the instance has interface or abstract modifiers
+-   * throw an {@link java.lang.UnsupportedOperationException}
+-   * @param c instance of the class to be checked
+-   */
+-}
++}
+\ No newline at end of file

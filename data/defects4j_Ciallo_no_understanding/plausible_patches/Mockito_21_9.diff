@@ -1,0 +1,51 @@
+diff --git a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+index 0cc8226d8..56cf1a464 100644
+--- a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
++++ b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+@@ -19,10 +19,27 @@ public class ConstructorInstantiator implements Instantiator {
+ 
+     private <T> T withOuterClass(Class<T> cls) {
+         try {
+-            //this is kind of overengineered because we don't need to support more params
+-            //however, I know we will be needing it :)
+-            Constructor<T> c = cls.getDeclaredConstructor(outerClassInstance.getClass());
+-            return c.newInstance(outerClassInstance);
++            // First try constructor with outer class parameter
++            Class<?> outerClass = outerClassInstance.getClass();
++            Class<?> enclosingClass = cls.getEnclosingClass();
++            
++            if (enclosingClass != null) {
++                try {
++                    Constructor<T> c = cls.getDeclaredConstructor(enclosingClass);
++                    return c.newInstance(outerClassInstance);
++                } catch (NoSuchMethodException e) {
++                    // Continue to try other options
++                }
++            }
++            
++            // Then try constructor with exact parameter type
++            try {
++                Constructor<T> c = cls.getDeclaredConstructor(outerClass);
++                return c.newInstance(outerClassInstance);
++            } catch (NoSuchMethodException e) {
++                // Fall back to no-arg constructor
++                return noArgConstructor(cls);
++            }
+         } catch (Exception e) {
+             throw paramsException(cls, e);
+         }
+@@ -33,7 +50,6 @@ public class ConstructorInstantiator implements Instantiator {
+                 + cls.getSimpleName() + "'.\nPlease ensure that the outer instance has correct type and that the target class has parameter-less constructor.", e);
+     }
+ 
+-
+     private static <T> T noArgConstructor(Class<T> cls) {
+         try {
+             return cls.newInstance();
+@@ -42,4 +58,4 @@ public class ConstructorInstantiator implements Instantiator {
+                     + cls.getSimpleName() + "'.\nPlease ensure it has parameter-less constructor.", e);
+         }
+     }
+-}
++}
+\ No newline at end of file

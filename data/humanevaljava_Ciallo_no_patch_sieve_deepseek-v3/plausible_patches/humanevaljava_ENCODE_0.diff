@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/ENCODE.java b/src/main/java/humaneval/buggy/ENCODE.java
+index 6fe264c..68b1579 100644
+--- a/src/main/java/humaneval/buggy/ENCODE.java
++++ b/src/main/java/humaneval/buggy/ENCODE.java
+@@ -19,7 +19,7 @@ public class ENCODE {
+             if (Character.isUpperCase(c)) {
+                 c = Character.toLowerCase(c);
+             }
+-            if (Character.isLowerCase(c)) {
++            else if (Character.isLowerCase(c)) {
+                 c = Character.toUpperCase(c);
+             }
+             if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'A' || c == 'E' || c == 'I' || c == 'O'
+@@ -30,4 +30,4 @@ public class ENCODE {
+         }
+         return sb.toString();
+     }
+-}
++}
+\ No newline at end of file

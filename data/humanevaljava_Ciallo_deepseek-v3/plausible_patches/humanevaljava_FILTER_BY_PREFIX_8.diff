@@ -1,0 +1,20 @@
+diff --git a/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java b/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java
+index 312f344..ef44cc4 100644
+--- a/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java
++++ b/src/main/java/humaneval/buggy/FILTER_BY_PREFIX.java
+@@ -7,11 +7,12 @@ public class FILTER_BY_PREFIX {
+     public static List<String> filter_by_prefix(List<String> strings, String prefix) {
+         List<String> result = new ArrayList<String>();
+ 
++        // Alternative fix: use a regular expression to check if the string starts with the given prefix.
+         for (String string : strings){
+-            if (string.startsWith(prefix, 1)){
++            if (string.matches("^" + prefix + ".*")) {
+                 result.add(string);
+             }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file

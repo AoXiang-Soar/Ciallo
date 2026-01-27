@@ -1,0 +1,16 @@
+{
+    "bug_id": 8,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Collections",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<1> but was:<0>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCollections220() throws Exception {\n         UnboundedFifoBuffer buffer = new UnboundedFifoBuffer();\n         \n         buffer = (UnboundedFifoBuffer) serializeDeserialize(buffer);\n\n         // test size() gets incremented\n         buffer.add(\"Foo\");\n         assertEquals(1, buffer.size());\n    }",
+    "test_line": "",
+    "test_name": "testCollections220",
+    "test_suite": "org.apache.commons.collections.buffer.TestUnboundedFifoBuffer"
+}

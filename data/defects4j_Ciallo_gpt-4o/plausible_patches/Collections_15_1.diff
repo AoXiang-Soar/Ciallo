@@ -1,0 +1,43 @@
+diff --git a/src/java/org/apache/commons/collections/list/SetUniqueList.java b/src/java/org/apache/commons/collections/list/SetUniqueList.java
+index e1491aec..5e022220 100644
+--- a/src/java/org/apache/commons/collections/list/SetUniqueList.java
++++ b/src/java/org/apache/commons/collections/list/SetUniqueList.java
+@@ -217,22 +217,25 @@ public class SetUniqueList extends AbstractSerializableListDecorator {
+      * @param object  the object to set
+      * @return the previous object
+      */
+-    public Object set(int index, Object object) {
+-        int pos = indexOf(object);
+-        Object removed = super.set(index, object);
+-
+-        if (pos == -1 || pos == index) {
+-            // the object is already in the uniq list
+-            // (and it hasn't been swapped with itself)
+-            return removed;
+-        }
+-
+-        super.remove(pos);
+-        set.remove(removed);  // remove the item deleted by the set
++public Object set(int index, Object object) {
++    int pos = indexOf(object);
++    Object removed = super.set(index, object);
+ 
+-        return removed;  // return the item deleted by the set
++    if (pos != index) {
++        if (pos != -1) {
++            super.remove(pos);
++        }
++        set.remove(removed);
++        set.add(object);
++    } else {
++        // If the object is already at the desired index
++        set.remove(removed);
++        set.add(object);
+     }
+ 
++    return removed; 
++}
++
+     public boolean remove(Object object) {
+         boolean result = super.remove(object);
+         set.remove(object);

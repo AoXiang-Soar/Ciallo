@@ -1,0 +1,54 @@
+diff --git a/src/main/java/org/joda/time/Period.java b/src/main/java/org/joda/time/Period.java
+index f4047933..ef301590 100644
+--- a/src/main/java/org/joda/time/Period.java
++++ b/src/main/java/org/joda/time/Period.java
+@@ -1613,18 +1613,20 @@ public final class Period
+      *  years or months but the specified period type does not support them
+      * @since 1.5
+      */
+-    public Period normalizedStandard(PeriodType type) {
+-        type = DateTimeUtils.getPeriodType(type);
+-        long millis = getMillis();  // no overflow can happen, even with Integer.MAX_VALUEs
+-        millis += (((long) getSeconds()) * ((long) DateTimeConstants.MILLIS_PER_SECOND));
+-        millis += (((long) getMinutes()) * ((long) DateTimeConstants.MILLIS_PER_MINUTE));
+-        millis += (((long) getHours()) * ((long) DateTimeConstants.MILLIS_PER_HOUR));
+-        millis += (((long) getDays()) * ((long) DateTimeConstants.MILLIS_PER_DAY));
+-        millis += (((long) getWeeks()) * ((long) DateTimeConstants.MILLIS_PER_WEEK));
+-        Period result = new Period(millis, type, ISOChronology.getInstanceUTC());
+-        int years = getYears();
+-        int months = getMonths();
+-        if (years != 0 || months != 0) {
++public Period normalizedStandard(PeriodType type) {
++    type = DateTimeUtils.getPeriodType(type);
++    long millis = getMillis();  // no overflow can happen, even with Integer.MAX_VALUEs
++    millis += (((long) getSeconds()) * ((long) DateTimeConstants.MILLIS_PER_SECOND));
++    millis += (((long) getMinutes()) * ((long) DateTimeConstants.MILLIS_PER_MINUTE));
++    millis += (((long) getHours()) * ((long) DateTimeConstants.MILLIS_PER_HOUR));
++    millis += (((long) getDays()) * ((long) DateTimeConstants.MILLIS_PER_DAY));
++    millis += (((long) getWeeks()) * ((long) DateTimeConstants.MILLIS_PER_WEEK));
++    Period result = new Period(millis, type, ISOChronology.getInstanceUTC());
++    
++    int years = getYears();
++    int months = getMonths();
++    if (years != 0 || months != 0) {
++        if (type.isSupported(DurationFieldType.years()) && type.isSupported(DurationFieldType.months())) {
+             years = FieldUtils.safeAdd(years, months / 12);
+             months = months % 12;
+             if (years != 0) {
+@@ -1633,8 +1635,15 @@ public final class Period
+             if (months != 0) {
+                 result = result.withMonths(months);
+             }
++        } else {
++            // Convert years to months if one of the fields isn't supported
++            months = FieldUtils.safeAdd(months, years * 12);
++            if (months != 0) {
++                result = result.withMonths(months);
++            }
+         }
+-        return result;
+     }
++    return result;
++}
+ 
+ }

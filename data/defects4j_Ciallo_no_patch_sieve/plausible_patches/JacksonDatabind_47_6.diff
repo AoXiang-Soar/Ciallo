@@ -1,0 +1,191 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/AnnotationIntrospector.java b/src/main/java/com/fasterxml/jackson/databind/AnnotationIntrospector.java
+index dab32273e..815c95156 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/AnnotationIntrospector.java
++++ b/src/main/java/com/fasterxml/jackson/databind/AnnotationIntrospector.java
+@@ -792,108 +792,91 @@ public abstract class AnnotationIntrospector
+      *
+      * @since 2.7
+      */
+-    public JavaType refineSerializationType(final MapperConfig<?> config,
+-            final Annotated a, final JavaType baseType) throws JsonMappingException
+-    {
+-        JavaType type = baseType;
+-        final TypeFactory tf = config.getTypeFactory();
+-        
+-        // 10-Oct-2015, tatu: For 2.7, we'll need to delegate back to
+-        //    now-deprecated secondary methods; this because while
+-        //    direct sub-class not yet retrofitted may only override
+-        //    those methods. With 2.8 or later we may consider removal
+-        //    of these methods
++public JavaType refineSerializationType(final MapperConfig<?> config,
++        final Annotated a, final JavaType baseType) throws JsonMappingException
++{
++    JavaType type = refineMainType(config, a, baseType);
++    
++    if (type.isMapLikeType()) {
++        type = refineKeyType(config, a, type);
++    }
+ 
+-        
+-        // Ok: start by refining the main type itself; common to all types
+-        Class<?> serClass = findSerializationType(a);
+-        if (serClass != null) {
+-            if (type.hasRawClass(serClass)) {
+-                // 30-Nov-2015, tatu: As per [databind#1023], need to allow forcing of
+-                //    static typing this way
+-                type = type.withStaticTyping();
+-            } else {
+-                try {
+-                    // 11-Oct-2015, tatu: For deser, we call `TypeFactory.constructSpecializedType()`,
+-                    //   may be needed here too in future?
+-                        type = tf.constructGeneralizedType(type, serClass);
+-                } catch (IllegalArgumentException iae) {
+-                    throw new JsonMappingException(null,
+-                            String.format("Failed to widen type %s with annotation (value %s), from '%s': %s",
+-                                    type, serClass.getName(), a.getName(), iae.getMessage()),
+-                                    iae);
+-                }
+-            }
++    if (type.getContentType() != null) {
++        type = refineContentType(config, a, type);
++    }
++    
++    return type;
++}
++
++private JavaType refineMainType(final MapperConfig<?> config, final Annotated a, 
++        JavaType type) throws JsonMappingException {
++    final TypeFactory tf = config.getTypeFactory();
++    Class<?> serClass = findSerializationType(a);
++    
++    if (serClass != null) {
++        if (type.hasRawClass(serClass)) {
++            return type.withStaticTyping();
+         }
+-        // Then further processing for container types
++        return constructRefinedType(tf, type, serClass, "type");
++    }
++    return type;
++}
+ 
+-        // First, key type (for Maps, Map-like types):
+-        if (type.isMapLikeType()) {
+-            JavaType keyType = type.getKeyType();
+-            Class<?> keyClass = findSerializationKeyType(a, keyType);
+-            if (keyClass != null) {
+-                if (keyType.hasRawClass(keyClass)) {
+-                    keyType = keyType.withStaticTyping();
+-                } else {
+-                    Class<?> currRaw = keyType.getRawClass();
+-                    try {
+-                        // 19-May-2016, tatu: As per [databind#1231], [databind#1178] may need to actually
+-                        //   specialize (narrow) type sometimes, even if more commonly opposite
+-                        //   is needed.
+-                        if (keyClass.isAssignableFrom(currRaw)) { // common case
+-                            keyType = tf.constructGeneralizedType(keyType, keyClass);
+-                        } else if (currRaw.isAssignableFrom(keyClass)) { // specialization, ok as well
+-                            keyType = tf.constructSpecializedType(keyType, keyClass);
+-                        } else {
+-                            throw new JsonMappingException(null,
+-                                    String.format("Can not refine serialization key type %s into %s; types not related",
+-                                            keyType, keyClass.getName()));
+-                        }
+-                    } catch (IllegalArgumentException iae) {
+-                        throw new JsonMappingException(null,
+-                                String.format("Failed to widen key type of %s with concrete-type annotation (value %s), from '%s': %s",
+-                                        type, keyClass.getName(), a.getName(), iae.getMessage()),
+-                                        iae);
+-                    }
+-                }
+-                type = ((MapLikeType) type).withKeyType(keyType);
+-            }
++private JavaType refineKeyType(final MapperConfig<?> config, final Annotated a,
++        JavaType type) throws JsonMappingException {
++    final TypeFactory tf = config.getTypeFactory();
++    JavaType keyType = type.getKeyType();
++    Class<?> keyClass = findSerializationKeyType(a, keyType);
++    
++    if (keyClass != null) {
++        if (keyType.hasRawClass(keyClass)) {
++            keyType = keyType.withStaticTyping();
++        } else {
++            keyType = constructRefinedType(tf, keyType, keyClass, "key type");
+         }
++        return ((MapLikeType) type).withKeyType(keyType);
++    }
++    return type;
++}
+ 
+-        JavaType contentType = type.getContentType();
+-        if (contentType != null) { // collection[like], map[like], array, reference
+-            // And then value types for all containers:
+-           Class<?> contentClass = findSerializationContentType(a, contentType);
+-           if (contentClass != null) {
+-               if (contentType.hasRawClass(contentClass)) {
+-                   contentType = contentType.withStaticTyping();
+-               } else {
+-                   // 03-Apr-2016, tatu: As per [databind#1178], may need to actually
+-                   //   specialize (narrow) type sometimes, even if more commonly opposite
+-                   //   is needed.
+-                   Class<?> currRaw = contentType.getRawClass();
+-                   try {
+-                       if (contentClass.isAssignableFrom(currRaw)) { // common case
+-                           contentType = tf.constructGeneralizedType(contentType, contentClass);
+-                       } else if (currRaw.isAssignableFrom(contentClass)) { // specialization, ok as well
+-                           contentType = tf.constructSpecializedType(contentType, contentClass);
+-                       } else {
+-                           throw new JsonMappingException(null,
+-                                   String.format("Can not refine serialization content type %s into %s; types not related",
+-                                           contentType, contentClass.getName()));
+-                       }
+-                   } catch (IllegalArgumentException iae) { // shouldn't really happen
+-                       throw new JsonMappingException(null,
+-                               String.format("Internal error: failed to refine value type of %s with concrete-type annotation (value %s), from '%s': %s",
+-                                       type, contentClass.getName(), a.getName(), iae.getMessage()),
+-                                       iae);
+-                   }
+-               }
+-               type = type.withContentType(contentType);
+-           }
++private JavaType refineContentType(final MapperConfig<?> config, final Annotated a,
++        JavaType type) throws JsonMappingException {
++    final TypeFactory tf = config.getTypeFactory();
++    JavaType contentType = type.getContentType();
++    Class<?> contentClass = findSerializationContentType(a, contentType);
++    
++    if (contentClass != null) {
++        if (contentType.hasRawClass(contentClass)) {
++            contentType = contentType.withStaticTyping();
++        } else {
++            contentType = constructRefinedType(tf, contentType, contentClass, "content type");
+         }
+-        return type;
++        return type.withContentType(contentType);
+     }
++    return type;
++}
++
++private JavaType constructRefinedType(TypeFactory tf, JavaType baseType,
++        Class<?> targetClass, String typeDesc) throws JsonMappingException {
++    Class<?> rawType = baseType.getRawClass();
++    
++    if (!targetClass.isAssignableFrom(rawType) && !rawType.isAssignableFrom(targetClass)) {
++        throw new JsonMappingException(null,
++            String.format("Can not refine serialization %s %s into %s; types not related",
++                    typeDesc, baseType, targetClass.getName()));
++    }
++    
++    try {
++        return targetClass.isAssignableFrom(rawType)
++            ? tf.constructGeneralizedType(baseType, targetClass)
++            : tf.constructSpecializedType(baseType, targetClass);
++    } catch (IllegalArgumentException iae) {
++        throw new JsonMappingException(null,
++                String.format("Failed to widen %s %s with annotation (value %s): %s",
++                        typeDesc, baseType, targetClass.getName(), iae.getMessage()),
++                        iae);
++    }
++}
+ 
+     /*
+     /**********************************************************

@@ -1,0 +1,72 @@
+diff --git a/src/main/java/humaneval/buggy/MATCH_PARENS.java b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+old mode 100644
+new mode 100755
+index 0d0da0a..9a1eff6
+--- a/src/main/java/humaneval/buggy/MATCH_PARENS.java
++++ b/src/main/java/humaneval/buggy/MATCH_PARENS.java
+@@ -17,18 +17,55 @@ package humaneval.buggy;
+ 
+ public class MATCH_PARENS {
+     public static boolean check(String s) {
+-        int val = 0;
++        int balance = 0;
+         for(int i = 0; i < s.length(); i++) {
+-            if(s.charAt(i) == '(') val--;
+-            else val++;
+-            if(val < 0) return false;
++            if(s.charAt(i) == '(') balance++;
++            else balance--;
++            if(balance < 0) return false;
+         }
+-        return val == 0;
++        return balance == 0;
+     }
++    
+     public static String match_parens(String[] lst) {
+-        String S1 = lst[0] + lst[1];
+-        String S2 = lst[1] + lst[0];
+-        if(check(S1) || check(S2)) return "Yes";
++        String s1 = lst[0];
++        String s2 = lst[1];
++        
++        // Check all possible interleavings if simple concatenations don't work
++        if(check(s1 + s2) || check(s2 + s1)) {
++            return "Yes";
++        }
++        
++        // Check if combining some prefixes might work
++        int balance1 = 0, balance2 = 0;
++        int minBalance1 = 0, maxBalance1 = 0;
++        int minBalance2 = 0, maxBalance2 = 0;
++        
++        // Track min/max balance for s1
++        for(int i = 0; i < s1.length(); i++) {
++            if(s1.charAt(i) == '(') balance1++;
++            else balance1--;
++            minBalance1 = Math.min(minBalance1, balance1);
++            maxBalance1 = Math.max(maxBalance1, balance1);
++        }
++        
++        // Track min/max balance for s2
++        for(int i = 0; i < s2.length(); i++) {
++            if(s2.charAt(i) == '(') balance2++;
++            else balance2--;
++            minBalance2 = Math.min(minBalance2, balance2);
++            maxBalance2 = Math.max(maxBalance2, balance2);
++        }
++        
++        // Check if we can combine the strings with overlapping balances
++        if(balance1 + balance2 == 0) {
++            if(minBalance1 >= 0 && maxBalance2 <= balance1) {
++                return "Yes";
++            }
++            if(minBalance2 >= 0 && maxBalance1 <= balance2) {
++                return "Yes";
++            }
++        }
++        
+         return "No";
+     }
+-}
++}
+\ No newline at end of file

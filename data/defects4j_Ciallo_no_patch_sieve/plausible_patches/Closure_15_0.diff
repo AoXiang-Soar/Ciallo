@@ -1,0 +1,24 @@
+diff --git a/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java b/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java
+index a8e92fcca..3cac03536 100644
+--- a/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java
++++ b/src/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java
+@@ -88,6 +88,11 @@ class FlowSensitiveInlineVariables extends AbstractPostOrderCallback
+           return false;
+         }
+ 
++        // Check for property access patterns ('in' and 'delete')
++        if (n.isIn() || n.isDelProp()) {
++          return true;
++        }
++
+         // TODO(user): We only care about calls to functions that
+         // passes one of the dependent variable to a non-side-effect free
+         // function.
+@@ -99,7 +104,6 @@ class FlowSensitiveInlineVariables extends AbstractPostOrderCallback
+           return true;
+         }
+ 
+-
+         for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
+           if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {
+             return true;

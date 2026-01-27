@@ -1,0 +1,21 @@
+diff --git a/src/main/java/humaneval/buggy/CAN_ARRANGE.java b/src/main/java/humaneval/buggy/CAN_ARRANGE.java
+index 8bb1b11..a564518 100644
+--- a/src/main/java/humaneval/buggy/CAN_ARRANGE.java
++++ b/src/main/java/humaneval/buggy/CAN_ARRANGE.java
+@@ -14,10 +14,12 @@ package humaneval.buggy;
+ 
+ public class CAN_ARRANGE {
+     public static int can_arrange(int[] arr) {
+-        int ind = 1;
++        int ind = -1;
+         for(int i = 0; i < arr.length - 1; i++) {
+-            if(arr[i] < arr[i + 1]) ind = i + 1;
++            if(arr[i + 1] <= arr[i]) {
++                ind = i + 1;
++            }
+         }
+         return ind;
+     }
+-}
++}
+\ No newline at end of file

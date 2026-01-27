@@ -1,0 +1,113 @@
+diff --git a/src/java/org/apache/commons/cli/GnuParser.java b/src/java/org/apache/commons/cli/GnuParser.java
+index 0de035f..41c0e10 100644
+--- a/src/java/org/apache/commons/cli/GnuParser.java
++++ b/src/java/org/apache/commons/cli/GnuParser.java
+@@ -49,63 +49,62 @@ public class GnuParser extends Parser {
+      * flattening when a non option has been encountered
+      * @return a String array of the flattened arguments
+      */
+-    protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption)
+-    {
+-        List tokens = new ArrayList();
++protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption) {
++    List tokens = new ArrayList();
+ 
+-        boolean eatTheRest = false;
++    boolean eatTheRest = false;
+ 
+-        for (int i = 0; i < arguments.length; i++)
+-        {
+-            String arg = arguments[i];
++    for (int i = 0; i < arguments.length; i++) {
++        String arg = arguments[i];
+ 
+-            if ("--".equals(arg))
+-            {
+-                eatTheRest = true;
+-                tokens.add("--");
+-            }
+-            else if ("-".equals(arg))
+-            {
+-                tokens.add("-");
+-            }
+-            else if (arg.startsWith("-"))
+-            {
+-                String opt = Util.stripLeadingHyphens(arg);
++        if ("--".equals(arg)) {
++            eatTheRest = true;
++            tokens.add("--");
++        }
++        else if ("-".equals(arg)) {
++            tokens.add("-");
++        }
++        else if (arg.startsWith("-")) {
++            String opt = Util.stripLeadingHyphens(arg);
+ 
+-                if (options.hasOption(opt))
+-                {
+-                    tokens.add(arg);
+-                }
+-                else
+-                {
+-                    if (options.hasOption(arg.substring(0, 2)))
+-                    {
+-                        // the format is --foo=value or -foo=value
+-                        // the format is a special properties option (-Dproperty=value)
+-                        tokens.add(arg.substring(0, 2)); // -D
+-                        tokens.add(arg.substring(2)); // property=value
+-                    }
+-                    else
+-                    {
+-                        eatTheRest = stopAtNonOption;
+-                        tokens.add(arg);
+-                    }
++            // Check if argument contains an equals sign
++            int equalIndex = arg.indexOf('=');
++            if (equalIndex != -1) {
++                String optPart = arg.substring(0, equalIndex);
++                if (options.hasOption(Util.stripLeadingHyphens(optPart))) {
++                    tokens.add(optPart);
++                    tokens.add(arg.substring(equalIndex + 1));
++                    continue;
+                 }
+             }
+-            else
+-            {
++
++            if (options.hasOption(opt)) {
+                 tokens.add(arg);
+             }
+-
+-            if (eatTheRest)
+-            {
+-                for (i++; i < arguments.length; i++)
+-                {
+-                    tokens.add(arguments[i]);
++            else {
++                if (options.hasOption(arg.substring(0, 2))) {
++                    // the format is --foo=value or -foo=value
++                    // the format is a special properties option (-Dproperty=value)
++                    tokens.add(arg.substring(0, 2)); // -D
++                    tokens.add(arg.substring(2)); // property=value
++                }
++                else {
++                    eatTheRest = stopAtNonOption;
++                    tokens.add(arg);
+                 }
+             }
+         }
++        else {
++            tokens.add(arg);
++        }
+ 
+-        return (String[]) tokens.toArray(new String[tokens.size()]);
++        if (eatTheRest) {
++            for (i++; i < arguments.length; i++) {
++                tokens.add(arguments[i]);
++            }
++        }
+     }
++
++    return (String[]) tokens.toArray(new String[tokens.size()]);
++}
+ }

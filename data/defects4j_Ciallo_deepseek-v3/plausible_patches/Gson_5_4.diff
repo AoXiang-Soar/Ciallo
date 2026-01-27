@@ -1,0 +1,16 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/bind/util/ISO8601Utils.java b/gson/src/main/java/com/google/gson/internal/bind/util/ISO8601Utils.java
+index a326f768..56f26b4f 100644
+--- a/gson/src/main/java/com/google/gson/internal/bind/util/ISO8601Utils.java
++++ b/gson/src/main/java/com/google/gson/internal/bind/util/ISO8601Utils.java
+@@ -211,6 +211,11 @@ public class ISO8601Utils
+                 String timezoneOffset = date.substring(offset);
+ 
+                 // When timezone has no minutes, we should append it, valid timezones are, for example: +00:00, +0000 and +00
++                if (timezoneOffset.length() == 3) {
++                    timezoneOffset = timezoneOffset + "00";
++                } else if (timezoneOffset.length() == 5 && timezoneOffset.indexOf(':') == -1) {
++                    timezoneOffset = timezoneOffset.substring(0, 3) + ":" + timezoneOffset.substring(3);
++                }
+ 
+                 offset += timezoneOffset.length();
+                 // 18-Jun-2015, tatu: Minor simplification, skip offset of "+0000"/"+00:00"

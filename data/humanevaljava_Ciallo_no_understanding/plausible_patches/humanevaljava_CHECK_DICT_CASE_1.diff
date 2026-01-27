@@ -1,0 +1,61 @@
+diff --git a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+index ba94200..a0ca220 100644
+--- a/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
++++ b/src/main/java/humaneval/buggy/CHECK_DICT_CASE.java
+@@ -2,6 +2,13 @@ package humaneval.buggy;
+ 
+ import java.util.HashMap;
+ 
++enum KeyState {
++    START,
++    UPPER,
++    LOWER,
++    MIXED
++}
++
+ // Given a dictionary, return True if all keys are strings in lower 
+ // case or all keys are strings in upper case, else return False.
+ // The function should return False is the given dictionary is empty.
+@@ -17,28 +24,31 @@ public class CHECK_DICT_CASE {
+         if (dict.size() == 0)
+             return false;
+         else {
+-            String state = "start";
++            KeyState state = KeyState.START;
+             for (Object key : dict.keySet()) {
+                 if (!(key instanceof String)) {
+-                    state = "mixed";
++                    state = KeyState.MIXED;
+                     break;
+                 }
+                 String str_key = (String) key;
+-                if (state.equals("start")) {
++                if (state == KeyState.START) {
+                     if (str_key.toUpperCase().equals(str_key))
+-                        state = "upper";
++                        state = KeyState.UPPER;
+                     else if (str_key.toLowerCase().equals(str_key))
+-                        state = "lower";
++                        state = KeyState.LOWER;
+                     else {
+-                        state = "mixed";
++                        state = KeyState.MIXED;
+                         break;
+                     }
+-                } else if (state.equals("upper") && !str_key.toUpperCase().equals(str_key)) {
+-                    state = "mixed";
++                } else if (state == KeyState.UPPER && !str_key.toUpperCase().equals(str_key)) {
++                    state = KeyState.MIXED;
++                    break;
++                } else if (state == KeyState.LOWER && !str_key.toLowerCase().equals(str_key)) {
++                    state = KeyState.MIXED;
+                     break;
+                 }
+             }
+-            return (state.equals("upper")) || (state.equals("lower"));
++            return (state == KeyState.UPPER) || (state == KeyState.LOWER);
+         }
+     }
+-}
++}
+\ No newline at end of file

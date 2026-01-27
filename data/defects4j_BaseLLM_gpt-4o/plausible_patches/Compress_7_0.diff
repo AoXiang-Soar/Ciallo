@@ -1,0 +1,35 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+index bca115fa..af97e5bb 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java
+@@ -90,20 +90,20 @@ public class TarUtils {
+      * @param length The maximum number of bytes to parse.
+      * @return The entry name.
+      */
+-    public static String parseName(byte[] buffer, final int offset, final int length) {
+-        StringBuffer result = new StringBuffer(length);
+-        int          end = offset + length;
++public static String parseName(byte[] buffer, final int offset, final int length) {
++    StringBuffer result = new StringBuffer(length);
++    int end = offset + length;
+ 
+-        for (int i = offset; i < end; ++i) {
+-            if (buffer[i] == 0) {
+-                break;
+-            }
+-            result.append((char) buffer[i]);
++    for (int i = offset; i < end; ++i) {
++        if (buffer[i] == 0) {
++            break;
+         }
+-
+-        return result.toString();
++        result.append((char) (buffer[i] & 0xFF)); // Ensure unsigned conversion from byte to char
+     }
+ 
++    return result.toString();
++}
++
+     /**
+      * Copy a name (StringBuffer) into a buffer.
+      * Copies characters from the name into the buffer

@@ -1,0 +1,28 @@
+diff --git a/src/main/java/humaneval/buggy/SOLVE.java b/src/main/java/humaneval/buggy/SOLVE.java
+index e3592e3..fe58a5d 100644
+--- a/src/main/java/humaneval/buggy/SOLVE.java
++++ b/src/main/java/humaneval/buggy/SOLVE.java
+@@ -3,7 +3,7 @@ package humaneval.buggy;
+ /* Given a positive integer N, return the total sum of its digits in binary.
+ 
+ Example
+-    For N = 1000, the sum of digits will be 1 the output should be "1".
++    For N = 1000, the sum of digits will be 1 the output should be "".
+     For N = 150, the sum of digits will be 6 the output should be "110".
+     For N = 147, the sum of digits will be 12 the output should be "1100".
+ 
+@@ -16,9 +16,10 @@ Output:
+ public class SOLVE {
+     public static String solve(int N) {
+         int sum = 0;
+-        for (int i = 0; i < (N + "").length(); i += 1){
+-            sum += Integer.parseInt((N + "").substring(i + 1));
++        String numStr = Integer.toString(N);
++        for (int i = 0; i < numStr.length(); i++) {
++            sum += Character.getNumericValue(numStr.charAt(i));
+         }
+         return Integer.toBinaryString(sum);
+     }
+-}
++}
+\ No newline at end of file

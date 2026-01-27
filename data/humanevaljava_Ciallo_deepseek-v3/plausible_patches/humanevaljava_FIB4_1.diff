@@ -1,0 +1,24 @@
+diff --git a/src/main/java/humaneval/buggy/FIB4.java b/src/main/java/humaneval/buggy/FIB4.java
+index e4ae6f3..d6bd9d0 100644
+--- a/src/main/java/humaneval/buggy/FIB4.java
++++ b/src/main/java/humaneval/buggy/FIB4.java
+@@ -26,11 +26,13 @@ public class FIB4 {
+ 
+         if (n < 4)
+             return result.get(n);
++
+         for (int i = 4; i < n + 1; i += 1) {
+-            result.add(
+-                result.get(0) + result.get(1) + result.get(2) + result.get(3)
+-            );
++            int nextValue = result.get(0) + result.get(1) + result.get(2) + result.get(3);
++            result.remove(0);
++            result.add(nextValue);
+         }
+-        return result.get(result.size() - 1);
++        
++        return result.get(3);
+     }
+-}
++}
+\ No newline at end of file

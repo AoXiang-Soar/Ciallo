@@ -1,0 +1,16 @@
+{
+    "bug_id": "STRING_TO_MD5",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_STRING_TO_MD5.test_0:6 \u00bb NoClassDefFound javax/xml/bind/DatatypeConverter",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        String result = humaneval.buggy.STRING_TO_MD5.string_to_md5(\"Hello world\");\n        org.junit.Assert.assertEquals(\n            result, \"3e25960a79dbc69b674cd4ec67a72c62\"\n        );\n    }",
+    "test_line": "        String result = humaneval.buggy.STRING_TO_MD5.string_to_md5(\"Hello world\");",
+    "test_name": "test_0",
+    "test_suite": "TEST_STRING_TO_MD5"
+}

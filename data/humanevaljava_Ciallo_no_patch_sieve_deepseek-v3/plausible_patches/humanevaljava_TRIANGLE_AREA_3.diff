@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/TRIANGLE_AREA.java b/src/main/java/humaneval/buggy/TRIANGLE_AREA.java
+index a34dabc..2708b13 100644
+--- a/src/main/java/humaneval/buggy/TRIANGLE_AREA.java
++++ b/src/main/java/humaneval/buggy/TRIANGLE_AREA.java
+@@ -1,11 +1,14 @@
+ package humaneval.buggy;
+ 
+ /* Given length of a side and high return area for a triangle.
++Area of a triangle is calculated as: (base * height) / 2.
++Example:
+ >>> triangle_area(5, 3)
+ 7.5 */
+ 
+ public class TRIANGLE_AREA {
+     public static double triangle_area(double a, double h) {
+-        return a * h;
++        // Formula for triangle area: (base * height) / 2
++        return a * h / 2;
+     }
+-}
++}
+\ No newline at end of file

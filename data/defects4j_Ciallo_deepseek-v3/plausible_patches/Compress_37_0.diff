@@ -1,0 +1,21 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+index 7a409d65..e9bf4766 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+@@ -459,7 +459,15 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+             int read = 0;
+             while((ch = i.read()) != -1) {
+                 read++;
+-                if (ch == ' '){
++                if (ch == ' ' || ch == '\n') {
++                    if (len <= 0) {
++                        break; // skip empty lines
++                    }
++                    // Validate length matches actual content
++                    if (read > len) {
++                        throw new IOException("Paxheader length " + len
++                            + " exceeded by content length " + read);
++                    }
+                     // Get keyword
+                     final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+                     while((ch = i.read()) != -1) {

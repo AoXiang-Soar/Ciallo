@@ -1,0 +1,69 @@
+diff --git a/src/java/org/apache/commons/cli/PosixParser.java b/src/java/org/apache/commons/cli/PosixParser.java
+index 2590de7..5132d01 100644
+--- a/src/java/org/apache/commons/cli/PosixParser.java
++++ b/src/java/org/apache/commons/cli/PosixParser.java
+@@ -275,35 +275,39 @@ public class PosixParser extends Parser {
+      * @param stopAtNonOption Specifies whether to stop processing
+      * at the first non-Option encountered.
+      */
+-    protected void burstToken(String token, boolean stopAtNonOption)
+-    {
+-        int tokenLength = token.length();
++protected void burstToken(String token, boolean stopAtNonOption) {
++    if (token == null || token.length() < 2 || !token.startsWith("-")) {
++        tokens.add(token);
++        return;
++    }
+ 
+-        for (int i = 1; i < tokenLength; i++)
+-        {
+-            String ch = String.valueOf(token.charAt(i));
+-            boolean hasOption = options.hasOption(ch);
++    int tokenLength = token.length();
++    boolean foundValidOption = false;
+ 
+-            if (hasOption)
+-            {
+-                tokens.add("-" + ch);
+-                currentOption = options.getOption(ch);
++    for (int i = 1; i < tokenLength; i++) {
++        String ch = String.valueOf(token.charAt(i));
++        
++        if (options.hasOption(ch)) {
++            foundValidOption = true;
++            tokens.add("-" + ch);
++            currentOption = options.getOption(ch);
+ 
+-                if (currentOption.hasArg() && (token.length() != (i + 1)))
+-                {
+-                    tokens.add(token.substring(i + 1));
+-
+-                    break;
+-                }
+-            }
+-            else if (stopAtNonOption)
+-            {
+-                process(token.substring(i));
+-            }
+-            else
+-            {
+-                tokens.add("-" + ch);
++            if (currentOption.hasArg() && (i + 1 < tokenLength)) {
++                tokens.add(token.substring(i + 1));
++                break;
+             }
++        } else if (foundValidOption) {
++            // If we've found at least one valid option, continue processing
++            tokens.add("-" + ch);
++        } else if (stopAtNonOption) {
++            // Stop at first invalid option if stopAtNonOption is true
++            tokens.add(token.substring(i));
++            break;
++        } else {
++            // Treat as literal token if no valid options found
++            tokens.add(token);
++            break;
+         }
+     }
+ }
++}

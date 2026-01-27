@@ -1,0 +1,16 @@
+{
+    "bug_id": 26,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Closure",
+    "test_error_message": "junit.framework.AssertionFailedError:",
+    "test_framework": "defects4j",
+    "test_function": "  public void testTransformAMDAndProcessCJS() {\n    args.add(\"--transform_amd_modules\");\n    args.add(\"--process_common_js_modules\");\n    args.add(\"--common_js_entry_module=foo/bar\");\n    setFilename(0, \"foo/bar.js\");\n    test(\"define({foo: 1})\",\n        \"var module$foo$bar={}, module$foo$bar={foo:1};\");\n  }",
+    "test_line": "      assertNull(\"\\nExpected: \" + compiler.toSource(expectedRoot) +",
+    "test_name": "testTransformAMDAndProcessCJS",
+    "test_suite": "com.google.javascript.jscomp.CommandLineRunnerTest"
+}

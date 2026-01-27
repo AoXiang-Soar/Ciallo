@@ -1,0 +1,111 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,JacksonDatabind,1,SL SH SF,1,11330,16,15,0,16,
+defects4j,JacksonDatabind,2,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,3,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,4,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,5,SF,1,4607,5,3,1,5,
+defects4j,JacksonDatabind,6,SF,0,44036,,22,0,22,
+defects4j,JacksonDatabind,7,SF,1,1276,2,1,0,2,
+defects4j,JacksonDatabind,8,SF,1,963,1,0,0,1,
+defects4j,JacksonDatabind,9,SF,1,512,1,0,0,1,
+defects4j,JacksonDatabind,10,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,11,SF,0,24709,,21,1,22,
+defects4j,JacksonDatabind,12,SH SF,1,487,1,0,0,1,
+defects4j,JacksonDatabind,13,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,14,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,15,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,16,SL SH SF,1,686,2,1,0,2,
+defects4j,JacksonDatabind,17,SL SH SF,0,10890,,22,0,22,
+defects4j,JacksonDatabind,18,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,19,SH SF,0,12897,,0,22,22,
+defects4j,JacksonDatabind,20,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,21,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,22,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,23,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,24,SF,0,9230,,22,0,22,
+defects4j,JacksonDatabind,25,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,26,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,27,SL SH SF,0,27478,,22,0,22,
+defects4j,JacksonDatabind,28,SF,0,19285,,0,22,22,
+defects4j,JacksonDatabind,29,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,30,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,31,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,32,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,33,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,34,SL SH SF,1,871,1,0,0,1,
+defects4j,JacksonDatabind,35,SF,1,1435,1,0,0,1,
+defects4j,JacksonDatabind,36,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,37,SL SH SF,0,10209,,2,20,22,
+defects4j,JacksonDatabind,38,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,39,SF,1,2484,4,1,2,4,
+defects4j,JacksonDatabind,40,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,41,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,42,SH SF,1,516,1,0,0,1,
+defects4j,JacksonDatabind,43,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,44,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,45,SH SF,0,11394,,22,0,22,
+defects4j,JacksonDatabind,46,SL SH SF,0,7132,,21,1,22,
+defects4j,JacksonDatabind,47,SF,1,37982,16,15,0,16,
+defects4j,JacksonDatabind,48,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,49,SF,1,5765,11,4,6,11,
+defects4j,JacksonDatabind,50,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,51,SF,0,29988,,15,7,22,
+defects4j,JacksonDatabind,52,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,53,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,54,SF,1,4377,2,1,0,2,
+defects4j,JacksonDatabind,55,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,56,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,57,SL SH SF,1,377,1,0,0,1,
+defects4j,JacksonDatabind,58,SF,1,6691,4,3,0,4,
+defects4j,JacksonDatabind,59,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,60,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,61,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,62,SH SF,0,20809,,9,13,22,
+defects4j,JacksonDatabind,63,SF,1,814,1,0,0,1,
+defects4j,JacksonDatabind,64,SF,1,5275,2,1,0,2,
+defects4j,JacksonDatabind,66,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,67,SF,1,10559,15,12,2,15,
+defects4j,JacksonDatabind,68,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,69,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,70,SL SH SF,1,520,1,0,0,1,
+defects4j,JacksonDatabind,71,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,72,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,73,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,74,SH SF,1,711,1,0,0,1,
+defects4j,JacksonDatabind,75,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,76,SH SF,1,1048,1,0,0,1,
+defects4j,JacksonDatabind,77,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,78,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,79,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,80,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,81,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,82,SL SH SF,1,3638,2,1,0,2,
+defects4j,JacksonDatabind,83,SF,1,1344,1,0,0,1,
+defects4j,JacksonDatabind,84,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,85,SF,0,20286,,17,5,22,
+defects4j,JacksonDatabind,86,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,87,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,88,SF,1,1133,1,0,0,1,
+defects4j,JacksonDatabind,90,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,91,SF,1,3605,5,4,0,5,
+defects4j,JacksonDatabind,92,SF,0,15549,,0,22,22,
+defects4j,JacksonDatabind,93,SH SF,1,737,1,0,0,1,
+defects4j,JacksonDatabind,94,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,95,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,96,SL SH SF,1,1916,2,0,1,2,
+defects4j,JacksonDatabind,97,SL SH SF,1,386,1,0,0,1,
+defects4j,JacksonDatabind,98,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,99,SL SH SF,1,321,1,0,0,1,
+defects4j,JacksonDatabind,100,SF,0,12608,,13,9,22,
+defects4j,JacksonDatabind,101,SF,1,1756,1,0,0,1,
+defects4j,JacksonDatabind,102,SH SF,1,985,1,0,0,1,
+defects4j,JacksonDatabind,103,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,104,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,105,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,106,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,107,SL SH SF,0,24970,,6,16,22,
+defects4j,JacksonDatabind,108,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,109,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,110,BF,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,111,OT,,,,,,,"Not SL, SH or SF bug. "
+defects4j,JacksonDatabind,112,SF,0,28456,,21,1,22,

@@ -1,0 +1,62 @@
+framework,project,bug_id,bug_type,ppc,rc,fppt,errtf,errce,tpc,comment
+defects4j,Lang,1,SF,1,160185,28,20,5,50,
+defects4j,Lang,3,SF,1,583952,132,63,28,433,
+defects4j,Lang,4,BF,9,33607,6,1,0,11,
+defects4j,Lang,5,SF,5,23657,7,0,1,5,
+defects4j,Lang,6,SL SH SF,5,25757,15,7,0,19,
+defects4j,Lang,7,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,8,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,9,SH SF,3,47858,31,15,4,35,
+defects4j,Lang,10,SF,1,47774,28,18,1,49,
+defects4j,Lang,11,SH SF,5,38776,18,3,11,17,
+defects4j,Lang,12,SF,5,23655,7,4,0,13,
+defects4j,Lang,13,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,14,SF,5,12727,7,1,0,7,
+defects4j,Lang,15,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,16,SL SH SF,5,34833,6,0,0,5,
+defects4j,Lang,17,SF,8,23873,14,9,0,26,
+defects4j,Lang,19,SF,5,98763,51,41,4,134,
+defects4j,Lang,20,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,21,SL SH SF,3,12702,6,1,1,5,
+defects4j,Lang,22,SF,4,37086,12,5,4,18,
+defects4j,Lang,23,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,24,SL SH SF,2,37649,6,0,0,2,
+defects4j,Lang,26,SL SH SF,5,9044,6,1,1,8,
+defects4j,Lang,27,SF,4,48408,8,5,2,15,
+defects4j,Lang,28,SF,7,19093,6,1,0,9,
+defects4j,Lang,29,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,30,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,31,SF,5,12493,5,2,1,9,
+defects4j,Lang,32,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,33,SL SH SF,,,,,,,Out of limited tokens.
+defects4j,Lang,34,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,35,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,36,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,37,SF,7,16558,8,3,0,13,
+defects4j,Lang,38,SL SH SF,7,33914,29,9,9,29,
+defects4j,Lang,39,SH SF,5,69147,16,6,5,20,
+defects4j,Lang,40,SH SF,3,15924,8,5,1,14,
+defects4j,Lang,41,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,42,SF,8,17012,6,0,0,8,
+defects4j,Lang,43,SL SH SF,2,13439,8,0,1,2,
+defects4j,Lang,44,SH SF,6,21925,6,1,0,8,
+defects4j,Lang,45,SH SF,6,17815,5,1,0,8,
+defects4j,Lang,46,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,47,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,49,SH SF,1,20996,16,10,0,21,
+defects4j,Lang,50,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,51,SL SH SF,2,19651,7,0,0,2,
+defects4j,Lang,52,SH SF,5,33975,14,1,9,12,
+defects4j,Lang,53,SF,4,42847,7,4,0,12,
+defects4j,Lang,54,SH SF,2,14719,7,3,4,11,
+defects4j,Lang,55,SF,6,9683,6,1,2,10,
+defects4j,Lang,56,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,57,SL SH SF,5,8230,7,3,0,11,
+defects4j,Lang,58,SH SF,6,20535,6,1,2,10,
+defects4j,Lang,59,SL SH SF,4,13107,7,1,0,6,
+defects4j,Lang,60,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,61,SL SH SF,1,11548,7,1,1,4,
+defects4j,Lang,62,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,63,BF,,,,,,,Out of limited tokens.
+defects4j,Lang,64,BF,10,61146,7,3,2,16,
+defects4j,Lang,65,SF,0,1482700,,324,7,4157,

@@ -1,0 +1,22 @@
+diff --git a/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java b/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
+old mode 100644
+new mode 100755
+index 7926089..25f45e7
+--- a/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
++++ b/src/main/java/humaneval/buggy/IS_EQUAL_TO_SUM_EVEN.java
+@@ -11,6 +11,12 @@ package humaneval.buggy;
+ 
+ public class IS_EQUAL_TO_SUM_EVEN {
+     public static boolean is_equal_to_sum_even(int n) {
+-        return ((n * 2 == 1) ^ (n < 8));
++        if (n < 8) return false;
++        // Check if we can find 4 positive even numbers that sum to n
++        // Since all even numbers can be represented as 2*k, we're looking for:
++        // 2a + 2b + 2c + 2d = n where a,b,c,d >= 1
++        // => a + b + c + d = n/2 where a,b,c,d >= 1
++        // The smallest such sum is 1+1+1+1=4
++        return (n % 2 == 0) && (n/2 >= 4);
+     }
+-}
++}
+\ No newline at end of file

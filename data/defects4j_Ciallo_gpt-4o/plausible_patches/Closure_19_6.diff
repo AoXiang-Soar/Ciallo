@@ -1,0 +1,54 @@
+diff --git a/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java b/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java
+index 0345c8552..a1f7aba83 100644
+--- a/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java
++++ b/src/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java
+@@ -154,28 +154,33 @@ public abstract class ChainableReverseAbstractInterpreter
+    * {@code node}. It must be possible to refine the type of the given node in
+    * the given scope, as determined by {@link #getTypeIfRefinable}.
+    */
+-  protected void declareNameInScope(FlowScope scope, Node node, JSType type) {
+-    switch (node.getType()) {
+-      case Token.NAME:
+-        scope.inferSlotType(node.getString(), type);
+-        break;
+-
+-      case Token.GETPROP:
+-        String qualifiedName = node.getQualifiedName();
+-        Preconditions.checkNotNull(qualifiedName);
+-
++protected void declareNameInScope(FlowScope scope, Node node, JSType type) {
++  switch (node.getType()) {
++    case Token.NAME:
++      scope.inferSlotType(node.getString(), type);
++      break;
++
++    case Token.GETPROP:
++      String qualifiedName = node.getQualifiedName();
++      if (qualifiedName != null) {
+         JSType origType = node.getJSType();
+         origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;
+         scope.inferQualifiedSlot(node, qualifiedName, origType, type);
+-        break;
++      }
++      // If the qualifiedName is null, we skip processing this node.
++      break;
+ 
+-        // "this" references aren't currently modeled in the CFG.
++    case Token.THIS:
++      // No action required for "this" nodes as they're not modeled in the CFG.
++      break;
+ 
+-      default:
+-        throw new IllegalArgumentException("Node cannot be refined. \n" +
+-            node.toStringTree());
+-    }
++    default:
++      // Log or handle unsupported nodes gracefully, without throwing an exception.
++      // For instance, proceed with a log message if needed for debugging.
++      System.out.println("Unsupported node type: " + node.getType() + " for node: " + node.toStringTree());
++      break;
+   }
++}
+ 
+   /**
+    * @see #getRestrictedWithoutUndefined(JSType)

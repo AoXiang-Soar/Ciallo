@@ -1,0 +1,33 @@
+diff --git a/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java b/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java
+index ef33e4c04..5b507039e 100644
+--- a/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java
++++ b/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java
+@@ -329,20 +329,25 @@ class DeadAssignmentsElimination extends AbstractPostOrderCallback implements
+         // occurs after the RHS is evaluated.
+         return VariableLiveness.KILL;
+       } else {
++        // If we encounter a READ before any KILL we should return READ.
+         return VariableLiveness.READ;
+       }
+     }
+ 
+     // Expressions are evaluated left-right, depth first.
++    VariableLiveness result = VariableLiveness.MAYBE_LIVE;
+     for (Node child = n.getFirstChild();
+         child != null; child = child.getNext()) {
+       if (!ControlFlowGraph.isEnteringNewCfgNode(child)) { // Not a FUNCTION
+         VariableLiveness state = isVariableReadBeforeKill(child, variable);
+-        if (state != VariableLiveness.MAYBE_LIVE) {
+-          return state;
++        if (state == VariableLiveness.READ) {
++          return VariableLiveness.READ; // Return immediately if READ is encountered
++        }
++        if (state == VariableLiveness.KILL) {
++          result = VariableLiveness.KILL; // Update result only if KILL is encountered
+         }
+       }
+     }
+-    return VariableLiveness.MAYBE_LIVE;
++    return result;
+   }
+ }

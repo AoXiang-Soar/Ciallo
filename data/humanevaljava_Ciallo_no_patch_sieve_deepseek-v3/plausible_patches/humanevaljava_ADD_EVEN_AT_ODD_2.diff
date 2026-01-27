@@ -1,0 +1,29 @@
+diff --git a/src/main/java/humaneval/buggy/ADD_EVEN_AT_ODD.java b/src/main/java/humaneval/buggy/ADD_EVEN_AT_ODD.java
+index 9d1cbb8..41d0cd3 100644
+--- a/src/main/java/humaneval/buggy/ADD_EVEN_AT_ODD.java
++++ b/src/main/java/humaneval/buggy/ADD_EVEN_AT_ODD.java
+@@ -1,16 +1,13 @@
+ package humaneval.buggy;
+ 
+-/* Given a non-empty list of integers lst. add the even elements that are at odd indices..
+-Examples:
+-    add([4, 2, 6, 7]) ==> 2 */
++import java.util.stream.IntStream;
+ 
+ public class ADD_EVEN_AT_ODD {
+     public static int add_even_at_odd(int[] lst) {
+-        int sum = 0;
+-        for (int i = 0; i < lst.length; i += 1) {
+-            if (lst[i] % 2 == 0)
+-                sum += lst[i];
+-        }
+-        return sum;
++        return IntStream.range(0, lst.length)
++            .filter(i -> i % 2 != 0)
++            .filter(i -> lst[i] % 2 == 0)
++            .map(i -> lst[i])
++            .sum();
+     }
+-}
++}
+\ No newline at end of file

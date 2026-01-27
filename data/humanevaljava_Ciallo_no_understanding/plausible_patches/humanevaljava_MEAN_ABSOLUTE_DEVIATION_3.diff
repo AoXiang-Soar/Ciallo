@@ -1,0 +1,27 @@
+diff --git a/src/main/java/humaneval/buggy/MEAN_ABSOLUTE_DEVIATION.java b/src/main/java/humaneval/buggy/MEAN_ABSOLUTE_DEVIATION.java
+old mode 100644
+new mode 100755
+index 2f1406a..bfe9264
+--- a/src/main/java/humaneval/buggy/MEAN_ABSOLUTE_DEVIATION.java
++++ b/src/main/java/humaneval/buggy/MEAN_ABSOLUTE_DEVIATION.java
+@@ -5,14 +5,14 @@ import java.util.List;
+ public class MEAN_ABSOLUTE_DEVIATION {
+     public static double mean_absolute_deviation(List<Double> numbers) {
+         double sum = 0.;
+-        for (Double number : numbers){
++        for (Double number : numbers) {
+             sum += number;
+         }
+         double mean = sum / numbers.size();
+         double deviation_sum = 0.;
+-        for (Double number : numbers){
+-            deviation_sum += (number - mean) * (number - mean);
++        for (Double number : numbers) {
++            deviation_sum += Math.abs(number - mean);
+         }
+-        return deviation_sum / numbers.size();
++        return numbers.isEmpty() ? 0.0 : deviation_sum / numbers.size();
+     }
+-}
++}
+\ No newline at end of file

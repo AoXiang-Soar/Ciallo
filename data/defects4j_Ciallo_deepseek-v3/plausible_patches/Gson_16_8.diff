@@ -1,0 +1,24 @@
+diff --git a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+index 17ed0ff2..6ecef0ed 100644
+--- a/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
++++ b/gson/src/main/java/com/google/gson/internal/$Gson$Types.java
+@@ -333,13 +333,16 @@ public final class $Gson$Types {
+     return resolve(context, contextRawType, toResolve, new HashSet<TypeVariable>());
+   }
+ 
+-  private static Type resolve(Type context, Class<?> contextRawType, Type toResolve,
+-                              Collection<TypeVariable> visitedTypeVariables) {
++private static Type resolve(Type context, Class<?> contextRawType, Type toResolve,
++                            Collection<TypeVariable> visitedTypeVariables) {
+     // this implementation is made a little more complicated in an attempt to avoid object-creation
+     while (true) {
+       if (toResolve instanceof TypeVariable) {
+         TypeVariable<?> typeVariable = (TypeVariable<?>) toResolve;
+-          // cannot reduce due to infinite recursion
++        if (visitedTypeVariables.contains(typeVariable)) {
++          return toResolve;
++        }
++        visitedTypeVariables.add(typeVariable);
+         toResolve = resolveTypeVariable(context, contextRawType, typeVariable);
+         if (toResolve == typeVariable) {
+           return toResolve;

@@ -1,0 +1,71 @@
+diff --git a/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java b/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java
+index ef33e4c04..d85134951 100644
+--- a/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java
++++ b/src/com/google/javascript/jscomp/DeadAssignmentsElimination.java
+@@ -320,29 +320,47 @@ class DeadAssignmentsElimination extends AbstractPostOrderCallback implements
+    * reference of that variable is a read. It returns KILL, if the first
+    * reference of that variable is an assignment. It returns MAY_LIVE otherwise.
+    */
+-  private VariableLiveness isVariableReadBeforeKill(
+-      Node n, String variable) {
+-    if (NodeUtil.isName(n) && variable.equals(n.getString())) {
+-      if (NodeUtil.isLhs(n, n.getParent())) {
+-        // The expression to which the assignment is made is evaluated before
+-        // the RHS is evaluated (normal left to right evaluation) but the KILL
+-        // occurs after the RHS is evaluated.
+-        return VariableLiveness.KILL;
+-      } else {
+-        return VariableLiveness.READ;
++private VariableLiveness isVariableReadBeforeKill(
++    Node n, String variable) {
++  if (NodeUtil.isName(n) && variable.equals(n.getString())) {
++    Node parent = n.getParent();
++    if (NodeUtil.isAssignmentOp(parent)) {
++      if (n == parent.getFirstChild()) {
++        // Check if there are other reads of the variable in the RHS
++        VariableLiveness rhsState = checkRightHandSide(parent.getLastChild(), variable);
++        return rhsState == VariableLiveness.READ ? VariableLiveness.READ : VariableLiveness.KILL;
+       }
++      return VariableLiveness.READ;
+     }
++    return VariableLiveness.READ;
++  }
+ 
+-    // Expressions are evaluated left-right, depth first.
+-    for (Node child = n.getFirstChild();
+-        child != null; child = child.getNext()) {
+-      if (!ControlFlowGraph.isEnteringNewCfgNode(child)) { // Not a FUNCTION
+-        VariableLiveness state = isVariableReadBeforeKill(child, variable);
+-        if (state != VariableLiveness.MAYBE_LIVE) {
+-          return state;
+-        }
++  // Expressions are evaluated left-right, depth first.
++  for (Node child = n.getFirstChild();
++      child != null; child = child.getNext()) {
++    if (!ControlFlowGraph.isEnteringNewCfgNode(child)) { // Not a FUNCTION
++      VariableLiveness state = isVariableReadBeforeKill(child, variable);
++      if (state != VariableLiveness.MAYBE_LIVE) {
++        return state;
+       }
+     }
+-    return VariableLiveness.MAYBE_LIVE;
+   }
++  return VariableLiveness.MAYBE_LIVE;
++}
++
++private VariableLiveness checkRightHandSide(Node rhs, String variable) {
++  // Check the RHS of the assignment for reads of the same variable
++  if (NodeUtil.isName(rhs) && variable.equals(rhs.getString())) {
++    return VariableLiveness.READ;
++  }
++  
++  for (Node child = rhs.getFirstChild();
++      child != null; child = child.getNext()) {
++    VariableLiveness state = checkRightHandSide(child, variable);
++    if (state == VariableLiveness.READ) {
++      return state;
++    }
++  }
++  return VariableLiveness.MAYBE_LIVE;
++}
+ }

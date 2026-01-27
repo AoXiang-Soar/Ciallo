@@ -1,0 +1,33 @@
+diff --git a/src/main/java/humaneval/buggy/UNIQUE.java b/src/main/java/humaneval/buggy/UNIQUE.java
+index 8e621ef..3518816 100644
+--- a/src/main/java/humaneval/buggy/UNIQUE.java
++++ b/src/main/java/humaneval/buggy/UNIQUE.java
+@@ -1,18 +1,21 @@
+ package humaneval.buggy;
+ 
++import java.util.LinkedHashSet;
++import java.util.List;
+ import java.util.ArrayList;
+ import java.util.Collections;
+-import java.util.List;
+ 
+ public class UNIQUE {
+     public static List<Integer> unique(List<Integer> l) {
+-        List<Integer> result = new ArrayList<Integer>();
++        // Use LinkedHashSet to maintain insertion order and remove duplicates
++        LinkedHashSet<Integer> set = new LinkedHashSet<>(l);
++
++        // Convert the set back to a list
++        List<Integer> result = new ArrayList<>(set);
+ 
+-        for (Integer n : l){
+-            result.add(n);
+-        }
++        // Sort the resulting list
+         Collections.sort(result);
+ 
+         return result;
+     }
+-}
++}
+\ No newline at end of file

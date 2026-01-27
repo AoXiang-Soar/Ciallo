@@ -1,0 +1,35 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/zip/ZipArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/zip/ZipArchiveInputStream.java
+index 38ae9568..6c82fd09 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/zip/ZipArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/zip/ZipArchiveInputStream.java
+@@ -171,17 +171,19 @@ public class ZipArchiveInputStream extends ArchiveInputStream {
+      * will try to read STORED entries that use a data descriptor
+      * @since 1.1
+      */
+-    public ZipArchiveInputStream(InputStream inputStream,
+-                                 String encoding,
+-                                 boolean useUnicodeExtraFields,
+-                                 boolean allowStoredEntriesWithDataDescriptor) {
+-        zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+-        this.useUnicodeExtraFields = useUnicodeExtraFields;
+-        in = new PushbackInputStream(inputStream, buf.capacity());
+-        this.allowStoredEntriesWithDataDescriptor =
+-            allowStoredEntriesWithDataDescriptor;
+-        // haven't read anything so far
+-    }
++public ZipArchiveInputStream(InputStream inputStream,
++                            String encoding,
++                            boolean useUnicodeExtraFields,
++                            boolean allowStoredEntriesWithDataDescriptor) {
++    zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
++    this.useUnicodeExtraFields = useUnicodeExtraFields;
++    this.allowStoredEntriesWithDataDescriptor = allowStoredEntriesWithDataDescriptor;
++    in = new PushbackInputStream(inputStream, buf.capacity());
++    buf.limit(0);  // Initialize buffer as empty
++    entriesRead = 0;
++    closed = false;
++    current = null;
++}
+ 
+     public ZipArchiveEntry getNextZipEntry() throws IOException {
+         boolean firstEntry = true;

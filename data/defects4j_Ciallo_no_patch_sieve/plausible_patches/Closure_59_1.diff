@@ -1,0 +1,64 @@
+diff --git a/src/com/google/javascript/jscomp/Compiler.java b/src/com/google/javascript/jscomp/Compiler.java
+index b3ca246a6..7b9020d32 100644
+--- a/src/com/google/javascript/jscomp/Compiler.java
++++ b/src/com/google/javascript/jscomp/Compiler.java
+@@ -223,7 +223,7 @@ public class Compiler extends AbstractCompiler {
+    * Initialize the compiler options. Only necessary if you're not doing
+    * a normal compile() job.
+    */
+-  public void initOptions(CompilerOptions options) {
++public void initOptions(CompilerOptions options) {
+     this.options = options;
+     if (errorManager == null) {
+       if (outStream == null) {
+@@ -252,18 +252,6 @@ public class Compiler extends AbstractCompiler {
+           CheckLevel.OFF);
+     }
+ 
+-    if (options.checkGlobalThisLevel.isOn()) {
+-      options.setWarningLevel(
+-          DiagnosticGroups.GLOBAL_THIS,
+-          options.checkGlobalThisLevel);
+-    }
+-
+-    if (options.getLanguageIn() == LanguageMode.ECMASCRIPT5_STRICT) {
+-      options.setWarningLevel(
+-          DiagnosticGroups.ES5_STRICT,
+-          CheckLevel.ERROR);
+-    }
+-
+     // Initialize the warnings guard.
+     List<WarningsGuard> guards = Lists.newArrayList();
+     guards.add(
+@@ -273,6 +261,22 @@ public class Compiler extends AbstractCompiler {
+ 
+     ComposeWarningsGuard composedGuards = new ComposeWarningsGuard(guards);
+ 
++    // Handle global this checking only if not already configured through guards
++    if (!composedGuards.enables(DiagnosticGroups.GLOBAL_THIS) &&
++        !composedGuards.disables(DiagnosticGroups.GLOBAL_THIS)) {
++      if (options.checkGlobalThisLevel.isOn()) {
++        options.setWarningLevel(
++            DiagnosticGroups.GLOBAL_THIS,
++            options.checkGlobalThisLevel);
++      }
++    }
++
++    if (options.getLanguageIn() == LanguageMode.ECMASCRIPT5_STRICT) {
++      options.setWarningLevel(
++          DiagnosticGroups.ES5_STRICT,
++          CheckLevel.ERROR);
++    }
++
+     // All passes must run the variable check. This synthesizes
+     // variables later so that the compiler doesn't crash. It also
+     // checks the externs file for validity. If you don't want to warn
+@@ -285,7 +289,7 @@ public class Compiler extends AbstractCompiler {
+     }
+ 
+     this.warningsGuard = composedGuards;
+-  }
++}
+ 
+   /**
+    * Initializes the instance state needed for a compile job.

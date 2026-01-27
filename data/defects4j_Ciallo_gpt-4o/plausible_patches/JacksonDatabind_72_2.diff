@@ -1,0 +1,34 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/deser/impl/InnerClassProperty.java b/src/main/java/com/fasterxml/jackson/databind/deser/impl/InnerClassProperty.java
+index 021a3cf46..8462f4888 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/deser/impl/InnerClassProperty.java
++++ b/src/main/java/com/fasterxml/jackson/databind/deser/impl/InnerClassProperty.java
+@@ -90,7 +90,12 @@ public final class InnerClassProperty
+     @Override
+     public int getPropertyIndex() { return _delegate.getPropertyIndex(); }
+ 
+-    
++    @Override
++    public int getCreatorIndex() { 
++        // Delegating the call to the contained _delegate
++        return _delegate.getCreatorIndex(); 
++    }
++
+     // // // BeanProperty impl
+     
+     @Override
+@@ -130,7 +135,7 @@ public final class InnerClassProperty
+ 
+     @Override
+     public Object deserializeSetAndReturn(JsonParser jp,
+-    		DeserializationContext ctxt, Object instance)
++            DeserializationContext ctxt, Object instance)
+         throws IOException
+     {
+         return setAndReturn(instance, deserialize(jp, ctxt));
+@@ -164,4 +169,4 @@ public final class InnerClassProperty
+         }
+         return new InnerClassProperty(this, new AnnotatedConstructor(null, _creator, null, null));
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,16 @@
+{
+    "bug_id": 16,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Codec",
+    "test_error_message": "java.lang.IllegalArgumentException: pad must not be in alphabet or whitespace",
+    "test_framework": "defects4j",
+    "test_function": "    public void testCodec200() {\n        final Base32 codec = new Base32(true, (byte)'W'); // should be allowed\n        assertNotNull(codec);\n    }",
+    "test_line": "        final Base32 codec = new Base32(true, (byte)'W'); // should be allowed",
+    "test_name": "testCodec200",
+    "test_suite": "org.apache.commons.codec.binary.Base32Test"
+}

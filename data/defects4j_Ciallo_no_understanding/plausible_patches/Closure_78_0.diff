@@ -1,0 +1,40 @@
+diff --git a/src/com/google/javascript/jscomp/PeepholeFoldConstants.java b/src/com/google/javascript/jscomp/PeepholeFoldConstants.java
+index c5ef4b0f8..6a70bb15d 100644
+--- a/src/com/google/javascript/jscomp/PeepholeFoldConstants.java
++++ b/src/com/google/javascript/jscomp/PeepholeFoldConstants.java
+@@ -661,7 +661,7 @@ class PeepholeFoldConstants extends AbstractPeepholeOptimization {
+   /**
+    * Try to fold arithmetic binary operators
+    */
+-  private Node performArithmeticOp(int opType, Node left, Node right) {
++private Node performArithmeticOp(int opType, Node left, Node right) {
+     // Unlike other operations, ADD operands are not always converted
+     // to Number.
+     if (opType == Token.ADD
+@@ -708,15 +708,13 @@ class PeepholeFoldConstants extends AbstractPeepholeOptimization {
+         break;
+       case Token.MOD:
+         if (rval == 0) {
+-          error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
+-          return null;
++          return null; // Just return null for division by zero instead of throwing error
+         }
+         result = lval % rval;
+         break;
+       case Token.DIV:
+         if (rval == 0) {
+-          error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
+-          return null;
++          return null; // Just return null for division by zero instead of throwing error
+         }
+         result = lval / rval;
+         break;
+@@ -743,7 +741,7 @@ class PeepholeFoldConstants extends AbstractPeepholeOptimization {
+     }
+ 
+     return null;
+-  }
++}
+ 
+   /**
+    * Expressions such as [foo() * 10 * 20] generate parse trees

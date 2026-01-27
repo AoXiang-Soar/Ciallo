@@ -1,0 +1,60 @@
+diff --git a/src/main/java/org/jsoup/parser/Token.java b/src/main/java/org/jsoup/parser/Token.java
+index 7dcfa2ba..3bc79207 100644
+--- a/src/main/java/org/jsoup/parser/Token.java
++++ b/src/main/java/org/jsoup/parser/Token.java
+@@ -97,29 +97,34 @@ abstract class Token {
+             return this;
+         }
+ 
+-        final void newAttribute() {
+-            if (attributes == null)
+-                attributes = new Attributes();
++final void newAttribute() {
++    if (attributes == null)
++        attributes = new Attributes();
++
++    if (pendingAttributeName != null) {
++        pendingAttributeName = pendingAttributeName.trim();
++
++        // Ensure that the trimmed attribute name is not empty
++        if (!pendingAttributeName.isEmpty()) {
++            Attribute attribute;
++            if (hasPendingAttributeValue)
++                attribute = new Attribute(pendingAttributeName,
++                    pendingAttributeValue.length() > 0 ? pendingAttributeValue.toString() : pendingAttributeValueS);
++            else if (hasEmptyAttributeValue)
++                attribute = new Attribute(pendingAttributeName, "");
++            else
++                attribute = new BooleanAttribute(pendingAttributeName);
+ 
+-            if (pendingAttributeName != null) {
+-                // the tokeniser has skipped whitespace control chars, but trimming could collapse to empty for other control codes, so verify here
+-                pendingAttributeName = pendingAttributeName.trim();
+-                    Attribute attribute;
+-                    if (hasPendingAttributeValue)
+-                        attribute = new Attribute(pendingAttributeName,
+-                            pendingAttributeValue.length() > 0 ? pendingAttributeValue.toString() : pendingAttributeValueS);
+-                    else if (hasEmptyAttributeValue)
+-                        attribute = new Attribute(pendingAttributeName, "");
+-                    else
+-                        attribute = new BooleanAttribute(pendingAttributeName);
+-                    attributes.put(attribute);
+-            }
+-            pendingAttributeName = null;
+-            hasEmptyAttributeValue = false;
+-            hasPendingAttributeValue = false;
+-            reset(pendingAttributeValue);
+-            pendingAttributeValueS = null;
++            attributes.put(attribute);
+         }
++    }
++    
++    pendingAttributeName = null;
++    hasEmptyAttributeValue = false;
++    hasPendingAttributeValue = false;
++    reset(pendingAttributeValue);
++    pendingAttributeValueS = null;
++}
+ 
+         final void finaliseTag() {
+             // finalises for emit

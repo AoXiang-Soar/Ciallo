@@ -1,0 +1,16 @@
+{
+    "bug_id": 15,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Math",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<-1.0> but was:<1.0>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testMath904() {\n        final double x = -1;\n        final double y = (5 + 1e-15) * 1e15;\n        Assert.assertEquals(Math.pow(x, y),\n                            FastMath.pow(x, y), 0);\n        Assert.assertEquals(Math.pow(x, -y),\n                            FastMath.pow(x, -y), 0);\n    }",
+    "test_line": "        Assert.assertEquals(Math.pow(x, y),",
+    "test_name": "testMath904",
+    "test_suite": "org.apache.commons.math3.util.FastMathTest"
+}

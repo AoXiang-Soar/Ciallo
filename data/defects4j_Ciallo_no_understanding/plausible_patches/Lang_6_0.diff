@@ -1,0 +1,15 @@
+diff --git a/src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java b/src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java
+index 4d010eafd..2ce0ab37f 100644
+--- a/src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java
++++ b/src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java
+@@ -89,9 +89,7 @@ public abstract class CharSequenceTranslator {
+                 pos+= c.length;
+                 continue;
+             }
+-//          // contract with translators is that they have to understand codepoints 
+-//          // and they just took care of a surrogate pair
+-            for (int pt = 0; pt < consumed; pt++) {
++            for (int pt = 0; pt < consumed && pos < len; pt++) {
+                 pos += Character.charCount(Character.codePointAt(input, pos));
+             }
+         }

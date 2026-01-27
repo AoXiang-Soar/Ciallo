@@ -1,0 +1,34 @@
+diff --git a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+index 7791efd..99e0320 100644
+--- a/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
++++ b/src/main/java/humaneval/buggy/NEXT_SMALLEST.java
+@@ -13,14 +13,21 @@ next_smallest([1, 1]) == None */
+ 
+ public class NEXT_SMALLEST {
+     public static Integer next_smallest(int[] lst) {
+-        List<Integer> numbers = new ArrayList<Integer>();
+-        for (Integer n : lst)
++        // Use a TreeSet to automatically sort and remove duplicates
++        Set<Integer> numbers = new TreeSet<>();
++        for (int n : lst) {
+             numbers.add(n);
+-        Integer[] no_duplicate = numbers.toArray(new Integer[] {});
+-        Arrays.sort(no_duplicate);
++        }
++        
++        // Convert the set to a list after sorting
++        List<Integer> sortedUniqueNumbers = new ArrayList<>(numbers);
+ 
+-        if (no_duplicate.length < 2)
++        // If there are fewer than 2 unique numbers, return null
++        if (sortedUniqueNumbers.size() < 2) {
+             return null;
+-        return no_duplicate[1];
++        }
++
++        // Return the second smallest element
++        return sortedUniqueNumbers.get(1);
+     }
+-}
++}
+\ No newline at end of file

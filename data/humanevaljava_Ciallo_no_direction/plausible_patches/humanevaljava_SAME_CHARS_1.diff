@@ -1,0 +1,46 @@
+diff --git a/src/main/java/humaneval/buggy/SAME_CHARS.java b/src/main/java/humaneval/buggy/SAME_CHARS.java
+index 9367e85..e8e2843 100644
+--- a/src/main/java/humaneval/buggy/SAME_CHARS.java
++++ b/src/main/java/humaneval/buggy/SAME_CHARS.java
+@@ -18,15 +18,30 @@ False */
+ 
+ public class SAME_CHARS {
+     public static boolean same_chars(String s0, String s1) {
+-        ArrayList<Character> set0 = new ArrayList<Character>();
+-        ArrayList<Character> set1 = new ArrayList<Character>();
+-
+-        for (char c0 : s0.toCharArray()) {
+-            set0.add(c0);
+-        }
+-        for (char c1 : s1.toCharArray()) {
+-            set1.add(c1);
++        char[] chars0 = s0.toCharArray();
++        char[] chars1 = s1.toCharArray();
++        
++        Arrays.sort(chars0);
++        Arrays.sort(chars1);
++        
++        // Remove duplicates from both arrays
++        String unique0 = removeDuplicates(chars0);
++        String unique1 = removeDuplicates(chars1);
++        
++        return unique0.equals(unique1);
++    }
++    
++    private static String removeDuplicates(char[] chars) {
++        if (chars.length == 0) return "";
++        
++        StringBuilder result = new StringBuilder();
++        result.append(chars[0]);
++        
++        for (int i = 1; i < chars.length; i++) {
++            if (chars[i] != chars[i - 1]) {
++                result.append(chars[i]);
++            }
+         }
+-        return set0.equals(set1);
++        return result.toString();
+     }
+-}
++}
+\ No newline at end of file

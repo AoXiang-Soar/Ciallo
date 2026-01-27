@@ -1,0 +1,16 @@
+{
+    "bug_id": 15,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "JxPath",
+    "test_error_message": "junit.framework.AssertionFailedError: Evaluating </vendor[1]/contact[4] | /vendor[1]/contact[1]> expected:<John> but was:<Jack Black>",
+    "test_framework": "defects4j",
+    "test_function": "    public void testUnion() {\n        assertXPathValue(context, \"/vendor[1]/contact[1] | /vendor[1]/contact[4]\", \"John\");\n        assertXPathValue(context, \"/vendor[1]/contact[4] | /vendor[1]/contact[1]\", \"John\");\n    }",
+    "test_line": "        assertXPathValue(context, \"/vendor[1]/contact[4] | /vendor[1]/contact[1]\", \"John\");",
+    "test_name": "testUnion",
+    "test_suite": "org.apache.commons.jxpath.ri.model.XMLModelTestCase"
+}

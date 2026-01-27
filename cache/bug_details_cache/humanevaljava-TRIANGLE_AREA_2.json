@@ -1,0 +1,16 @@
+{
+    "bug_id": "TRIANGLE_AREA_2",
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "humanevaljava",
+    "test_error_message": "TEST_TRIANGLE_AREA_2.test_0:7 expected:<2.45> but was:<6.0>",
+    "test_framework": "humanevaljava",
+    "test_function": "    public void test_0() throws java.lang.Exception {\n        double result = humaneval.buggy.TRIANGLE_AREA_2.triangle_area_2(3, 4, 5);\n        org.junit.Assert.assertEquals(\n            result, 6, 1e-6\n        );\n    }",
+    "test_line": "        org.junit.Assert.assertEquals(",
+    "test_name": "test_0",
+    "test_suite": "TEST_TRIANGLE_AREA_2"
+}

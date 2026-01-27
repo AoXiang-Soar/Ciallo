@@ -1,0 +1,16 @@
+{
+    "bug_id": 16,
+    "bug_type": "BF",
+    "buggy_lines": null,
+    "code": null,
+    "fixed_code": null,
+    "fixed_lines": null,
+    "masked_code": null,
+    "project": "Jsoup",
+    "test_error_message": "junit.framework.AssertionFailedError: expected:<<!DOCTYPE html [\"]http://www.ibm.com/d...> but was:<<!DOCTYPE html []http://www.ibm.com/d...>",
+    "test_framework": "defects4j",
+    "test_function": "    @Test public void outerHtmlGeneration() {\n        DocumentType html5 = new DocumentType(\"html\", \"\", \"\", \"\");\n        assertEquals(\"<!DOCTYPE html>\", html5.outerHtml());\n\n        DocumentType publicDocType = new DocumentType(\"html\", \"-//IETF//DTD HTML//\", \"\", \"\");\n        assertEquals(\"<!DOCTYPE html PUBLIC \\\"-//IETF//DTD HTML//\\\">\", publicDocType.outerHtml());\n\n        DocumentType systemDocType = new DocumentType(\"html\", \"\", \"http://www.ibm.com/data/dtd/v11/ibmxhtml1-transitional.dtd\", \"\");\n        assertEquals(\"<!DOCTYPE html \\\"http://www.ibm.com/data/dtd/v11/ibmxhtml1-transitional.dtd\\\">\", systemDocType.outerHtml());\n\n        DocumentType combo = new DocumentType(\"notHtml\", \"--public\", \"--system\", \"\");\n        assertEquals(\"<!DOCTYPE notHtml PUBLIC \\\"--public\\\" \\\"--system\\\">\", combo.outerHtml());\n    }",
+    "test_line": "        assertEquals(\"<!DOCTYPE html \\\"http://www.ibm.com/data/dtd/v11/ibmxhtml1-transitional.dtd\\\">\", systemDocType.outerHtml());",
+    "test_name": "outerHtmlGeneration",
+    "test_suite": "org.jsoup.nodes.DocumentTypeTest"
+}

@@ -1,0 +1,55 @@
+diff --git a/src/main/java/org/apache/commons/cli/DefaultParser.java b/src/main/java/org/apache/commons/cli/DefaultParser.java
+index 4bff7f3..1c48bc2 100644
+--- a/src/main/java/org/apache/commons/cli/DefaultParser.java
++++ b/src/main/java/org/apache/commons/cli/DefaultParser.java
+@@ -296,21 +296,38 @@ public class DefaultParser implements CommandLineParser
+      * 
+      * @param token
+      */
+-    private boolean isShortOption(String token)
+-    {
+-        // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+-        if (!token.startsWith("-") || token.length() == 1)
+-        {
+-            return false;
+-        }
++private boolean isShortOption(String token) {
++    // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
++    if (!token.startsWith("-") || token.length() == 1) {
++        return false;
++    }
+ 
+-        // remove leading "-" and "=value"
+-        int pos = token.indexOf("=");
+-        String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
+-        return options.hasShortOption(optName);
+-        // check for several concatenated short options
++    // Remove leading "-" and "=value"
++    int pos = token.indexOf("=");
++    String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
++
++    // First check if the whole token is a valid short option
++    if (options.hasShortOption(optName)) {
++        return true;
++    }
++
++    // If not, check if it's multiple concatenated single-character options
++    if (optName.length() > 1) {
++        boolean allSingleCharOptions = true;
++        for (int i = 0; i < optName.length(); i++) {
++            String singleCharOpt = String.valueOf(optName.charAt(i));
++            if (!options.hasShortOption(singleCharOpt)) {
++                allSingleCharOptions = false;
++                break;
++            }
++        }
++        return allSingleCharOptions;
+     }
+ 
++    // Otherwise just check the single character option
++    return options.hasShortOption(optName);
++}
++
+     /**
+      * Tells if the token looks like a long option.
+      *

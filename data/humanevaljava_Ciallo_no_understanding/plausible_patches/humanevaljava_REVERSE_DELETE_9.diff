@@ -1,0 +1,55 @@
+diff --git a/src/main/java/humaneval/buggy/REVERSE_DELETE.java b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+old mode 100644
+new mode 100755
+index 93117a1..54ea01e
+--- a/src/main/java/humaneval/buggy/REVERSE_DELETE.java
++++ b/src/main/java/humaneval/buggy/REVERSE_DELETE.java
+@@ -15,19 +15,37 @@ import java.util.ArrayList;
+ 
+ public class REVERSE_DELETE {
+     public static ArrayList<Object> reverse_delete(String s, String c) {
+-        String new_s = "";
+-        for(int i = 0; i < s.length(); i++) {
+-            if(c.indexOf(s.charAt(i)) != -1) {
+-                new_s += s.charAt(i);
++        StringBuilder new_s = new StringBuilder();
++        for (int i = 0; i < s.length(); i++) {
++            char currentChar = s.charAt(i);
++            boolean shouldKeep = true;
++            for (int j = 0; j < c.length(); j++) {
++                if (currentChar == c.charAt(j)) {
++                    shouldKeep = false;
++                    break;
++                }
++            }
++            if (shouldKeep) {
++                new_s.append(currentChar);
+             }
+         }
+-        String reverse_s = "";
+-        for(int i = new_s.length() - 1; i >= 0; i--) {
+-            reverse_s += new_s.charAt(i);
++        
++        String resultString = new_s.toString();
++        boolean isPalindrome = true;
++        int left = 0;
++        int right = resultString.length() - 1;
++        while (left < right) {
++            if (resultString.charAt(left) != resultString.charAt(right)) {
++                isPalindrome = false;
++                break;
++            }
++            left++;
++            right--;
+         }
++        
+         ArrayList<Object> res = new ArrayList<>();
+-        res.add(new_s);
+-        res.add(reverse_s.equals(new_s));
++        res.add(resultString);
++        res.add(isPalindrome);
+         return res;
+     }
+-}
++}
+\ No newline at end of file

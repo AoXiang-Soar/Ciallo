@@ -1,0 +1,67 @@
+diff --git a/src/main/java/org/jsoup/parser/TokenQueue.java b/src/main/java/org/jsoup/parser/TokenQueue.java
+index 269a7554..ae67fc11 100644
+--- a/src/main/java/org/jsoup/parser/TokenQueue.java
++++ b/src/main/java/org/jsoup/parser/TokenQueue.java
+@@ -257,31 +257,46 @@ public class TokenQueue {
+      * @param close closer
+      * @return data matched from the queue
+      */
+-    public String chompBalanced(char open, char close) {
+-        int start = -1;
+-        int end = -1;
+-        int depth = 0;
+-        char last = 0;
+-
+-        do {
+-            if (isEmpty()) break;
+-            Character c = consume();
++public String chompBalanced(char open, char close) {
++    int start = -1;
++    int end = -1;
++    int depth = 0;
++    char last = 0;
++    char quoteChar = 0;
++
++    do {
++        if (isEmpty()) break;
++        Character c = consume();
++        
++        if (quoteChar == 0 && (c == '\'' || c == '"') && last != ESC) {
++            // Start of quoted section
++            quoteChar = c;
++        } else if (c == quoteChar && last != ESC) {
++            // End of quoted section
++            quoteChar = 0;
++        }
++        
++        // Only process brackets if not in quoted content
++        if (quoteChar == 0) {
+             if (last == 0 || last != ESC) {
+                 if (c.equals(open)) {
+                     depth++;
+                     if (start == -1)
+                         start = pos;
+                 }
+-                else if (c.equals(close))
++                else if (c.equals(close)) {
+                     depth--;
++                }
+             }
++        }
+ 
+-            if (depth > 0 && last != 0)
+-                end = pos; // don't include the outer match pair in the return
+-            last = c;
+-        } while (depth > 0);
+-        return (end >= 0) ? queue.substring(start, end) : "";
+-    }
++        if (depth > 0 && last != 0)
++            end = pos; // don't include the outer match pair in the return
++        last = c;
++    } while (depth > 0 || quoteChar != 0);
++    
++    return (end >= 0) ? queue.substring(start, end) : "";
++}
+     
+     /**
+      * Unescaped a \ escaped string.

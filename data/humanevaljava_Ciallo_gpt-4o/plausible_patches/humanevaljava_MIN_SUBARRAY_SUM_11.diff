@@ -1,0 +1,52 @@
+diff --git a/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java b/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java
+index 36e383f..d965b25 100644
+--- a/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java
++++ b/src/main/java/humaneval/buggy/MIN_SUBARRAY_SUM.java
+@@ -2,32 +2,22 @@ package humaneval.buggy;
+ 
+ import java.util.ArrayList;
+ 
+-/*
+- * Given an array of integers nums, find the minimum sum of any non-empty sub-array
+-    of nums.
+-    Example
+-    minSubArraySum([2, 3, 4, 1, 2, 4]) == 1
+-    minSubArraySum([-1, -2, -3]) == -6
+- */
+-
+ public class MIN_SUBARRAY_SUM {
+     public static long min_subarray_sum(ArrayList<Long> nums) {
+-        long max_sum = 0;
+-        long s = 0;
+-        for(long num : nums) {
+-            s += num;
+-            if(s < 0) {
+-                s = 0;
+-            }
+-            max_sum = Math.max(s, max_sum);
++        if (nums == null || nums.isEmpty()) {
++            throw new IllegalArgumentException("Input list should not be null or empty");
+         }
+-        if(max_sum == 0) {
+-            max_sum = -nums.get(0);
+-            for(int i = 1; i < nums.size(); i++) {
+-                max_sum = Math.max(max_sum, -nums.get(i));
+-            }
++
++        long currentMin = nums.get(0);
++        long globalMin = nums.get(0);
++        
++        for (int i = 1; i < nums.size(); i++) {
++            // Update currentMin to be the minimum of the current element or it plus previous currentMin
++            currentMin = Math.min(nums.get(i), currentMin + nums.get(i));
++            // Update globalMin if the currentMin is less 
++            globalMin = Math.min(globalMin, currentMin);
+         }
+-        long min_sum = -max_sum;
+-        return min_sum;
++        
++        return globalMin;
+     }
+-}
++}
+\ No newline at end of file

@@ -1,0 +1,37 @@
+diff --git a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+index bb670f30..2fcd55fc 100644
+--- a/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
++++ b/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java
+@@ -195,7 +195,31 @@ public class TarArchiveInputStream extends ArchiveInputStream {
+             return null;
+         }
+ 
+-        currEntry = new TarArchiveEntry(headerBuf);
++        if (headerBuf == null || headerBuf.length == 0) {
++            hasHitEOF = true;
++            currEntry = null;
++            return null;
++        }
++        
++        // Check for EOF marker (all zeros) first
++        boolean isEof = true;
++        for (byte b : headerBuf) {
++            if (b != 0) {
++                isEof = false;
++                break;
++            }
++        }
++        if (isEof) {
++            hasHitEOF = true;
++            currEntry = null;
++            return null;
++        }
++        
++        try {
++            currEntry = new TarArchiveEntry(headerBuf);
++        } catch (IllegalArgumentException e) {
++            throw new IOException("Invalid tar entry header", e);
++        }
+         entryOffset = 0;
+         entrySize = currEntry.getSize();
+ 

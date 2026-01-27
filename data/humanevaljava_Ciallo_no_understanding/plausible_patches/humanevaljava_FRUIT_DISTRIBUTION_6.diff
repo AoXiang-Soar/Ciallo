@@ -1,0 +1,30 @@
+diff --git a/src/main/java/humaneval/buggy/FRUIT_DISTRIBUTION.java b/src/main/java/humaneval/buggy/FRUIT_DISTRIBUTION.java
+old mode 100644
+new mode 100755
+index 93d0852..fb9c9a8
+--- a/src/main/java/humaneval/buggy/FRUIT_DISTRIBUTION.java
++++ b/src/main/java/humaneval/buggy/FRUIT_DISTRIBUTION.java
+@@ -14,11 +14,17 @@ fruit_distribution("100 apples and 1 oranges",120) -> 120 - 100 - 1 = 19 */
+ public class FRUIT_DISTRIBUTION {
+     public static int fruit_distribution(String s, int n) {
+         int result = n;
+-
+-        for (String str : s.split(" ")) {
+-            int cnt = Integer.parseInt(str);
+-            result -= cnt;
++        String[] parts = s.split(" ");
++        
++        for (int i = 0; i < parts.length; i++) {
++            try {
++                int cnt = Integer.parseInt(parts[i]);
++                result -= cnt;
++            } catch (NumberFormatException e) {
++                // Skip non-integer parts
++                continue;
++            }
+         }
+         return result;
+     }
+-}
++}
+\ No newline at end of file
