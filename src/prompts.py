@@ -409,13 +409,17 @@ Here is an example output format. Please respond in the same format (each direct
         pattern = re.compile(r'^\d+\.\s*\*\*(.*?)\*\*(.*?)(-(.+))?$')
 
         lines = [line.strip() for line in text.split('\n') if line.strip()]
-        suggestions = []
+        suggestions = set()
 
         for line in lines:
             match = pattern.match(line)
             if match:
                 core_content = f"**{match.group(1)}**{' ' + match.group(3) if match.group(3) else ''}"
-                suggestions.append(core_content)
+                suggestions.add(core_content)
+
+        suggestions = list(suggestions)
+        if len(suggestions) > 15:
+            suggestions = suggestions[15:]
 
         return suggestions
 
