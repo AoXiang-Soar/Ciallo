@@ -1,6 +1,6 @@
 # Ciallo: An Automated Program Repair Framework Based on Prompt Chaining and Large Language Models
 
-Ciallo is an automated program repair(APR) framework.
+Ciallo is an automated program repair(APR) framework. It means automated program repair framework based on prompt ***c***ha***i***ning ***a***nd ***l***arge ***l***anguage m***o***dels.
 
 ## Requirements
 
