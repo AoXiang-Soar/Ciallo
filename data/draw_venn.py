@@ -2,6 +2,10 @@ from venn import venn
 import matplotlib.pyplot as plt
 import json
 
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['font.size'] = 10
+
+
 sets = dict()
 
 #with open('../random_sample_set.json', 'r', encoding='utf-8') as f:
@@ -162,7 +166,7 @@ positions = [
 ]  # Example coordinates
 ax = plt.gca()
 for label, pos in zip(sets.keys(), positions):
-    ax.text(pos[0], pos[1], label, fontsize=16, ha='center', va='center',
+    ax.text(pos[0], pos[1], label, fontsize=18, ha='center', va='center',
             fontweight='bold' if label == 'Ciallo' else 'normal')
 
 # Find the number to be bolded and modify its style

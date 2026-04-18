@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Rectangle
 
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['font.size'] = 10
+
 # Configure paths
 paths = [
     "./defects4j_Ciallo_gpt-4o"
@@ -127,7 +130,8 @@ ax_a.set_ylabel('Token Cost', fontsize=12)
 ax_a.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x)}K'))
 
 # Set subplot a properties
-ax_a.set_title('(a) Token Cost', fontsize=13)
+# ax_a.set_title('(a) Token Cost', fontsize=13)
+ax_a.set_xlabel('(a) Token Cost', fontsize=13)
 ax_a.grid(True, axis='y', alpha=0.3, linestyle='--')
 
 # ========== Subplot b: Median Bar Chart ==========
@@ -144,6 +148,7 @@ for i, bar in enumerate(bars):
     height = bar.get_height()
     ax_b.text(bar.get_x() + bar.get_width()/2., height + 0.1,
               f'{height:.2f}¢', ha='center', va='bottom', fontsize=10)
+ax_b.set_xticks(range(len(frameworks)))
 ax_b.set_xticklabels(frameworks, fontsize=11)
 
 # Set Y-axis
@@ -151,15 +156,16 @@ ax_b.set_ylabel('Cost (Cents)', fontsize=12)
 ax_b.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x)}'))
 
 # Set subplot b properties
-ax_b.set_title('(b) Money Cost per Approach (Based on Median Token Cost)', fontsize=13)
+# ax_b.set_title('(b) Money Cost per Approach (Based on Median Token Cost)', fontsize=13)
+ax_b.set_xlabel('(b) Money Cost per Approach (Based on Median Token Cost)', fontsize=13)
 ax_b.grid(True, axis='y', alpha=0.3, linestyle='--')
 ax_b.set_ylim(0, max(medians) * 1.2)  # Automatically adjust y-axis range, leave 20% space for annotation
 
 # Add note at bottom of figure (if there are outliers)
-if ciallo_actual_max > 500:
-    plt.figtext(0.5, 0.01,
-                f'Note: Ciallo has an outlier with maximum token cost of {ciallo_actual_max:.0f}K. Boxplot y-axis is limited to 500K for better visualization.',
-                ha='center', fontsize=10, style='italic', color='black')
+# if ciallo_actual_max > 500:
+#     plt.figtext(0.5, 0.01,
+#                 f'Note: Ciallo has an outlier with maximum token cost of {ciallo_actual_max:.0f}K. Boxplot y-axis is limited to 500K for better visualization.',
+#                 ha='center', fontsize=10, style='italic', color='black')
 
 # Adjust layout
 plt.tight_layout(rect=(0, 0.05, 1, 0.98))  # Reserve space for bottom note
