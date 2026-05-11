@@ -418,8 +418,7 @@ Here is an example output format. Please respond in the same format (each direct
                 suggestions.add(core_content)
 
         suggestions = list(suggestions)
-        if len(suggestions) > 15:
-            suggestions = suggestions[15:]
+        suggestions = suggestions[:15]
 
         return suggestions
 
