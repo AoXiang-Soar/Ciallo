@@ -45,7 +45,12 @@ The resulting plausible patches are stored in `output/defects4j_Ciallo/plausible
 The paper to cite is 
 
 ```bibtex
-TODO
+@misc{feng2026ciallo,
+  author       = {Feng, Junlang and Zhang, Fanlong and Wei, Huaxin and Wang, Ziping and Liu, Jianqi},
+  title        = {Ciallo: A Structured Search-Based Framework for Automated Program Repair with Large Language Models},
+  year         = {2026},
+  howpublished = {Preprint. Source code available at \url{https://github.com/AoXiang-Soar/Ciallo}}
+}
 ```
 
 ## Star Us ⭐
