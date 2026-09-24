@@ -9,7 +9,7 @@ plt.rcParams['font.size'] = 10
 
 # Configure paths
 paths = [
-    "./defects4j_Ciallo_gpt-4o"
+    "./data/defects4j_Ciallo_gpt-4o"
 ]
 
 # Collect all token data for our framework

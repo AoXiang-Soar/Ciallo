@@ -29,7 +29,7 @@ d4j=[("Chart", [i for i in range(1, 27)]),
     ("Time", [i for i in range(1, 28) if i not in [21]])]
 
 other=set()
-with open('contrastrepair.csv', 'r', encoding='utf-8') as f:
+with open('data/contrastrepair.csv', 'r', encoding='utf-8') as f:
     lines = f.readlines()
     data = []
     for line in lines:
@@ -42,7 +42,7 @@ with open('contrastrepair.csv', 'r', encoding='utf-8') as f:
                     data.append(line)
                     break
     other.update(set(data))
-with open('iter.csv', 'r', encoding='utf-8') as f:
+with open('data/iter.csv', 'r', encoding='utf-8') as f:
     lines = f.readlines()
     data = []
     for line in lines:
@@ -55,7 +55,7 @@ with open('iter.csv', 'r', encoding='utf-8') as f:
                     data.append(line)
                     break
     other.update(set(data))
-with open('selfapr.csv', 'r', encoding='utf-8') as f:
+with open('data/selfapr.csv', 'r', encoding='utf-8') as f:
     lines = f.readlines()
     data = []
     for line in lines:
@@ -69,7 +69,7 @@ with open('selfapr.csv', 'r', encoding='utf-8') as f:
                     break
     other.update(set(data))
 sets['Others']=other
-with open('chatapr.csv', 'r', encoding='utf-8') as f:
+with open('data/chatapr.csv', 'r', encoding='utf-8') as f:
     lines = f.readlines()
     data = []
     for line in lines:
@@ -82,7 +82,7 @@ with open('chatapr.csv', 'r', encoding='utf-8') as f:
                     data.append(line)
                     break
     sets['ChatRepair']=set(data)
-with open('repairagent.csv', 'r', encoding='utf-8') as f:
+with open('data/repairagent.csv', 'r', encoding='utf-8') as f:
     lines = f.readlines()
     data = []
     for line in lines:
@@ -95,7 +95,7 @@ with open('repairagent.csv', 'r', encoding='utf-8') as f:
                     data.append(line)
                     break
     sets['RepairAgent']=set(data)
-with open('d4c.csv', 'r', encoding='utf-8') as f:
+with open('data/d4c.csv', 'r', encoding='utf-8') as f:
     lines = f.readlines()
     data = []
     for line in lines:
@@ -108,7 +108,7 @@ with open('d4c.csv', 'r', encoding='utf-8') as f:
                     data.append(line)
                     break
     sets['D4C']=set(data)
-with open('ciallo-gpt.csv', 'r', encoding='utf-8') as f:
+with open('data/ciallo-gpt.csv', 'r', encoding='utf-8') as f:
     lines=f.readlines()
     data = []
     for line in lines:

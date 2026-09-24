@@ -1,5 +1,6 @@
 # Environment
 .idea/
+.vscode/
 __pycache__/
 
 # Keep custom files from being tracked
